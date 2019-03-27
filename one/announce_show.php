@@ -8,12 +8,8 @@ include("../inc/conn.php");
 <meta http-equiv="X-UA-Compatible" content="IE=EmulateIE7" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0" />
 <?php
-if (isset($_GET["id"])){
-$id=$_GET["id"];
-checkid($id);
-}else{
-$id=0;
-}
+$id=isset($_GET["id"])?$_GET["id"]:0;
+checkid($id,1);
 $sql="Select * From zzcms_help where id='$id'";
 $rs=query($sql);
 $row=num_rows($rs);

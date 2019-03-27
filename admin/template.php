@@ -29,7 +29,7 @@ echo "<script>alert('".$msg."');location.href='?title=".$title."'</script>";
 
 if ($action=="del"){ 
 checkadminisdo("label");
-$f="../template/".siteskin."/".nostr(trim($_POST["title"]));
+$f="../template/".siteskin."/".nostr($_POST["title"]);
 	if (file_exists($f)){
 	unlink($f)?showmsg('删除成功',"?"):showmsg('失败');
 	}else{
@@ -127,6 +127,5 @@ fclose($f);
     </tr>
   </table>
       </form>
-  
 </body>
 </html>

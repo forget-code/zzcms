@@ -1036,7 +1036,7 @@ $arr=explode("#",$arrs); //转换成数组
 }
 
 function get_zhuyuming($str){
-$houzhui_array = array(".com",".net",".org",".gov",".edu","com.cn",".cn",".tv",".cc");
+$houzhui_array = array(".com",".net",".org",".gov",".edu","com.cn",".cn",".tv",".cc",".top");
 for($i=0; $i<count($houzhui_array);$i++){
 	$str=trim(str_replace($houzhui_array[$i],'',$str));
     }	

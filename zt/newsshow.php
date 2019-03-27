@@ -14,8 +14,7 @@ $editorinzsshow=$row["editor"];//供传值到top.php
 $title=$row['title'];
 $sendtime=date("Y-m-d",strtotime($row['sendtime']));
 $hit=$row["hit"];
-$sm=$row["content"];
-
+$sm=stripfxg($row["content"],true);
 include("top.php");
 include("bottom.php");
 include("left.php");

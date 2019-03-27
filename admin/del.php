@@ -23,7 +23,18 @@ if(!empty($_POST['id'])){
 
 if ($id==""){
 echo "<script>alert('操作失败！至少要选中一条信息。');history.back(-1)</script>";
+}
 
+$tablenames='';
+$rs = query("SHOW TABLES"); 
+while($row = fetch_array($rs)) { 
+$tablenames=$tablenames.$row[0]."#"; 
+}
+$tablenames=substr($tablenames,0,strlen($tablenames)-1);
+
+if (str_is_inarr($tablenames,$tablename)=='no'){
+echo "tablename 参数有误";
+exit();
 }
 
 switch ($tablename){
@@ -115,9 +126,9 @@ break;
 
 default;
 if (strpos($id,",")>0){
-$sql="delete from ".$tablename." where id in (". $id .")";
+$sql="delete from `".$tablename."` where id in (". $id .")";
 }else{
-$sql="delete from ".$tablename." where id='$id'";
+$sql="delete from `".$tablename."` where id='$id'";
 }
 query($sql);
 

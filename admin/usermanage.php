@@ -13,8 +13,8 @@ $action=isset($_GET["action"])?$_GET["action"]:'';
 $page=isset($_GET["page"])?$_GET["page"]:1;
 checkid($page);
 $shenhe=isset($_GET["shenhe"])?$_GET["shenhe"]:'';
-$keyword=isset($_POST["keyword"])?$_POST["keyword"]:'';
-$kind=isset($_POST["kind"])?$_POST["kind"]:'username';
+$keyword=isset($_GET["keyword"])?$_GET["keyword"]:'';//翻页中会以GET传值 
+$kind=isset($_GET["kind"])?$_GET["kind"]:'username';//翻页中会以GET传值 
 
 $px=isset($_GET["px"])?$_GET["px"]:'id';
 $usersf=isset($_GET["usersf"])?$_GET["usersf"]:'';
@@ -42,12 +42,12 @@ echo "<script>location.href='?keyword=".$keyword."&kind=".$kind."&page=".$page."
 ?>
 <body>
 <div class="admintitle">用户管理</div>
-<form name="form1" method="post" action="?">
+<form name="form1" method="get" action="?">
   <table width="100%" border="0" cellpadding="5" cellspacing="0">
     <tr> 
-      <td class="border"> <input name="kind" type="radio" id="username" value="username" checked <?php if ($kind=="username") { echo "checked";}?> >
+      <td class="border"> <input name="kind" type="radio" id="username" value="username" <?php if ($kind=="username") { echo "checked";}?> >
         <label for="username">按用户名</label>
-<input name="kind" type="radio" value="comane" id="comane" checked <?php if ($kind=="comane") { echo "checked";}?>>
+<input name="kind" type="radio" value="comane" id="comane" <?php if ($kind=="comane") { echo "checked";}?>>
          <label for="comane">按公司名 </label>
         <input type="radio" name="kind" value="id" id="id" <?php if ($kind=="id") { echo "checked";}?>>
          <label for="id">按用户ID </label>

@@ -17,8 +17,8 @@ if( isset($_REQUEST["page"]) && $_REQUEST["page"]!="") {
     $page=1;
 }
 $shenhe=isset($_REQUEST["shenhe"])?$_REQUEST["shenhe"]:'';
-$keyword=isset($_REQUEST["keyword"])?$_REQUEST["keyword"]:'';
-$kind=isset($_REQUEST["kind"])?$_REQUEST["kind"]:'editor';
+$keyword=isset($_GET["keyword"])?$_GET["keyword"]:'';
+$kind=isset($_GET["kind"])?$_GET["kind"]:'editor';
 $b=isset($_REQUEST["b"])?$_REQUEST["b"]:0;
 checkid($b);
 $showwhat=isset($_REQUEST["showwhat"])?$_REQUEST["showwhat"]:'';
@@ -49,7 +49,7 @@ echo "<script>location.href='?keyword=".$keyword."&page=".$page."'</script>";
 <table width="100%" border="0" cellpadding="5" cellspacing="0">
   <tr> 
     <td class="border">
-<form name="form1" method="post" action="?">
+<form name="form1" method="get" action="?">
         <label><input type="radio" name="kind" value="editor" <?php if ($kind=="editor") { echo "checked";}?>>按发布人</label>
         <label><input type="radio" name="kind" value="proname" <?php if ($kind=="proname") { echo "checked";}?>>按产品名称</label>
         <input name="keyword" type="text" id="keyword" size="25" value="<?php echo  $keyword?>">

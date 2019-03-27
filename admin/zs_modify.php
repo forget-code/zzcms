@@ -201,7 +201,6 @@ echo "</div>";
 				  echo "<input name='Submit2' type='button'  value='上传图片'/>";
 				  }
 				  ?>            </td>
-            
           </tr>
         </table></td>
     </tr>
@@ -270,15 +269,23 @@ echo "</div>";
       <td class="border"><input name="tag" type="text" id="tag" value="<?php echo $row["tag"]?>" size="45">
         (多个词可用 , 隔开) </td>
     </tr>
+	  <tr>
+            <td align="right" class="border" >模板：</td>
+            <td class="border" >
+              <input type="radio" name="skin" value="cp" id="cp" <?php if ($row["skin"]=='cp'){ echo "checked";}  ?>/>
+              <label for="cp">产品型</label>
+              <input type="radio" name="skin" value="xm" id="xm" <?php if ($row["skin"]=='xm'){ echo "checked";}  ?>/>
+              <label for="xm">项目型</label>            </td>
+          </tr>
+		  
     <tr> 
       <td align="center" class="border">&nbsp;</td>
-      <td class="border"><input name="cpid" type="hidden" id="cpid" value="<?php echo $row["id"]?>"> 
-        <input type="submit" name="Submit" value="修 改">
+      <td class="border"><input type="submit" name="Submit" value="修 改">
+		<input name="cpid" type="hidden" id="cpid" value="<?php echo $row["id"]?>">
 		<input name="sendtime" type="hidden" id="sendtime" value="<?php echo $row["sendtime"]?>"> 
         <input name="page" type="hidden" id="page" value="<?php echo $page?>"> 
 		<input name="kind" type="hidden" id="kind" value="<?php echo $_GET["kind"]?>"> 
-		<input name="keyword" type="hidden" id="keyword" value="<?php echo $_GET["keyword"]?>"> 
-		</td>
+		<input name="keyword" type="hidden" id="keyword" value="<?php echo $_GET["keyword"]?>">	  </td>
     </tr>
   </table>
 </form>

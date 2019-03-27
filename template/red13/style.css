@@ -135,8 +135,8 @@ img{vertical-align:bottom;vertical-align:middle;vertical-align:top;border:0}
 .fenyei a{border:solid 1px #dddddd;background-color:#f1f1f1;margin:0px 1px;padding:2px 5px;}
 .fenyei a:hover{border:solid 1px #FF9900;background-color:#FFCC00;}
 .fenyei span{border:solid 1px #cc0000;background-color:#e4393c;margin:0 1px;padding:2px 5px;color:#FFFFFF;font-weight:bold;float:none}
-.adStyle1{width:100%;background-color:#DDDDDD;zoom:1;overflow:hidden;}
-.adStyle1 ul{padding:1px 0 0 1px;}
+.adStyle1{width:100%;background-color:#DDDDDD;zoom:1;overflow:hidden;border-left:solid 1px #dddddd;border-top:solid 1px #dddddd}
+.adStyle1 ul{padding:0px 0 0 0px;}
 .adStyle1 li{width:20%;float:left;text-align:left;}
 .adStyle1 li a{margin:0 1px 1px 0;display:block;background-color:#ffffff;padding:5px;transition:all 0.2s;}
 .adStyle1 li a:hover{background-color:#e4393c;color:#FFFFFF;transform: scale(1.2); }

@@ -10,9 +10,9 @@ $action = isset($_REQUEST['action'])?$_REQUEST['action']:"";
 $ml=@$_GET['ml'];
 if ($action=="add") {
 checkadminisdo("label");
-$ml=trim($_POST["ml"]);
-$title=nostr(trim($_POST["title"]));
-$title_old=trim($_POST["title_old"]);
+$ml=$_POST["ml"];
+$title=nostr($_POST["title"]);
+$title_old=$_POST["title_old"];
 if (substr($title,-3)!='css' and substr($title,-3)!='htm'){
 showmsg('只能是htm或css这两种格式,模板名称：后面加上.htm或.css');
 }
@@ -32,7 +32,7 @@ echo "<script>alert('".$msg."');location.href='?ml=".$ml."&title=".$title."'</sc
 if ($action=="del"){ 
 checkadminisdo("label");
 $ml=trim($_POST["ml"]);
-$f="../skin/".$ml."/".nostr(trim($_POST["title"]));
+$f="../skin/".$ml."/".nostr($_POST["title"]);
 	if (file_exists($f)){
 	unlink($f)?showmsg('删除成功',"?ml=".$ml):showmsg('失败');
 	}else{

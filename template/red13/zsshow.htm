@@ -42,7 +42,7 @@ $(document).ready(function(){
               <td width="351" align="center" bgcolor="#FFFFFF"> 
 			<div style="text-align:center;margin-bottom:10px;width:270px;height:270px;margin:auto">
     			<div id="B_con1" style="display:block;">
-				<a href='{#img1}' class='MagicZoom MagicThumb'><img src='{#img1}' alt='{#proname}' onload='resizeimg(260,260,this)'/></a></div>
+				<a href='{#img1}' class='MagicZoom MagicThumb'><img src='{#img}' alt='{#proname}' onload='resizeimg(260,260,this)'/></a></div>
 				<div id="B_con2" style="display:none;">
 				<a href='{#img2}' class='MagicZoom MagicThumb'><img src='{#img2}' alt='{#proname}' onload='resizeimg(260,260,this)'/></a></div>
 				<div id="B_con3" style="display:none;">
@@ -50,25 +50,22 @@ $(document).ready(function(){
 			</div>
                 <div id="B" class="zsshow_3img">
 				<ul>
-				<li class="bgcolor2" id="B1" onmouseover="javascript:doClick(this,'B','bgcolor2')"><img src='{#imgs1}' onload='resizeimg(70,70,this)'></li>
-				<li id="B2" onmouseover="javascript:doClick(this,'B','bgcolor2')"><img src='{#imgs2}' onload='resizeimg(70,70,this)'></li>
-				<li id="B3" onmouseover="javascript:doClick(this,'B','bgcolor2')"><img src='{#imgs3}' onload='resizeimg(70,70,this)'></li>
+				<li class="bgcolor2" id="B1" onmouseover="javascript:doClick(this,'B','bgcolor2')"><img src='{#img}' onload='resizeimg(70,70,this)'></li>
+				<li id="B2" onmouseover="javascript:doClick(this,'B','bgcolor2')"><img src='{#img2}' onload='resizeimg(70,70,this)'></li>
+				<li id="B3" onmouseover="javascript:doClick(this,'B','bgcolor2')"><img src='{#img3}' onload='resizeimg(70,70,this)'></li>
 				</ul>
 				</div>
               </td>
               <td width="419" valign="top" bgcolor="#FFFFFF" style="padding:8px"> 
                 <table width="100%" border="0" cellpadding="7" cellspacing="1">
                   <tr> 
-                    <td>包装规格： {#gg}<strong></strong></td>
+                    <td>包装规格： {#shuxing0}<strong></strong></td>
                   </tr>
                   <tr> 
                     <td>招商区域： {#province} {#city}</td>
                   </tr>
                   <tr> 
-                    <td>招商价格 ： {#pricezs}</td>
-                  </tr>
-                  <tr> 
-                    <td>零售价格：  {#pricels}</td>
+                    <td>招商价格 ： {#shuxing1}<strong></strong></td>
                   </tr>
                   <tr> 
                     <td>代理留言：  {#liuyannum} </td>
@@ -103,8 +100,8 @@ $(document).ready(function(){
 		  <span class="bgcolor1">
 		      <table width="100%" border="0" cellpadding="5" cellspacing="1">
                 <tr> 
-                  <td width="295"><strong>包装规格:</strong>{#gg}</td>
-                  <td width="279"><strong>零售价格:</strong>{#pricels}</td>
+                  <td width="295"><strong>包装规格:</strong>{#shuxing0}</td>
+                  <td width="279"><strong>零售价格:</strong>{#shuxing1}</td>
                   <td width="243"><strong>招商区域:</strong>{#province}{#city}</td>
                 </tr>
               </table>

@@ -11,9 +11,7 @@
 <body>
 {#sitetop}
 <div class="main">
-<div class="pagebody" style="margin-bottom:8px">
-{#showkeyword:zs,30,15}
-</div>
+
 <div class="pagebody">
 <div class="right"> 
 <div class="titles">{#keyword}关注榜</div>
@@ -110,7 +108,7 @@
 <td width='157' align='center'><table width='130' height='130' border='0' cellpadding='0' cellspacing='1' class='bordercccccc'>
 <tr> 
 <td align='center' onMouseOver="showfilter(Layer{#i});window.document.getElementById('Layer{#i}').innerHTML='<img src={#imgbig} width=400>'" onMouseOut='showfilter(Layer{#i})'>
-<a href='{#url}'><img src="{#img}"></a>
+<a href='{#url}'><img src="{#img}" onload='resizeimg(120,120,this)'></a>
 </td>
 </tr>
 </table></td>
@@ -119,8 +117,8 @@
 <td height='30' colspan='2'><a href='{#url}' style='font-size:14px;font-weight:bold;'>{#proname:20}</a>{#dl_num}{#elite}</td>
 </tr>
 <tr>
-<td width='60%' valign='top' style='padding-right:10px'> 包装规格：{#gg}<br>
-产品特点：{#prouse}<br>零售价格：{#pricels} 
+<td width='60%' valign='top' style='padding-right:10px'> 包装规格：{#shuxing0}<br>
+产品特点：{#prouse}<br>零售价格：{#shuxing1} 
 <div>
 <a href='{#zturl}#contact' target='_blank'><img src='/image/lxfs.gif' width='80' height='20' border='0'></a>
 <a href='{#url}#dl_liuyan' target='_blank'><img src='/image/ico_dl.gif' width='80' height='20' border='0'></a>

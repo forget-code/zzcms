@@ -477,21 +477,21 @@ $mids = str_replace("show.php?id={#id}", "/dl/show.php?id={#id}",$mids);
 if (whtml == "Yes") {$mids = str_replace("/dl/show.php?id={#id}", "/dl/show-{#id}.htm",$mids);}
 $ends = $f[9];
 
-$sql2='';
-if ($saver==1){$sql2 = $sql2 . " and saver is not null ";}
-//if ( $province !='') {$sql2 = $sql2 . " and province='$province' ";}
-if ( $orderby == "hit") {$sql3 = " order by hit desc";
-}elseif ($orderby == "id") {$sql3 = " order by id desc";
-}elseif ($orderby == "sendtime") {$sql3 = " order by sendtime desc";}
-$sql4 = " limit 0,$numbers ";	
-
 if ( $b <> 0) {
 $sql = "select id,cp,sendtime,editor,dlsname,city,saver,tel from zzcms_dl where classid=$b ";
 }else{
 $sql = "select id,cp,sendtime,editor,dlsname,city,saver,tel from zzcms_dl where passed<>0 ";
 }
-$rs=query($sql.$sql2.$sql3.$sql4);
-//echo $sql.$sql2.$sql3.$sql4;
+
+if ($saver==1){$sql = $sql . " and saver is not null ";}
+//if ( $province !='') {$sql = $sql . " and province='$province' ";}
+if ( $orderby == "hit") {$sql =$sql. " order by hit desc";
+}elseif ($orderby == "id") {$sql =$sql. " order by id desc";
+}elseif ($orderby == "sendtime") {$sql =$sql. " order by sendtime desc";}
+$sql =$sql. " limit 0,$numbers ";	
+
+$rs=query($sql);
+//echo $sql;
 $str="暂无信息";
 if ($rs){
 $xuhao = 1;$n = 1;$mids2='';
@@ -692,7 +692,7 @@ $rs=query($sql);
 if ($rs){
 $xuhao = 1;$n = 1;$mids2='';
 while($r=fetch_array($rs)){
-	$mids2 = $mids2 . str_replace("{#sendtime}", $r["regdate"],str_replace("{#content}", cutstr(nohtml($r["content"]),$titlenum*4),str_replace("{#imgbig}",$r["img"],str_replace("{#img}",getsmallimg($r["img"]),str_replace("{#title}",cutstr($r["comane"],$titlenum),$mids)))));
+	$mids2 = $mids2 . str_replace("{#sendtime}", $r["regdate"],str_replace("{#content}", cutstr(nohtml(stripfxg($r["content"],true)),$titlenum*4),str_replace("{#imgbig}",$r["img"],str_replace("{#img}",getsmallimg($r["img"]),str_replace("{#title}",cutstr($r["comane"],$titlenum),$mids)))));
 	$mids2 =str_replace("{#n}", $n,$mids2);
 	$mids2=str_replace("{#id}", $r["id"],$mids2);
 	$mids2=str_replace("{#username}", $r["username"],$mids2);

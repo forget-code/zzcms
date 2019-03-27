@@ -104,11 +104,7 @@ return false;
   </tr>
 </table>
 <?php
-if (isset($_POST["action"])){
-$action=$_POST["action"];
-}else{
-$action="";
-}
+$action = isset($_POST['action'])?$_POST['action']:'';
 if ($action=="saveconfig") {
 checkadminisdo("siteconfig");
 saveconfig();
@@ -306,7 +302,7 @@ function showconfig(){
 		</td>
     </tr>
     <tr>
-      <td align="right" class="border">项目更多属性设置</td>
+      <td align="right" class="border">产品更多属性设置</td>
       <td class="border"><input name="shuxing_name" type="text" id="shuxing_name" value="<?php echo shuxing_name?>" size="50" maxlength="255">
         （以“|”分开，前台模板中以{#shuxing0}，{#shuxing1}，{#shuxing2}...，这样的标签做调用）</td>
     </tr>
@@ -319,10 +315,10 @@ function showconfig(){
     </tr>
     <tr>
       <td align="right" class="border">网站运行状态</td>
-      <td class="border"><input type="radio" name="opensite" value="Yes" <?php if ( opensite=="Yes" ){ echo  "checked";}?>>
-        开
-        <input type="radio" name="opensite" value="No" <?php if ( opensite=="No" ){ echo  "checked";}?>>
-        关（站点关闭之后,后台管理员仍然可以登录）</td>
+      <td class="border"><label><input type="radio" name="opensite" value="Yes" <?php if ( opensite=="Yes" ){ echo  "checked";}?>>
+        开</label>
+        <label><input type="radio" name="opensite" value="No" <?php if ( opensite=="No" ){ echo  "checked";}?>>
+        关（站点关闭之后,后台管理员仍然可以登录）</label></td>
     </tr>
     <tr>
       <td align="right" class="border">关闭网站原因</td>
@@ -330,10 +326,10 @@ function showconfig(){
     </tr>
     <tr>
       <td align="right" class="border">用户注册</td>
-      <td class="border"><input type="radio" name="openuserreg" value="Yes" <?php if ( openuserreg=="Yes" ){ echo  "checked";}?>>
-        开
-        <input type="radio" name="openuserreg" value="No" <?php if ( openuserreg=="No" ){ echo  "checked";}?>>
-        关</td>
+      <td class="border"><label><input type="radio" name="openuserreg" value="Yes" <?php if ( openuserreg=="Yes" ){ echo  "checked";}?>>
+        开</label>
+       <label> <input type="radio" name="openuserreg" value="No" <?php if ( openuserreg=="No" ){ echo  "checked";}?>>
+        关</label></td>
     </tr>
     <tr>
       <td align="right" class="border">关闭用户注册原因</td>
@@ -448,10 +444,10 @@ closedir($dir);
     </tr>
 	 <tr> 
       <td align="right" class="border">到期的广告是否还让显示</td>
-      <td class="border"> <input type="radio" name="isshowad_when_timeend" value="Yes" <?php if ( isshowad_when_timeend=="Yes" ){ echo  "checked";}?>>
-      显示
-        <input type="radio" name="isshowad_when_timeend" value="No" <?php if ( isshowad_when_timeend=="No" ){ echo  "checked";}?>>
-        不显示</td>
+      <td class="border"><label> <input type="radio" name="isshowad_when_timeend" value="Yes" <?php if ( isshowad_when_timeend=="Yes" ){ echo  "checked";}?>>
+      显示</label>
+        <label><input type="radio" name="isshowad_when_timeend" value="No" <?php if ( isshowad_when_timeend=="No" ){ echo  "checked";}?>>
+        不显示</label></td>
     </tr>
 	 <tr> 
       <td align="right" class="border">到期的广告前台显示语为</td>
@@ -471,17 +467,17 @@ closedir($dir);
     </tr>
     <tr> 
       <td align="right" class="border">对联广告</td>
-      <td class="border"> <input type="radio" name="duilianadisopen" value="Yes" <?php if ( duilianadisopen=="Yes" ){ echo  "checked";}?>>
-        开 
-        <input type="radio" name="duilianadisopen" value="No" <?php if ( duilianadisopen=="No" ){ echo  "checked";}?>>
-        关</td>
+      <td class="border"> <label><input type="radio" name="duilianadisopen" value="Yes" <?php if ( duilianadisopen=="Yes" ){ echo  "checked";}?>>
+        开</label> 
+       </abel> <input type="radio" name="duilianadisopen" value="No" <?php if ( duilianadisopen=="No" ){ echo  "checked";}?>>
+        关</label></td>
     </tr>
     <tr> 
       <td align="right" class="border">漂浮广告</td>
-      <td class="border"> <input type="radio" name="flyadisopen" value="Yes" <?php if ( flyadisopen=="Yes" ){ echo  "checked";}?>>
-        开 
-        <input type="radio" name="flyadisopen" value="No" <?php if ( flyadisopen=="No" ){ echo  "checked";}?>>
-        关</td>
+      <td class="border"> <label><input type="radio" name="flyadisopen" value="Yes" <?php if ( flyadisopen=="Yes" ){ echo  "checked";}?>>
+        开</label> 
+        <label><input type="radio" name="flyadisopen" value="No" <?php if ( flyadisopen=="No" ){ echo  "checked";}?>>
+        关</label></td>
     </tr>
     <tr> 
       <td align="right" class="border">&nbsp;</td>
@@ -504,31 +500,31 @@ closedir($dir);
     </tr>
     <tr> 
       <td align="right" class="border">有<?php echo channeldl?>留言时发提示邮件</td>
-      <td class="border"><input type="radio" name="whendlsave" value="Yes" <?php if ( whendlsave=="Yes" ){ echo  "checked";}?>>
-        开 
-          <input type="radio" name="whendlsave" value="No" <?php if ( whendlsave=="No" ){ echo  "checked";}?>>
-        关</td>
+      <td class="border"><label><input type="radio" name="whendlsave" value="Yes" <?php if ( whendlsave=="Yes" ){ echo  "checked";}?>>
+        开 </label>
+          <label><input type="radio" name="whendlsave" value="No" <?php if ( whendlsave=="No" ){ echo  "checked";}?>>
+        关</label></td>
     </tr>
     <tr> 
       <td align="right" class="border">新用户注册时发提示邮件</td>
-      <td class="border"><input type="radio" name="whenuserreg" value="Yes" <?php if ( whenuserreg=="Yes" ){ echo  "checked";}?>>
-        开 
-          <input type="radio" name="whenuserreg" value="No" <?php if ( whenuserreg=="No" ){ echo  "checked";}?>>
-        关</td>
+      <td class="border"><label><input type="radio" name="whenuserreg" value="Yes" <?php if ( whenuserreg=="Yes" ){ echo  "checked";}?>>
+        开 </label>
+         <label> <input type="radio" name="whenuserreg" value="No" <?php if ( whenuserreg=="No" ){ echo  "checked";}?>>
+        关</label></td>
     </tr>
     <tr> 
       <td align="right" class="border">用户更改密码时发提示邮件</td>
-      <td class="border"><input type="radio" name="whenmodifypassword" value="Yes" <?php if ( whenmodifypassword=="Yes" ){ echo  "checked";}?>>
-        开 
-          <input type="radio" name="whenmodifypassword" value="No" <?php if ( whenmodifypassword=="No" ){ echo  "checked";}?>>
-        关</td>
+      <td class="border"><label><input type="radio" name="whenmodifypassword" value="Yes" <?php if ( whenmodifypassword=="Yes" ){ echo  "checked";}?>>
+        开</label> 
+         <label> <input type="radio" name="whenmodifypassword" value="No" <?php if ( whenmodifypassword=="No" ){ echo  "checked";}?>>
+        关</label></td>
     </tr>
     <tr>
       <td align="right" class="border">用户注册时邮箱验证功能</td>
-      <td class="border"><input type="radio" name="checkistrueemail"  value="Yes" <?php if ( checkistrueemail=="Yes" ){ echo  "checked";}?>>
-        开
-        <input type="radio" name="checkistrueemail" value="No" <?php if ( checkistrueemail=="No" ){ echo  "checked";}?>>
-        关</td>
+      <td class="border"><label><input type="radio" name="checkistrueemail"  value="Yes" <?php if ( checkistrueemail=="Yes" ){ echo  "checked";}?>>
+        开</label>
+      <label><input type="radio" name="checkistrueemail" value="No" <?php if ( checkistrueemail=="No" ){ echo  "checked";}?>>
+        关</label></td>
     </tr>
     <tr> 
       <td align="right" class="border">&nbsp;</td>
@@ -539,10 +535,10 @@ closedir($dir);
     </tr>
     <tr>
       <td align="right" class="border">发手机短息功能</td>
-      <td class="border"><input type="radio" name="sendsms" value="Yes" <?php if ( sendsms=="Yes" ){ echo  "checked";}?>>
-        开
-        <input type="radio" name="sendsms" value="No" <?php if ( sendsms=="No" ){ echo  "checked";}?>>
-        关</td>
+      <td class="border"><label><input type="radio" name="sendsms" value="Yes" <?php if ( sendsms=="Yes" ){ echo  "checked";}?>>
+        开</label>
+        <label><input type="radio" name="sendsms" value="No" <?php if ( sendsms=="No" ){ echo  "checked";}?>>
+        关</label></td>
     </tr>
     <tr> 
       <td align="right" class="border">用户名：</td>
@@ -569,10 +565,10 @@ closedir($dir);
     </tr>
     <tr> 
       <td align="right" class="border">积分功能</td>
-      <td class="border"><input type="radio" name="jifen" id="jifenY"  value="Yes" <?php if ( jifen=="Yes" ){ echo  "checked";}?>>
-        <label for='jifenY'>开</label> 
-          <input type="radio" name="jifen" id="jifenN"  value="No" <?php if ( jifen=="No" ){ echo  "checked";}?>>
-        <label for='jifenN'>关</label></td>
+      <td class="border"><label><input type="radio" name="jifen"  value="Yes" <?php if ( jifen=="Yes" ){ echo  "checked";}?>>
+       开</label> 
+         <label> <input type="radio" name="jifen"  value="No" <?php if ( jifen=="No" ){ echo  "checked";}?>>
+       关</label></td>
     </tr>
     <tr>
       <td align="right" class="border">1元等于</td>
@@ -643,10 +639,10 @@ closedir($dir);
     </tr>
     <tr> 
       <td align="right" class="border">水印功能</td>
-      <td class="border"> <input name="shuiyin" id="shuiyinY" type="radio" value="Yes"  <?php if ( shuiyin=="Yes" ){ echo  "checked";}?>>
-        <label for='shuiyinY'>开</label> 
-        <input type="radio" name="shuiyin"  id="shuiyinN" value="No" <?php if ( shuiyin=="No" ){ echo  "checked";}?>>
-        <label for='shuiyinN'>关</label></td>
+      <td class="border"> <label><input name="shuiyin"  type="radio" value="Yes"  <?php if ( shuiyin=="Yes" ){ echo  "checked";}?>>
+       开</label> 
+       <label> <input type="radio" name="shuiyin" value="No" <?php if ( shuiyin=="No" ){ echo  "checked";}?>>
+       关</label></td>
     </tr>
     <tr> 
       <td align="right" class="border">水印位置</td>
@@ -774,90 +770,91 @@ $channel=substr($channel,0,strlen($channel)-1);//去除最后面的"#"
 	$fpath="../inc/config.php";
 	$fp=fopen($fpath,"w+");//fopen()的其它开关请参看相关函数
 	$fcontent="<" . "?php\r\n";
-	$fcontent=$fcontent. "define('sqldb','".trim($_POST['sqldb'])."');//数据库名\r\n";
-	$fcontent=$fcontent. "define('sqluser','".trim($_POST['sqluser'])."');//用户名\r\n";
-	$fcontent=$fcontent. "define('sqlpwd','".html_entity_decode(trim($_POST['sqlpwd']))."');//密码\r\n";//html_entity_decode针对&被转变成&amp;
-	$fcontent=$fcontent. "define('sqlhost','".trim($_POST['sqlhost'])."');//连接服务器,本机填localhost，外地填IP地址\r\n";
-	$fcontent=$fcontent. "define('sqlport','".trim($_POST['sqlport'])."');//端口（默认为:3306）\r\n";
-	$fcontent=$fcontent. "define('zzcmsver','Powered By <a target=_blank style=font-weight:bold href=http://www.zzcms.net><font color=#FF6600 face=Arial>ZZ</font><font color=#025BAD face=Arial>CMS8.2</font></a>');//版本\r\n";
-	$fcontent=$fcontent. "define('sitename','". trim($_POST['sitename'])."') ;//网站名称\r\n";
-	$fcontent=$fcontent. "define('siteurl','". trim($_POST['siteurl'])."') ;//网站地址\r\n";
-	$fcontent=$fcontent. "define('logourl','". trim($_POST['img'])."') ;//Logo地址\r\n";
-	$fcontent=$fcontent. "define('icp','". trim($_POST['icp'])."') ;//icp备案号\r\n";
-	$fcontent=$fcontent. "define('webmasteremail','". trim($_POST['webmasteremail'])."') ;//站长信箱\r\n";
-	$fcontent=$fcontent. "define('kftel','". trim($_POST['kftel'])."') ;//联系电话\r\n";
-	$fcontent=$fcontent. "define('kfmobile','". trim($_POST['kfmobile'])."') ;//手机\r\n";
-	$fcontent=$fcontent. "define('kfqq','". trim($_POST['kfqq'])."') ;//QQ\r\n";
+	$fcontent=$fcontent. "define('sqldb','".$_POST['sqldb']."');//数据库名\r\n";
+	$fcontent=$fcontent. "define('sqluser','".$_POST['sqluser']."');//用户名\r\n";
+	$fcontent=$fcontent. "define('sqlpwd','".html_entity_decode($_POST['sqlpwd'])."');//密码\r\n";//html_entity_decode针对&被转变成&amp;
+	$fcontent=$fcontent. "define('sqlhost','".$_POST['sqlhost']."');//连接服务器,本机填localhost，外地填IP地址\r\n";
+	$fcontent=$fcontent. "define('sqlport','".$_POST['sqlport']."');//端口（默认为:3306）\r\n";
+	$fcontent=$fcontent. "define('zzcmsver','Powered By <a target=_blank style=font-weight:bold href=http://www.zzcms.net><font color=#FF6600 face=Arial>ZZ</font><font color=#025BAD face=Arial>CMS8.3</font></a>');//版本\r\n";
+	$fcontent=$fcontent. "define('zzcmsver','');//版本\r\n";
+	$fcontent=$fcontent. "define('sitename','". $_POST['sitename']."') ;//网站名称\r\n";
+	$fcontent=$fcontent. "define('siteurl','". $_POST['siteurl']."') ;//网站地址\r\n";
+	$fcontent=$fcontent. "define('logourl','". $_POST['img']."') ;//Logo地址\r\n";
+	$fcontent=$fcontent. "define('icp','". $_POST['icp']."') ;//icp备案号\r\n";
+	$fcontent=$fcontent. "define('webmasteremail','". $_POST['webmasteremail']."') ;//站长信箱\r\n";
+	$fcontent=$fcontent. "define('kftel','". $_POST['kftel']."') ;//联系电话\r\n";
+	$fcontent=$fcontent. "define('kfmobile','". $_POST['kfmobile']."') ;//手机\r\n";
+	$fcontent=$fcontent. "define('kfqq','". $_POST['kfqq']."') ;//QQ\r\n";
 	$fcontent=$fcontent. "define('sitecount','". str_replace('"','',str_replace("'",'',stripfxg($_POST['sitecount'],true)))."') ;//网站统计代码\r\n";
-	//$fcontent=$fcontent. "define('sitecount','". htmlspecialchars_decode(trim($_POST['sitecount']))."') ;//网站统计代码\r\n";
-	$fcontent=$fcontent. "define('channelzs','". trim($_POST['channelzs'])."') ;//招商显示为\r\n";
-	$fcontent=$fcontent. "define('channeldl','". trim($_POST['channeldl'])."') ;//代理显示为\r\n";
-	$fcontent=$fcontent. "define('opensite','". trim($_POST['opensite'])."') ;//网站运行状态\r\n";
-	$fcontent=$fcontent. "define('showwordwhenclose','". trim($_POST['showwordwhenclose'])."') ;//关闭网站原因\r\n";
-	$fcontent=$fcontent. "define('openuserreg','". trim($_POST['openuserreg'])."') ;//注册用户状态\r\n";
-	$fcontent=$fcontent. "define('openuserregwhy','". trim($_POST['openuserregwhy'])."') ;//关闭注册用户原因\r\n";		
-	$fcontent=$fcontent. "define('isaddinfo','". trim($_POST['isaddinfo'])."') ;//是否允许未审核的用户发布信息\r\n";		
-	$fcontent=$fcontent. "define('pagesize_ht','" . trim($_POST['pagesize_ht']) ."');//管理员后台每页显示信息数\r\n";
-	$fcontent=$fcontent. "define('pagesize_qt','". trim($_POST['pagesize_qt']) . "');//前台每页显示信息数\r\n";		
-	$fcontent=$fcontent. "define('whendlsave','". trim($_POST['whendlsave'])."') ;//当有代理或求购留言是否打开在线发邮件功能\r\n";	
-	$fcontent=$fcontent. "define('whenuserreg','". trim($_POST['whenuserreg'])."') ;//当新用户注册时是否打开在线发邮件功能\r\n";
-	$fcontent=$fcontent. "define('whenmodifypassword','". trim($_POST['whenmodifypassword'])."') ;//当用户修改密码时是否开发在线发邮件功能\r\n";
-	$fcontent=$fcontent. "define('smtpserver','". trim($_POST['smtpserver'])."') ;//邮件服务器\r\n";
-	$fcontent=$fcontent. "define('sender','". trim($_POST['sender'])."') ;//发送邮件的地址\r\n";	
-	$fcontent=$fcontent. "define('smtppwd','". trim($_POST['smtppwd'])."') ;//email密码\r\n";	
-	$fcontent=$fcontent. "define('sendsms','". trim($_POST['sendsms'])."') ;//发手机短信开关\r\n";
-	$fcontent=$fcontent. "define('smsusername','". trim($_POST['smsusername'])."') ;//SMS用户名\r\n";	
-	$fcontent=$fcontent. "define('smsuserpass','". trim($_POST['smsuserpass'])."') ;//SMS密码\r\n";		
-	$fcontent=$fcontent. "define('apikey_mobile_msg','". trim($_POST['apikey_mobile_msg'])."') ;//apikey_mobile_msg\r\n";		
-	$fcontent=$fcontent. "define('isshowcontact','". trim($_POST['isshowcontact'])."') ;//是否公开代理商联系方式\r\n";	
-	$fcontent=$fcontent. "define('liuyanysnum','". trim($_POST['liuyanysnum'])."'); //延时时间\r\n";	
+	//$fcontent=$fcontent. "define('sitecount','". htmlspecialchars_decode($_POST['sitecount'])."') ;//网站统计代码\r\n";
+	$fcontent=$fcontent. "define('channelzs','". $_POST['channelzs']."') ;//招商显示为\r\n";
+	$fcontent=$fcontent. "define('channeldl','". $_POST['channeldl']."') ;//代理显示为\r\n";
+	$fcontent=$fcontent. "define('opensite','". $_POST['opensite']."') ;//网站运行状态\r\n";
+	$fcontent=$fcontent. "define('showwordwhenclose','". $_POST['showwordwhenclose']."') ;//关闭网站原因\r\n";
+	$fcontent=$fcontent. "define('openuserreg','". $_POST['openuserreg']."') ;//注册用户状态\r\n";
+	$fcontent=$fcontent. "define('openuserregwhy','". $_POST['openuserregwhy']."') ;//关闭注册用户原因\r\n";		
+	$fcontent=$fcontent. "define('isaddinfo','". $_POST['isaddinfo']."') ;//是否允许未审核的用户发布信息\r\n";		
+	$fcontent=$fcontent. "define('pagesize_ht','" . $_POST['pagesize_ht'] ."');//管理员后台每页显示信息数\r\n";
+	$fcontent=$fcontent. "define('pagesize_qt','". $_POST['pagesize_qt'] . "');//前台每页显示信息数\r\n";		
+	$fcontent=$fcontent. "define('whendlsave','". $_POST['whendlsave']."') ;//当有代理或求购留言是否打开在线发邮件功能\r\n";	
+	$fcontent=$fcontent. "define('whenuserreg','". $_POST['whenuserreg']."') ;//当新用户注册时是否打开在线发邮件功能\r\n";
+	$fcontent=$fcontent. "define('whenmodifypassword','". $_POST['whenmodifypassword']."') ;//当用户修改密码时是否开发在线发邮件功能\r\n";
+	$fcontent=$fcontent. "define('smtpserver','". $_POST['smtpserver']."') ;//邮件服务器\r\n";
+	$fcontent=$fcontent. "define('sender','". $_POST['sender']."') ;//发送邮件的地址\r\n";	
+	$fcontent=$fcontent. "define('smtppwd','". $_POST['smtppwd']."') ;//email密码\r\n";	
+	$fcontent=$fcontent. "define('sendsms','". $_POST['sendsms']."') ;//发手机短信开关\r\n";
+	$fcontent=$fcontent. "define('smsusername','". $_POST['smsusername']."') ;//SMS用户名\r\n";	
+	$fcontent=$fcontent. "define('smsuserpass','". $_POST['smsuserpass']."') ;//SMS密码\r\n";		
+	$fcontent=$fcontent. "define('apikey_mobile_msg','". $_POST['apikey_mobile_msg']."') ;//apikey_mobile_msg\r\n";		
+	$fcontent=$fcontent. "define('isshowcontact','". $_POST['isshowcontact']."') ;//是否公开代理商联系方式\r\n";	
+	$fcontent=$fcontent. "define('liuyanysnum','". $_POST['liuyanysnum']."'); //延时时间\r\n";	
 	$fcontent=$fcontent. "define('channel','". $channel."') ;//功能模块开关\r\n";
 	$fcontent=$fcontent. "define('usergr_power','". $usergr_power."') ;//个人用户权限\r\n";
-	$fcontent=$fcontent. "define('shuxing_name','". CutFenGeXian(trim($_POST['shuxing_name']),"|")."') ;//产品更多属性设置\r\n";
-	$fcontent=$fcontent. "define('wordsincomane','". CutFenGeXian(trim($_POST['wordsincomane']),"|")."') ;//公司名称中必填行业性关键字\r\n";	
-	$fcontent=$fcontent. "define('lastwordsincomane','". CutFenGeXian(trim($_POST['lastwordsincomane']),"|")."') ;//公司名称中必填公司类型性关键字\r\n";
-	$fcontent=$fcontent. "define('nowordsincomane','". CutFenGeXian(trim($_POST['nowordsincomane']),"|")."') ;//公司名称中禁用关键字\r\n";	
-	$fcontent=$fcontent. "define('stopwords','". CutFenGeXian(trim($_POST['stopwords']),"|")."') ;//网站禁用关键字\r\n";
-	$fcontent=$fcontent. "define('allowrepeatreg','". trim($_POST['allowrepeatreg'])."') ;//是否允许重复注册用户\r\n";
-	$fcontent=$fcontent. "define('showdlinzs','". trim($_POST['showdlinzs'])."') ;//招商信息内是否显示代理留言数\r\n";
-	$fcontent=$fcontent. "define('zsliststyle','". trim($_POST['zsliststyle'])."') ;//招商列表页默认显示格式\r\n";
-	$fcontent=$fcontent. "define('siteskin','". trim($_POST['siteskin'])."') ;//网站电脑端模板\r\n";	
-	$fcontent=$fcontent. "define('siteskin_mobile','". trim($_POST['siteskin_mobile'])."') ;//网站手机端模板\r\n";	
-	$fcontent=$fcontent. "define('siteskin_usercenter','". trim($_POST['siteskin_usercenter'])."') ;//用户中心样式\r\n";
-	$fcontent=$fcontent. "define('checksqlin','". trim($_POST['checksqlin'])."') ;//是否开启防SQL注入功能\r\n";	
-	$fcontent=$fcontent. "define('cache_update_time','". trim($_POST['cache_update_time'])."') ;//缓存更新周期\r\n";
-	$fcontent=$fcontent. "define('html_update_time','". trim($_POST['html_update_time'])."') ;//静态页更新周期\r\n";	
-	$fcontent=$fcontent. "define('zsclass_isradio','". trim($_POST['zsclass_isradio'])."') ;//小类别是否设为单选（设为否时为多选）\r\n";		
-	$fcontent=$fcontent. "define('checkistrueemail','". trim($_POST['checkistrueemail'])."') ;//用户注册时是否开启邮箱验证功能\r\n";
-	$fcontent=$fcontent. "define('sdomain','". trim($_POST['sdomain'])."') ;//用户展厅页是否启用二级域名\r\n";
-	$fcontent=$fcontent. "define('whtml','". trim($_POST['whtml'])."') ;//是否开启伪静态\r\n";
-	$fcontent=$fcontent. "define('isshowad_when_timeend','". trim($_POST['isshowad_when_timeend'])."') ;//到期的广告是否还让显示\r\n";
-	$fcontent=$fcontent. "define('showadtext','". trim($_POST['showadtext'])."') ;//到期的广告前台显示语\r\n";	
-	$fcontent=$fcontent. "define('qiangad','". trim($_POST['qiangad'])."') ;//是否开通抢占广告位功能\r\n";
-	$fcontent=$fcontent. "define('showadvdate','". trim($_POST['showadvdate'])."') ;//广告位置占用时间\r\n";	
-	$fcontent=$fcontent. "define('duilianadisopen','". trim($_POST['duilianadisopen'])."') ;//是否打开对联广告\r\n";
-	$fcontent=$fcontent. "define('flyadisopen','". trim($_POST['flyadisopen'])."') ;//是否打开漂浮广告\r\n";		
-	$fcontent=$fcontent. "define('jifen','". trim($_POST['jifen'])."') ;//是否启用积分功能\r\n";
-	$fcontent=$fcontent. "define('jifen_bilu','". trim($_POST['jifen_bilu'])."') ;//1元等于多少积分\r\n";
-	$fcontent=$fcontent. "define('jf_reg','". trim($_POST['jf_reg'])."') ;//注册时获取积分值\r\n";
-	$fcontent=$fcontent. "define('jf_login','". trim($_POST['jf_login'])."') ;//登录时获取积分值\r\n";
-	$fcontent=$fcontent. "define('jf_addreginfo','". trim($_POST['jf_addreginfo']) ."') ;      //完善注册信息获取积分值\r\n";
-	$fcontent=$fcontent. "define('jf_lookmessage','". trim($_POST['jf_lookmessage']) ."') ;  //查看代理留言时扣除的积分值\r\n";
-	$fcontent=$fcontent. "define('jf_look_dl','". trim($_POST['jf_look_dl'])."') ;  //查看代理商信息库时扣除的积分值\r\n";
-	$fcontent=$fcontent. "define('jf_set_adv','". trim($_POST['jf_set_adv']) ."') ; //抢占首页广告位扣除的积分值\r\n";	
-	$fcontent=$fcontent. "define('jf_set_elite','". trim($_POST['jf_set_elite']) ."') ; //固顶信息扣除的积分值\r\n";	
-	$fcontent=$fcontent. "define('maximgsize','". trim($_POST['maximgsize']) ."') ;  //图片文件大小限制,单位K\r\n";
-	$fcontent=$fcontent. "define('maxflvsize','". trim($_POST['maxflvsize']) ."') ;  //视频文件大小限制,单位M\r\n";
-	$fcontent=$fcontent. "define('shuiyin','". trim($_POST['shuiyin'])."') ;//是否启用水印功能\r\n";
-	$fcontent=$fcontent. "define('addimgXY','". trim($_POST['addimgXY'])."') ;//水印位置\r\n";	
-	$fcontent=$fcontent. "define('syurl','". str_replace('/uploadfiles','uploadfiles',trim($_POST['syurl']))."') ;//水印图片地址\r\n";	
-	$fcontent=$fcontent. "define('alipay_partner','". trim($_POST['alipay_partner'])."') ;//合作者身份ID\r\n";
-	$fcontent=$fcontent. "define('alipay_key','". trim($_POST['alipay_key'])."') ;//安全检验码\r\n";
-	$fcontent=$fcontent. "define('alipay_seller_email','". trim($_POST['alipay_seller_email'])."') ;//签约支付宝账号或卖家支付宝帐户\r\n";	
-	$fcontent=$fcontent. "define('tenpay_bargainor_id','". trim($_POST['tenpay_bargainor_id'])."') ;//财富通商户号\r\n";	
-	$fcontent=$fcontent. "define('tenpay_key','". trim($_POST['tenpay_key'])."') ;//密钥\r\n";
-	$fcontent=$fcontent. "define('qqlogin','". trim($_POST['qqlogin'])."') ;//是否开启QQ登录功能\r\n";	
-	$fcontent=$fcontent. "define('bbs_set','". trim($_POST['bbs_set'])."') ;//是否开启同步论坛功能\r\n";	
+	$fcontent=$fcontent. "define('shuxing_name','". CutFenGeXian($_POST['shuxing_name'],"|")."') ;//产品更多属性设置\r\n";
+	$fcontent=$fcontent. "define('wordsincomane','". CutFenGeXian($_POST['wordsincomane'],"|")."') ;//公司名称中必填行业性关键字\r\n";	
+	$fcontent=$fcontent. "define('lastwordsincomane','". CutFenGeXian($_POST['lastwordsincomane'],"|")."') ;//公司名称中必填公司类型性关键字\r\n";
+	$fcontent=$fcontent. "define('nowordsincomane','". CutFenGeXian($_POST['nowordsincomane'],"|")."') ;//公司名称中禁用关键字\r\n";	
+	$fcontent=$fcontent. "define('stopwords','". CutFenGeXian($_POST['stopwords'],"|")."') ;//网站禁用关键字\r\n";
+	$fcontent=$fcontent. "define('allowrepeatreg','". $_POST['allowrepeatreg']."') ;//是否允许重复注册用户\r\n";
+	$fcontent=$fcontent. "define('showdlinzs','". $_POST['showdlinzs']."') ;//招商信息内是否显示代理留言数\r\n";
+	$fcontent=$fcontent. "define('zsliststyle','". $_POST['zsliststyle']."') ;//招商列表页默认显示格式\r\n";
+	$fcontent=$fcontent. "define('siteskin','". $_POST['siteskin']."') ;//网站电脑端模板\r\n";	
+	$fcontent=$fcontent. "define('siteskin_mobile','". $_POST['siteskin_mobile']."') ;//网站手机端模板\r\n";	
+	$fcontent=$fcontent. "define('siteskin_usercenter','". $_POST['siteskin_usercenter']."') ;//用户中心样式\r\n";
+	$fcontent=$fcontent. "define('checksqlin','". $_POST['checksqlin']."') ;//是否开启防SQL注入功能\r\n";	
+	$fcontent=$fcontent. "define('cache_update_time','". $_POST['cache_update_time']."') ;//缓存更新周期\r\n";
+	$fcontent=$fcontent. "define('html_update_time','". $_POST['html_update_time']."') ;//静态页更新周期\r\n";	
+	$fcontent=$fcontent. "define('zsclass_isradio','". $_POST['zsclass_isradio']."') ;//小类别是否设为单选（设为否时为多选）\r\n";		
+	$fcontent=$fcontent. "define('checkistrueemail','". $_POST['checkistrueemail']."') ;//用户注册时是否开启邮箱验证功能\r\n";
+	$fcontent=$fcontent. "define('sdomain','". $_POST['sdomain']."') ;//用户展厅页是否启用二级域名\r\n";
+	$fcontent=$fcontent. "define('whtml','". $_POST['whtml']."') ;//是否开启伪静态\r\n";
+	$fcontent=$fcontent. "define('isshowad_when_timeend','". $_POST['isshowad_when_timeend']."') ;//到期的广告是否还让显示\r\n";
+	$fcontent=$fcontent. "define('showadtext','". $_POST['showadtext']."') ;//到期的广告前台显示语\r\n";	
+	$fcontent=$fcontent. "define('qiangad','". $_POST['qiangad']."') ;//是否开通抢占广告位功能\r\n";
+	$fcontent=$fcontent. "define('showadvdate','". $_POST['showadvdate']."') ;//广告位置占用时间\r\n";	
+	$fcontent=$fcontent. "define('duilianadisopen','". $_POST['duilianadisopen']."') ;//是否打开对联广告\r\n";
+	$fcontent=$fcontent. "define('flyadisopen','". $_POST['flyadisopen']."') ;//是否打开漂浮广告\r\n";		
+	$fcontent=$fcontent. "define('jifen','". $_POST['jifen']."') ;//是否启用积分功能\r\n";
+	$fcontent=$fcontent. "define('jifen_bilu','". $_POST['jifen_bilu']."') ;//1元等于多少积分\r\n";
+	$fcontent=$fcontent. "define('jf_reg','". $_POST['jf_reg']."') ;//注册时获取积分值\r\n";
+	$fcontent=$fcontent. "define('jf_login','". $_POST['jf_login']."') ;//登录时获取积分值\r\n";
+	$fcontent=$fcontent. "define('jf_addreginfo','". $_POST['jf_addreginfo'] ."') ;      //完善注册信息获取积分值\r\n";
+	$fcontent=$fcontent. "define('jf_lookmessage','". $_POST['jf_lookmessage'] ."') ;  //查看代理留言时扣除的积分值\r\n";
+	$fcontent=$fcontent. "define('jf_look_dl','". $_POST['jf_look_dl']."') ;  //查看代理商信息库时扣除的积分值\r\n";
+	$fcontent=$fcontent. "define('jf_set_adv','". $_POST['jf_set_adv'] ."') ; //抢占首页广告位扣除的积分值\r\n";	
+	$fcontent=$fcontent. "define('jf_set_elite','". $_POST['jf_set_elite'] ."') ; //固顶信息扣除的积分值\r\n";	
+	$fcontent=$fcontent. "define('maximgsize','". $_POST['maximgsize'] ."') ;  //图片文件大小限制,单位K\r\n";
+	$fcontent=$fcontent. "define('maxflvsize','". $_POST['maxflvsize'] ."') ;  //视频文件大小限制,单位M\r\n";
+	$fcontent=$fcontent. "define('shuiyin','". $_POST['shuiyin']."') ;//是否启用水印功能\r\n";
+	$fcontent=$fcontent. "define('addimgXY','". $_POST['addimgXY']."') ;//水印位置\r\n";	
+	$fcontent=$fcontent. "define('syurl','". str_replace('/uploadfiles','uploadfiles',$_POST['syurl'])."') ;//水印图片地址\r\n";	
+	$fcontent=$fcontent. "define('alipay_partner','". $_POST['alipay_partner']."') ;//合作者身份ID\r\n";
+	$fcontent=$fcontent. "define('alipay_key','". $_POST['alipay_key']."') ;//安全检验码\r\n";
+	$fcontent=$fcontent. "define('alipay_seller_email','". $_POST['alipay_seller_email']."') ;//签约支付宝账号或卖家支付宝帐户\r\n";	
+	$fcontent=$fcontent. "define('tenpay_bargainor_id','". $_POST['tenpay_bargainor_id']."') ;//财富通商户号\r\n";	
+	$fcontent=$fcontent. "define('tenpay_key','". $_POST['tenpay_key']."') ;//密钥\r\n";
+	$fcontent=$fcontent. "define('qqlogin','". $_POST['qqlogin']."') ;//是否开启QQ登录功能\r\n";	
+	$fcontent=$fcontent. "define('bbs_set','". $_POST['bbs_set']."') ;//是否开启同步论坛功能\r\n";	
 	$fcontent=$fcontent. "?" . ">";
 	fputs($fp,$fcontent);//把替换后的内容写入文件
 	fclose($fp);

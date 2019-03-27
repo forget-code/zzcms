@@ -112,9 +112,9 @@ $(document).ready(function(){
   });  
 });  
 </script> 
-  <table width="100%" border="0" cellpadding="5" cellspacing="0">
+  <table border="0" cellpadding="5" cellspacing="0">
     <tr> 
-      <td width="255" align="right" class="border">大类ID</td>
+      <td width="14%" align="right" class="border">大类ID</td>
       <td class="border"><?php echo $row["classid"]?> <input name="classid" type="hidden" id="classid" value="<?php echo $row["classid"]?>"></td>
     </tr>
     <tr> 

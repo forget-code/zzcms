@@ -29,7 +29,7 @@ echo "<script>alert('".$msg."');location.href='?labelname=".$title.".txt'</scrip
 }
 if ($action=="del") {
 checkadminisdo("label");
-$f="../template/".siteskin."/label/adshow/".nostr(trim($_POST["title"])).".txt";
+$f="../template/".siteskin."/label/adshow/".nostr($_POST["title"]).".txt";
 	if (file_exists($f)){
 	unlink($f);
 	}else{
@@ -128,9 +128,7 @@ subcat[<?php echo $count?>] = new Array("<?php echo trim($row["classname"])?>","
        }
         ?>
 onecount=<?php echo $count ?>;
-
-function changelocation(locationid)
-    {
+function changelocation(locationid){
     document.myform.smallclassid.length = 1; 
     var locationid=locationid;
     var i;
@@ -156,7 +154,6 @@ function changelocation(locationid)
         </select> <select name="smallclassid">
           <option value="">不指定小类</option>
           <?php
-
 $sql="select * from zzcms_adclass where parentid='" .$bigclassid."' order by xuhao asc";
 $rs=query($sql);
 while($row = fetch_array($rs)){
@@ -173,8 +170,7 @@ while($row = fetch_array($rs)){
       <td align="right" class="border" >调用记录条数：</td>
       <td class="border" ><input name="numbers" type="text"  value="<?php echo $numbers?>" size="10" maxlength="255"> 
       </td>
-    </tr>
-    
+    </tr>  
     <tr > 
       <td align="right" class="border" >标题长度：</td>
       <td class="border" > <input name="titlenum" type="text" id="titlenum" value="<?php echo $titlenum?>" size="20" maxlength="255"></td>

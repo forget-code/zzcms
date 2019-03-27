@@ -73,7 +73,6 @@ while($row = fetch_array($rs)){
 </table>
 <?php
 }
-
 ?>
 </body>
 </html>

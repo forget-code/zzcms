@@ -5,10 +5,10 @@ $domain2=substr($domain,0,strpos($domain,'.'));
 $domain_zhu=get_zhuyuming($domain);//针对www.为空的情况，判断$domain2<>$domainzhu
 //echo $domain.'<br>'.str_replace("http://","",siteurl);
 
-//if ($domain<>str_replace("http://","",siteurl) && $domain<>'localhost:8080' && $domain<>'localhost' && $domain2<>$domain_zhu && check_isip($domain)==false){
-//header("Location: default.htm",TRUE,301);//show.php及其它页面中以二级域名值为$editor
-//exit;
-//}
+if ($domain<>str_replace("http://","",siteurl) && $domain<>'localhost:8080' && $domain<>'localhost' && $domain2<>$domain_zhu && check_isip($domain)==false){
+header("Location: default.htm",TRUE,301);//show.php及其它页面中以二级域名值为$editor
+exit;
+}
 
 include("inc/top_index.php");
 include("inc/bottom.php");

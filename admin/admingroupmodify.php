@@ -198,8 +198,8 @@ $row= fetch_array($rs);
     </tr>
     <tr> 
       <td align="right" class="border">
-<input name="chkAll" type="checkbox" id="chkAll" onClick="CheckAll(this.form)" value="checkbox">
-        全部选择<br>
+<label><input name="chkAll" type="checkbox" id="chkAll" onClick="CheckAll(this.form)" value="checkbox">
+        全部选择</label><br>
         (再次点击可以取消全选)</td>
       <td class="border"> <input name="id" type="hidden" id="id" value="<?php echo $row["id"] ?>"> 
         <input name="action" type="hidden" id="action" value="modify"> <input name="Save" type="submit" id="Save" value="修改">      </td>

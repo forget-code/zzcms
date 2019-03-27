@@ -229,6 +229,7 @@ $totlepage=ceil($totlenum/$page_size);
 $sql="select id,proname,prouse,img,shuxing_value,province,city,xiancheng,sendtime,editor,elite,userid,comane,qq,groupid,renzheng from zzcms_main where passed=1 ";
 $sql=$sql.$sql2;
 $sql=$sql." order by groupid desc,elite desc,".$px." desc limit $offset,$page_size";
+//echo $sql;
 $rs = query($sql); 
 $zs=strbetween($strout,"{zs}","{/zs}");
 $list_list=strbetween($strout,"{loop_list}","{/loop_list}");

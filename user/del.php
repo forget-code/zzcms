@@ -24,6 +24,18 @@ if (!isset($id) || $id==""){
 showmsg('操作失败！至少要选中一条信息。');
 }
 
+$tablenames='';
+$rs = query("SHOW TABLES"); 
+while($row = fetch_array($rs)) { 
+$tablenames=$tablenames.$row[0]."#"; 
+}
+$tablenames=substr($tablenames,0,strlen($tablenames)-1);
+
+if (str_is_inarr($tablenames,$tablename)=='no'){
+echo "tablename 参数有误";
+exit();
+}
+
 switch ($tablename){
 case "zzcms_main";
 if (strpos($id,",")>0){
@@ -92,9 +104,9 @@ break;
 if ($tablename=='zzcms_guestbook'){//saver
 
 if (strpos($id,",")>0){	
-	$sql="select id,saver from ".$tablename." where id in (".$id.")";
+	$sql="select id,saver from `".$tablename."` where id in (".$id.")";
 }else{	
-	$sql="select id,saver from ".$tablename." where id ='$id'";
+	$sql="select id,saver from `".$tablename."` where id ='$id'";
 }
 $rs=query($sql);
 $row=num_rows($rs);
@@ -105,7 +117,7 @@ while ($row=fetch_array($rs)){
 	
 	showmsg('非法操作！警告：你的操作已被记录！小心封你的用户及IP！');
 	}
-	query("delete from ".$tablename." where id =".$row['id']."");
+	query("delete from `".$tablename."` where id =".$row['id']."");
 }
 	
 echo "<script>location.href='".$pagename."';</script>";
@@ -134,9 +146,9 @@ echo "<script>location.href='".$pagename."';</script>";
 
 }else{
 if (strpos($id,",")>0){	
-	$sql="select id,editor from ".$tablename." where id in (". $id .")";
+	$sql="select id,editor from `".$tablename."` where id in (". $id .")";
 }else{	
-	$sql="select id,editor from ".$tablename." where id ='$id'";
+	$sql="select id,editor from `".$tablename."` where id ='$id'";
 }
 $rs=query($sql);
 $row=num_rows($rs);
@@ -148,7 +160,7 @@ while ($row=fetch_array($rs)){
 	showmsg('非法操作！警告：你的操作已被记录！小心封你的用户及IP！');
 	exit;
 	}
-	query("delete from ".$tablename." where id =".$row['id']."");	
+	query("delete from `".$tablename."` where id =".$row['id']."");	
 }
 
 echo "<script>location.href='".$pagename."';</script>";

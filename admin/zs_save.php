@@ -33,7 +33,7 @@ $shuxing_value="";
 
 //---保存内容中的远程图片，并替换内容中的图片地址
 $msg='';
-$imgs=getimgincontent($sm,2);
+$imgs=getimgincontent(stripfxg($sm,true),2);
 if (is_array($imgs)){
 foreach ($imgs as $value) {
 	if (substr($value,0,4) == "http"){
@@ -76,7 +76,7 @@ if ($discription=="") {$discription=$cp_name;}
 if ($elitestarttime=="") {$elitestarttime=date('Y-m-d H:i:s');}
 if ($eliteendtime=="") {$eliteendtime=date('Y-m-d H:i:s',time()+365*3600*24);}
 
-$isok=query("update zzcms_main set bigclassid='$bigclassid',smallclassid='$smallclassid',smallclassids='$smallclassids',shuxing='$shuxing',szm='$szm',prouse='$prouse',proname='$cpname',sm='$sm',img='$img',flv='$flv',zc='$zc',yq='$yq',shuxing_value='$shuxing_value',title='$title',keywords='$keywords',description='$discription',sendtime='$sendtime',tag='$tag' where id='$cpid'");
+$isok=query("update zzcms_main set bigclassid='$bigclassid',smallclassid='$smallclassid',smallclassids='$smallclassids',shuxing='$shuxing',szm='$szm',prouse='$prouse',proname='$cpname',sm='$sm',img='$img',flv='$flv',zc='$zc',yq='$yq',shuxing_value='$shuxing_value',title='$title',keywords='$keywords',description='$discription',sendtime='$sendtime',tag='$tag',skin='$skin' where id='$cpid'");
 if ($editor<>$oldeditor) {
 $rs=query("select groupid,qq,comane,id,renzheng from zzcms_user where username='".$editor."'");
 $row = num_rows($rs);
@@ -114,10 +114,10 @@ query("update zzcms_main set passed='$passed',elite='$elite',elitestarttime='$el
      ?></td>
   </tr>
   <tr>
-    <td><table width="100%" border="0" cellspacing="1" cellpadding="5">
+    <td><table width="100%" border="0" cellspacing="1" cellpadding="10">
       <tr bgcolor="#FFFFFF">
-        <td width="20%" align="right" bgcolor="#FFFFFF">名称：</td>
-        <td width="80%"><?php echo $title?></td>
+        <td width="20%" align="right" bgcolor="#FFFFFF">名称</td>
+        <td width="80%"><?php echo $cpname?></td>
       </tr>
     </table></td>
   </tr>

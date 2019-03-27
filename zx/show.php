@@ -180,7 +180,7 @@ $zxcontent=showcontent();
 	}
 }
 
-$sql="select * from zzcms_zx where id < ".$zxid." and passed=1 and bigclassid in (select classid from zzcms_zxclass where isshowininfo=1 and parentid=0) order by id desc limit 0,1";
+$sql="select id,title from zzcms_zx where id < ".$zxid." and passed=1 and bigclassid in (select classid from zzcms_zxclass where isshowininfo=1 and parentid=0) order by id desc limit 0,1";
 $rs=query($sql);
 $row=fetch_array($rs);
 if ($row){
@@ -189,7 +189,7 @@ $nextid="上一篇文章：<a href=".getpageurl("zx",$row["id"]).">".$row["title
 $nextid="上一篇文章：没有了<br/>";
 }
 	
-$sql="select * from zzcms_zx where id > ".$zxid." and passed=1 and bigclassid in (select classid from zzcms_zxclass where isshowininfo=1 and parentid=0) order by id asc limit 0,1";
+$sql="select id,title from zzcms_zx where id > ".$zxid." and passed=1 and bigclassid in (select classid from zzcms_zxclass where isshowininfo=1 and parentid=0) order by id asc limit 0,1";
 $rs=query($sql);
 $row=fetch_array($rs);
 if ($row){

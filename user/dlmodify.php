@@ -1,6 +1,9 @@
 <?php
 include("../inc/conn.php");
 include("check.php");
+$fpath="text/dlmodify.txt";
+$fcontent=file_get_contents($fpath);
+$f_array=explode("|||",$fcontent) ;
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="zh-CN">
@@ -18,48 +21,8 @@ $("#getcode_math").click(function(){
 });
 </script>
 <script language = "JavaScript">
-function CheckForm()
-{
-if (document.myform.cp.value=="")
-  {
-    alert("请填写您要<?php echo channeldl?>的产品名称！");
-	document.myform.cp.focus();
-	return false;
-  }
-  if (document.myform.classid.value=="")
-  {
-    alert("请选择产品类别！");
-	document.myform.classid.focus();
-	return false;
-  }  
- 
-  if (document.myform.content.value=="")
-  {
-    alert("请填写<?php echo channeldl?>商介绍！");
-	document.myform.content.focus();
-	return false;
-  }
-    if (document.myform.truename.value=="")
-  {
-    alert("请填写真实姓名！");
-	document.myform.truename.focus();
-	return false;
-  }  
- 
-  if (document.myform.tel.value=="")
-  {
-    alert("请填写代联系电话！");
-	document.myform.tel.focus();
-	return false;
-  }
-   if (document.myform.yzm.value=="")
-  {
-    alert("请输入验证问题的答案！");
-	document.myform.yzm.focus();
-	return false;
-  }  
-
-
+function CheckForm(){
+<?php echo $f_array[0]?>
 var v = '';
 for(var i = 0; i < document.myform.destList.length; i++){
 	if(i==0){
@@ -71,26 +34,21 @@ for(var i = 0; i < document.myform.destList.length; i++){
 //alert(v);
 document.myform.cityforadd.value=v ;  
 }
-function showsubmenu(sid)
-{
+function showsubmenu(sid){
 whichEl = eval("submenu" + sid);
-if (whichEl.style.display == "none")
-{
+if (whichEl.style.display == "none"){
 eval("submenu" + sid + ".style.display=\"\";");
 }
 }
-function hidesubmenu(sid)
-{
+function hidesubmenu(sid){
 whichEl = eval("submenu" + sid);
-if (whichEl.style.display == "")
-  {
+if (whichEl.style.display == ""){
 eval("submenu" + sid + ".style.display=\"none\";");
    }
 }
 </script> 
 </head>
-
-<body onload="initProvince()">
+<body>
 <div class="main">
 <?php
 include("top.php");
@@ -124,19 +82,19 @@ showmsg('非法操作！警告：你的操作已被记录！小心封你的用�
 exit;
 }
 ?>
-<div class="admintitle">修改<?php echo channeldl?>信息</div>
+<div class="admintitle"><?php echo str_replace("{#channeldl}",channeldl,$f_array[1])?></div>
 <form action="dlsave.php" method="post" name="myform" id="myform" onSubmit="return CheckForm();">
         <table width="100%" border="0" cellpadding="3" cellspacing="1">
           <tr> 
-            <td align="right" class="border" >产品名称<font color="#FF0000"> *</font></td>
+            <td align="right" class="border" ><?php echo $f_array[2]?><font color="#FF0000"> *</font></td>
             <td class="border" > <input name="cp" type="text" id="cp" value="<?php echo $row["cp"]?>" size="60" maxlength="45" onBlur="CheckNum()"> 
               <br>
               (只能写产品名称，不要写联系方式等其它内容，否则信息会直接被删除)</td>
           </tr>
           <tr> 
-            <td width="18%" align="right" valign="top" class="border2" >所属类别 <font color="#FF0000">*</font></td>
+            <td width="18%" align="right" valign="top" class="border2" ><?php echo $f_array[3]?> <font color="#FF0000">*</font></td>
             <td width="82%" class="border2" ><select name="classid">
-                <option value="" selected="selected">请选择类别</option>
+                <option value="" selected="selected"><?php echo $f_array[4]?></option>
                 <?php
 		$sqln="select * from zzcms_zsclass where parentid='A'";
 		$rsn=mysql_query($sqln);
@@ -152,7 +110,7 @@ exit;
               </select></td>
           </tr>
           <tr> 
-            <td align="right" class="border" ><?php echo channeldl?>区域<font color="#FF0000"> *</font></td>
+            <td align="right" class="border" ><?php echo $f_array[5]?><font color="#FF0000"> *</font></td>
             <td class="border" ><table border="0" cellpadding="3" cellspacing="0">
               <tr>
                 <td><script language="JavaScript" type="text/javascript">
@@ -198,7 +156,7 @@ new PCAS('province', 'city', 'xiancheng', '<?php echo $row['province']?>', '<?ph
 </script>
                 </td>
                
-                <td align="center" valign="top">已选城市<br/>
+                <td align="center" valign="top"><?php echo $f_array[6]?><br/>
                   <select style='width:100px;font-size:13px' size="4" name="destList" multiple="multiple">
                       <?php 
 		if ($row["xiancheng"]!="") {
@@ -215,45 +173,45 @@ new PCAS('province', 'city', 'xiancheng', '<?php echo $row['province']?>', '<?ph
 			?>
                     </select>
                     <input name="cityforadd" type="hidden" id="cityforadd" /><br/>
-                    <input name="button2" type="button" onclick="javascript:deleteFromDestList();" value="删除已选城市" /></td>
+                    <input name="button2" type="button" onclick="javascript:deleteFromDestList();" value="<?php echo $f_array[7]?>" /></td>
               </tr>
             </table></td>
           </tr>
           <tr> 
-            <td align="right" class="border" ><?php echo channeldl?>商介绍 <font color="#FF0000">*</font></td>
+            <td align="right" class="border" ><?php echo $f_array[8]?><font color="#FF0000">*</font></td>
             <td class="border" > <textarea name="content" cols="60" rows="4" id="content"><?php echo $row["content"] ?></textarea></td>
           </tr>
           <tr> 
-            <td align="right" class="border"><?php echo channeldl?>身份：</td>
-            <td class="border"><input name="dlsf" id="dlsf_company" type="radio" value="公司" onclick="showsubmenu(1)" <?php if ($row["company"]=="公司") {echo "checked";}?>> 
-              <label for="dlsf_company">公司 </label> <input type="radio" name="dlsf" id="dlsf_person" value="个人" onclick="hidesubmenu(1)" <?php if ($row["company"]=="个人") {echo "checked";}?>> 
-              <label for="dlsf_person">个人</label>
+            <td align="right" class="border"><?php echo $f_array[9]?></td>
+            <td class="border"><input name="dlsf" id="dlsf_company" type="radio" value="<?php echo $f_array[10]?>" onclick="showsubmenu(1)" <?php if ($row["company"]=="公司") {echo "checked";}?>><label for="dlsf_company"><?php echo $f_array[10]?> </label> 
+<input type="radio" name="dlsf" id="dlsf_person" value="<?php echo $f_array[11]?>" onclick="hidesubmenu(1)" <?php if ($row["company"]=="个人") {echo "checked";}?>> 
+              <label for="dlsf_person"><?php echo $f_array[11]?></label>
 			  </td>
           </tr>
-          <tr <?php if ($row["company"]=="个人") {echo " style='display:none'";}?> id='submenu1'> 
-            <td align="right" class="border">公司名称：</td>
+          <tr <?php if ($row["company"]==$f_array[11]) {echo " style='display:none'";}?> id='submenu1'> 
+            <td align="right" class="border"><?php echo $f_array[12]?></td>
             <td class="border"><input name="company" type="text" id="company" value="<?php echo $row["companyname"]?>" size="45" maxlength="255" /></td>
           </tr>
           <tr> 
-            <td align="right" class="border2">真实姓名 <font color="#FF0000">*</font></td>
+            <td align="right" class="border2"><?php echo $f_array[13]?>  <font color="#FF0000">*</font></td>
             <td class="border2"> <input name="truename" type="text" id="truename" value="<?php echo $row["dlsname"]?>" size="45" maxlength="255" /></td>
           </tr>
           <tr> 
-            <td align="right" class="border">电话 <font color="#FF0000">*</font></td>
+            <td align="right" class="border"><?php echo $f_array[14]?> <font color="#FF0000">*</font></td>
             <td class="border"><input name="tel" type="text" id="tel" value="<?php echo $row["tel"]?>" size="45" maxlength="255" /></td>
           </tr>
           <tr> 
-            <td align="right" class="border2">地址：</td>
+            <td align="right" class="border2"><?php echo $f_array[15]?></td>
             <td class="border2"> <input name="address" type="text" id="address" value="<?php echo $row["address"]?>" size="45" maxlength="255" /></td>
           </tr>
           <tr> 
-            <td align="right" class="border">E-mail：</td>
+            <td align="right" class="border"><?php echo $f_array[16]?></td>
             <td class="border"><input name="email" type="text" id="email" value="<?php echo $row["email"]?>" size="45" maxlength="255" /></td>
           </tr>
           <tr> 
-            <td align="right" class="border2">答案 <font color="#FF0000">*</font></td>
+            <td align="right" class="border2"><?php echo $f_array[17]?><font color="#FF0000">*</font></td>
             <td class="border2"><input name="yzm" type="text" id="yzm" value="" size="10" maxlength="50" style="width:60px"/>
-            <img src="/one/code_math.php" align="absmiddle" id="getcode_math" title="看不清，点击换一张" /></td>
+            <img src="/one/code_math.php" align="absmiddle" id="getcode_math" title="<?php echo $f_array[18]?>" /></td>
           </tr>
           <tr> 
             <td align="center" class="border2" >&nbsp;</td>
@@ -262,7 +220,7 @@ new PCAS('province', 'city', 'xiancheng', '<?php echo $row['province']?>', '<?ph
               <input name="action" type="hidden" id="action2" value="modify"> 
               <input name="page" type="hidden" id="action" value="<?php echo $page ?>"> 
 			  
-              <input name="Submit" type="submit" class="buttons" value="保存修改结果"></td>
+              <input name="Submit" type="submit" class="buttons" value="<?php echo $f_array[19]?>"></td>
           </tr>
         </table>
 		</form>

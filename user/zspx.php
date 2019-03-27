@@ -41,11 +41,7 @@ mysql_query("update zzcms_main set xuhao=$xuhao where id=".$row['id']."");
 }
 }
 ?>
-<table width="100%" border="0" cellspacing="0" cellpadding="0">
-  <tr>
-    <td class="admintitle"><?php echo channelzs?>信息排序</td>
-  </tr>
-</table>
+<div class="admintitle"><?php echo channelzs?>信息排序</div>
  <?php
 $sql="select * from zzcms_main where editor='".$username."' order by xuhao desc";
 $rs = mysql_query($sql); 
@@ -95,7 +91,6 @@ $rs = mysql_query($sql);
 </div>
 </div>
 </div>
-
 <?php
 mysql_close($conn);
 ?>

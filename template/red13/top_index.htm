@@ -25,8 +25,9 @@ IsPC();
 		<li onClick="javascript:doClick(this,'D','current_search')" id="D3" {#pp_style}>品牌</li>
 		<li onClick="javascript:doClick(this,'D','current_search')" id="D4" {#company_style}>公司</li>
         <li onClick="javascript:doClick(this,'D','current_search')" id="D5" {#zh_style}>展会</li>
-		<li onClick="javascript:doClick(this,'D','current_search')" id="D6" {#zx_style}>资讯</li>
-		<li onClick="javascript:doClick(this,'D','current_search')" id="D7" {#job_style}>招聘</li>
+		<li onclick="javascript:doClick(this,'D','current_search')" id="D6" {#special_style}>专题</li>
+		<li onClick="javascript:doClick(this,'D','current_search')" id="D7" {#zx_style}>资讯</li>
+		<li onClick="javascript:doClick(this,'D','current_search')" id="D8" {#job_style}>招聘</li>
           </ul>
        	</div> 
 		         
@@ -57,12 +58,20 @@ IsPC();
         <input name="keyword" type="text"  class="biaodan3"  onfocus="javascript:if (this.value=='输入展会信息关键词') {this.value=''}"  value="输入展会信息关键词" /><input name="search4" type="submit" value="" class="buttons_search2" border="0" />
        </form>
 	  </div>
-		  <div id="D_con6" {#zx_style2} style='display:none'>
+	  
+	<div id="D_con6" {#special_style2} style='display:none'>
+         <form action="/special/search.php" method="post" name="myform" id="myform">
+         <input name="keyword" type="text"  class="biaodan3" onfocus="javascript:if (this.value=='输入专题信息关键词') {this.value=''}"  value="输入专题信息关键词" />
+         <input name="search" type="submit" value="" class="buttons_search2" border="0" />
+         </form>
+       </div>  
+	  
+		  <div id="D_con7" {#zx_style2} style='display:none'>
 		  <form name="myform" method="post" action="/zx/search.php"> 
         <input name="keyword" type="text"  class="biaodan3" onfocus="javascript:if (this.value=='输入资讯信息关键词') {this.value=''}"  value="输入资讯信息关键词" /><input name="search" type="submit" value="" class="buttons_search2" border="0" />
        </form>
 	  </div>
-	  	  	  <div id="D_con7" {#job_style2} style='display:none'>
+	  	  	  <div id="D_con8" {#job_style2} style='display:none'>
 		  <form name="myform" method="post" action="/job/search.php"> 
         <input name="keyword" type="text"  class="biaodan3" onfocus="javascript:if (this.value=='输入职位关键词') {this.value=''}"  value="输入职位关键词" /><input name="search" type="submit" value="" class="buttons_search2" border="0" />
        </form>
@@ -83,6 +92,7 @@ IsPC();
 <li><a href="/zx">资讯</a></li>
 <li><a href='/company'>企业</a></li>
 <li><a href='/zh'>展会</a></li>
+<li><a href="/special">专题</a></li>
 <li><a href='/pp'>品牌</a></li>
 <li><a href='/job'>招聘</a></li>
 <li><a href='/zs/order.php'>排行榜</a></li>

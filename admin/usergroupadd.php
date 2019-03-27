@@ -9,7 +9,6 @@ include("admin.php");
 </head>
 <body>
 <?php
-checkadminisdo("usergroup");
 if (isset($_REQUEST['action'])){
 $action=$_REQUEST['action'];
 }else{
@@ -18,6 +17,7 @@ $action="";
 $FoundErr=0;
 $ErrMsg="";
 if ($action=="add") {
+checkadminisdo("usergroup");
 $groupname=trim($_POST["groupname"]);
 $grouppic=trim($_POST["grouppic"]);
 $groupid=trim($_POST["groupid"]);
@@ -141,7 +141,7 @@ function CheckAll(form){
 	
     <tr>
       <td align="right" class="border">所需费用</td>
-      <td class="border"><input name="RMB" type="text" id="RMB" maxlength="30">(元/年，填数字) </td>
+      <td class="border"><input name="RMB" type="text" id="RMB" maxlength="30">(积分/年，填数字) </td>
     </tr>
 	
     <tr>

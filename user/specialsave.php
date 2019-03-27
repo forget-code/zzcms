@@ -2,6 +2,9 @@
 if(!isset($_SESSION)){session_start();} 
 include("../inc/conn.php");
 include("check.php");
+$fpath="text/specialsave.txt";
+$fcontent=file_get_contents($fpath);
+$f_array=explode("|||",$fcontent) ;
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="zh-CN">
@@ -12,7 +15,8 @@ include("check.php");
 <link href="style.css" rel="stylesheet" type="text/css">
 <?php
 if (check_usergr_power("special")=="no" && $usersf=='个人'){
-showmsg('个人用户没有此权限');
+echo $f_array[0];
+exit;
 }
 if (isset($_POST["page"])){//返回列表页用
 $page=$_POST["page"];
@@ -45,7 +49,7 @@ $smallclassname=$row["classname"];
 }
 
 $title=trim($_POST["title"]);
-$link=trim($_POST["link"]);
+$link=addhttp(trim($_POST["link"]));
 $laiyuan=trim($_POST["laiyuan"]);
 $content=str_replace("'","",stripfxg(trim($_POST["content"])));
 $img=getimgincontent($content);
@@ -64,8 +68,7 @@ $rs = mysql_query($sql);
 $row= mysql_num_rows($rs); 
 if ($row){
 mysql_close($conn);
-echo "<script lanage='javascript'>alert('此信息已存在，请不要发布重复的信息！');</script>";
-echo "<script lanage='javascript'>location.replace('specialadd.php')</script>";
+echo $f_array[1];
 }
 
 mysql_query("Insert into zzcms_special(bigclassid,bigclassname,smallclassid,smallclassname,title,link,laiyuan,keywords,description,groupid,jifen,content,img,editor,sendtime) values('$bigclassid','$bigclassname','$smallclassid','$smallclassname','$title','$link','$laiyuan','$keywords','$description','$groupid','$jifen','$content','$img','$editor','".date('Y-m-d H:i:s')."')");  
@@ -99,11 +102,11 @@ include("left.php");
     <td class="tstitle"> 
 	 <?php
 	if ($_REQUEST["action"]=="add") {
-      echo "添加成功 ";
+      echo $f_array[2];
 	  }elseif ($_REQUEST["action"]=="modify"){
-	  echo"修改成功";
+	  echo $f_array[3];
 	  }else{
-	  echo"没有处理任何信息";
+	  echo $f_array[4];
 	  }
      ?>
 
@@ -112,7 +115,7 @@ include("left.php");
   <tr> 
     <td><table width="100%" border="0" cellspacing="0" cellpadding="3">
               <tr bgcolor="#FFFFFF"> 
-                <td width="25%" align="right" bgcolor="#FFFFFF"><strong>标题：</strong></td>
+                <td width="25%" align="right" bgcolor="#FFFFFF"><strong><?php echo $f_array[5]?></strong></td>
                 <td width="75%"><?php echo $title?></td>
               </tr>
             </table></td>
@@ -120,12 +123,12 @@ include("left.php");
   <tr> 
     <td><table width="100%" border="0" cellpadding="5" cellspacing="1">
         <tr> 
-          <td width="120" align="center" class="border"><a href="specialadd.php">继续添加</a></td>
+          <td width="120" align="center" class="border"><a href="specialadd.php"><?php echo $f_array[6]?></a></td>
 		 
-                <td width="120" align="center" class="border"><a href="specialmodify.php?id=<?php echo $id?>">修改</a></td>
+                <td width="120" align="center" class="border"><a href="specialmodify.php?id=<?php echo $id?>"><?php echo $f_array[7]?></a></td>
 				
-                <td width="120" align="center" class="border"><a href="specialmanage.php?bigclassid=<?php echo $bigclassid?>&page=<?php echo $page?>">返回</a></td>
-                <td width="120" align="center" class="border"><a href="<?php echo getpageurl("special",$id)?>" target="_blank">预览</a></td>
+                <td width="120" align="center" class="border"><a href="specialmanage.php?bigclassid=<?php echo $bigclassid?>&page=<?php echo $page?>"><?php echo $f_array[8]?></a></td>
+                <td width="120" align="center" class="border"><a href="<?php echo getpageurl("special",$id)?>" target="_blank"><?php echo $f_array[9]?></a></td>
         </tr>
       </table></td>
   </tr>

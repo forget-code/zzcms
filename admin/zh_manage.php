@@ -15,8 +15,7 @@ $action=$_REQUEST["action"];
 $action="";
 }
 
-if( isset($_GET["page"]) && $_GET["page"]!="") 
-{
+if( isset($_GET["page"]) && $_GET["page"]!="") {
     $page=$_GET['page'];
 }else{
     $page=1;
@@ -41,27 +40,24 @@ $kind=$_REQUEST["kind"];
 }else{
 $kind="";
 }
+
 if ($action=="pass"){
-$id="";
 if(!empty($_POST['id'])){
     for($i=0; $i<count($_POST['id']);$i++){
-    $id=$id.($_POST['id'][$i].',');
-    }
-	$id=substr($id,0,strlen($id)-1);//去除最后面的","
-}
-
-	if ($id==""){
-	echo "<script>alert('操作失败！至少要选中一条信息。');history.back()</script>";
-	}else{
-	 	if (strpos($id,",")>0){
-		$sql="update zzcms_zh set passed=1 where id in (". $id .")";
+    $id=$_POST['id'][$i];
+	$sql="select passed from zzcms_zh where id ='$id'";
+	$rs = mysql_query($sql); 
+	$row = mysql_fetch_array($rs);
+		if ($row['passed']=='0'){
+		mysql_query("update zzcms_zh set passed=1 where id ='$id'");
 		}else{
-		$sql="update zzcms_zh set passed=1 where id='$id'";
+		mysql_query("update zzcms_zh set passed=0 where id ='$id'");
 		}
-
-	mysql_query($sql);
-	echo "<script>location.href='?shenhe=no&keyword=".$keyword."&page=".$page."'</script>";
 	}
+}else{
+echo "<script>alert('操作失败！至少要选中一条信息。');history.back()</script>";
+}
+echo "<script>location.href='?keyword=".$keyword."&page=".$page."'</script>";	
 }
 ?>
 </head>
@@ -149,7 +145,7 @@ echo "暂无信息";
 <table width="100%" border="0" cellpadding="5" cellspacing="0" class="border">
     <tr> 
       <td> 
-        <input name="submit2" type="submit" onClick="myform.action='?action=pass'" value="审核选中的信息">
+        <input name="submit2" type="submit" onClick="myform.action='?action=pass'" value="【取消/审核】选中的信息">
         <input name="submit4" type="submit" onClick="myform.action='del.php';myform.target='_self';return ConfirmDel()" value="删除选中的信息"> 
         <input name="pagename" type="hidden"  value="zh_manage.php?bigclass=<?php echo $bigclass?>&shenhe=<?php echo $shenhe?>&page=<?php echo $page ?>"> 
         <input name="tablename" type="hidden"  value="zzcms_zh"> </td>
@@ -157,7 +153,7 @@ echo "暂无信息";
   </table>
   <table width="100%" border="0" cellspacing="1" cellpadding="5">
     <tr> 
-      <td width="5%" align="center" class="border">选取</td>
+      <td width="5%" align="center" class="border"><label for="chkAll" style="text-decoration: underline;cursor: hand;">全选</label></td>
       <td width="20%" class="border">标题</td>
       <td width="5%" align="center" class="border">类型</td>
       <td width="5%" align="center" class="border">信息状态</td>
@@ -196,8 +192,8 @@ echo "</a>";
   <table width="100%" border="0" cellpadding="5" cellspacing="0" class="border">
     <tr> 
       <td> <input name="chkAll" type="checkbox" id="chkAll" onClick="CheckAll(this.form)" value="checkbox">
-        全选 
-        <input type="submit" onClick="myform.action='?action=pass'" value="审核选中的信息">
+        <label for="chkAll" style="text-decoration: underline;cursor: hand;">全选</label> 
+        <input type="submit" onClick="myform.action='?action=pass'" value="【取消/审核】选中的信息">
         <input name="submit42" type="submit" onClick="myform.action='del.php';myform.target='_self';return ConfirmDel()" value="删除选中的信息"> 
       </td>
     </tr>

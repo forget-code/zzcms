@@ -11,11 +11,11 @@ checkadminisdo("adminmanage");
 $action=@$_GET["action"];
 $founderr=0;
 if ($action=="add"){
-	$admin=trim($_POST["admin"]);
-	$pass=md5(trim($_POST["pass"]));
+	$admins=trim($_POST["admins"]);
+	$passs=md5(trim($_POST["passs"]));
 	$groupid=$_POST["groupid"];
 	
-	$sql="select admin from zzcms_admin where admin='".$admin."'";
+	$sql="select admin from zzcms_admin where admin='".$admins."'";
 	$rs = mysql_query($sql,$conn);
 	$row= mysql_num_rows($rs);//返回记录数
 	if($row){ 
@@ -26,35 +26,31 @@ if ($action=="add"){
 	if ($founderr==1){
 		WriteErrMsg($ErrMsg);
 		}else{
-		$sql="insert into zzcms_admin (admin,pass,groupid) values ('$admin','$pass','$groupid')";
+		$sql="insert into zzcms_admin (admin,pass,groupid) values ('$admins','$passs','$groupid')";
 		mysql_query($sql,$conn);
 		echo "<script>location.href='adminlist.php'</script>";	
 		}
 }else{
 ?>
 <script language="JavaScript" type="text/JavaScript">
-function checkform()
-{
-  if (document.form1.admin.value=="")
-  {
+function checkform(){
+if (document.form1.admins.value==""){
     alert("管理员名称不能为空！");
-    document.form1.admin.focus();
+    document.form1.admins.focus();
     return false;
-  }
-    if (document.form1.pass.value=="")
-  {
+}
+if (document.form1.passs.value==""){
     alert("密码不能为空！");
-    document.form1.pass.focus();
+    document.form1.passs.focus();
     return false;
-  }
-	if (document.form1.pass.value!=document.form1.pass2.value)
-	{
+}
+if (document.form1.passs.value!=document.form1.passs2.value){
 alert ("两次密码输入不一致，请重新输入。");
-document.form1.pass.value='';
-document.form1.pass2.value='';
-document.form1.pass.focus();
+document.form1.passs.value='';
+document.form1.passs2.value='';
+document.form1.passs.focus();
 return false;
-	}  
+}  
 }
 </script>
 </head>
@@ -77,15 +73,15 @@ return false;
     </tr>
     <tr> 
       <td width="46%" align="right" class="border">管理员：</td>
-      <td width="54%" class="border"> <input name="admin" type="text" id="admin"></td>
+      <td width="54%" class="border"> <input name="admins" type="text" id="admins"></td>
     </tr>
     <tr> 
       <td align="right" class="border">密码：</td>
-      <td class="border"> <input name="pass" type="password" id="pass"></td>
+      <td class="border"> <input name="passs" type="password" id="passs"></td>
     </tr>
     <tr> 
       <td align="right" class="border">再次输入密码进行确认：</td>
-      <td class="border"> <input name="pass2" type="password" id="pass2"></td>
+      <td class="border"> <input name="passs2" type="password" id="passs2"></td>
     </tr>
     <tr> 
       <td class="border">&nbsp;</td>

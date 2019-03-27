@@ -2,6 +2,9 @@
 if(!isset($_SESSION)){session_start();} 
 include("../inc/conn.php");
 include("check.php");
+$fpath="text/dlsave.txt";
+$fcontent=file_get_contents($fpath);
+$f_array=explode("|||",$fcontent) ;
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="zh-CN">
@@ -78,23 +81,19 @@ include("left.php");
 <table width="400" border="0" align="center" cellpadding="0" cellspacing="0">
   <tr> 
     <td class="tstitle"> <?php
-	if ($_REQUEST["action"]=="add") {
-      echo "添加 ";
-	  }else{
-	  echo"修改";
-	  }
-	  echo"成功";
+	if ($_REQUEST["action"]=="add") {echo $f_array[0]; }else{ echo $f_array[1];}
+	echo $f_array[2];
      ?>
       </td>
   </tr>
   <tr> 
     <td><table width="100%" border="0" cellspacing="0" cellpadding="3">
               <tr bgcolor="#FFFFFF"> 
-                <td width="25%" align="right" bgcolor="#FFFFFF"><strong>名称：</strong></td>
+                <td width="25%" align="right" bgcolor="#FFFFFF"><strong><?php echo $f_array[3]?></strong></td>
                 <td width="75%"><?php echo $cp?></td>
               </tr>
               <tr bgcolor="#FFFFFF"> 
-                <td align="right" bgcolor="#FFFFFF"><strong><?php echo channeldl?>区域：</strong></td>
+                <td align="right" bgcolor="#FFFFFF"><strong><?php echo $f_array[4]?></strong></td>
                 <td><?php echo $province.$city?></td>
               </tr>
             </table></td>
@@ -102,10 +101,10 @@ include("left.php");
   <tr> 
     <td><table width="100%" border="0" cellpadding="5" cellspacing="1">
         <tr> 
-          <td width="120" align="center" class="border"><a href="dladd.php">继续添加</a></td>
-                <td width="120" align="center" class="border"><a href="dlmodify.php?id=<?php echo $dlid?>">修改</a></td>
-                <td width="120" align="center" class="border"><a href="dlmanage.php?page=<?php echo $page?>">返回</a></td>
-                <td width="120" align="center" class="border"><a href="<?php echo getpageurl("dl",$dlid)?>" target="_blank">预览</a></td>
+          <td width="120" align="center" class="border"><a href="dladd.php"><?php echo $f_array[5]?></a></td>
+                <td width="120" align="center" class="border"><a href="dlmodify.php?id=<?php echo $dlid?>"><?php echo $f_array[6]?></a></td>
+                <td width="120" align="center" class="border"><a href="dlmanage.php?page=<?php echo $page?>"><?php echo $f_array[7]?></a></td>
+                <td width="120" align="center" class="border"><a href="<?php echo getpageurl("dl",$dlid)?>" target="_blank"><?php echo $f_array[8]?></a></td>
         </tr>
       </table></td>
   </tr>

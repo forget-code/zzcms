@@ -1,5 +1,5 @@
-<?php 
-include("admin.php"); 
+<?php
+include("admin.php");
 ?>
 <html>
 <head>
@@ -17,13 +17,13 @@ $action="";
 }
 $FoundErr=0;
 $ErrMsg="";
-$admin=trim($_REQUEST["admin"]);
+$admins=trim($_REQUEST["admins"]);
 if ($action=="modify"){
 $groupid=$_POST["groupid"];
-mysql_query("update zzcms_admin set groupid='$groupid' where admin='".$admin."'");
+mysql_query("update zzcms_admin set groupid='$groupid' where admin='".$admins."'");
 echo "<SCRIPT language=JavaScript>alert('修改成功！');history.go(-1)</SCRIPT>";	
 }else{
-$sql="select * from zzcms_admin where admin='" . $admin . "'";
+$sql="select * from zzcms_admin where admin='" . $admins . "'";
 $rs = mysql_query($sql);
 $row= mysql_fetch_array($rs);
 ?>
@@ -31,11 +31,11 @@ $row= mysql_fetch_array($rs);
 <FORM name="form1" action="?" method="post" onSubmit="return CheckForm()">
           
   <table width="100%" border="0" align="center" cellpadding="5" cellspacing="0">
-    <td> 
-      <td width="494" align="right" class="border">管理员：</td>
-      <td width="921" class="border"><?php echo $admin?>
-        <input name="admin" type="hidden" value="<?php echo $admin?>"></td>
-    </tr>
+    <TR> 
+      <TD width="20%" align="right" class="border">管理员：</TD>
+      <TD width="80%" class="border"><?php echo $admins?>
+        <input name="admins" type="hidden" value="<?php echo $admins?>"></TD>
+    </TR>
     <tr> 
       <td align="right" class="border">所属用户组：</td>
       <td class="border"> <select name="groupid">

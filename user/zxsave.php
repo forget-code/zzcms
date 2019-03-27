@@ -2,6 +2,9 @@
 if(!isset($_SESSION)){session_start();} 
 include("../inc/conn.php");
 include("check.php");
+$fpath="text/zxsave.txt";
+$fcontent=file_get_contents($fpath);
+$f_array=explode("|||",$fcontent) ;
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="zh-CN">
@@ -42,7 +45,7 @@ $smallclassname=$row["classname"];
 }
 
 $title=trim($_POST["title"]);
-$link=trim($_POST["link"]);
+$link=addhttp(trim($_POST["link"]));
 $laiyuan=trim($_POST["laiyuan"]);
 $content=str_replace("'","",stripfxg(trim($_POST["content"])));
 $img=getimgincontent($content);
@@ -61,8 +64,7 @@ $rs = mysql_query($sql);
 $row= mysql_num_rows($rs); 
 if ($row){
 mysql_close($conn);
-echo "<script lanage='javascript'>alert('此信息已存在，请不要发布重复的信息！');</script>";
-echo "<script lanage='javascript'>location.replace('zxadd.php')</script>";
+echo $f_array[0];
 }
 
 $isok=mysql_query("Insert into zzcms_zx(bigclassid,bigclassname,smallclassid,smallclassname,title,link,laiyuan,keywords,description,groupid,jifen,content,img,editor,sendtime) values('$bigclassid','$bigclassname','$smallclassid','$smallclassname','$title','$link','$laiyuan','$keywords','$description','$groupid','$jifen','$content','$img','$editor','".date('Y-m-d H:i:s')."')");  
@@ -95,17 +97,14 @@ include("left.php");
   <tr> 
     <td class="tstitle"> 
 	<?php
-	if ($isok) {
-      echo "发布成功 ";
-	  }else{
-	  echo"发布失败";}
+	if ($isok) {echo $f_array[1];}else{echo $f_array[2];}
      ?>
       </td>
   </tr>
   <tr> 
     <td><table width="100%" border="0" cellspacing="0" cellpadding="3">
               <tr bgcolor="#FFFFFF"> 
-                <td width="25%" align="right" bgcolor="#FFFFFF"><strong>标题：</strong></td>
+                <td width="25%" align="right" bgcolor="#FFFFFF"><strong><?php echo $f_array[3]?></strong></td>
                 <td width="75%"><?php echo $title?></td>
               </tr>
             </table></td>
@@ -113,12 +112,12 @@ include("left.php");
   <tr> 
     <td><table width="100%" border="0" cellpadding="5" cellspacing="1">
         <tr> 
-          <td width="120" align="center" class="border"><a href="zxadd.php">继续添加</a></td>
+          <td width="120" align="center" class="border"><a href="zxadd.php"><?php echo $f_array[4]?></a></td>
 		 
-                <td width="120" align="center" class="border"><a href="zxmodify.php?id=<?php echo $id?>">修改</a></td>
+                <td width="120" align="center" class="border"><a href="zxmodify.php?id=<?php echo $id?>"><?php echo $f_array[5]?></a></td>
 				
-                <td width="120" align="center" class="border"><a href="zxmanage.php?bigclassid=<?php echo $bigclassid?>&page=<?php echo $page?>">返回</a></td>
-                <td width="120" align="center" class="border"><a href="<?php echo getpageurl("zx",$id)?>" target="_blank">预览</a></td>
+                <td width="120" align="center" class="border"><a href="zxmanage.php?bigclassid=<?php echo $bigclassid?>&page=<?php echo $page?>"><?php echo $f_array[6]?></a></td>
+                <td width="120" align="center" class="border"><a href="<?php echo getpageurl("zx",$id)?>" target="_blank"><?php echo $f_array[7]?></a></td>
         </tr>
       </table></td>
   </tr>

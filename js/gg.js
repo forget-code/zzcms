@@ -1,13 +1,11 @@
 // JavaScript Document
-function ConfirmDel()
-{
+function ConfirmDel(){
    if(confirm("确定要删除吗？一旦删除将不能恢复！"))
      return true;
    else
      return false;	 
 }
-function DLS(id) 
-{ 
+function DLS(id) { 
 window.open("dls_show.php?id="+id,"","height=420,width=470,left=300,top=100,resizable=yes,scrollbars=yes,status=no,toolbar=no,menubar=no,location=no");
 }
 function fSetBg(obj){

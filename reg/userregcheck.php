@@ -32,7 +32,7 @@ if ($id==''){
 $founderr=1;
 $msg= "请输入用户名";
 }else{
-	if(!ereg("^[a-zA-Z0-9_]{4,15}$",$id)){
+	if(! preg_match("/^[a-zA-Z0-9_]{4,15}$/",$id)){//ereg()PHP5.3以后的版本不再支持
 	$founderr=1;
 	$msg= "用户名只能为字母和数字，字符介于4到15个。";
 	}else{
@@ -150,11 +150,11 @@ function checkphone($id){
 $founderr=0;
 if ($id==''){
 	$founderr=1;
-	$msg= "请输入手机";
+	$msg= "请输入电话";
 }else{
-	if(!preg_match("/1[3458]{1}\d{9}$/",$id)){
+	if(!preg_match("/1[3458]{1}\d{9}$/",$id) && !preg_match('/^400(\d{3,4}){2}$/',$id) && !preg_match('/^400(-\d{3,4}){2}$/',$id) && !preg_match('/^(010|02\d{1}|0[3-9]\d{2})-\d{7,9}(-\d+)?$/',$id)){//分别是手机，400电话(加-和不加两种情况都可以)，和普通电话
 	$founderr=1;
-	$msg= "手机号码不正确";
+	$msg= "电话号码不正确";
 	}
 	if (allowrepeatreg=="No"){
 	$sql="select phone from zzcms_user where phone='".$id."'";
@@ -182,7 +182,7 @@ if ($id==''){
 	$founderr=1;
 	$msg= "请输入Email";
 }else{
-	if(!ereg("^[a-zA-Z0-9_.]+@([a-zA-Z0-9_]+.)+[a-zA-Z]{2,3}$",$id)) {
+	if(! preg_match("/^[a-zA-Z0-9_.]+@([a-zA-Z0-9_]+.)+[a-zA-Z]{2,3}$/",$id)) {
 	$founderr=1;
 	$msg= "Email格式不正确";
 	}

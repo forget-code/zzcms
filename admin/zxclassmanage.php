@@ -131,11 +131,11 @@ echo "暂无分类信息";
 <form name="form1" method="post" action="?action=px">
   <table width="100%" border="0" align="center" cellpadding="5" cellspacing="1">
     <tr> 
-      <td width="22%" class="border" ><strong>类别名称</strong></td>
-      <td width="15%" align="center" class="border" ><b>类别属性</b> </td>
-      <td width="10%" align="center" class="border" >所用模板文件</td>
-      <td width="25%" class="border" ><strong>排序</strong></td>
-      <td width="28%" class="border" ><strong>操作</strong></td>
+      <td width="20%" class="border" ><strong>类别名称</strong></td>
+      <td width="20%" align="center" class="border" ><b>类别属性</b> </td>
+      <td width="20%" align="center" class="border" ><strong>所用模板文件</strong></td>
+      <td width="20%" class="border" ><strong>排序</strong></td>
+      <td width="20%" class="border" ><strong>操作</strong></td>
     </tr>
     <?php while ($row=mysql_fetch_array($rs)){?>
     <tr bgcolor="#F1F1F1"> 
@@ -148,10 +148,16 @@ echo "暂无分类信息";
 		<?php if ($row["isshowininfo"]==1) { echo "显示";} else{ echo "<font color=red>不显</font>";}?>
         
         ] </td>
-      <td align="center" bgcolor="#f1f1f1" ><a href="/template/<?php echo siteskin?>/<?php echo $row["skin"]?>" target="_blank"><?php echo $row["skin"]?></td>
-      <td width="25%" > <input name="<?php echo "xuhao".$row["classid"]?>" type="text"  value="<?php echo $row["xuhao"]?>" size="4"> 
-        <input type="submit" name="Submit" value="更新序号"></td>
-      <td width="28%" >[ <a href="?dowhat=modifybigclass&classid=<?php echo $row["classid"]?>">修改</a> 
+      <td bgcolor="#f1f1f1" >
+	  <?php
+	   $skin=explode("|",$row["skin"]);
+	  ?>
+	  分类页模板：<a href="/template/<?php echo siteskin?>/<?php echo $skin[0]?>" target="_blank"><?php echo $skin[0]?></a><br>
+	  列表页模板：<a href="/template/<?php echo siteskin?>/<?php echo $skin[1]?>" target="_blank"><?php echo @$skin[1]?></a>	
+	  </td>
+      <td > <input name="<?php echo "xuhao".$row["classid"]?>" type="text"  value="<?php echo $row["xuhao"]?>" size="4"> 
+      <input type="submit" name="Submit" value="更新序号"></td>
+      <td >[ <a href="?dowhat=modifybigclass&classid=<?php echo $row["classid"]?>">修改</a> 
         | <a href="?action=delbig&bigclassid=<?php echo $row["classid"]?>" onClick="return ConfirmDelBig();">删除</a> 
         | <a href="?dowhat=addsmallclass&bigclassid=<?php echo $row["classid"]?>">添加子栏目</a> 
         ] </td>
@@ -441,7 +447,7 @@ $discription=trim($_POST["discription"]);
 if ($discription==""){
 $discription=$classname;
 }
-$skin=trim($_POST["skin"]);
+$skin=$_POST["skin"][0]."|".$_POST["skin"][1];
 
 	$sql="Select * from zzcms_zxclass where classid=" .$classid."";
 	$rs=mysql_query($sql);
@@ -524,16 +530,34 @@ $row=mysql_fetch_array($rs);
       <td colspan="2" class="border" >模板选择</td>
     </tr>
     <tr id="trkeywords">
-      <td align="right" class="border" >应用模板文件</td>
-      <td class="border" >
-	  <select name="skin" id="skin">
+      <td align="right" class="border" >类别页模板文件</td>
+      <td class="border" ><select name="skin[]" id="skin[]">
           <?php
 $dir = opendir("../template/".siteskin);
+$skin=explode("|",$row["skin"]);
 while(($file = readdir($dir))!=false){
   //if ($file!="." && $file!=".." && $file!='test.txt' && $file!='template.zip') { //不读取. ..
    if ($file!="." && $file!=".." && strpos("zx_class",substr($file,0,8))!==false) { //不读取. ..
 	?>
-          <option value="<?php echo $file?>" <?php if ( $row["skin"]==$file){ echo  "selected";}?>><?php echo $file?></option>
+          <option value="<?php echo $file?>" <?php if ($skin[0]==$file){ echo  "selected";}?>><?php echo $file?></option>
+          <?php
+}
+}
+closedir($dir);
+?>
+      </select></td>
+    </tr>
+    <tr id="trkeywords">
+      <td align="right" class="border" >列表页模板文件</td>
+      <td class="border" ><select name="skin[]" id="skin[]">
+          <?php
+$dir = opendir("../template/".siteskin);
+$skin=explode("|",$row["skin"]);
+while(($file = readdir($dir))!=false){
+  //if ($file!="." && $file!=".." && $file!='test.txt' && $file!='template.zip') { //不读取. ..
+   if ($file!="." && $file!=".." && strpos("zx_list",substr($file,0,7))!==false) { //不读取. ..
+	?>
+          <option value="<?php echo $file?>" <?php if (@$skin[1]==$file){ echo  "selected";}?>><?php echo $file?></option>
           <?php
 }
 }

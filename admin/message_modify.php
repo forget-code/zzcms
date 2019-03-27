@@ -7,16 +7,13 @@ include ("admin.php");
 <title></title>
 <link href="style.css" rel="stylesheet" type="text/css">
 <script language = "JavaScript">
-function CheckForm()
-{
-if (document.myform.title.value=="")
-  {
+function CheckForm(){
+if (document.myform.title.value==""){
     alert("标题不能为空！");
 	document.myform.title.focus();
 	return false;
   }
-  if (document.myform.content.value=="")
-  {
+  if (document.myform.content.value==""){
     alert("内容不能为空！");
 	document.myform.content.focus();
 	return false;
@@ -26,13 +23,8 @@ if (document.myform.title.value=="")
 	</script>
 </head>
 <body>
-<table width="100%" border="0" align="center" cellpadding="0" cellspacing="0">
-  <tr> 
-    <td class="admintitle">修改短信息</td>
-  </tr>
-</table>
+<div class="admintitle">修改短信息</div>
 <?php
-
 checkadminisdo("sendmessage");
 $id=$_REQUEST["id"];
 if ($id<>"") {

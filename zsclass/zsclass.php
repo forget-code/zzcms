@@ -92,7 +92,7 @@ if (strpos("gif|jpg|png|bmp",substr($row["img"],-3))!==false) {
 	$adlist=$adlist. "<div align='center'>";
 	}
 	if ($row["endtime"]>= date('Y-m-d')) {
-	$adlist=$adlist. "<a href='".addhttp($row["link"])."' target='_blank' style='font-weight:bold;font-size:14px'><img src='".siteurl."/".$row["img"]."' height='".$row["imgheight"]."' width='".$row["imgwidth"]."' border='0' alt='".$row["title"]."'/>";
+	$adlist=$adlist. "<a href='".$row["link"]."' target='_blank' style='font-weight:bold;font-size:14px'><img src='".siteurl."/".$row["img"]."' height='".$row["imgheight"]."' width='".$row["imgwidth"]."' border='0' alt='".$row["title"]."'/>";
     }else{
 	$adlist=$adlist. "<a href='#' target='_blank'><img src='".siteurl."/image/noad.gif' height='".$row["imgheight"]."' width='".$row["imgwidth"]."' border='0' alt='".$row["title"]."'/>";
 	}
@@ -113,7 +113,7 @@ if (strpos("gif|jpg|png|bmp",substr($row["img"],-3))!==false) {
 	}else{
 	$adlist=$adlist. "<div align='center'>";
 	}
-	$adlist=$adlist."<a href='".addhttp($row["link"])."' target='_blank' style='font-weight:bold;font-size:14px'>";
+	$adlist=$adlist."<a href='".$row["link"]."' target='_blank' style='font-weight:bold;font-size:14px'>";
 	$adlist=$adlist."<button disabled='disabled' style='border-style: none; background-color: #FFFFFF; background-image: none;width:".$row["imgwidth"]."px' >" ;
 	$adlist=$adlist."<object classid=clsid:D27CDB6E-AE6D-11cf-96B8-444553540000 codebase=http://download.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=6,0,29,0 width=".$row["imgwidth"]." height=".$row["imgheight"].">";
     $adlist=$adlist."<param name='movie' value='".siteurl.$row["img"]."' />";

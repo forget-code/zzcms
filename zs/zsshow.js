@@ -23,7 +23,6 @@ function CheckForms(){
 	document.ly.contents.style.border = '1px solid #FF0000';
 	return false;
 	}
-	
 	if (document.ly.name.value==""){	
 	document.ly.name.style.border = '1px solid #FA8072';
 	window.document.getElementById('ts_name').innerHTML='<span class=boxuserreg>请输入姓名</span>';
@@ -77,6 +76,22 @@ function check_contents(){
 	}
 }
 
+function check_mobile(){ 
+if (document.ly.tel.value ==""){	
+	document.getElementById('ts_tel').innerHTML='<span class=boxuserreg>请输入手机</span>';
+    document.ly.tel2.value='no';
+}else{
+	var phone = /^1([38]\d|4[57]|5[0-35-9]|7[06-8]|8[89])\d{8}$/;
+	if(!phone.test(document.ly.tel.value)){
+	window.document.getElementById('ts_tel').innerHTML='<span class=boxuserreg>手机号码不正确</span>';
+    window.document.ly.tel2.value='no';
+	}else{
+	window.document.getElementById('ts_tel').innerHTML='<img src=/image/dui2.png>';
+	window.document.ly.tel2.value='yes';
+	window.document.ly.tel.style.border = '1px solid #dddddd';
+	}
+} 
+} 
 function check_somane(){
 if (document.ly.name.value ==""){	
 	document.getElementById('ts_name').innerHTML='<span class=boxuserreg>请输入姓名</span>';
@@ -88,8 +103,8 @@ if (document.ly.name.value ==""){
     window.document.ly.name2.value='no';
 	}else{
 	window.document.getElementById('ts_name').innerHTML='<img src=/image/dui2.png>';
-	 window.document.ly.name2.value='yes';
-	 window.document.ly.name.style.border = '1px solid #dddddd';
+	window.document.ly.name2.value='yes';
+	window.document.ly.name.style.border = '1px solid #dddddd';
 	}
 }
 }
@@ -140,15 +155,14 @@ function showinfo(names,n){
 	}
 }
 
-function CheckAllProvince(form)
-  {
+function CheckAllProvince(form){
   for (var i=0;i<40;i++)//表单内有其它原素
     {
     var e = form.elements[i];
     if (e.Name != "chkAll" )
        e.checked = form.chkAll.checked;
     }
-  }
+}
 function resizeimg(maxWidth,maxHeight,objImg){
 var img = new Image();
 img.src = objImg.src;

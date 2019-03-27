@@ -6,33 +6,25 @@ include ("admin.php");
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <link href="style.css" rel="stylesheet" type="text/css">
 <?php
-
-
-checkadminisdo("friendlink");
 if (isset($_SESSION["bigclassid"])){
 $sbigclassid=$_SESSION["bigclassid"];
 }else{
 $sbigclassid="";
 }
 ?>
-
 <script language = "JavaScript">	
-function CheckForm()
-{	  
-if (document.myform.sitename.value=="")
-  {
+function CheckForm(){	  
+if (document.myform.sitename.value==""){
     alert("网站名称不能为空！");
 	document.myform.sitename.focus();
 	return false;
   }
-  if (document.myform.url.value=="")
-  {
+  if (document.myform.url.value==""){
     alert("网址不能为空！");
 	document.myform.url.focus();
 	return false;
   }
-  if (document.myform.content.value=="")
-  {
+  if (document.myform.content.value==""){
     alert("描述不能为空！");
 	document.myform.content.focus();
 	return false;
@@ -42,11 +34,7 @@ if (document.myform.sitename.value=="")
 </script>
 </head>
 <body>
-<table width="100%" border="0" align="center" cellpadding="0" cellspacing="0">
-  <tr> 
-    <td class="admintitle">添加友情链接信息</td>
-  </tr>
-</table>
+<div class="admintitle">添加友情链接信息</div>
 <form action="link_save.php?action=add" method="post" name="myform" id="myform" onSubmit="return CheckForm();">    
   <table width="100%" border="0" cellpadding="5" cellspacing="0">
     <tr> 
@@ -61,7 +49,7 @@ if (document.myform.sitename.value=="")
 		}else{
 		?>
 		<select name="bigclassid" id="bigclassid">
-                <option value="" selected="selected">请选择类别</option>
+                <option value="0" selected="selected">请选择类别</option>
                 <?php
 		while($row= mysql_fetch_array($rs)){
 			?>

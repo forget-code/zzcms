@@ -2,7 +2,7 @@
 if(!isset($_SESSION)){session_start();}
 if (!isset($_COOKIE["UserName"]) && !isset($_SESSION["admin"])){
 session_write_close();
-echo "登陆后才能上传";
+echo "No Login!";
 exit;
 }
 ?>

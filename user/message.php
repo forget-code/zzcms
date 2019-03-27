@@ -12,11 +12,18 @@ include("check.php");
 <script language="JavaScript" src="/js/gg.js"></script>
 <script language = "JavaScript">
 function CheckForm(){
-  if (document.myform.content.value==""){
-    alert("内容为能为空！");
+  if (document.myform2.content.value==""){
+    alert("内容不能为空！");
 	//document.myform.content.focus();
 	return false;
-  }  
+  } 
+if (document.myform2.content.value !=""){
+    var re=/^[\u4e00-\u9fa5]{2,10}$/; //只输入汉字的正则
+    if(document.myform2.content.value.search(re)==-1){
+	alert("内容只能这汉字！");
+	return false;
+}
+}   
 }
 </script>	
 </head>
@@ -113,7 +120,7 @@ echo "【下一页】【尾页】";
 }
 ?>
   <div class="admintitle">我要返馈信息</div>
-  <form action="?" method="post" name="myform" id="myform" onSubmit="return CheckForm();">
+  <form action="?" method="post" name="myform2" id="myform2" onSubmit="return CheckForm()">
         <table width="100%" border="0" cellpadding="3" cellspacing="1">
           <tr id="trcontent"> 
             <td width="139" align="right" class="border" >内容 <font color="#FF0000">*</font></td>

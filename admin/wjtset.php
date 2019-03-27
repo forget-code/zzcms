@@ -10,18 +10,13 @@ include("admin.php");
 </head>
 <body>
 <?php
-
 if (isset($_POST["action"])){
 $action=$_POST["action"];
 }else{
 $action="";
 }
 ?>
-<table width="100%" border="0" cellpadding="0" cellspacing="0">
-  <tr> 
-    <td class="admintitle">文件头设置</td>
-  </tr>
-</table>
+<div class="admintitle">文件头设置</div>
 <?php
 if ($action=="saveconfig") {
 checkadminisdo("siteconfig");
@@ -29,7 +24,6 @@ saveconfig();
 }else{
 showconfig();
 }
-
 function showconfig(){
 ?>
 <form method="POST" action="?" id="form1" name="form1">

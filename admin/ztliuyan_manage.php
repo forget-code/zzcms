@@ -8,10 +8,8 @@ include("admin.php");
 <link href="style.css" rel="stylesheet" type="text/css">
 <script language="JavaScript" src="/js/gg.js"></script>
 </head>
-
 <body>
 <?php
-
 checkadminisdo("guestbook");
 if (isset($_REQUEST["action"])){
 $action=$_REQUEST["action"];
@@ -19,8 +17,7 @@ $action=$_REQUEST["action"];
 $action="";
 }
 
-if( isset($_GET["page"]) && $_GET["page"]!="") 
-{
+if( isset($_GET["page"]) && $_GET["page"]!="") {
     $page=$_GET['page'];
 }else{
     $page=1;
@@ -38,41 +35,30 @@ $keyword="";
 }
 
 if ($action=="pass"){
-$id="";
 if(!empty($_POST['id'])){
     for($i=0; $i<count($_POST['id']);$i++){
-    $id=$id.($_POST['id'][$i].',');
-    }
-	$id=substr($id,0,strlen($id)-1);//去除最后面的","
-}
-
-if ($id==""){
-echo "<script>alert('操作失败！至少要选中一条信息。');history.back()</script>";
-}else{
-	 if (strpos($id,",")>0){
-		$sql="update zzcms_guestbook set passed=1 where id in (". $id .")";
-	}else{
-		$sql="update zzcms_guestbook set passed=1 where id='$id'";
+    $id=$_POST['id'][$i];
+	$sql="select passed from zzcms_guestbook where id ='$id'";
+	$rs = mysql_query($sql); 
+	$row = mysql_fetch_array($rs);
+		if ($row['passed']=='0'){
+		mysql_query("update zzcms_guestbook set passed=1 where id ='$id'");
+		}else{
+		mysql_query("update zzcms_guestbook set passed=0 where id ='$id'");
+		}
 	}
-
-mysql_query($sql);
-echo "<script>location.href='?shenhe=no&keyword=".$keyword."&page=".$page."'</script>";
+}else{
+echo "<script>alert('操作失败！至少要选中一条信息。');history.back()</script>";
 }
+echo "<script>location.href='?keyword=".$keyword."&page=".$page."'</script>";	
 }
 ?>
-<table width="100%" border="0" cellspacing="0" cellpadding="0">
-  <tr> 
-    <td class="admintitle">留言本</td>
-  </tr>
-</table>
+<div class="admintitle">留言本</div>
 <form name="form1" method="post" action="?">
-<table width="100%" border="0" cellpadding="5" cellspacing="0" class="border">
-    <tr> 
-      <td> 按接收人 
-        <input name="keyword" type="text" id="keyword" value="<?php echo $keyword?>"> <input type="submit" name="Submit" value="查找">
-      </td>
-    </tr>
-</table>
+<div class="border">
+ 接收人： 
+   <input name="keyword" type="text" id="keyword" value="<?php echo $keyword?>"> <input type="submit" name="Submit" value="查找">
+</div>
   </form>
    <?php
 $page_size=pagesize_ht;  //每页多少条数据
@@ -98,10 +84,9 @@ echo "暂无信息";
 <form name="myform" method="post" action="">
   <table width="100%" border="0" cellpadding="3" cellspacing="1">
     <tr> 
-      <td height="32" class="border"><input name="chkAll" type="checkbox" id="chkAll" onClick="CheckAll(this.form)" value="checkbox" />
-        全选 
-        <input name="submit2" type="submit" class="buttons"  onClick="myform.action='?action=pass';myform.target='_self'" value="审核选中的信息">
-        <input name="submit3" type="submit" class="buttons" onClick="myform.action='ztly_sendmail.php';myform.target='_blank' "  value="给接收者发邮件提醒">
+      <td height="32" class="border"><label for="chkAll"></label> 
+        <input name="submit2" type="submit"  onClick="myform.action='?action=pass';myform.target='_self'" value="【取消/审核】选中的信息">
+        <input name="submit3" type="submit" onClick="myform.action='ztly_sendmail.php';myform.target='_blank' "  value="给接收者发邮件提醒">
         <input name="submit4" type="submit" onClick="myform.action='del.php';myform.target='_self';return ConfirmDel()" value="删除选中的信息"> 
         <input name="pagename" type="hidden"  value="ztliuyan_manage.php?shenhe=<?php echo $shenhe?>&page=<?php echo $page ?>"> 
         <input name="tablename" type="hidden"  value="zzcms_guestbook"> </td>
@@ -109,7 +94,7 @@ echo "暂无信息";
   </table>
   <table width="100%" border="0" cellpadding="5" cellspacing="1">
     <tr> 
-      <td width="5%" align="center" class="border">id</td>
+      <td width="5%" align="center" class="border"> <label for="chkAll" style="text-decoration: underline;cursor: hand;">全选</label></td>
       <td width="10%" class="border">内容</td>
       <td width="10%" class="border">姓名</td>
       <td width="10%" class="border">电话</td>
@@ -138,6 +123,15 @@ while($row = mysql_fetch_array($rs)){
 <?php
 }
 ?>
+  </table>
+  <table width="100%" border="0" cellpadding="3" cellspacing="1">
+    <tr>
+      <td height="32" class="border"><input name="chkAll" type="checkbox" id="chkAll" onClick="CheckAll(this.form)" value="checkbox" />
+          <label for="chkAll" style="text-decoration: underline;cursor: hand;">全选</label>
+          <input name="submit22" type="submit"  onClick="myform.action='?action=pass';myform.target='_self'" value="【取消/审核】选中的信息">
+          <input name="submit32" type="submit" onClick="myform.action='ztly_sendmail.php';myform.target='_blank' "  value="给接收者发邮件提醒">
+          <input name="submit42" type="submit" onClick="myform.action='del.php';myform.target='_self';return ConfirmDel()" value="删除选中的信息"></td>
+    </tr>
   </table>
 </form>
 <table width="100%" border="0" cellpadding="0" cellspacing="0" class="border">

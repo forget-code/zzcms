@@ -16,8 +16,7 @@ $action=$_REQUEST["action"];
 $action="";
 }
 
-if( isset($_GET["page"]) && $_GET["page"]!="") 
-{
+if( isset($_GET["page"]) && $_GET["page"]!="") {
     $page=$_GET['page'];
 }else{
     $page=1;
@@ -50,11 +49,7 @@ $id=$_REQUEST["id"];
 $id="";
 }
 ?>
-<table width="100%" border="0" cellpadding="0" cellspacing="0">
-  <tr> 
-    <td class="admintitle">广告管理</td>
-  </tr>
-</table>
+<div class="admintitle">广告管理</div>
 <table width="100%" border="0" cellspacing="0" cellpadding="5">
   <tr>
     <td align="center" class="border"> 

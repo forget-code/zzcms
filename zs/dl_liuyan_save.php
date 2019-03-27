@@ -18,6 +18,12 @@ include ("../3/mobile_msg/inc.php");
 <?php
 //echo sitetop();
 checkyzm($_POST["yzm"]);
+if ($_POST['token'] != $_SESSION['token'] || $_POST['token']=='' ){    
+showmsg('非法提交','back');
+}else{
+unset($_SESSION['token']);
+}
+
 $bigclassid=trim($_POST["bigclassid"]);
 $cp=trim($_POST["cp"]);
 $cpid=trim($_POST["cpid"]);
@@ -43,16 +49,25 @@ $dlsname=trim($_POST["name"]);
 $tel=trim($_POST["tel"]);
 $email=trim($_POST["email"]);
 $saver=trim($_POST["fbr"]);
+
+if(!preg_match("/^[\x7f-\xff]+$/",$dlsname)){
+showmsg('姓名只能用中文','back');
+}
+
+if(!preg_match("/1[3458]{1}\d{9}$/",$tel) && !preg_match('/^400(\d{3,4}){2}$/',$tel) && !preg_match('/^400(-\d{3,4}){2}$/',$tel) && !preg_match('/^(010|02\d{1}|0[3-9]\d{2})-\d{7,9}(-\d+)?$/',$tel)){//分别是手机，400电话(加-和不加两种情况都可以)，和普通电话
+showmsg('电话号码不正确','back');
+}
+
 $rs=mysql_query("select groupid from zzcms_user where username='".$saver."' ");
 $row=mysql_fetch_array($rs);
 $savergroupid=$row['groupid'];
 
 if ($cp<>'' && $dlsname<>'' && $tel<>''){
-//$rs=mysql_query("select * from zzcms_dl where dlsname='$dlsname' and tel='$tel' and saver='$saver' and cpid='$cpid'");
-//$row=mysql_num_rows($rs);
-//if ($row){
-//echo "<script>alert('您已留过言了！');history.back(-1)<//script>";
-//}else{
+$rs=mysql_query("select * from zzcms_dl where dlsname='$dlsname' and tel='$tel' and saver='$saver' and cpid='$cpid'");
+$row=mysql_num_rows($rs);
+if ($row){
+echo "<script>alert('您已留过言了！');history.back(-1)</script>";
+}else{
 mysql_query("insert into zzcms_dl (cp,cpid,classzm,province,city,content,company,companyname,dlsname,tel,email,editor,saver,savergroupid,sendtime)values('$cp','$cpid','$bigclassid','$province','$city','$contents','$company','$companyname','$dlsname','$tel','$email','".@$_COOKIE["UserName"]."','$saver','$savergroupid','".date('Y-m-d H:i:s')."')");
 $_SESSION["dlliuyan"]=$saver;//供留言后显示联系方式处用
 $dlid=mysql_insert_id();
@@ -98,7 +113,7 @@ if (whendlsave=="Yes"){
 	}
 }
 showmsg('成功提交',$_SERVER['HTTP_REFERER']);
-//}
+}
 }
 session_write_close();
 ?>

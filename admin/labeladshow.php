@@ -44,9 +44,7 @@ $f="../template/".siteskin."/label/adshow/".trim($_POST["title"]).".txt";
 }
 ?>
 <script language = "JavaScript">
-
-function CheckForm()
-{
+function CheckForm(){
 var re=/^[0-9a-zA-Z_]{1,20}$/; //只输入数字和字母的正则
 if (document.myform.title.value=="")
   {
@@ -62,40 +60,28 @@ if(document.myform.title.value.search(re)==-1)  {
 
 //定义正则表达式部分
 var strP=/^\d+$/;
-if(!strP.test(document.myform.numbers.value)) 
-{
+if(!strP.test(document.myform.numbers.value)) {
 alert("只能填数字！"); 
 document.myform.numbers.focus(); 
 return false; 
 } 
-
-if(!strP.test(document.myform.titlenum.value)) 
-{
+if(!strP.test(document.myform.titlenum.value)) {
 alert("只能填数字！"); 
 document.myform.titlenum.focus(); 
 return false; 
 }  
 
-if(!strP.test(document.myform.rows.value)) 
-{
+if(!strP.test(document.myform.rows.value)) {
 alert("只能填数字！"); 
 document.myform.rows.focus(); 
 return false; 
 }  
-
 }  
-
-	</script>
+</script>
 </head>
-
 <body>
-<table width="100%" border="0" align="center" cellpadding="0" cellspacing="0">
-  <tr> 
-    <td class="admintitle">广告标签</td>
-  </tr>
-</table>
-<form action="" method="post" name="myform" id="myform" onSubmit="return CheckForm();">
-        
+<div class="admintitle">广告标签</div>
+<form action="" method="post" name="myform" id="myform" onSubmit="return CheckForm();">       
   <table width="100%" border="0" cellpadding="5" cellspacing="0">
     <tr> 
       <td width="150" align="right" class="border" >现有标签：</td>

@@ -1,6 +1,9 @@
 <?php
 include("../inc/conn.php");
 include("check.php");
+$fpath="text/licence_save.txt";
+$fcontent=file_get_contents($fpath);
+$f_array=explode("|||",$fcontent) ;
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="zh-CN">
@@ -20,7 +23,7 @@ $oldimg=trim($_POST["oldimg"]);
 	$id=$_POST["id"];
 	if ($id=="" || is_numeric($id)==false){
 		$FoundErr=1;
-		$ErrMsg="<li>参数不足！</li>";
+		$ErrMsg="<li>". $f_array[0]."</li>";
 		WriteErrMsg($ErrMsg);
 	}else{
 	mysql_query("update zzcms_licence set title='$title',img='$img',sendtime='".date('Y-m-d H:i:s')."' where id='$id'");
@@ -56,11 +59,11 @@ include("left.php");
   <tr>
     <td class="tstitle"><?php
 	if ($_REQUEST["action"]=="add") {
-      echo "添加成功 ";
+      echo  $f_array[1];
 	  }elseif ($_REQUEST["action"]=="modify"){
-	  echo"修改成功";
+	  echo $f_array[2];
 	  }else{
-	  echo"没有处理任何信息";
+	  echo $f_array[3];
 	  }
      ?>
     </td>
@@ -68,13 +71,13 @@ include("left.php");
   <tr>
     <td><table width="100%" border="0" cellspacing="0" cellpadding="3">
       <tr bgcolor="#FFFFFF">
-        <td width="25%" align="right" bgcolor="#FFFFFF"><strong>文件名：</strong></td>
+        <td width="25%" align="right" bgcolor="#FFFFFF"><strong><?php echo $f_array[4]?></strong></td>
         <td width="75%"><?php echo $title?></td>
       </tr>
     </table></td>
   </tr>
   <tr>
-    <td align="center"  class="border"><a href="licence_add.php">继续添加</a> | <a href="licence.php?page=<?php echo $page?>">返回管理</a></td>
+    <td align="center"  class="border"><a href="licence_add.php"><?php echo $f_array[5]?></a> | <a href="licence.php?page=<?php echo $page?>"><?php echo $f_array[6]?></a></td>
   </tr>
 </table>
 </div>

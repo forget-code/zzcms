@@ -10,7 +10,6 @@ include("admin.php");
 </head>
 <body>
 <?php
-
 checkadminisdo("zxpinglun");
 if (isset($_REQUEST["action"])){
 $action=$_REQUEST["action"];
@@ -40,53 +39,37 @@ $keyword=$_REQUEST["keyword"];
 }else{
 $keyword="";
 }
+
 if ($action<>""){
-$id="";
 if(!empty($_POST['id'])){
     for($i=0; $i<count($_POST['id']);$i++){
-    $id=$id.($_POST['id'][$i].',');
-    }
-	$id=substr($id,0,strlen($id)-1);//去除最后面的","
-}
-if ($id==""){
-echo "<script lanage='javascript'>alert('操作失败！至少要选中一条信息。');history.back()</script>";
-}
-}
-
-if ($action=="pass"){
-	 if (strpos($id,",")>0){
-		$sql="update zzcms_pinglun set passed=1 where id in (". $id .")";
-	}else{
-		$sql="update zzcms_pinglun set passed=1 where id='$id'";
+    $id=$_POST['id'][$i];
+	switch ($action){
+	case "pass";
+	$sql="select passed from zzcms_pinglun where id ='$id'";
+	$rs = mysql_query($sql); 
+	$row = mysql_fetch_array($rs);
+		if ($row['passed']=='0'){
+		mysql_query("update zzcms_pinglun set passed=1 where id ='$id'");
+		}else{
+		mysql_query("update zzcms_pinglun set passed=0 where id ='$id'");
+		}
+	break;	
+	case "del";
+	mysql_query("delete from zzcms_pinglun where id ='$id'");
+	break;	
+	}	
 	}
-
-mysql_query($sql);
-echo "<script>location.href='?shenhe=no&keyword=".$keyword."&page=".$page."'</script>";
+}else{
+echo "<script>alert('操作失败！至少要选中一条信息。');history.back()</script>";
+}
+echo "<script>location.href='?keyword=".$keyword."&page=".$page."'</script>";	
 }
 
-if ($action=="del"){
-	 if (strpos($id,",")>0){
-		$sql="delete from zzcms_pinglun where id in (". $id .")";
-	}else{
-		$sql="delete from zzcms_pinglun where id='$id'";
-	}
-mysql_query($sql);
-echo "<script>location.href='?keyword=".$keyword."&page=".$page."'</script>";
-}
 ?>
-<table width="100%" border="0" cellpadding="0" cellspacing="0">
-  <tr> 
-    <td class="admintitle">评论管理</td>
-  </tr>
-</table>
+<div class="admintitle">评论管理</div>
 <form name="form1" method="post" action="?">
-<table width="100%" border="0" cellpadding="5" cellspacing="0">
-  <tr> 
-      <td class="border"> 内容： 
-        <input name="keyword" type="text" id="keyword" value="<?php echo $keyword?>"> <input type="submit" name="Submit" value="查寻"> 
-      </td>
-  </tr>
-</table>
+<div class="border"> 内容： <input name="keyword" type="text" id="keyword" value="<?php echo $keyword?>"> <input type="submit" name="Submit" value="查寻"> </div>
 </form>
 <?php
 $page_size=pagesize_ht;  //每页多少条数据
@@ -112,14 +95,14 @@ echo "暂无信息";
 <table width="100%" border="0" cellpadding="5" cellspacing="0" class="border">
     <tr> 
       <td> 
-        <input type="submit" onClick="pass(this.form)" value="审核选中的信息"> 
+        <input type="submit" onClick="pass(this.form)" value="【取消/审核】选中的信息"> 
         <input type="submit" onClick="del(this.form)" value="删除选中的信息">
       </td>
     </tr>
   </table>
   <table width="100%" border="0" cellspacing="1" cellpadding="5">
     <tr> 
-      <td width="5%" align="center" class="border">选择</td>
+      <td width="5%" align="center" class="border"><label for="chkAll" style="text-decoration: underline;cursor: hand;">全选</label></td>
       <td width="10%" class="border">评论内容</td>
       <td width="5%" class="border">被评文章ID</td>
       <td width="5%" align="center" class="border">是否审核</td>
@@ -146,8 +129,8 @@ while($row = mysql_fetch_array($rs)){
   <table width="100%" border="0" cellpadding="5" cellspacing="0" class="border">
     <tr> 
       <td> <input name="chkAll" type="checkbox" id="chkAll" onClick="CheckAll(this.form)" value="checkbox">
-        全选 
-        <input type="submit" onClick="pass(this.form)" value="审核选中的信息"> 
+        <label for="chkAll" style="text-decoration: underline;cursor: hand;">全选</label> 
+        <input type="submit" onClick="pass(this.form)" value="【取消/审核】选中的信息"> 
         <input type="submit" onClick="del(this.form)" value="删除选中的信息"> 
         <input name="page" type="hidden" id="page" value="<%=CurrentPage%>"></td>
     </tr>

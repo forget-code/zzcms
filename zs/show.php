@@ -6,6 +6,10 @@ include("../inc/bottom.php");
 include("../label.php");
 include("../zx/subzx.php");
 include("subzs.php");
+
+$token = md5(uniqid(rand(), true));    
+$_SESSION['token']= $token;  
+
 if (isset($_REQUEST["id"])){
 $cpid=trim($_REQUEST["id"]);
 checkid($cpid);
@@ -110,8 +114,7 @@ return "<b>".$rowdl."</b> 条";
 }
 }
 
-function showflv($flv)
-{
+function showflv($flv){
 global $img1;
 if ($flv!=""){
 	$str="<div class='box' style='text-align:center'>";
@@ -153,7 +156,7 @@ fclose($f);
 //liuyan
 $liuyan=strbetween($strout,"{liuyan}","{/liuyan}");
 $list=strbetween($liuyan,"{loop}","{/loop}");
-$rs=mysql_query("select * from zzcms_dl_".$bigclasszm." where cpid=$cpid and passed=1");
+$rs=mysql_query("select * from zzcms_dl_".$bigclasszm." where cpid=$cpid and passed=1 order by id desc");
 $row=mysql_num_rows($rs);
 if ($row){
 $list2='';
@@ -177,6 +180,7 @@ $strout=str_replace("{#proname}",str_replace(',','',$cpmc),$strout);
 $strout=str_replace("{#cpid}",$cpid,$strout);
 $strout=str_replace("{#fbr}",$editor,$strout);
 $strout=str_replace("{#bigclassid}",$bigclasszm,$strout);
+$strout=str_replace("{#token}",$token,$strout);
 
 $companyname="";
 $somane=$rown="";

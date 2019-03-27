@@ -10,6 +10,7 @@ include("admin.php");
 <body>
 <?php
 checkadminisdo("userreg");
+$pageurl=trim($_POST["pageurl"]);
 ?>
 <div class="admintitle">删除用户执行结果如下</div>
 <table width="100%" border="0" cellpadding="10" cellspacing="1" class="border">
@@ -175,12 +176,12 @@ while($row=mysql_fetch_array($rs)){
 	mysql_query("delete from zzcms_user where id=".$row['id']."");
 	echo $editor."用户注册信息已被删除<br><br>";
 }
-//echo "<script>location.href='usermanage.php?page=".$_REQUEST["page"]."'<//script>";
+//echo "<script>location.href=\"$pagename\"<//script>"; 
 ?>
     </td>
   </tr>
   <tr>
-    <td bgcolor="#FFFFFF" class="docolor"><a href="javascript:history.back()">返回</a></td>
+    <td bgcolor="#FFFFFF" class="docolor"><a href="<?php echo $pageurl ?>">返回</a></td>
   </tr>
 </table>
 </body>

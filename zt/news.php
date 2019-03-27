@@ -66,7 +66,7 @@ $link="newsshow-".$row['id'].".htm";
 $link="newsshow.php?newsid=".$row['id'] ;
 }
 $list2 = $list2. str_replace("{#link}" ,$link,$list) ;
-$list2 =str_replace("{#title}",cutstr($row["title"],8),$list2) ;
+$list2 =str_replace("{#title}",cutstr($row["title"],20),$list2) ;
 $list2 =str_replace("{#sendtime}",date("Y-m-d",strtotime($row['sendtime'])),$list2) ;				
 $i=$i+1;
 }

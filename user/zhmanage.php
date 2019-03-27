@@ -1,6 +1,10 @@
 <?php
 include("../inc/conn.php");
+include("../inc/fy.php");
 include("check.php");
+$fpath="text/zhmanage.txt";
+$fcontent=file_get_contents($fpath);
+$f_array=explode("\n",$fcontent) ;
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <head>
@@ -23,17 +27,9 @@ include("left.php");
 </div>
 <div class="right">
 <div class="admintitle">
-<span>
-    <form name="form1" method="post" action="?">
-          标题： 
-          <input name="keyword" type="text" id="keyword"> <input type="submit" name="Submit" value="查找">
-      </form>
-</span>
-展会信息管理</div>
-
+<span><form name="form1" method="post" action="?"><?php echo $f_array[0]?><input name="keyword" type="text" id="keyword"> <input type="submit" name="Submit" value="<?php echo $f_array[1]?>"></form></span><?php echo $f_array[2]?></div>
 <?php
-if( isset($_GET["page"]) && $_GET["page"]!="") 
-{
+if( isset($_GET["page"]) && $_GET["page"]!="") {
     $page=$_GET['page'];
 }else{
     $page=1;
@@ -60,62 +56,41 @@ $sql=$sql.$sql2;
 $sql=$sql . " order by id desc limit $offset,$page_size";
 $rs = mysql_query($sql); 
 if(!$totlenum){
-echo "暂无信息";
+echo $f_array[3];
 }else{
 ?>
 <form name="myform" method="post" action="del.php">
         <table width="100%" border="0" cellpadding="5" cellspacing="1">
           <tr> 
-            <td width="282" height="25" class="border">标题</td>
-            <td width="153" align="center" class="border">发布时间</td>
-            <td width="222" align="center" class="border">信息状态</td>
-            <td width="64" align="center" class="border">操作</td>
-            <td width="65" align="center" class="border">删除</td>
+           <?php echo $f_array[4]?>
           </tr>
           <?php
 while($row = mysql_fetch_array($rs)){
 ?>
           <tr class="bgcolor1" onMouseOver="fSetBg(this)" onMouseOut="fReBg(this)"> 
-            <td width="282"><a href="<?php echo getpageurl("zh",$row["id"])?>" target="_blank"><?php echo $row["title"]?></a>            </td>
+            <td width="282"><a href="<?php echo getpageurl("zh",$row["id"])?>" target="_blank"><?php echo $row["title"]?></a></td>
             <td width="153" align="center"><?php echo $row["sendtime"]?></td>
             <td width="222" align="center"> 
               <?php 
-	if ($row["passed"]==1 ){ echo "已审核";}else{ echo "<font color=red>待审</font>";}
+	if ($row["passed"]==1 ){ echo $f_array[5];}else{ echo $f_array[6];}
 	  ?>            </td>
             <td width="64" align="center" > 
-              <a href="zhmodify.php?id=<?php echo $row["id"]?>&page=<?php echo $page?>">修改</a></td>
+              <a href="zhmodify.php?id=<?php echo $row["id"]?>&page=<?php echo $page?>"><?php echo $f_array[7]?></a></td>
             <td width="65" align="center" ><input name="id[]" type="checkbox" id="id" value="<?php echo $row["id"]?>" /></td>
           </tr>
           <?php
 }
 ?>
         </table>
-
 <div class="fenyei" >
-页次：<strong><font color="#CC0033"><?php echo $page?></font>/<?php echo $totlepage?>　</strong> 
-      <strong><?php echo $page_size?></strong>条/页　共<strong><?php echo $totlenum ?></strong>条		 
-          <?php  
-if ($page!=1){
-echo "<a href=?page=1>【首页】</a> ";
-echo "<a href=?page=".($page-1).">【上一页】</a> ";
-}else{
-echo "【首页】【上一页】";
-}
-if ($page!=$totlepage){
-echo "<a href=?page=".($page+1).">【下一页】</a> ";
-echo "<a href=?page=".$totlepage.">【尾页】</a>";
-}else{
-echo "【下一页】【尾页】";
-}
-?>
+<?php echo showpage()?> 
           <input name="chkAll" type="checkbox" id="chkAll" onclick="CheckAll(this.form)" value="checkbox" />
-          <label for="chkAll">全选</label>
-<input name="submit"  type="submit" class="buttons"  value="删除" onClick="return ConfirmDel()"> 
+          <label for="chkAll"><?php echo $f_array[8]?></label>
+<input name="submit"  type="submit" class="buttons"  value="<?php echo $f_array[9]?>" onClick="return ConfirmDel()"> 
 <input name="pagename" type="hidden" id="page2" value="zhmanage.php?page=<?php echo $page ?>"> 
 <input name="tablename" type="hidden" id="tablename" value="zzcms_zh"> 
 </div>
-
-  </form>
+</form>
 <?php
 }
 mysql_close($conn);

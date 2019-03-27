@@ -1,6 +1,9 @@
 <?php
 include("../inc/conn.php");
 include("check.php");
+$fpath="text/zxmodify.txt";
+$fcontent=file_get_contents($fpath);
+$f_array=explode("|||",$fcontent) ;
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="zh-CN">
@@ -12,12 +15,7 @@ include("check.php");
 <script type="text/javascript" src="/3/ckeditor/ckeditor.js"></script>
 <script language = "JavaScript">
 function CheckForm(){
-if (document.myform.title.value==""){
-    alert("标题不能为空！");
-	document.myform.title.focus();
-	return false;
-  }
-return true;  
+<?php echo $f_array[0]?> 
 } 
 function showlink(){
 whichEl = eval("link");
@@ -55,7 +53,7 @@ include("left.php");
 ?>
 </div>
 <div class="right">
-      <div class="admintitle">修改资讯信息</div>
+      <div class="admintitle"><?php echo $f_array[1]?></div>
 <?php
 if (isset($_GET["page"])){
 $page=$_GET["page"];
@@ -79,7 +77,7 @@ showmsg('非法操作！警告：你的操作已被记录！小心封你的用�
 <form action="zxsave.php" method="post" name="myform" id="myform" onSubmit="return CheckForm();">
         <table width="100%" border="0" cellpadding="3" cellspacing="1">
           <tr> 
-            <td align="right" class="border2">类别 <font color="#FF0000">*</font></td>
+            <td align="right" class="border2"><?php echo $f_array[2]?> <font color="#FF0000">*</font></td>
             <td width="708" class="border2"> 
               <?php
 
@@ -113,7 +111,7 @@ function changelocation(locationid)
             }        
         }
     }</script> <select name="bigclassid" onchange="changelocation(document.myform.bigclassid.options[document.myform.bigclassid.selectedIndex].value)" size="1">
-                <option value="" selected="selected">请选择大类别</option>
+                <option value="" selected="selected"><?php echo $f_array[3]?></option>
                 <?php
 	$sql = "select * from zzcms_zxclass where isshowforuser=1 and parentid=0 order by xuhao asc";
     $rs=mysql_query($sql);
@@ -124,7 +122,7 @@ function changelocation(locationid)
 				}
 				?>
               </select> <select name="smallclassid">
-                <option value="0">不指定小类</option>
+                <option value="0"><?php echo $f_array[4]?></option>
                 <?php
 
 $sql="select * from zzcms_zxclass where parentid=" .$rowzx["bigclassid"]." order by xuhao asc";
@@ -138,12 +136,12 @@ while($row = mysql_fetch_array($rs)){
               </select></td>
           </tr>
           <tr> 
-            <td width="109" align="right" class="border">标题 <font color="#FF0000">*</font></td>
+            <td width="109" align="right" class="border"><?php echo $f_array[5]?> <font color="#FF0000">*</font></td>
 			
             <td class="border">
 			 <input name="title" type="text" id="title2" size="50" maxlength="255" value="<?php echo $rowzx["title"]?>" >
 			 <input type="checkbox" name="checkbox" value="checkbox" onclick="showlink()" <?php if ($rowzx["link"]<>''){ echo 'checked';}?> />
-外链新闻 <span id="quote"></span> </td>
+<?php echo $f_array[6]?> <span id="quote"></span> </td>
           </tr>
 		  <?php 
 		  if($rowzx["link"]<>''){
@@ -156,35 +154,35 @@ while($row = mysql_fetch_array($rs)){
 		   <?php
 		   }
 		   ?>
-            <td align="right" class="border" >链接地址 <font color="#FF0000">*</font></td>
+            <td align="right" class="border" ><?php echo $f_array[7]?> <font color="#FF0000">*</font></td>
             <td class="border" ><input name="link" type="text" id="laiyuan3" size="50" maxlength="255"  value="<?php echo $rowzx["link"]?>" /></td>
           </tr>
           <tr id="trlaiyuan"> 
-            <td align="right" class="border2" >信息来源：</td>
+            <td align="right" class="border2" ><?php echo $f_array[8]?></td>
             <td class="border2" > <input name="laiyuan" type="text" id="laiyuan" value="<?php echo sitename?>" size="50" maxlength="50" /></td>
           </tr>
           <tr id="trcontent"> 
-            <td align="right" class="border2" >内容 <font color="#FF0000">*</font></td>
+            <td align="right" class="border2" ><?php echo $f_array[9]?> <font color="#FF0000">*</font></td>
             <td class="border2" > <textarea name="content" type="hidden" id="content"><?php echo $rowzx["content"]?></textarea> 
               <script type="text/javascript">CKEDITOR.replace('content');	</script>            </td>
           </tr>
           <tr id="trseo">
-            <td colspan="2" align="center" class="border" ><strong>SEO优化设置</strong></td>
+            <td colspan="2" align="center" class="border" ><strong><?php echo $f_array[10]?></strong></td>
           </tr>
           <tr id="trkeywords">
-            <td align="right" class="border2" >关键词（keyword）</td>
+            <td align="right" class="border2" ><?php echo $f_array[11]?></td>
             <td class="border2" ><input name="keywords" type="text" id="keywords" size="50" maxlength="50" value="<?php echo $rowzx["keywords"]?>" /></td>
           </tr>
           <tr id="trdescription">
-            <td align="right" class="border" >描述（description）</td>
+            <td align="right" class="border" ><?php echo $f_array[12]?></td>
             <td class="border" ><input name="description" type="text" id="description" size="50" maxlength="500" value="<?php echo $rowzx["description"]?>" /></td>
           </tr><tr id="trquanxian">
-      <td colspan="2" align="center" class="border2" ><strong>浏览权限设置</strong></td>
+      <td colspan="2" align="center" class="border2" ><strong><?php echo $f_array[13]?></strong></td>
     </tr>
     <tr id="trquanxian2"> 
       <td align="right" class="border" >&nbsp;</td>
       <td class="border" > <select name="groupid">
-          <option value="0">全部用户</option>
+          <option value="0"><?php echo $f_array[14]?></option>
           <?php
 		  $rs=mysql_query("Select * from zzcms_usergroup ");
 		  $row = mysql_num_rows($rs);
@@ -199,20 +197,20 @@ while($row = mysql_fetch_array($rs)){
 		  }
 	 ?>
         </select> <select name="jifen" id="jifen">
-          <option value="0">请选择无权限用户是否可用积分查看</option>
-          <option value="0" <?php if ($rowzx["jifen"]==0) { echo "selected";}?>>无权限用户不可用积分查看</option>
-          <option value="10" <?php if ($rowzx["jifen"]==10) { echo "selected";}?>>付我10积分可查看</option>
-          <option value="20" <?php if ($rowzx["jifen"]==20) { echo "selected";}?>>付我20积分可查看</option>
-          <option value="30" <?php if ($rowzx["jifen"]==30) { echo "selected";}?>>付我30积分可查看</option>
-          <option value="50" <?php if ($rowzx["jifen"]==50) { echo "selected";}?>>付我50积分可查看</option>
-          <option value="100" <?php if ($rowzx["jifen"]==100) { echo "selected";}?>>付我100积分可查看</option>
-          <option value="200" <?php if ($rowzx["jifen"]==200) { echo "selected";}?>>付我200积分可查看</option>
-          <option value="500" <?php if ($rowzx["jifen"]==500) { echo "selected";}?>>付我500积分可查看</option>
-          <option value="1000" <?php if ($rowzx["jifen"]==1000) { echo "selected";}?>>付我1000积分可查看</option>
+          <option value="0"><?php echo $f_array[15]?></option>
+          <option value="0" <?php if ($rowzx["jifen"]==0) { echo "selected";}?>><?php echo $f_array[16]?></option>
+          <option value="10" <?php if ($rowzx["jifen"]==10) { echo "selected";}?>><?php echo $f_array[17]?></option>
+          <option value="20" <?php if ($rowzx["jifen"]==20) { echo "selected";}?>><?php echo $f_array[18]?></option>
+          <option value="30" <?php if ($rowzx["jifen"]==30) { echo "selected";}?>><?php echo $f_array[19]?></option>
+          <option value="50" <?php if ($rowzx["jifen"]==50) { echo "selected";}?>><?php echo $f_array[20]?></option>
+          <option value="100" <?php if ($rowzx["jifen"]==100) { echo "selected";}?>><?php echo $f_array[21]?></option>
+          <option value="200" <?php if ($rowzx["jifen"]==200) { echo "selected";}?>><?php echo $f_array[22]?></option>
+          <option value="500" <?php if ($rowzx["jifen"]==500) { echo "selected";}?>><?php echo $f_array[23]?></option>
+          <option value="1000" <?php if ($rowzx["jifen"]==1000) { echo "selected";}?>><?php echo $f_array[24]?></option>
         </select> </td>
     </tr>
             <td align="right" class="border2">&nbsp;</td>
-            <td class="border2"> <input name="Submit" type="submit" class="buttons" value="发 布">
+            <td class="border2"> <input name="Submit" type="submit" class="buttons" value="<?php echo $f_array[25]?>">
               <input name="id" type="hidden" id="ypid2" value="<?php echo $rowzx["id"] ?>" /> 
               <input name="editor" type="hidden" id="editor2" value="<?php echo $username?>" />
               <input name="page" type="hidden" id="action" value="<?php echo $page?>" />

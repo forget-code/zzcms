@@ -8,6 +8,8 @@ $pagetitle=$comane."-留言板";
 $pagekeywords=$comane."-留言板";
 $pagedescription=$comane."-留言板";
 
+$fromurl=$_GET["fromurl"];
+
 if (isset($_COOKIE["UserName"])) {
 $rs=mysql_query("select somane,phone,email from zzcms_user where username='".$_COOKIE["UserName"]."'");
 $row=mysql_fetch_array($rs);
@@ -59,6 +61,7 @@ $strout=str_replace("{#somane}",$somane,$strout) ;
 $strout=str_replace("{#phone}",$phone,$strout) ;
 $strout=str_replace("{#email}",$email,$strout) ;
 $strout=str_replace("{#saver}",$editor,$strout) ;
+$strout=str_replace("{#fromurl}",$fromurl,$strout) ;
 
 $strout=str_replace("{#siteskin}",siteskin,$strout) ;
 $strout=str_replace("{#sitename}",sitename,$strout) ;

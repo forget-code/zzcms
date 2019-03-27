@@ -118,7 +118,7 @@ echo "<script>location.href='zsclassmanage.php'</script>";
   PRIMARY KEY  (`id`)
 ) ENGINE=MyISAM AUTO_INCREMENT=1 DEFAULT CHARSET=utf8");
 mysql_query("ALTER TABLE  `zzcms_dl_".$classzm."` ADD INDEX (  `province` ,  `city` ,  `xiancheng` )") ;
-*/		
+*/	
 		echo "<script>location.href='zsclassmanage.php?#B".$classzm."'</script>";
 	}
 }

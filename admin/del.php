@@ -1,10 +1,11 @@
 <?php 
-set_time_limit(1800);
+//set_time_limit(1800);
 include("admin.php");
 ?>
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<link href="style.css" rel="stylesheet" type="text/css"> 
 <title></title>
 </head>
 <body>
@@ -138,5 +139,6 @@ mysql_close($conn);
 echo "<script>location.href=\"$pagename\"</script>"; 
 }
 ?>
+<a href="<?php echo $pagename?>">返回</a>
 </body>
 </html>

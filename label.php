@@ -202,7 +202,7 @@ if (file_exists($fpath)==true){
 if (filesize($fpath)<10){ showmsg(zzcmsroot."template/".$siteskin."/label/".$channel."class/".$labelname.".txt 内容为空");}//utf-8有文件头，空文件大小为3字节
 $fcontent=file_get_contents($fpath);
 $f=explode("|||",$fcontent) ;
-$numbers = $f[1];$row = $f[2];$start = $f[3];$mids = $f[4];
+$startnumber = $f[1];$numbers = $f[2];$row = $f[3];$start = $f[4];$mids = $f[5];
 if ( whtml == "Yes"){
 $mids = str_replace($channel.".php?b={#classid}", "{#classid}",$mids);
 	if($channel=="zs"){
@@ -216,20 +216,20 @@ $mids = str_replace($channel.".php?b={#classid}", "{#classid}",$mids);
 	$mids = str_replace("class.php?b={#bigclassid}","/special/class/{#bigclassid}",$mids);
 	}
 }
-$ends = $f[5];
+$ends = $f[6];
 if ($channel=='zs' || $channel=='pp'|| $channel=='dl'){
-$sql ="select classid,classname,classzm from zzcms_zsclass where parentid='A' order by xuhao limit 0,$numbers ";
+$sql ="select classid,classname,classzm from zzcms_zsclass where parentid='A' order by xuhao limit $startnumber,$numbers ";
 }elseif($channel=='job'){
-$sql ="select * from zzcms_jobclass where parentid='0' order by xuhao limit 0,$numbers ";
+$sql ="select * from zzcms_jobclass where parentid='0' order by xuhao limit $startnumber,$numbers ";
 }elseif($channel=="zh" || $channel=="link"){
-$sql ="select * from zzcms_".$channel."class order by xuhao limit 0,$numbers ";
+$sql ="select * from zzcms_".$channel."class order by xuhao limit $startnumber,$numbers ";
 }elseif($channel=="company"){
-$sql ="select * from zzcms_userclass where  parentid='0' order by xuhao limit 0,$numbers ";
+$sql ="select * from zzcms_userclass where  parentid='0' order by xuhao limit $startnumber,$numbers ";
 }elseif($channel=="zx" || $channel=="special"){
 	if ($b<>""){
-	$sql ="select * from zzcms_".$channel."class where  parentid=".$b." order by xuhao limit 0,$numbers ";
+	$sql ="select * from zzcms_".$channel."class where  parentid=".$b." order by xuhao limit $startnumber,$numbers ";
 	}else{
-	$sql ="select * from zzcms_".$channel."class where  isshowininfo=1 and parentid=0 order by xuhao limit 0,$numbers ";
+	$sql ="select * from zzcms_".$channel."class where  isshowininfo=1 and parentid=0 order by xuhao limit $startnumber,$numbers ";
 	}
 }
 $rs=mysql_query($sql);
@@ -587,12 +587,13 @@ $sql2='';
 	}elseif ($orderby == "sendtime") {$sql3 = " order by sendtime desc";}
 	$sql4 = " limit 0,$numbers ";	
 
-$rs = mysql_query($sql.$sql2.$sql4); 
+$rs = mysql_query($sql.$sql2.$sql4);
+//echo  $sql.$sql2.$sql4;
 $row = mysql_fetch_array($rs);
 $totlenum = $row['total'];
 
 if ( $b <> "empty") {
-$sql = "select id,cp,sendtime,editor,dlsname,city,saver,tel from zzcms_dl_".$b." where passed<>0 ";
+$sql = "select id,dlid,cp,sendtime,editor,dlsname,city,saver,tel from zzcms_dl_".$b." where passed<>0 ";
 }else{
 $sql = "select id,cp,sendtime,editor,dlsname,city,saver,tel from zzcms_dl where passed<>0 ";
 }
@@ -603,9 +604,14 @@ $str="暂无信息";
 }else{
 $xuhao = 1;$n = 1;$mids2='';
 while($row=mysql_fetch_array($rs)){
-	$mids2 = $mids2 . str_replace("{#name}", $row["dlsname"],str_replace("{#n}", $n,str_replace("{#sendtime}", date("Y-m-d",strtotime($row['sendtime'])),str_replace("{#id}", $row["id"],str_replace("{#cp}",cutstr($row["cp"],$titlenum),$mids)))));
+	$mids2 = $mids2 . str_replace("{#name}", $row["dlsname"],str_replace("{#n}", $n,str_replace("{#sendtime}", date("Y-m-d",strtotime($row['sendtime'])),str_replace("{#cp}",cutstr($row["cp"],$titlenum),$mids))));
+	if ( $b <> "empty") {
+	$mids2=str_replace("{#id}",$row['dlid'],$mids2);
+	}else{
+	$mids2=str_replace("{#id}",$row['id'],$mids2);
+	}
 	$mids2=str_replace("{#mobile}",str_replace(substr($row['tel'],3,4),"****",$row['tel']),$mids2);
-	if (strpos($mids,'{#companyname}')!==false || strpos($mids,'{#companyimg}')!==false){
+	if (strpos($mids,'{#companyname}')!==false || strpos($mids,'{#companyimg}')!==false || strpos($mids,'{#companyimgbig}')!==false){
 		$sqln = "select id,username,img,comane from zzcms_user where username='".$row['saver']."' ";
 		$rsn=mysql_query($sqln);
 		$rown= mysql_num_rows($rsn);//返回记录数
@@ -614,8 +620,15 @@ while($row=mysql_fetch_array($rs)){
 		if (sdomain=="Yes"){$mids2= str_replace("{#zturl}","http://".$rown['username'].".".substr(siteurl,strpos(siteurl,".")+1),$mids2);}
 		if (whtml == "Yes") {$mids2 = str_replace("{#zturl}","/zt/show-".$rown['id'].".htm",$mids2);}//需要从company目录转到zt}
 		$mids2 = str_replace("{#zturl}","/zt/show.php?id=".$rown['id'],$mids2);//需要从company目录转到zt
+		
+		$companyname_long=strbetween($mids2,"{#companyname:","}");
+		if ($companyname_long!=''){
+		$mids2 =str_replace("{#companyname:".$companyname_long."}",cutstr($rown['comane'],$companyname_long),$mids2) ;
+		}else{
 		$mids2=str_replace("{#companyname}",$rown['comane'],$mids2);
-		$mids2=str_replace("{#companyimg}", $rown['img'],$mids2);
+		}
+		$mids2=str_replace("{#companyimg}", getsmallimg($rown['img']),$mids2);
+		$mids2=str_replace("{#companyimgbig}", $rown['img'],$mids2);
 		}
 	}
 	if ($n<=3){
@@ -683,7 +696,14 @@ while($row=mysql_fetch_array($rs)){
 	if (sdomain=="Yes"){$mids2= str_replace("{#zturl}","http://".$rown['username'].".".substr(siteurl,strpos(siteurl,".")+1),$mids2);}//
 	if (whtml == "Yes") {$mids2 = str_replace("{#zturl}","/zt/show-".$rown['id'].".htm",$mids2);}//需要从company目录转到zt}
 	$mids2 = str_replace("{#zturl}","/zt/show.php?id=".$rown['id'],$mids2);//需要从company目录转到zt
+	
+	$companyname_long=strbetween($mids2,"{#companyname:","}");
+	if ($companyname_long!=''){
+	$mids2 =str_replace("{#companyname:".$companyname_long."}",cutstr($rown['comane'],$companyname_long),$mids2) ;
+	}else{
 	$mids2=str_replace("{#companyname}",$rown['comane'],$mids2);
+	}
+
 	$mids2=str_replace("{#companyimg}", $rown['img'],$mids2);
 	}
 	}
@@ -924,7 +944,7 @@ while($r=mysql_fetch_array($rs)){
 		if (whtml=="Yes"){
 		$mids2=str_replace("/zx/show-{#id}.htm", addhttp($r["link"]),$mids2);
 		}else{
-		$mids2=str_replace("/zx/show.php?id={#id}", addhttp($r["link"]),$mids2);
+		$mids2=str_replace("/zx/show.php?id={#id}",addhttp($r["link"]),$mids2);
 		}
 	}
 	$mids2=str_replace("{#bigclassname}", $r["bigclassname"],str_replace("{#bigclassid}", $r["bigclassid"],$mids2));
@@ -1042,9 +1062,9 @@ while($r=mysql_fetch_array($rs)){
 	}
 	if ($r["link"]<>''){//当为外链时
 		if (whtml=="Yes"){
-		$mids2=str_replace("/special/show-{#id}.htm", addhttp($r["link"]),$mids2);
+		$mids2=str_replace("/special/show-{#id}.htm",$r["link"],$mids2);
 		}else{
-		$mids2=str_replace("/special/show.php?id={#id}", addhttp($r["link"]),$mids2);
+		$mids2=str_replace("/special/show.php?id={#id}",$r["link"],$mids2);
 		}
 	}
 	$mids2=str_replace("{#bigclassname}", $r["bigclassname"],str_replace("{#bigclassid}", $r["bigclassid"],$mids2));
@@ -1163,7 +1183,7 @@ $str="暂无信息";
 }else{
 $mids2 ='';$n = 1;$xuhao=1;
 while($r=mysql_fetch_array($rs)){
-	$mids2 = $mids2 . str_replace("{#url}", addhttp($r["url"]),str_replace("{#logo}", $r["logo"],str_replace("{#sitename}",cutstr($r["sitename"],$titlenum),$mids)));
+	$mids2 = $mids2 . str_replace("{#url}",$r["url"],str_replace("{#logo}", $r["logo"],str_replace("{#sitename}",cutstr($r["sitename"],$titlenum),$mids)));
 	if ($n<=3){
 	$mids2=str_replace("{#xuhao}", "<font class=xuhao1>".addzero($xuhao,2)."</font>",$mids2);
 	}else{
@@ -1267,7 +1287,7 @@ $str="暂无信息";
 }else{
 $mids2='';$n = 1;
 while($r=mysql_fetch_array($rs)){
-$mids2 =$mids2 .str_replace("{#link}", addhttp($r["link"]),str_replace("{#n}", addzero($n,2),str_replace("{#title}",cutstr($r["title"],$titlenum),$mids)));
+$mids2 =$mids2 .str_replace("{#link}", $r["link"],str_replace("{#n}", addzero($n,2),str_replace("{#title}",cutstr($r["title"],$titlenum),$mids)));
 	$mids2 =str_replace("{#width}",$r["imgwidth"],$mids2);
 	$mids2 =str_replace("{#height}",$r["imgheight"],$mids2);
 	$mids2 =str_replace("{#titlecolor}",$r["titlecolor"],$mids2);

@@ -2,6 +2,9 @@
 if(!isset($_SESSION)){session_start();} 
 include("../inc/conn.php");
 include("check.php");
+$fpath="text/ppsave.txt";
+$fcontent=file_get_contents($fpath);
+$f_array=explode("|||",$fcontent) ;
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="zh-CN">
@@ -12,7 +15,8 @@ include("check.php");
 <link href="style.css" rel="stylesheet" type="text/css">
 <?php
 if (check_usergr_power("pp")=="no" && $usersf=='个人'){
-showmsg('个人用户没有此权限');
+echo $f_array[0];
+exit;
 }
 
 if (isset($_REQUEST["page"])){ 
@@ -39,7 +43,8 @@ $sql="select * from zzcms_zsclass where parentid='".$bigclassid."' and  classzm=
 $rs=mysql_query($sql);
 $row=mysql_fetch_array($rs);
 if (!$row){
-echo"<script>alert('请选择小类');location.href='ppmodify.php?id=".$cpid."'</script>";
+echo $f_array[1];
+echo"<script>location.href='ppmodify.php?id=".$cpid."'</script>";
 }
 }
 
@@ -49,14 +54,16 @@ $sql="select * from zzcms_pp where ppname='".$cp_name."' and editor='".$username
 $rs=mysql_query($sql);
 $row=mysql_num_rows($rs);
 if ($row){
-showmsg('您已发布过该信息，请不要发布重复的信息！','ppmanage.php');
+echo $f_array[2];
+exit;
 }
 }elseif($_REQUEST["action"]=="modify"){
 $sql="select * from zzcms_pp where ppname='".$cp_name."' and editor='".$username."' and id<>".$cpid." ";
 $rs=mysql_query($sql);
 $row=mysql_num_rows($rs);
 if ($row){
-showmsg('您已发布过该产品，请不要发布重复的信息！','ppmanage.php');
+echo $f_array[2];
+exit;
 }
 }
 
@@ -103,16 +110,16 @@ include("left.php");
   <tr> 
     <td class="tstitle"> <?php
 	if ($isok) {
-      echo "成功 ";
+      echo $f_array[3];
 	  }else{
-	  echo"失败";}
+	  echo $f_array[4];}
      ?>
       </td>
   </tr>
   <tr> 
     <td><table width="100%" border="0" cellspacing="0" cellpadding="3">
         <tr bgcolor="#FFFFFF"> 
-          <td width="25%" align="right" bgcolor="#FFFFFF"><strong>名称：</strong></td>
+          <td width="25%" align="right" bgcolor="#FFFFFF"><strong><?php echo $f_array[5]?></strong></td>
           <td width="75%"><?php echo $cp_name?></td>
         </tr>
       </table></td>
@@ -120,10 +127,10 @@ include("left.php");
   <tr> 
     <td><table width="100%" border="0" cellpadding="5" cellspacing="1">
         <tr> 
-          <td width="120" align="center" class="border"><a href="ppadd.php">继续添加</a></td>
-                <td width="120" align="center" class="border"><a href="ppmodify.php?id=<?php echo $cpid?>">修改</a></td>
-                <td width="120" align="center" class="border"><a href="ppmanage.php?page=<?php echo $page?>">返回</a></td>
-                <td width="120" align="center" class="border"><a href="<?php echo getpageurl("pp",$cpid)?>" target="_blank">预览</a></td>
+          <td width="120" align="center" class="border"><a href="ppadd.php"><?php echo $f_array[5]?></a></td>
+                <td width="120" align="center" class="border"><a href="ppmodify.php?id=<?php echo $cpid?>"><?php echo $f_array[6]?></a></td>
+                <td width="120" align="center" class="border"><a href="ppmanage.php?page=<?php echo $page?>"><?php echo $f_array[7]?></a></td>
+                <td width="120" align="center" class="border"><a href="<?php echo getpageurl("pp",$cpid)?>" target="_blank"><?php echo $f_array[8]?></a></td>
         </tr>
       </table></td>
   </tr>

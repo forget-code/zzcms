@@ -11,34 +11,28 @@ checkadminisdo("pp");
 $action=@$_REQUEST["action"];
 $page=isset($_GET["page"])?$_GET["page"]:1;
 $keyword=@$_POST["keyword"] ;
-
 $kind=isset($_REQUEST["kind"])?$_REQUEST["kind"]:'ppname' ;
-
 $b=@$_REQUEST["b"] ;
 $shenhe=@$_REQUEST["shenhe"];
 $showwhat=@$_REQUEST["showwhat"];
 
 if ($action=="pass"){
-$id="";
 if(!empty($_POST['id'])){
     for($i=0; $i<count($_POST['id']);$i++){
-    $id=$id.($_POST['id'][$i].',');
-    }
-	$id=substr($id,0,strlen($id)-1);//去除最后面的","
-}
-
-if ($id==""){
-echo "<script>alert('操作失败！至少要选中一条信息。');history.back()</script>";
-}else{
-	 if (strpos($id,",")>0){
-		$sql="update zzcms_pp set passed=1 where id in (". $id .")";
-	}else{
-		$sql="update zzcms_pp set passed=1 where id='$id'";
+    $id=$_POST['id'][$i];
+	$sql="select passed from zzcms_pp where id ='$id'";
+	$rs = mysql_query($sql); 
+	$row = mysql_fetch_array($rs);
+		if ($row['passed']=='0'){
+		mysql_query("update zzcms_pp set passed=1 where id ='$id'");
+		}else{
+		mysql_query("update zzcms_pp set passed=0 where id ='$id'");
+		}
 	}
-mysql_query($sql);
-
-echo "<script>location.href='?shenhe=no&keyword=".$keyword."&page=".$page."'</script>";
+}else{
+echo "<script>alert('操作失败！至少要选中一条信息。');history.back()</script>";
 }
+echo "<script>location.href='?keyword=".$keyword."&page=".$page."'</script>";	
 }
 ?>
 </head>
@@ -129,7 +123,7 @@ echo "暂无信息";
 <table width="100%" border="0" cellpadding="5" cellspacing="0" class="border">
     <tr> 
       <td> 
-        <input type="submit" onClick="myform.action='?action=pass'" value="审核选中的信息">
+        <input type="submit" onClick="myform.action='?action=pass'" value="【取消/审核】选中的信息">
          <input type="submit" onClick="myform.action='del.php';myform.target='_self';return ConfirmDel()" value="删除选中的信息">
         <input name="pagename" type="hidden"  value="pp_manage.php?b=<?php echo $b?>&shenhe=<?php echo $shenhe?>&page=<?php echo $page ?>"> 
         <input name="tablename" type="hidden"  value="zzcms_pp"> </td>
@@ -137,7 +131,7 @@ echo "暂无信息";
   </table>
   <table width="100%" border="0" cellpadding="3" cellspacing="1">
     <tr> 
-      <td width="5%" height="25" align="center" class="border">选择</td>
+      <td width="5%" height="25" align="center" class="border"><label for="chkAll" style="text-decoration: underline;cursor: hand;">全选</label></td>
       <td width="5%" height="25" align="center" class="border">图片</td>
       <td width="10%" height="25" align="center" class="border">名称</td>
       <td width="10%" align="center" class="border">类别</td>
@@ -167,8 +161,8 @@ while($row = mysql_fetch_array($rs)){
   <table width="100%" border="0" cellpadding="5" cellspacing="0" class="border">
     <tr> 
       <td> <input name="chkAll" type="checkbox" id="chkAll" onClick="CheckAll(this.form)" value="checkbox">
-        全选 
-        <input type="submit" onClick="myform.action='?action=pass'" value="审核选中的信息"> 
+        <label for="chkAll" style="text-decoration: underline;cursor: hand;">全选</label> 
+        <input type="submit" onClick="myform.action='?action=pass'" value="【取消/审核】选中的信息"> 
         <input type="submit" onClick="myform.action='del.php';myform.target='_self';return ConfirmDel()" value="删除选中的信息">
       </td>
     </tr>

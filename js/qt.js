@@ -14,30 +14,27 @@ function setbgcolor(obj){
 	return true;
 }
 
-function anyCheck(form,aa) { //多选了就提示-选择时就检察
-var total = 1;
-var max = document.getElementsByName("id").length;
-
-for (var idx = 1; idx < max; idx++) 
-{
-	if (eval("form.id[" + idx + "].checked") == true) 
-	{total += 1;}
-}
-
-if(aa=='duibi') {
-if (total==1){
-alert("至少选择 2 项才能进行比较")
-return false;
-}
-}
-
-if(aa=='xuanzhe') {
-	if (total>5){
+function anyCheck(form,aa){//form没有启用
+	var checks = document.getElementsByName("id[]");
+	n = 0;
+	for(i=0;i<checks.length;i++){
+		if(checks[i].checked)
+			n++;
+	}
+	if(aa=='duibi') {
+	if (n<2){
+	alert("至少选择 2 项才能进行比较");
+	return false;
+	}
+	}
+	if(aa=='xuanzhe') {
+	if (n>5){
 	alert("最多只能选择 5 项")
 	return false; 
 	} 
+	}
 }
-} 
+ 
 function showfilter(obj2) {
 	if (obj2.style.visibility == "visible") {
         obj2.style.visibility = "hidden";

@@ -1,6 +1,5 @@
 <?php
-function WriteErrMsg($ErrMsg)
-{
+function WriteErrMsg($ErrMsg){
 	$strErr="<!DOCTYPE html PUBLIC '-//W3C//DTD XHTML 1.0 Transitional//EN' 'http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd'>";//有些文件不能设文件头
 	$strErr=$strErr."<html xmlns='http://www.w3.org/1999/xhtml' lang='zh-CN'>" ;
 	$strErr=$strErr."<meta http-equiv='Content-Type' content='text/html; charset=utf-8'>";	
@@ -19,10 +18,12 @@ function showmsg($msg,$zc_url = 'back'){
 	$strErr="<!DOCTYPE html PUBLIC '-//W3C//DTD XHTML 1.0 Transitional//EN' 'http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd'>";//有些文件不能设文件头
 	$strErr=$strErr."<html xmlns='http://www.w3.org/1999/xhtml' lang='zh-CN'>" ;
 	$strErr=$strErr."<meta http-equiv='Content-Type' content='text/html; charset=utf-8'>";
-	if($zc_url && $zc_url!='back'){
+	if($zc_url && $zc_url!='back' && $zc_url!='null'){
 	$strErr=$strErr.("<script>alert('$msg');self.location=\"$zc_url\";</script>");
+	}elseif( $zc_url=='null'){
+	$strErr=$strErr.("<script>alert(\"$msg\")</script>");
 	}else{
-	$strErr=$strErr.("<script>alert(\"$msg\");history.go(-1);</script>");
+	$strErr=$strErr.("<script>alert(\"$msg\");history.back();</script>");
 	}
 	echo $strErr;
 	exit;
@@ -96,16 +97,14 @@ $str=date('Y-m-d H:i:s')."  ".$_SESSION["admin"]."  ".$adminip."  ".$url."\r\n";
 fputs($fp,$str);
 fclose($fp);    
 }
-function getpageurl($channel,$id)
-{
+function getpageurl($channel,$id){
 	if (whtml=="Yes") {
 	return "/". $channel . "/show-" . $id . ".htm" ;
 	}else {
 	return "/" . $channel . "/show.php?id=" . $id;
 	}
 }
-function getpageurlzt($editor,$id)
-{
+function getpageurlzt($editor,$id){
 	if(sdomain=="Yes" ){
 	return "http://".$editor.".".substr(siteurl,strpos(siteurl,".")+1);
 	}else{
@@ -166,8 +165,7 @@ if (whtml=="Yes"){
 return $str;
 }
 
-function getpageurl3($pagename)
-{
+function getpageurl3($pagename){
 	if (whtml=="Yes"){
 	return $pagename . ".htm" ;
 	}else {
@@ -175,8 +173,7 @@ function getpageurl3($pagename)
 	}
 }
 
-function addzero($str,$longs=2)
-{
+function addzero($str,$longs=2){
 if (strlen($str)<$longs){
 	$result=0;
 	for ($i=1;$i<$longs-strlen($str);$i++){
@@ -189,9 +186,8 @@ $str= $str;
  return $str;
 }
 
-function addhttp($url)
-{
-if ($url<>"" && substr($url,0,4)<>"http" && substr($url,0,4)=="www."){
+function addhttp($url){
+if ($url<>"" && substr($url,0,4)<>"http"){
 return "http://".$url;
 }else{
 return $url;
@@ -199,8 +195,9 @@ return $url;
 }
 
 function getstation($bid,$bname,$sid,$sname,$title,$keyword,$channel){
+	$str="<li class='start'><a href='".siteurl."'>首页</a></li>";
 	if (whtml=="Yes") {
-		$str="<li class='start'><a href='".siteurl."'>首页</a></li><li><a href='/".$channel."/index.htm'>".getchannelname($channel)."</a> </li>" ;
+		$str=$str. "<li><a href='/".$channel."/index.htm'>".getchannelname($channel)."</a></li>" ;
       	if ($bid<>""){
 		$str=$str. "<li><a href='/".$channel."/".$bid."'>".$bname."</a></li>";
 		}		
@@ -214,7 +211,7 @@ function getstation($bid,$bname,$sid,$sname,$title,$keyword,$channel){
 		$str=$str. "<li>关键字中含有“".$keyword."”的".getchannelname($channel)."</li>";
 		}
 	}else{
-		$str="<li class='start'><a href='".siteurl."'>首页</a></li><li><a href='".$channel.".php'>".getchannelname($channel)."</a></li>" ;
+		$str=$str. "<li><a href='".$channel.".php'>".getchannelname($channel)."</a></li>" ;
       	if ($bid<>"") {
 		$str=$str. "<li><a href='/".$channel."/".$channel.".php?b=".$bid."'>".$bname."</a></li>";
 		}		
@@ -231,8 +228,7 @@ function getstation($bid,$bname,$sid,$sname,$title,$keyword,$channel){
 return $str;	
 }
 
-function getchannelname($channel)
-{
+function getchannelname($channel){
 switch ($channel){
 case "zs";
 return channelzs;
@@ -269,28 +265,13 @@ showmsg('验证问题答案错误！','back');
 }
 }
 
-function getimgincontent($content){//缺点不能按指定取图片
-if (strpos($content,'<img')!==false) {
-	if (strpos($content,'.jpg')!==false && strpos($content,'.gif')!==false){//两种都存在取先上传的
-		if (strpos($content,'.jpg') < strpos($content,'.gif')){
-		//1是追加的参数，指的是从src="后取值。注意是从"后，
-		//另一个就是get_magic_quotes_gpc()如果开启会自动在"前加/就变成了src=/",这样参数要设成2，也就是从src=后两位取值，因为程序事先把/过滤了，这里设为一就行了。
-		return strbetween($content,"src=",".jpg",1).".jpg";
-		}else{
-		return strbetween($content,"src=",".gif",1).".gif";
-		}
-	}elseif (strpos($content,'.gif')!==false){
-	return strbetween($content,"src=",".gif",1).".gif";
-	}elseif (strpos($content,'.jpg')!==false){
-	return strbetween($content,"src=",".jpg",1).".jpg";
-	}elseif (strpos($content,'.png')!==false){
-	return strbetween($content,"src=",".png",1).".png";
-	}
-}	
+function getimgincontent($content){
+$pattern="/<[img].*?src=[\'|\"](.*?(?:[\.gif|\.jpg]))[\'|\"].*?[\/]?>/i";
+preg_match_all($pattern,$content,$match);
+return $match[1][0];
 }
 
-function cutstr($tempstr,$tempwid)
-{
+function cutstr($tempstr,$tempwid){
 if (strlen($tempstr)/3>$tempwid){
 return mb_substr($tempstr,0,$tempwid,'utf8').".";
 }else{
@@ -320,8 +301,7 @@ $str='';
 return $str;
 }
 
-function showselectpage($pagename,$page_size,$b,$s,$page)
-{
+function showselectpage($pagename,$page_size,$b,$s,$page){
 $str="<select name='menu1' onchange=MM_jumpMenu('parent',this,0)>";
 if ($page_size=="20"){
 $str=$str . "<option value='/".$pagename."/".$pagename.".php?b=".$b."&s=".$s."&page=".$page."&page_size=20' selected >20条/页</option>";
@@ -377,8 +357,7 @@ global $province,$citys;
 	return $str;
 }
 
-function showkeyword($channel,$numbers,$column)
-{
+function showkeyword($channel,$numbers,$column){
 global $keyword;
 	$fpath="cache/zskeyword.txt";
 	if (file_exists($fpath)==false){
@@ -453,7 +432,7 @@ while ($row=mysql_fetch_array($rs)){
 		if (isshowad_when_timeend=="No" && $row["endtime"]<=date('Y-m-d H:i:s')){ //到期的
 		$str=$str. showadtext;
 		}else{
-		$str=$str. "<a href='".addhttp($row["link"])."' target='_blank' style='color:".$row["titlecolor"]."'>";
+		$str=$str. "<a href='".$row["link"]."' target='_blank' style='color:".$row["titlecolor"]."'>";
 		if (strpos("gif|jpg|png|bmp",substr($row["img"],-3))!==false) {
 			if ($imgwidth!=0){
 			$str=$str. "<img src='".isaddsiteurl($row["img"])."' height='$imgheight' width='$imgwidth' border='0' alt='".$row["title"]."'/>";
@@ -526,12 +505,12 @@ while ($row=mysql_fetch_array($rs)){
 	if ($bianhao=='yes'){
 	$str=$str.addzero($n,2)."-";
 	}
-	$str=$str."<a href='".addhttp($row["link"])."' target='_blank' onMouseOver=\"showfilter(ad_layer".$row["id"].");window.document.getElementById('ad_layer".$row["id"]."').innerHTML='<img src=".isaddsiteurl($row["img"])." width=200px>'\" onMouseOut='showfilter(ad_layer".$row["id"].")'>\n";	
+	$str=$str."<a href='".$row["link"]."' target='_blank' onMouseOver=\"showfilter(ad_layer".$row["id"].");window.document.getElementById('ad_layer".$row["id"]."').innerHTML='<img src=".isaddsiteurl($row["img"])." width=200px>'\" onMouseOut='showfilter(ad_layer".$row["id"].")'>\n";	
 	}else{
 	if ($bianhao=='yes'){
 	$str=$str.addzero($n,2)."-";
 	}
-	$str=$str."<a href='".addhttp($row["link"])."' target='_blank' style='color:".$row["titlecolor"]."'>";	
+	$str=$str."<a href='".$row["link"]."' target='_blank' style='color:".$row["titlecolor"]."'>";	
 	}
 		if ($titlelong!=0){
 		$str=$str.cutstr($row["title"],$titlelong);
@@ -594,7 +573,7 @@ while ($row=mysql_fetch_array($rs)){
 		}else{
 		$str=$str. "<div class='bgcolor2' align='center'>";
 		}
-		$str=$str. "<a href='".addhttp($row["link"])."' target='_blank' style='color:".$row["titlecolor"]."'>";
+		$str=$str. "<a href='".$row["link"]."' target='_blank' style='color:".$row["titlecolor"]."'>";
 		if (strpos("gif|jpg|png|bmp",substr($row["img"],-3))!==false) {
 			if ($imgwidth!=0){
 			$str=$str. "<img src='".isaddsiteurl($row["img"])."' height='$imgheight' width='$imgwidth' border='0' alt='".$row["title"]."'/>";
@@ -629,12 +608,12 @@ while ($row=mysql_fetch_array($rs)){
 	if ($bianhao=='yes'){
 	$str=$str.addzero($n,2)."-";
 	}
-	$str=$str."<a href='".addhttp($row["link"])."' target='_blank' onMouseOver=\"showfilter(ad_layer".$row["id"].");window.document.getElementById('ad_layer".$row["id"]."').innerHTML='<img src=".isaddsiteurl($row["img"])." width=200px>'\" onMouseOut='showfilter(ad_layer".$row["id"].")'>";	
+	$str=$str."<a href='".$row["link"]."' target='_blank' onMouseOver=\"showfilter(ad_layer".$row["id"].");window.document.getElementById('ad_layer".$row["id"]."').innerHTML='<img src=".isaddsiteurl($row["img"])." width=200px>'\" onMouseOut='showfilter(ad_layer".$row["id"].")'>";	
 	}else{
 	if ($bianhao=='yes'){
 	$str=$str.addzero($n,2).'-';
 	}
-	$str=$str."<a href='".addhttp($row["link"])."' target='_blank' style='color:".$row["titlecolor"]."'>";	
+	$str=$str."<a href='".$row["link"]."' target='_blank' style='color:".$row["titlecolor"]."'>";	
 	}
 		if ($titlelong!=0){
 		$str=$str.cutstr($row["title"],$titlelong);

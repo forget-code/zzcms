@@ -76,10 +76,7 @@ if ($_POST["action"]=="add"){
 $isok=mysql_query("Insert into zzcms_job(jobname,bigclassid,bigclassname,smallclassid,smallclassname,sm,province,city,xiancheng,sendtime,editor,userid,comane) values('$cp_name','$bigclassid','$bigclassname','$smallclassid','$smallclassname','$sm','$province','$city','$xiancheng','".date('Y-m-d H:i:s')."','$username','$userid','$comane')") ;  
 $cpid=mysql_insert_id();		
 }elseif ($_POST["action"]=="modify"){
-$oldprovince=trim($_POST["oldprovince"]);
-if ($province=='请选择省份'){
-$province=$oldprovince;
-}
+
 $isok=mysql_query("update zzcms_job set jobname='$cp_name',bigclassid='$bigclassid',bigclassname='$bigclassname',smallclassid='$smallclassid',smallclassname='$smallclassname',sm='$sm',
 province='$province',city='$city',xiancheng='$xiancheng',sendtime='".date('Y-m-d H:i:s')."',
 editor='$username',userid='$userid',comane='$comane',passed=0 where id='$cpid'");

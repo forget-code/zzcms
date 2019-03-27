@@ -9,7 +9,6 @@ include("admin.php");
 </head>
 <body>
 <?php
-checkadminisdo("usergroup");
 if (isset($_REQUEST['action'])){
 $action=$_REQUEST['action'];
 }else{
@@ -32,6 +31,7 @@ if (!$row){
 	$ErrMsg=$ErrMsg . "<li>此用户组不存在！</li>";
 }else{
 	if ($action=="modify"){
+	checkadminisdo("usergroup");
 	$groupname=trim($_POST["groupname"]);
 	$grouppic=trim($_POST["grouppic"]);
 	$groupid=trim($_POST["groupid"]);
@@ -57,7 +57,6 @@ if (!$row){
 			mysql_query("Update zzcms_user set groupid=" . $groupid . " where groupid=" . $oldgroupid."");
 			mysql_query("Update zzcms_main set groupid=" . $groupid . " where groupid=" . $oldgroupid."");
      	}		
-		mysql_close($conn);
 		echo "<script>location.href='usergroupmanage.php'</script>";
 	}
 }
@@ -144,7 +143,7 @@ function CheckAll(form){
     <tr> 
       <td height="11" align="right" class="border">所需费用</td>
       <td height="11" class="border"><input name="RMB" type="text" id="RMB" value="<?php echo $row["RMB"]?>" size="4" maxlength="30">
-        (元/年) </td>
+        (积分/年) </td>
     </tr>
     <tr>
       <td align="right" class="border">给权限

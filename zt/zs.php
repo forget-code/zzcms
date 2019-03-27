@@ -129,7 +129,13 @@ $list2 =str_replace("{#img}",$row['img'],$list2) ;
 $list2 =str_replace("{#proname}",cutstr($row["proname"],8),$list2) ;
 $list2 =str_replace("{#gg}",$row["gg"],$list2) ;
 $list2 =str_replace("{#city}",$row["province"].$row["city"],$list2) ;
-$list2 =str_replace("{#prouse}",cutstr($row['prouse'],200),$list2) ;
+
+$prouse_long=strbetween($list2,"{#prouse:","}");
+if ($prouse_long!=''){
+$list2 =str_replace("{#prouse:".$prouse_long."}",cutstr($row['prouse'],$prouse_long),$list2) ;
+}else{
+$list2 =str_replace("{#prouse}",cutstr($row['prouse'],150),$list2) ;
+}
 $list2 =str_replace("{#lb}",$lb,$list2) ;				
 
 $i=$i+1;

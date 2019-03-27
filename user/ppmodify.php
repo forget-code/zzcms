@@ -1,6 +1,9 @@
 <?php
 include("../inc/conn.php");
 include("check.php");
+$fpath="text/ppmodify.txt";
+$fcontent=file_get_contents($fpath);
+$f_array=explode("|||",$fcontent) ;
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="zh-CN">
@@ -10,42 +13,14 @@ include("check.php");
 <link href="style.css" rel="stylesheet" type="text/css">
 <?php
 if (check_usergr_power("pp")=="no" && $usersf=='个人'){
-showmsg('个人用户没有此权限');
+echo $f_array[11];
+exit;
 }
 ?>
 <title></title>
 <script language = "JavaScript">
-function CheckForm()
-{
-	ischecked=false;
- 	for(var i=0;i<document.myform.bigclassid.length;i++)
-	{ 
-		if(document.myform.bigclassid[i].checked==true)  
-   		{
-		 ischecked=true ;
-   		} 
-	}
-	if(document.myform.bigclassid.checked==true)  
-   		{
-		 ischecked=true ;
-   		} 
-   
- 	if (ischecked==false)
-  	{
-	alert("请选择类别！");	
-    return false;
-	}
-		
-
-		
-  if (document.myform.name.value=="")
-  {
-	document.myform.name.focus();
-    document.myform.name.value='此处不能为空';
-    document.myform.name.select();
-	document.myform.name.style.backgroundColor="FFCC00";
-	return false;
-  }
+function CheckForm(){
+<?php echo $f_array[0]?>
 }
 
 function doClick_E(o){
@@ -98,25 +73,20 @@ markit();
 showmsg('非法操作！警告：你的操作已被记录！小心封你的用户及IP！');
 }
 ?>
-<table width="100%" border="0" cellspacing="0" cellpadding="0">
-  <tr>
-    <td class="admintitle">修改品牌信息</td>
-  </tr>
-</table>
-
+<div class="admintitle"><?php echo $f_array[1]?></div>
 <form action="ppsave.php" method="post" name="myform" id="myform" onSubmit="return CheckForm();">
         <table width="100%" border="0" cellpadding="3" cellspacing="1">
           <tr> 
-            <td align="right" class="border" >名称<font color="#FF0000"> *</font></td>
-            <td class="border" > <input name="name" type="text" id="name" value="<?php echo $row["ppname"]?>" size="60" maxlength="45" ></td>
+            <td align="right" class="border" ><?php echo $f_array[2]?><font color="#FF0000"> *</font></td>
+            <td class="border" > <input name="name" type="text" id="name" value="<?php echo $row["ppname"]?>" size="60" maxlength="45" onclick="javascript:if (this.value=='<?php echo $f_array[3]?>') {this.value=''};this.style.backgroundColor='';" onblur="javascript:if (this.value=='<?php echo $f_array[3]?>') {this.value=''};this.style.backgroundColor='';"></td>
           </tr>
           <tr> 
             <td width="18%" align="right" valign="top" class="border2" ><br>
-              所属类别 <font color="#FF0000">*</font></td>
+              <?php echo $f_array[4]?> <font color="#FF0000">*</font></td>
             <td width="82%" class="border2" > <table width="100%" border="0" cellpadding="0" cellspacing="1">
                 <tr> 
                   <td> <fieldset>
-                    <legend>请选择所属大类</legend>
+                    <legend><?php echo $f_array[5]?></legend>
                     <?php
         $sqlB = "select * from zzcms_zsclass where parentid='A' order by xuhao asc";
 		$rsB = mysql_query($sqlB,$conn); 
@@ -145,7 +115,7 @@ echo "<div id='E_con$n' style='display:block;'>";
 }else{
 echo "<div id='E_con$n' style='display:none;'>";
 }
-echo "<fieldset><legend>请选择所属小类</legend>";
+echo "<fieldset><legend>".$f_array[6]."</legend>";
 $sqlS="select * from zzcms_zsclass where parentid='$rowB[classzm]' order by xuhao asc";
 $rsS = mysql_query($sqlS,$conn); 
 $nn=0;
@@ -171,11 +141,11 @@ echo "</div>";
           </tr>
 		  
           <tr> 
-            <td align="right" class="border" >说明 <font color="#FF0000">*</font></td>
-            <td class="border" > <textarea name="sm" cols="100%" rows="10" id="sm"><?php echo $row["sm"] ?></textarea></td>
+            <td align="right" class="border" ><?php echo $f_array[7]?> <font color="#FF0000">*</font></td>
+            <td class="border" > <textarea name="sm" cols="100%" rows="10" id="sm" onclick="javascript:if (this.value=='<?php echo $f_array[3]?>') {this.value=''};this.style.backgroundColor='';" onblur="javascript:if (this.value=='<?php echo $f_array[3]?>') {this.value=''};this.style.backgroundColor='';"><?php echo $row["sm"] ?></textarea></td>
           </tr>
           <tr> 
-            <td align="right" class="border" >图片 
+            <td align="right" class="border" ><?php echo str_replace("{#maximgsize}",maximgsize,$f_array[8])?> 
               <script type="text/javascript">
 function showtxt(num)
 {
@@ -197,9 +167,9 @@ document.getElementById("showimg"+num).innerHTML="<img src='"+sd+"' width=120>";
                   <td width="120" align="center" bgcolor="#FFFFFF" id="showimg1" onclick='showtxt(1)'> 
                     <?php
 				  if($row["img"]<>""){
-				  echo "<img src='".$row["img"]."' border=0 width=120 /><br>点击可更换图片";
+				  echo "<img src='".$row["img"]."' border=0 width=120 /><br>".$f_array[11];
 				  }else{
-				  echo "<input name='Submit2' type='button'  value='上传图片'/>";
+				  echo "<input name='Submit2' type='button'  value='".$f_array[9]."'/>";
 				  }
 				  ?>                  </td>
                 </tr>
@@ -212,7 +182,7 @@ document.getElementById("showimg"+num).innerHTML="<img src='"+sd+"' width=120>";
             <td class="border2" > <input name="ypid" type="hidden" id="ypid2" value="<?php echo $row["id"] ?>"> 
               <input name="action" type="hidden" id="action2" value="modify"> 
               <input name="page" type="hidden" id="action" value="<?php echo $page ?>"> 
-              <input name="Submit" type="submit" class="buttons" value="保存修改结果"></td>
+              <input name="Submit" type="submit" class="buttons" value="<?php echo $f_array[10]?>"></td>
           </tr>
         </table>
 	  </form>

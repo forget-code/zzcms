@@ -1,6 +1,10 @@
 <?php
 include("../inc/conn.php");
+include("../inc/fy.php");
 include("check.php");
+$fpath="text/jobmanage.txt";
+$fcontent=file_get_contents($fpath);
+$f_array=explode("\n",$fcontent) ;
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="zh-CN">
@@ -11,7 +15,8 @@ include("check.php");
 <link href="style.css" rel="stylesheet" type="text/css">
 <?php
 if (check_usergr_power("job")=="no" && $usersf=='个人'){
-showmsg('个人用户没有此权限');
+echo $f_array[0];
+exit;
 }
 ?>
 <script language="JavaScript" src="/js/gg.js"></script>
@@ -44,14 +49,11 @@ $bigclass="";
 <div class="admintitle">
 <span>
  <form name="form1" method="post" action="?">
-  <input name="cpmc" type="text" id="cpmc" value="<?php if($cpmc){ echo $cpmc;}else{ echo '输入职位名称';}?>"  onfocus="javascript:if (this.value=='输入职位名称') {this.value=''}" > 
-        <input name="Submit" type="submit" value="查找">
+<?php echo $f_array[1]?><input name="cpmc" type="text" id="cpmc"><input name="Submit" type="submit" value="<?php echo $f_array[2]?>">
  </form>
-</span>
-招聘信息管理</div>
+</span><?php echo $f_array[3]?></div>
 <?php
-if( isset($_GET["page"]) && $_GET["page"]!="") 
-{
+if( isset($_GET["page"]) && $_GET["page"]!="") {
     $page=$_GET['page'];
 }else{
     $page=1;
@@ -81,19 +83,13 @@ $sql=$sql.$sql2;
 $sql=$sql . " order by id desc limit $offset,$page_size";
 $rs = mysql_query($sql); 
 if(!$totlenum){
-echo "暂无信息";
+echo $f_array[4];
 }else{
 ?>
 <form name="myform" method="post" action="del.php">
 <table width="100%" border="0" cellpadding="5" cellspacing="1">
     <tr> 
-      <td width="10%" height="25" class="border"> 职位        </td>
-      <td width="10%" align="center" class="border">所属类别</td>
-      <td width="10%" align="center" class="border">工作地点</td>
-      <td width="10%" align="center" class="border">更新时间</td>
-      <td width="5%" align="center" class="border">信息状态</td>
-      <td width="5%" align="center" class="border">修改</td>
-      <td width="5%" align="center" class="border">删除</td>
+     <?php echo $f_array[5]?>
     </tr>
 <?php
 while($row = mysql_fetch_array($rs)){
@@ -106,11 +102,11 @@ while($row = mysql_fetch_array($rs)){
       <td align="center"><?php echo $row["sendtime"]?></td>
       <td align="center"> 
 	  <?php 
-	if ($row["passed"]==1 ){ echo "已审";}else{ echo "<font color=red>待审</font>";}
+	if ($row["passed"]==1 ){ echo $f_array[6];}else{ echo $f_array[7];}
 	
 	  ?> </td>
             <td align="center" class="docolor"> 
-              <a href="jobmodify.php?id=<?php echo $row["id"]?>&page=<?php echo $page?>">修改</a></td>
+              <a href="jobmodify.php?id=<?php echo $row["id"]?>&page=<?php echo $page?>"><?php echo $f_array[8]?></a></td>
             <td align="center" class="docolor"><input name="id[]" type="checkbox" id="id" value="<?php echo $row["id"]?>" /></td>
     </tr>
 <?php
@@ -119,26 +115,10 @@ while($row = mysql_fetch_array($rs)){
   </table>
 
 <div class="fenyei">
-页次：<strong><font color="#CC0033"><?php echo $page?></font>/<?php echo $totlepage?>　</strong> 
-      <strong><?php echo $page_size?></strong>条/页　共<strong><?php echo $totlenum ?></strong>条		 
-          <?php  
-if ($page!=1){
-echo "<a href=?page=1>【首页】</a> ";
-echo "<a href=?page=".($page-1).">【上一页】</a> ";
-}else{
-echo "【首页】【上一页】";
-}
-if ($page!=$totlepage){
-echo "<a href=?page=".($page+1).">【下一页】</a> ";
-echo "<a href=?page=".$totlepage.">【尾页】</a>";
-}else{
-echo "【下一页】【尾页】";
-}
-?>
-         
+<?php echo showpage()?> 
           <input name="chkAll" type="checkbox" id="chkAll" onclick="CheckAll(this.form)" value="checkbox" />
-          <label for="chkAll">全选</label>
-          <input name="submit"  type="submit" class="buttons"  value="删除" onclick="return ConfirmDel()" />
+          <label for="chkAll"><?php echo $f_array[9]?></label>
+          <input name="submit"  type="submit" class="buttons"  value="<?php echo $f_array[10]?>" onclick="return ConfirmDel()" />
           <input name="pagename" type="hidden" id="pagename" value="jobmanage.php?page=<?php echo $page ?>" />
           <input name="tablename" type="hidden" id="tablename" value="zzcms_job" />
         </div>

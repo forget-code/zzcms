@@ -9,7 +9,6 @@ include("admin.php");
 </head>
 <body>
 <?php
-checkadminisdo("usergroup");
 if (isset($_REQUEST['action'])){
 $action=$_REQUEST['action'];
 }else{
@@ -34,7 +33,7 @@ function ConfirmDelBig(){
 }
 </script>
 <div class="admintitle">用户组管理</div>
-<div class="border"><a href="usergroupadd.php">添加用户组</a></div>
+<div class="border center"><input name="submit3" type="submit" class="buttons" onClick="javascript:location.href='usergroupadd.php'" value="添加用户组"></div>
 <?php
 $sql="select * from zzcms_usergroup";
 $rs=mysql_query($sql);
@@ -61,7 +60,7 @@ while($row=mysql_fetch_array($rs)){
     <td width="126" height="22" align="center"><?php echo $row["groupname"]?></td>
     <td width="93" height="22" align="center"><img src="../<?php echo $row["grouppic"]?>"></td>
     <td width="84" height="22" align="center"><?php echo $row["groupid"]?></td>
-    <td width="93" height="22" align="center"><?php echo $row["RMB"]?>元/年</td>
+    <td width="93" height="22" align="center"><?php echo $row["RMB"]?>积分/年</td>
     <td width="315" height="22"> <table width="100%" border="0" cellpadding="3" cellspacing="0">
         <tr> 
           <td width="75%" align="right">查看<?php echo channeldl?>商信息库联系方式：</td>

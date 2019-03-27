@@ -2,6 +2,9 @@
 if(!isset($_SESSION)){session_start();} 
 include("../inc/conn.php");
 include("check.php");
+$fpath="text/zssave.txt";
+$fcontent=file_get_contents($fpath);
+$f_array=explode("|||",$fcontent) ;
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="zh-CN">
@@ -12,7 +15,8 @@ include("check.php");
 <link href="style.css" rel="stylesheet" type="text/css">
 <?php
 if (check_usergr_power("zs")=="no" && $usersf=='个人'){
-showmsg('个人用户没有此权限');
+echo $f_array[0];
+exit;
 }
 
 if (isset($_REQUEST["page"])){ 
@@ -79,14 +83,16 @@ $sql="select * from zzcms_main where proname='".$cp_name."' and editor='".$usern
 $rs=mysql_query($sql);
 $row=mysql_num_rows($rs);
 if ($row){
-showmsg('您已发布过该产品，请不要发布重复的信息！','zsmanage.php');
+echo $f_array[1];
+exit;
 }
 }elseif($_REQUEST["action"]=="modify"){
 $sql="select * from zzcms_main where proname='".$cp_name."' and editor='".$username."' and id<>".$cpid." ";
 $rs=mysql_query($sql);
 $row=mysql_num_rows($rs);
 if ($row){
-showmsg('您已发布过该产品，请不要发布重复的信息！','zsmanage.php');
+echo $f_array[1];
+exit;
 }
 }
 
@@ -177,24 +183,24 @@ include("left.php");
   <tr> 
     <td class="tstitle"> <?php
 	if ($isok) {
-      echo "发布成功 ";
+      echo $f_array[2];
 	  }else{
-	  echo"发布失败";}
+	  echo $f_array[3];}
      ?>
       </td>
   </tr>
   <tr> 
     <td><table width="100%" border="0" cellspacing="0" cellpadding="3">
         <tr bgcolor="#FFFFFF"> 
-          <td width="25%" align="right" bgcolor="#FFFFFF"><strong>名称：</strong></td>
+          <td width="25%" align="right" bgcolor="#FFFFFF"><strong><?php echo $f_array[4]?></strong></td>
           <td width="75%"><?php echo $cp_name?></td>
         </tr>
         <tr bgcolor="#FFFFFF"> 
-          <td align="right" bgcolor="#FFFFFF"><strong>规格：</strong></td>
+          <td align="right" bgcolor="#FFFFFF"><strong><?php echo $f_array[5]?></strong></td>
           <td><?php echo $gg?></td>
         </tr>
         <tr bgcolor="#FFFFFF"> 
-          <td align="right" bgcolor="#FFFFFF"><strong><?php echo channelzs?>区域：</strong></td>
+          <td align="right" bgcolor="#FFFFFF"><strong><?php echo $f_array[6]?></strong></td>
           <td><?php echo $province.$city?></td>
         </tr>
       </table></td>
@@ -202,10 +208,10 @@ include("left.php");
   <tr> 
     <td><table width="100%" border="0" cellpadding="5" cellspacing="1">
         <tr> 
-          <td width="120" align="center" class="border"><a href="zsadd.php">继续添加</a></td>
-                <td width="120" align="center" class="border"><a href="zsmodify.php?id=<?php echo $cpid?>">修改</a></td>
-                <td width="120" align="center" class="border"><a href="zsmanage.php?page=<?php echo $page?>">返回</a></td>
-                <td width="120" align="center" class="border"><a href="<?php echo getpageurl("zs",$cpid)?>" target="_blank">预览</a></td>
+          <td width="120" align="center" class="border"><a href="zsadd.php"><?php echo $f_array[7]?></a></td>
+                <td width="120" align="center" class="border"><a href="zsmodify.php?id=<?php echo $cpid?>"><?php echo $f_array[8]?></a></td>
+                <td width="120" align="center" class="border"><a href="zsmanage.php?page=<?php echo $page?>"><?php echo $f_array[9]?></a></td>
+                <td width="120" align="center" class="border"><a href="<?php echo getpageurl("zs",$cpid)?>" target="_blank"><?php echo $f_array[10]?></a></td>
         </tr>
       </table></td>
   </tr>

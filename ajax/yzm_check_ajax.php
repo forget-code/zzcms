@@ -1,4 +1,5 @@
 <?php
+if(!isset($_SESSION)){session_start();} 
 include("../inc/conn.php");
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
@@ -15,7 +16,7 @@ if ($id==''){
 $founderr=1;
 $msg= "请输入验证码";
 }else{
-	if(time()-intval(@$_SESSION['yzm_sendtime'])>60){
+	if(time()-intval(@$_SESSION['yzm_sendtime'])>120){
 	$founderr=1;
 	$msg="请重新获取验证码";
 	}else{

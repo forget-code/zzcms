@@ -14,7 +14,7 @@ $str=$str . "<div id='gg".$i."' style='position:absolute;z-index:2' title='".$ro
 if (substr($row["img"],-3)=="swf"){
 $str=$str ."<embed src='" . siteurl.$row["img"] . "' quality='high' pluginspage='http://www.macromedia.com/go/getflashplayer' type='application/x-shockwave-flash' wmode='transparent' width='135' height='50'></embed>";
 }elseif (strpos("gif|jpg|png|bmp",substr($row["img"],-3))!==false) {
-$str=$str . "<a href='".addhttp($row["link"])."' target='_blank'><img src='". siteurl."/".$row["img"] ."' width='".$row["imgwidth"]."'  height='".$row["imgheight"]."' border='0'/></a>";
+$str=$str . "<a href='".$row["link"]."' target='_blank'><img src='". siteurl."/".$row["img"] ."' width='".$row["imgwidth"]."'  height='".$row["imgheight"]."' border='0'/></a>";
 }
 $str=$str . "<br><a href='javascript:' onclick=gg".$i.".style.visibility='hidden' title='关闭上面的广告'>×关闭</a>";
 $str=$str . "</div>";
@@ -56,7 +56,7 @@ while($row=mysql_fetch_array($rs)){
 
 $str=$str . "<div id='left".$i."' class='itemFloat' title='".$row["title"]."'>";
 if (strpos("gif|jpg|png|bmp",substr($row["img"],-3))!==false){
-$str=$str . "<a target=_blank href=".addhttp($row["link"])."><img border=0 src=".siteurl.$row["img"]." width=".$row["imgwidth"]." height=".$row["imgheight"]."></a>";
+$str=$str . "<a target=_blank href=".$row["link"]."><img border=0 src=".siteurl.$row["img"]." width=".$row["imgwidth"]." height=".$row["imgheight"]."></a>";
 }elseif (substr($row["img"],-3)=="swf"){
 $str=$str . "<embed src=".siteurl.$row["img"]." wmode=transparent width=".$row["imgwidth"]." height=".$row["imgheight"]."></embed>";
 }
@@ -83,7 +83,7 @@ $i=1;
 while($row=mysql_fetch_array($rs)){
 $str=$str . "<div id='right".$i."' class='itemFloat' title='".$row["title"]."'>";
 if (strpos("gif|jpg|png|bmp",substr($row["img"],-3))!==false){
-$str=$str . "<a target=_blank href=".addhttp($row["link"])."><img border=0 src=".siteurl.$row["img"]." width=".$row["imgwidth"]." height=".$row["imgheight"]."></a>";
+$str=$str . "<a target=_blank href=".$row["link"]."><img border=0 src=".siteurl.$row["img"]." width=".$row["imgwidth"]." height=".$row["imgheight"]."></a>";
 }elseif (substr($row["img"],-3)=="swf"){
 $str=$str . "<embed src=".siteurl.$row["img"]." wmode=transparent width=".$row["imgwidth"]." height=".$row["imgheight"]."></embed>";
 }

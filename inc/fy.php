@@ -1,18 +1,28 @@
 <?php
-function showpage($channel){
-global $page,$totlepage,$totlenum,$page_size;
+function showpage($b='no'){
+global $page,$totlepage,$totlenum,$page_size,$bigclassid;
 $str="页次：<strong><font color=#CC0033>".$page."</font>/".$totlepage."　</strong> ";
 $str=$str." <strong>".$page_size."</strong>条/页　共<strong>".$totlenum."</strong>条";		 
   
 if ($page!=1){
-$str=$str."<a href=?page=1>【首页】</a> ";
-$str=$str."<a href=?page=".($page-1).">【上一页】</a> ";
+	if ($b=="yes"){
+	$str=$str."<a href=?page=1&bigclassid=".$bigclassid.">【首页】</a> ";
+	$str=$str."<a href=?page=".($page-1)."&bigclassid=".$bigclassid.">【上一页】</a> ";
+	}else{
+	$str=$str."<a href=?page=1>【首页】</a> ";
+	$str=$str."<a href=?page=".($page-1).">【上一页】</a> ";
+	}
 }else{
 $str=$str."【首页】【上一页】";
 }
 if ($page!=$totlepage){
-$str=$str."<a href=?page=".($page+1).">【下一页】</a> ";
-$str=$str."<a href=?page=".$totlepage.">【尾页】</a>";
+	if ($b=="yes"){
+	$str=$str."<a href=?page=".($page+1)."&bigclassid=".$bigclassid.">【下一页】</a> ";
+	$str=$str."<a href=?page=".$totlepage."&bigclassid=".$bigclassid.">【尾页】</a>";
+	}else{	
+	$str=$str."<a href=?page=".($page+1).">【下一页】</a> ";
+	$str=$str."<a href=?page=".$totlepage.">【尾页】</a>";
+	}
 }else{
 $str=$str."【下一页】【尾页】";
 }

@@ -17,6 +17,13 @@ $("#getcode_math").click(function(){
 		$(this).attr("src",'/one/code_math.php?' + Math.random());
 	});
 });
+
+$(document).ready(function(){  
+	$("#tel").blur(function() { //jquery 中change()函数  
+	$("#ts_tel").load(encodeURI("/ajax/dl_liuyan_check_ajax.php?action=checktel&id="+$("#tel").val()));
+	}); 
+ 
+});  
 </script>
 </head>
 <body>
@@ -26,22 +33,21 @@ $("#getcode_math").click(function(){
 {#station}
 </div>
 <div class="pagebody" style="margin-bottom:8px">
-       
     <table width="100%" border="0" cellpadding="8" cellspacing="1" class="bgcolor3">
       <tr>      
         <td width="70%" valign="top" bgcolor="#FFFFFF">
     	<div align="center" class="bigbigword" style="border-bottom:solid 1px #dddddd">{#proname}</div>
           <table width="100%" border="0" cellpadding="0" cellspacing="0" style="margin-bottom:8px">
             <tr bgcolor="#FFFFFF">    
-              <td width="287" bgcolor="#FFFFFF"> 
-			     <table width="270" height="270" border="0" cellpadding="0" cellspacing="0">
-                <tr id="B_con1" style="display:block;"><td align="center">
-				<a href='{#img1}' class='MagicZoom MagicThumb'><img src='{#img1}' alt='{#proname}' onload='resizeimg(260,260,this)'/></a></td></tr>
-				<tr id="B_con2" style="display:none;"><td align="center">
-				<a href='{#img2}' class='MagicZoom MagicThumb'><img src='{#img2}' alt='{#proname}' onload='resizeimg(260,260,this)'/></a></td></tr>
-				<tr id="B_con3" style="display:none;"><td align="center">
-				<a href='{#img3}' class='MagicZoom MagicThumb'><img src='{#img3}' alt='{#proname}' onload='resizeimg(260,260,this)'/></a></td></tr>
-				</table>
+              <td width="351" align="center" bgcolor="#FFFFFF"> 
+			<div style="text-align:center;margin-bottom:10px;width:270px;height:270px;margin:auto">
+    			<div id="B_con1" style="display:block;">
+				<a href='{#img1}' class='MagicZoom MagicThumb'><img src='{#img1}' alt='{#proname}' onload='resizeimg(260,260,this)'/></a></div>
+				<div id="B_con2" style="display:none;">
+				<a href='{#img2}' class='MagicZoom MagicThumb'><img src='{#img2}' alt='{#proname}' onload='resizeimg(260,260,this)'/></a></div>
+				<div id="B_con3" style="display:none;">
+				<a href='{#img3}' class='MagicZoom MagicThumb'><img src='{#img3}' alt='{#proname}' onload='resizeimg(260,260,this)'/></a></div>
+			</div>
                 <div id="B" class="zsshow_3img">
 				<ul>
 				<li class="bgcolor2" id="B1" onmouseover="javascript:doClick(this,'B','bgcolor2')"><img src='{#imgs1}' onload='resizeimg(70,70,this)'></li>
@@ -50,7 +56,7 @@ $("#getcode_math").click(function(){
 				</ul>
 				</div>
               </td>
-              <td width="644" valign="top" bgcolor="#FFFFFF" style="padding:8px"> 
+              <td width="419" valign="top" bgcolor="#FFFFFF" style="padding:8px"> 
                 <table width="100%" border="0" cellpadding="7" cellspacing="1">
                   <tr> 
                     <td>包装规格： {#gg}<strong></strong></td>
@@ -81,19 +87,19 @@ $("#getcode_math").click(function(){
                   </tr>
                 </table>
               </td>
-                </tr>
+            </tr>
               </table>
 	{#flv}
-		<div class="boxitem2" id="A"> 
+		<div class="boxitem" id="A"> 
           <ul>
             
-        <li><a id="A1" href="###" onmouseover="javascript:doClick(this,'A','current2')" class="current2">{#proname}说明</a></li>
-            <li><a id="A2" href="###" onmouseover="javascript:doClick(this,'A','current2')">政策支持</a></li>   
-			<li><a id="A3" href="###" onmouseover="javascript:doClick(this,'A','current2')">代理要求</a></li>                   
+        <li><a id="A1" href="###" onmouseover="javascript:doClick(this,'A','current1')" class="current1">{#proname}说明</a></li>
+            <li><a id="A2" href="###" onmouseover="javascript:doClick(this,'A','current1')">政策支持</a></li>   
+			<li><a id="A3" href="###" onmouseover="javascript:doClick(this,'A','current1')">代理要求</a></li>                   
           </ul>
           </div> 		          
-        <div class="content"> 
-          <div style="display:block;" id="A_con1">
+         
+          <div style="display:block;" id="A_con1"  class="content">
 		  <span class="bgcolor1">
 		      <table width="100%" border="0" cellpadding="5" cellspacing="1">
                 <tr> 
@@ -104,15 +110,11 @@ $("#getcode_math").click(function(){
               </table>
 			  </span>
 		
-		  <span class="bigword">产品特点：{#prouse}<br>产品说明：{#sm}</span>
-		  </div>
-		  <div style="display:none;" id="A_con2">
-		  <span class="bigword">{#zc}</span>
-		  </div>
-		  <div style="display:none;" id="A_con3">
-		  <span class="bigword">{#yq}</span>
-		  </div>
-		</div>  
+		<div style="width:800px"><div id="imgin">产品特点：{#prouse}<br>产品说明：{#sm}</div></div>
+		 </div>
+		  
+		  <div style="display:none;" id="A_con2" class="content">{#zc}</div>
+		  <div style="display:none;" id="A_con3" class="content">{#yq}</div> 
 			  </td>
             
         <td width="30%" valign="top" class="bgcolor1"> 
@@ -139,10 +141,28 @@ $("#getcode_math").click(function(){
 
 </div>
 <div class="pagebody">
-	<div class="titles" ><h3>联系方式</h3></div> 
-	<div class="content1" style="text-align:center;background-color:#FFFFFF;">
-	<!--margin:auto;加在里面的DIV中使在非IE中距中-->
-	<div class="boxA" style="width:300px;margin:auto;">{#contact}</div>
+	<div class="titles" ><h3>留言</h3></div> 
+	<div class="content1">
+	{liuyan}	
+	  <table width="100%" border="0" cellpadding="5" cellspacing="1" class="bgcolor3">
+        <tr>
+          <td width="20%" class="bgcolor1">留言内容</td>
+          <td width="20%" class="bgcolor1">联系人</td>
+          <td width="20%" class="bgcolor1">电话</td>
+          <td width="20%" class="bgcolor1">代理区域</td>
+          <td width="20%" class="bgcolor1">发布时间</td>
+        </tr>
+	{loop}
+  <tr bgcolor="#FFFFFF" >
+    <td>{#content}</td>
+    <td>{#dlsname}</td>
+    <td>{#tel}</td>
+    <td>{#city}</td>
+    <td>{#sendtime}</td>
+  </tr>{/loop}
+	   
+      </table>{/liuyan}
+	
 	</div>
 		
     <div class="titles"><h3>代理留言</h3><a name="dl_liuyan" id="dl_liuyan"></a></div>
@@ -155,12 +175,14 @@ $("#getcode_math").click(function(){
 		  <table class="bgcolor3" border="0" cellspacing="1" cellpadding="5" width="100%">
             <tbody>
               <tr>
-                <td class="bgcolor1" width="14%" align="right">产品名称：</td>
-                <td class="bgcolor1" width="86%"><input id="cp" value="{#proname}" maxlength="50" size="30" name="cp" />
+                <td class="bgcolor1" width="18%" align="right">产品名称：</td>
+                <td class="bgcolor1" width="82%">
+				<input id="cp" value="{#proname}" maxlength="50" size="30" name="cp" readonly="true" class="biaodan" style="background:#eee">
                     <input id="cpid" value="{#cpid}" type="hidden" name="cpid" />
                   <input id="fbr" value="{#fbr}" type="hidden" name="fbr" />
-                    <input id="bigclassid" value="{#bigclassid}" type="hidden" name="bigclassid" />
-                </td>
+                <input id="bigclassid" value="{#bigclassid}" type="hidden" name="bigclassid" />
+				<input id="token" value="{#token}" type="hidden" name="token" />
+				</td>
               </tr>
               <tr>
                 <td class="bgcolor1" align="right">希望代理省份：<br />
@@ -208,29 +230,31 @@ $("#getcode_math").click(function(){
                 </td>
               </tr>
               <tr>
-                <td class="bgcolor1" width="146" align="right">希望代理区域：<br />
-                  （市县级）</td>
+                <td class="bgcolor1" align="right">希望代理区域：（市县级）</td>
                 <td class="bgcolor1"><input name="city" id="city" value="{#cuest_city}" size="30" maxlength="50" />
                 </td>
               </tr>
               <tr>
                 <td class="bgcolor1" align="right">留言内容 <font color="#ff0000">*</font></td>
-                <td class="bgcolor1"><table border="0" cellspacing="0" cellpadding="0" width="100%">
+                <td class="bgcolor1">
+				<table width="100%" border="0" cellpadding="0" cellspacing="0">
                     <tbody>
                       <tr>
-                        <td width="35%">{textarea}</td>
-                        <td width="65%">
-				<input id="chcontent1" onclick="showinfo('content',1)" value="我对这个产品感兴趣，请与我联系。" type="checkbox" name="chcontent" />
-                        <label id="content1" for="chcontent1">我对这个产品感兴趣，请与我联系。</label>
-                          <br />
-                  <input id="chcontent2" onclick="showinfo('content',2);" value="代理价零售价是多少？" type="checkbox" name="chcontent" />
-                            <label id="content2" for="chcontent2">代理价零售价是多少？</label>
-                          <br />
-                          <input id="chcontent3" onclick="showinfo('content',3);" value="请寄给我详细资料。" type="checkbox" name="chcontent" />
-                            <label id="content3" for="chcontent3">请寄给我详细资料。</label>
-                          <br />
-                          <input id="chcontent4" onclick="showinfo('content',4);" value="请寄给我样品。" type="checkbox" name="chcontent" />
-                            <label id="content4" for="chcontent4">请寄给我样品。</label>                        </td>
+                        <td width="27%">{textarea}<br />
+						<input name="contents2" id="contents2" style="display:none" />
+			<span id="ts_contents"></span>	
+						</td>
+                        <td width="73%" valign="top">			
+	<input id="chcontent1" onclick="showinfo('content',1);document.ly.contents.focus();" value="我对这个产品感兴趣，请与我联系。" type="checkbox" name="chcontent" />
+    <label id="content1" for="chcontent1">我对这个产品感兴趣，请与我联系。</label><br />
+   <input id="chcontent2" onclick="showinfo('content',2);document.ly.contents.focus();" value="代理价零售价是多少？" type="checkbox" name="chcontent" />
+    <label id="content2" for="chcontent2">代理价零售价是多少？</label><br />
+    <input id="chcontent3" onclick="showinfo('content',3);document.ly.contents.focus();" value="请寄给我详细资料。" type="checkbox" name="chcontent" />
+    <label id="content3" for="chcontent3">请寄给我详细资料。</label>
+    <br />
+    <input id="chcontent4" onclick="showinfo('content',4);document.ly.contents.focus();" value="请寄给我样品。" type="checkbox" name="chcontent" />
+    <label id="content4" for="chcontent4">请寄给我样品。</label>
+	</td>
                       </tr>
                     </tbody>
                 </table></td>
@@ -238,53 +262,58 @@ $("#getcode_math").click(function(){
             </tbody>
 	      </table>
 		  
-		  <div 
-style="PADDING-BOTTOM: 5px; PADDING-LEFT: 5px; PADDING-RIGHT: 5px; PADDING-TOP: 5px" 
-class="bgcolor1">填写联系方式</div>
+		  <div style="PADDING: 5px;" class="bgcolor1">填写联系方式</div>
 
 		  <table border="0" cellspacing="1" cellpadding="5" width="100%" class="bgcolor3">
             <tbody>
               <tr>
-                <td class="bgcolor1" width="14%" align="right">代理身份：</td>
-                <td class="bgcolor1" width="86%"><input id="radio" onclick="showsubmenu(1)" 
+                <td width="18%" height="30" align="right" class="bgcolor1">代理身份：</td>
+                <td class="bgcolor1" width="82%"><input id="radio" onclick="showsubmenu(1)" 
       value="公司" type="radio" name="dlsf" />
                     <label for="radio">公司 </label>
                   <input 
       id="radio2" onclick="hidesubmenu(1)" value="个人" checked="checked" type="radio" name="dlsf" />
                     <label for="radio2">个人</label></td>
               </tr>
-              <tr style="DISPLAY: none" id="submenu1">
-                <td class="bgcolor1" align="right">公司名称：</td>
-                <td class="bgcolor1"><input name="companyname" value="{#companyname}" size="30" maxlength="50" />                </td>
+              <tr style="display: none" id="submenu1">
+                <td height="30" align="right" class="bgcolor1">公司名称：</td>
+                <td class="bgcolor1"><input name="companyname" value="{#companyname}" size="30" maxlength="50" /></td>
               </tr>
               <tr>
-                <td class="bgcolor1" align="right">联 系 人 <font color="#ff0000">*</font></td>
-                <td class="bgcolor1"><input name="name" id="name" onblur="CheckSomane()" value="{#somane}" size="30" maxlength="50" />                </td>
+                <td height="30" align="right" class="bgcolor1">联 系 人 <font color="#ff0000">*</font></td>
+                <td class="bgcolor1"><input name="name" id="name"  onblur="check_somane()" value="{#somane}" size="30" maxlength="50" /> 
+				<input name="name2" id="name2" style="display:none" />
+			<span id="ts_name"></span>			</td>
               </tr>
               <tr>
-                <td class="bgcolor1" align="right">联系电话/手机 <font color="#ff0000">*</font></td>
-                <td class="bgcolor1"><input name="tel" id="tel" onblur="CheckNum()" value="{#phone}" size="30" maxlength="50" />                </td>
+                <td height="30" align="right" class="bgcolor1">手机 <font color="#ff0000">*</font></td>
+                <td class="bgcolor1"><input name="tel" id="tel"  value="{#phone}" size="30" maxlength="50" />
+					<input name="tel2" id="tel2" style="display:none" />
+			<span id="ts_tel"></span></td>
               </tr>
               <tr>
-                <td class="bgcolor1" align="right">电子邮箱：</td>
-                <td class="bgcolor1"><input id="email" maxlength="50" size="30" name="email" onblur="CheckEmail()" />
-                </td>
+                <td height="30" align="right" class="bgcolor1">电子邮箱：</td>
+                <td class="bgcolor1"><input id="email" maxlength="50" size="30" name="email" onblur="check_email()" />
+				<input name="email2" id="email2" style="display:none" />
+			<span id="ts_email"></span>                </td>
               </tr>
               <tr>
-                <td align="right" class="bgcolor1">答案 <font color="#FF0000">*</font></td>
-                <td class="bgcolor1"><input name="yzm" type="text" id="yzm" value="" size="10" maxlength="50" style="width:60px"/>
+                <td height="30" align="right" class="bgcolor1">答案 <font color="#FF0000">*</font></td>
+                <td class="bgcolor1"><input name="yzm" type="text" id="yzm" onblur="check_yzm()" size="10" maxlength="50" style="width:60px"/>
+				<input name="yzm2" id="yzm2" style="display:none" />
+			<span id="ts_yzm"></span>
                   <img src="/one/code_math.php"  align="absmiddle" id="getcode_math" title="看不清，点击换一张" /></td>
+              </tr>
+              <tr>
+                <td height="30" align="right" class="bgcolor1">&nbsp;</td>
+                <td class="bgcolor1"><input type="submit" class="button_big" name="tj" id="tj" value="填好了，提交"></td>
               </tr>
             </tbody>
 	      </table>
-		   <div id="tjxx" style="text-align:center;padding:10px;display:"> <input type="submit" name="tj" value="填好了，提交" onClick="showloading()"></div>
-           <div id="loading" style="text-align:center;padding:10px;display:none">正传送数据，请稍候……</div>
-		
-	  </form>
+      </form>
 		</div>
-
+</div>
 </div>
 {#sitebottom}
-</div>
 </body>
 </html>

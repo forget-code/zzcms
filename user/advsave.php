@@ -1,6 +1,9 @@
 <?php
 include("../inc/conn.php");
 include("check.php");
+$fpath="text/advsave.txt";
+$fcontent=file_get_contents($fpath);
+$f_array=explode("\n",$fcontent) ;
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="zh-CN">
@@ -16,16 +19,18 @@ $page=$_POST["page"];
 $page=1;
 }
 
+$classname=trim($_POST["classname"]);
 $title=trim($_POST["title"]);
-$content=str_replace("'","",stripfxg(trim($_POST["content"])));
+$link=trim($_POST["link"]);
+$img=trim($_POST["img"]);
 $editor=trim($_POST["editor"]);
 
 if ($_POST["action"]=="add"){
-$isok=mysql_query("Insert into zzcms_ztad(title,content,editor) values('$title','$content','$editor')");  
+$isok=mysql_query("Insert into zzcms_ztad(classname,title,link,img,editor,passed) values('$classname','$title','$link','$img','$editor',1)");  
 $id=mysql_insert_id();		
 }elseif ($_POST["action"]=="modify"){
 $id=$_POST["id"];
-$isok=mysql_query("update zzcms_ztad set title='$title',content='$content',editor='$editor',passed=0 where id='$id'");	
+$isok=mysql_query("update zzcms_ztad set classname='$classname',title='$title',link='$link',img='$img',editor='$editor',passed=1 where id='$id'");	
 }
 passed("zzcms_ztad");	
 ?>
@@ -47,32 +52,29 @@ include("left.php");
   <tr> 
     <td class="tstitle"> 
 	<?php
-	if ($isok) {
-      echo "发布成功 ";
-	  }else{
-	  echo"发布失败";}
+	if ($isok) {echo $f_array[0];}else{echo $f_array[1];}
      ?>
       </td>
   </tr>
   <tr> 
     <td><table width="100%" border="0" cellspacing="0" cellpadding="3">
               <tr bgcolor="#FFFFFF"> 
-                <td width="25%" align="right" bgcolor="#FFFFFF"><strong>标题：</strong></td>
+                <td width="25%" align="right" bgcolor="#FFFFFF"><?php echo $f_array[2];?></td>
                 <td width="75%"><?php echo $title?></td>
               </tr>
             </table></td>
   </tr>
   <tr> 
-    <td><table width="100%" border="0" cellpadding="5" cellspacing="1">
-        <tr> 
-          <td width="33%" align="center" class="border"><a href="advadd.php">继续添加</a></td>
-		 
-                <td width="33%" align="center" class="border"><a href="advmodify.php?id=<?php echo $id?>">修改</a></td>
-				
-                <td width="33%" align="center" class="border"><a href="advmanage.php?bigclassid=<?php echo $bigclassid?>&page=<?php echo $page?>">返回</a></td>
-              </tr>
-      </table></td>
-  </tr>
+    <td>
+<table width="100%" border="0" cellpadding="5" cellspacing="1">
+<tr> 
+<td width="33%" align="center" class="border"><a href="advadd.php"><?php echo $f_array[3];?></a></td>
+<td width="33%" align="center" class="border"><a href="advmodify.php?id=<?php echo $id?>"><?php echo $f_array[4];?></a></td>
+<td width="33%" align="center" class="border"><a href="advmanage.php?classname=<?php echo $classname?>&page=<?php echo $page?>"><?php echo $f_array[5];?></a></td>
+</tr>
+</table>
+</td>
+</tr>
 </table>
 </div>
 </div>

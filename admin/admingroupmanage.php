@@ -18,7 +18,7 @@ function ConfirmDelBig(){
 </head>
 <body>
 <div class="admintitle">管理员分组信息管理</div>
-<div class="border"><a href="admingroupadd.php"><strong>添加管理组</strong></a></div>
+<div class="border center"><input name="submit3" type="submit" class="buttons" onClick="javascript:location.href='admingroupadd.php'" value="添加管理组"></div>
 <?php
 if (isset($_REQUEST["action"])){
 $action=$_REQUEST["action"];

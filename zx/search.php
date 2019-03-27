@@ -182,7 +182,7 @@ $listimg="";
 }
 
 if ($row["link"]<>""){
-$link=addhttp($row["link"]);
+$link=$row["link"];
 }else{
 $link=getpageurl("zx",$row["id"]);
 }

@@ -19,36 +19,29 @@ $row=mysql_fetch_array($rs);
 
 ?>
 <script language = "JavaScript">
-function CheckForm()
-{
-if (document.myform.cp.value=="")
-  {
+function CheckForm(){
+if (document.myform.cp.value==""){
     alert("请填写您要<?php echo channeldl?>的产品名称！");
 	document.myform.cp.focus();
 	return false;
   }
-  if (document.myform.classid.value=="")
-  {
+  if (document.myform.classid.value==""){
     alert("请选择产品类别！");
 	document.myform.classid.focus();
 	return false;
   }  
 
-  if (document.myform.content.value=="")
-  {
+  if (document.myform.content.value==""){
     alert("请填写<?php echo channeldl?>商介绍！");
 	document.myform.content.focus();
 	return false;
   }
-    if (document.myform.truename.value=="")
-  {
+    if (document.myform.truename.value==""){
     alert("请填写真实姓名！");
 	document.myform.truename.focus();
 	return false;
   }  
- 
-  if (document.myform.tel.value=="")
-  {
+  if (document.myform.tel.value==""){
     alert("请填写代联系电话！");
 	document.myform.tel.focus();
 	return false;
@@ -65,19 +58,15 @@ for(var i = 0; i < document.myform.destList.length; i++){
 //alert(v);
 document.myform.cityforadd.value=v ;   
 }
-function showsubmenu(sid)
-{
+function showsubmenu(sid){
 whichEl = eval("submenu" + sid);
-if (whichEl.style.display == "none")
-{
+if (whichEl.style.display == "none"){
 eval("submenu" + sid + ".style.display=\"\";");
 }
 }
-function hidesubmenu(sid)
-{
+function hidesubmenu(sid){
 whichEl = eval("submenu" + sid);
-if (whichEl.style.display == "")
-  {
+if (whichEl.style.display == ""){
 eval("submenu" + sid + ".style.display=\"none\";");
    }
 }

@@ -1,6 +1,9 @@
 <?php
 include("../inc/conn.php");
 include("check.php");
+$fpath="text/daohang_skin.txt";
+$fcontent=file_get_contents($fpath);
+$f_array=explode("|||",$fcontent) ;
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="zh-CN">
@@ -13,7 +16,7 @@ if (@$_REQUEST["action"]=="modify") { //这里action的值并没有通过常用�
 
 $skin=$_GET['skin'];
 mysql_query("update zzcms_usersetting set skin='$skin' where username='".$username."'");	
-echo "<SCRIPT language=JavaScript>alert('操作成功！进入下一步');location.href='daohang_end.php'</SCRIPT>";
+echo $f_array[0];
 }
 ?>
 </head>
@@ -29,8 +32,8 @@ include("left.php");
 ?>
 </div>
 <div class="right">
-<div class="admintitle">请选择展厅模板风格</div>   
-      <div id="Layer1" class="border" style="position:relative; width:100%; height:500px; z-index:1; overflow: scroll;"> 
+<div class="admintitle"><?php echo $f_array[1]?></div>   
+      <div id="Layer1" class="border" style="position:relative; width:100%; height:600px; z-index:1; overflow: scroll;"> 
                 
         <table width="100%" border="0" cellpadding="5" cellspacing="0">
           <tr> 
@@ -38,15 +41,15 @@ include("left.php");
 $dir = opendir("../skin");
 $i=0;
 while(($file = readdir($dir))!=false){
-  if ($file!="." && $file!=".." && $file!='skin.zip') { //不读取. ..
+  if ($file!="." && $file!=".." && strpos($file,".zip")==false && strpos($file,".rar")==false && strpos($file,".txt")==false && $file!='mobile') { //不读取. ..
     //$f = explode('.', $file);//用$f[0]可只取文件名不取后缀。 
 ?>
                     <td><table width="120" border="0" cellpadding="5" cellspacing="1">
                         <tr> 
-                          <td height="100" align="center" bgcolor="#FFFFFF"><img src='../skin/<?php echo $file?>/image/mb.gif' width="100"  border='0'/></td>
+                          <td height="100" align="center" bgcolor="#FFFFFF"><a href="?skin=<?php echo $file?>&action=modify"><img src='../skin/<?php echo $file?>/image/mb.gif' width="100"  border='0'/></a></td>
                         </tr>
                         <tr> 
-                          <td align="center" bgcolor="#FFFFFF"> <a href="?skin=<?php echo $file?>&action=modify">选这个</a></td>
+                          <td align="center" bgcolor="#FFFFFF"> <a href="?skin=<?php echo $file?>&action=modify"><?php echo $f_array[2]?></a></td>
                         </tr>
                       </table></td>
                     <?php 

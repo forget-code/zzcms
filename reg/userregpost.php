@@ -98,7 +98,7 @@ echo "验证邮件发送失败。";
 }
 
 }else{ //if(checkistrueemail=="Yes" )
-mysql_query("INSERT INTO zzcms_user (username,password,passwordtrue,usersf,comane,content,somane,sex,phone,email,img,totleRMB,regdate,lastlogintime)VALUES('$username','".md5($password)."','$password','$usersf','$comane','该公司暂无简介信息','$somane','1','$phone','$email','/image/nopic.gif','".jf_reg."','".date('Y-m-d H:i:s')."','".date('Y-m-d H:i:s')."')");
+mysql_query("INSERT INTO zzcms_user (username,password,passwordtrue,usersf,comane,content,somane,sex,phone,email,img,totleRMB,regdate,lastlogintime)VALUES('$username','".md5($password)."','$password','$usersf','$comane','&nbsp;','$somane','1','$phone','$email','/image/nopic.gif','".jf_reg."','".date('Y-m-d H:i:s')."','".date('Y-m-d H:i:s')."')");
 mysql_query("INSERT INTO zzcms_usersetting (username,skin,skin_mobile,swf,daohang)VALUES('$username','tongyong','1','6.swf','$daohang')");
 setcookie("UserName",$username,time()+3600*24*365,"/");//直接登陆
 setcookie("PassWord",md5($password),time()+3600*24*365,"/");

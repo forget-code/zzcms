@@ -132,7 +132,8 @@ td {
 	border: 1px solid #CC9900;
 	background-image: url(image/buttonbg2.gif);
 	background-repeat: repeat-x;
-	padding: 2px 0px 0px;
+	height:23px;
+	line-height:23px;
 	color: #993300;
 	background-color: #FFE57F;
 	cursor: hand;
@@ -152,3 +153,4 @@ td {
 .boxlink a:hover{background-color:#ffffff;color:083772;text-decoration: none;}
 .bgcolor1{background-color:#F1F6FC}
 #help{display:none;position:absolute;float:left;left:0px;border:solid 1px #FFCC00;background-color:#FFFF99;padding:10px;color:#000000}
+.center{text-align:center}

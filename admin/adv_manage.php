@@ -1,26 +1,16 @@
-<?php 
-include("admin.php"); 
-?>
-<html>
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-<title></title>
-<link href="style.css" rel="stylesheet" type="text/css">
-<script language="JavaScript" src="/js/gg.js"></script>
 <?php
+include("admin.php");
 checkadminisdo("advtext");
 if (isset($_REQUEST["action"])){
 $action=$_REQUEST["action"];
 }else{
 $action="";
 }
-
 if (isset($_REQUEST["kind"])){
 $kind=$_REQUEST["kind"];
 }else{
 $kind="";
 }
-
 if (isset($_REQUEST["shenhe"])){
 $shenhe=$_REQUEST["shenhe"];
 }else{
@@ -31,8 +21,7 @@ $keyword=$_REQUEST["keyword"];
 }else{
 $keyword="";
 }
-if( isset($_GET["page"]) && $_GET["page"]!="") 
-{
+if( isset($_GET["page"]) && $_GET["page"]!="") {
     $page=$_GET['page'];
 }else{
     $page=1;
@@ -42,8 +31,18 @@ $id=$_REQUEST["id"];
 }else{
 $id="";
 }
-
+?>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title></title>
+<link href="style.css" rel="stylesheet" type="text/css">
+<script language="JavaScript" src="/js/gg.js"></script>
+<?php
 if ($action=="del") {
+if(!empty($_POST['id'])){
+for($i=0; $i<count($_POST['id']);$i++){
+$id=$_POST['id'][$i];
 $sql="select * from zzcms_textadv where id='$id'";
 $rs=mysql_query($sql);
 $row=mysql_fetch_array($rs);
@@ -54,18 +53,25 @@ $username=$row["username"];
 	$rs=mysql_query($sql);
 	$row=mysql_num_rows($rs);
 		if ($row){
-		$row=mysql_fetch_array($rs);	
+		$row=mysql_fetch_array($rs);
 		mysql_query("update zzcms_ad set nextuser='' where id='$newsid' ");//如果此处有值，此用户将不能参与下一次的抢占
     		if ($row["username"]==$username){//当用户抢得了广告位后并被审核通过后，这时username的值(即广告主)就是此用户
-    		mysql_query("update zzcms_ad set username='',title='此位空出>>>点击抢占此位置',link='user/index.php?gotopage=adv2.php',sendtime='".date('Y-m-d H:i:s',time()-60*60*24*showadvdate)."' where id='$newsid' ");	//被审核通过后的用户修改了广告词,又要被审，这时若删时要清除username的值	
+    		mysql_query("update zzcms_ad set username='',title='此位空出>>>点击抢占此位置',link='user/index.php?gotopage=adv2.php',sendtime='".date('Y-m-d H:i:s',time()+60*60*24*showadvdate)."' where id='$newsid' ");	//被审核通过后的用户修改了广告词,又要被审，这时若删时要清除username的值	
 			}
 		}
 	}
-//mysql_query("update zzcms_textadv set adv='' where id='$id'");
 mysql_query("delete from zzcms_textadv where id='$id'");
+}
+}else{
+echo "<script>alert('操作失败！至少要选中一条信息。');history.back()</script>";
+}
 echo "<script>location.href='adv_manage.php?page=".$page."'</script>";
 }
+
 if ($action=="pass") {
+if(!empty($_POST['id'])){
+for($i=0; $i<count($_POST['id']);$i++){
+$id=$_POST['id'][$i];
 $sql="select * from zzcms_textadv where id='$id'";
 $rs=mysql_query($sql);
 $row=mysql_fetch_array($rs);
@@ -77,31 +83,30 @@ $link=$row["advlink"];
 $img=$row["img"];
 $username=$row["username"];
 $sendtime=$row["gxsj"];
-if ($newsid<>0) {//当用户设置了广告词并抢占了广告位时执行下面的复制操作
-$sql="select * from zzcms_ad where id='$newsid'";
-$rs=mysql_query($sql);
-$row=mysql_fetch_array($rs);
-if ($row["bigclassname"]=="B") {//如是B区的广告标题上加公司名称
-mysql_query("update zzcms_ad set title='<b>".cutstr($company,10)."</b><br>".$title."' where id='$newsid'");
-}else{
-mysql_query("update zzcms_ad set title='".$title."' where id='$newsid'");
+	if ($newsid<>0) {//当用户设置了广告词并抢占了广告位时执行下面的复制操作
+	$sql="select * from zzcms_ad where id='$newsid'";
+	$rs=mysql_query($sql);
+	$row=mysql_fetch_array($rs);
+		if ($row["bigclassname"]=="B") {//如是B区的广告标题上加公司名称
+		mysql_query("update zzcms_ad set title='<b>".cutstr($company,11)."</b><br>".$title."' where id='$newsid'");
+		}else{
+		mysql_query("update zzcms_ad set title='".$title."' where id='$newsid'");
+		}
+	mysql_query("update zzcms_ad set link='".$link."',img='".$img."',imgwidth=0,username='".$username."',sendtime='".$sendtime."',nextuser='' where id='$newsid'");
+	//写入用户抢占时的时间sendtime，为了防止一个用户通过修改广告词功能长期霸占一个位置。设nextuser为空,如果此处有值，此用户不将能参与下一次的抢占
+	}
 }
-mysql_query("update zzcms_ad set link='".$link."',img='".$img."',imgwidth=0,username='".$username."',sendtime='".$sendtime."',nextuser='' where id='$newsid'");
-//写入用户抢占时的时间sendtime，为了防止一个用户通过修改广告词功能长期霸占一个位置。设nextuser为空,如果此处有值，此用户不将能参与下一次的抢占
+}else{
+echo "<script>alert('操作失败！至少要选中一条信息。');history.back()</script>";
 }
 echo "<script>location.href='adv_manage.php?shenhe=no&page=".$page."'</script>";
 }
 ?>
 </head>
 <body>
-<table width="100%" border="0" cellpadding="0" cellspacing="0">
-  <tr> 
-    <td class="admintitle">用户审请的文字广告管理</td>
-  </tr>
-</table>
-  <form name="form1" method="post" action="?">
+<div class="admintitle">用户审请的文字广告管理</div>
+<form name="form1" method="post" action="?">
 <table width="100%" border="0" cellpadding="5" cellspacing="0">
-
     <tr> 
       <td class="border"> 
         <input name="kind" type="radio" value="username" <?php if ($kind=="username") { echo "checked";}?>>
@@ -110,10 +115,10 @@ echo "<script>location.href='adv_manage.php?shenhe=no&page=".$page."'</script>";
         按广告词 
         <input name="keyword" type="text" id="keyword" value="<?php echo $keyword?>"> 
         <input type="submit" name="Submit" value="查找">
-        　 </td>
+      　 </td>
     </tr>
 </table>
-  </form>
+</form>
   <?php
 $page_size=pagesize_ht;  //每页多少条数据
 $offset=($page-1)*$page_size;
@@ -143,24 +148,31 @@ if(!$totlenum){
 echo "暂无信息";
 }else{ 
 ?> 
+<form name="myform" id="myform" method="post" action="">  
+  <table width="100%" border="0" cellpadding="5" cellspacing="0" class="border">
+    <tr>
+      <td><input name="submit" type="submit"  onClick="myform.action='?action=pass';myform.target='_self'" value="审核选中的信息">
+      <input name="submit" type="submit" onClick="myform.action='?action=del';myform.target='_self';return ConfirmDel()" value="删除选中的信息"></td>
+    </tr>
+  </table>
 <table width="100%" border="0" cellspacing="1" cellpadding="5">
   <tr> 
-    <td width="56" align="center" class="border">ID</td>
-    <td width="176" class="border">广告词</td>
-    <td width="177" class="border">图片</td>
-    <td width="92" class="border">是否审核</td>
-    <td width="112" align="center" class="border">发布时间</td>
-    <td width="106" align="center" class="border">发布人</td>
-    <td width="232" align="center" class="border">操作</td>
+    <td width="5%" align="center" class="border"><label for="chkAll" style="text-decoration: underline;cursor: hand;">全选</label></td>
+    <td width="10%" class="border">广告词</td>
+    <td width="10%" class="border">图片</td>
+    <td width="10%" class="border">是否审核</td>
+    <td width="10%" align="center" class="border">发布时间</td>
+    <td width="10%" align="center" class="border">发布人</td>
+    <td width="5%" align="center" class="border">操作</td>
   </tr>
   <?php
 while($row = mysql_fetch_array($rs)){
 ?>
-  <tr class="bgcolor1" onMouseOver="fSetBg(this)" onMouseOut="fReBg(this)"> 
-    <td width="56" align="center">
+  <tr bgcolor="#FFFFFF" onMouseOver="fSetBg(this)" onMouseOut="fReBg(this)"> 
+    <td align="center">
       <input name="id[]" type="checkbox"  value="<?php echo $row["id"]?>"></td>
-    <td width="176"><a href='<?php echo $row["advlink"]?>' target="_blank"><?php echo $row["adv"]?></a></td>
-    <td width="177">
+    <td><a href='<?php echo $row["advlink"]?>' target="_blank"><?php echo $row["adv"]?></a></td>
+    <td>
 	<?php
 if ($row["img"]<>""){
 	if (strpos("gif|jpg|png|bmp",substr($row["img"],-3))>=0) {
@@ -175,22 +187,27 @@ if ($row["img"]<>""){
 }else{
 	echo "文字广告-无图片";
 }	
-	?>
-	</td>
-    <td width="92"> 
-      <?php if ($row["passed"]==1) { echo"已审核";} else{ echo"<font color=red>未审核</font>";}?>
-    </td>
-    <td width="112" align="center"><?php echo $row["gxsj"]?></td>
-    <td width="106" align="center"><a href="usermanage.php?keyword=<?php echo $row["username"]?>"><?php echo $row["username"]?></a></td>
-    <td width="232" align="center" class="docolor"><a href="adv_manage.php?action=pass&page=<?php echo $page?>&id=<?php echo $row["id"]?>">审核</a> 
-      | <a href="adv_modify.php?page=<?php echo $page?>&id=<?php echo $row["id"]?>">修改</a> 
-      | <a href="adv_manage.php?action=del&id=<?php echo $row["id"]?>" onClick="return ConfirmDel();">删除</a> 
-    </td>
+	?>	</td>
+    <td> 
+      <?php if ($row["passed"]==1) { echo"已审核";} else{ echo"<font color=red>未审核</font>";}?>    </td>
+    <td align="center"><?php echo $row["gxsj"]?></td>
+    <td align="center"><a href="usermanage.php?keyword=<?php echo $row["username"]?>"><?php echo $row["username"]?></a></td>
+    <td align="center" class="docolor"><a href="adv_modify.php?page=<?php echo $page?>&id=<?php echo $row["id"]?>">修改</a></td>
   </tr>
   <?php
 }
 ?>
 </table>
+<table width="100%" border="0" cellpadding="5" cellspacing="0" class="border">
+  <tr>
+    <td><input name="chkAll" type="checkbox" id="chkAll" onClick="CheckAll(this.form)" value="checkbox">
+        <label for="chkAll" style="text-decoration: underline;cursor: hand;">全选</label>
+        <input name="submit2" type="submit"  onClick="myform.action='?action=pass';myform.target='_self'" value="审核选中的信息">
+        <input name="submit3" type="submit" onClick="myform.action='del.php';myform.target='_self';return ConfirmDel()" value="删除选中的信息">
+    </td>
+  </tr>
+</table>
+</form>
 <table width="100%" border="0" cellpadding="0" cellspacing="0" class="border">
   <tr> 
     <td height="30" align="center">页次：<strong><font color="#CC0033"><?php echo $page?></font>/<?php echo $totlepage?>　</strong> 

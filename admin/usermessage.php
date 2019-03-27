@@ -93,12 +93,8 @@ include("admin.php");
   </script>
 </head>
 <body>
-<table width="100%" border="0" cellpadding="0" cellspacing="0">
-  <tr> 
-    <td class="admintitle">来自用户的短信息</td>
-  </tr>
-</table>
-	     <?php 
+<div class="admintitle">来自用户的短信息</div>
+<?php 
 if (@$_GET["step"]==2){
 ?>
 

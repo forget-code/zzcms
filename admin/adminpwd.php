@@ -7,8 +7,7 @@ include("admin.php");
 <link href="style.css" rel="stylesheet" type="text/css">
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <?php
-
-//checkadminisdo("adminmanage");改密码不需要任何权限
+checkadminisdo("adminmanage");
 if (isset($_REQUEST["action"])) {
 $action=trim($_REQUEST["action"]);
 }else{
@@ -16,9 +15,9 @@ $action="";
 }
 $FoundErr=0;
 $ErrMsg="";
-$admin=trim($_REQUEST["admin"]);
+$admins=trim($_REQUEST["admins"]);
 if ($action=="modify"){
-	$sql="select * from zzcms_admin where admin='" . $admin . "'";
+	$sql="select * from zzcms_admin where admin='" . $admins . "'";
 	$rs = mysql_query($sql);
 	$row= mysql_fetch_array($rs);
 	$oldpassword=md5(trim($_POST["oldpassword"]));
@@ -31,20 +30,17 @@ if ($action=="modify"){
 	if ($FoundErr==1){
 	WriteErrMsg($ErrMsg);
 	}else{
-	mysql_query("update zzcms_admin set pass='$password' where admin='".$admin."'");
+	mysql_query("update zzcms_admin set pass='$password' where admin='".$admins."'");
 	echo "<SCRIPT language=JavaScript>alert('修改成功！');history.go(-1)</SCRIPT>";
 	}
 }else{
 ?>
 <script>
 function CheckForm(){
- 
-if (document.form1.password.value !="")
-	{
+if (document.form1.password.value !=""){
 		//创建正则表达式
     	var re=/^[0-9a-zA-Z]{4,14}$/; //只输入数字和字母的正则
-    	if(document.form1.password.value.search(re)==-1)
-    	{
+    	if(document.form1.password.value.search(re)==-1){
 		alert("密码只能为字母和数字，字符介于4到14个。");
 		document.form1.password.value="";
 		document.form1.password.focus();
@@ -52,8 +48,7 @@ if (document.form1.password.value !="")
     	}
 	}	
 if (document.form1.password.value !="" && document.form1.pwdconfirm.value !=""){
-	if (document.form1.password.value!=document.form1.pwdconfirm.value)
-	{
+	if (document.form1.password.value!=document.form1.pwdconfirm.value){
 	alert ("两次密码输入不一致，请重新输入。");
 	//document.form1.pass.value='';
 	document.form1.pwdconfirm.value='';
@@ -65,18 +60,13 @@ if (document.form1.password.value !="" && document.form1.pwdconfirm.value !=""){
 </script>
 </head>
 <body>
-<table width="100%" border="0" cellspacing="0" cellpadding="0">
-  <tr>
-    <td class="admintitle">修改管理员密码</td>
-  </tr>
-</table>
-<FORM name="form1" action="?" method="post" onSubmit="return CheckForm()">
-          
+<div class="admintitle">修改管理员密码</div>
+<FORM name="form1" action="?" method="post" onSubmit="return CheckForm()">     
   <table width="100%" border="0" align="center" cellpadding="5" cellspacing="0">
     <TR> 
       <TD width="494" align="right" class="border">管理员：</TD>
-      <TD width="921" class="border"><?php echo $admin?>
-        <input name="admin" type="hidden" value="<?php echo $admin?>"></TD>
+      <TD width="921" class="border"><?php echo $admins?>
+        <input name="admins" type="hidden" value="<?php echo $admins?>"></TD>
     </TR>
     <TR> 
       <TD width="494" align="right" class="border">旧密码：</TD>

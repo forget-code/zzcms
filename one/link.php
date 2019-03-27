@@ -8,8 +8,8 @@ if (isset($_REQUEST["action"])=="add"){
 checkyzm($_POST["yzm"]);
 session_write_close();
 $sitename = isset($_POST['sitename'])?$_POST['sitename']:"";
-$url = isset($_POST['url'])?$_POST['url']:"";
-$logo = isset($_POST['logo'])?$_POST['logo']:"";
+$url = isset($_POST['url'])?addhttp($_POST['url']):"";
+$logo = isset($_POST['logo'])?addhttp($_POST['logo']):"";
 $content = isset($_POST['content'])?$_POST['content']:"";
 
 if ($sitename==''||$url==''||$logo==''||$content==''){

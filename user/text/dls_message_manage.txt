@@ -1,0 +1,16 @@
+﻿留言
+联系人姓名：
+查找
+暂无信息
+<td width="153" class="border">联系人</td><td width="149" class="border">意向区域</td><td width="141" class="border">意向品种</td><td width="140" class="border">申请时间</td><td width="113" align="center" class="border">操作</td><td width="69" align="center" class="border">删除</td>
+(<font color=red>新</font>)
+查看联系方式
+下载类型
+excel表格
+word文件
+条/页
+打印
+下载
+删除
+全选
+

@@ -6,13 +6,28 @@ include("admin.php");
 <title></title>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <link href="style.css" rel="stylesheet" type="text/css">
+<script language = "JavaScript">
+function CheckForm(){
+if (document.myform.appid.value==""){
+    alert("APP ID不能为空！");
+	document.myform.appid.focus();
+	return false;
+  }
+  if (document.myform.appkey.value==""){
+    alert("APP KEY不能为空！");
+	document.myform.appkey.focus();
+	return false;
+  }
+  if (document.myform.callback.value==""){
+    alert("返回页地址不能为空！");
+	document.myform.callback.focus();
+	return false;
+  }  
+}    
+</script>
 </head>
 <body>
-<table width="100%" border="0" cellpadding="0" cellspacing="0">
-  <tr> 
-    <td class="admintitle">QQ登陆设置</td>
-  </tr>
-</table>
+<div class="admintitle">QQ登陆设置</div>
 <?php
 if (isset($_POST["action"])){
 $action=$_POST["action"];
@@ -35,18 +50,17 @@ checkadminisdo("siteconfig");
 	$isok=fputs($fp,$fcontent);//把替换后的内容写入文件
 	fclose($fp);
 	if ($isok){
-	$msg="ok";
+	$msg="修改成功";
 	}else{
 	$msg="失败";
 	}
 	echo  "<script>alert('".$msg."');location.href='?'</script>";
 }
 ?>
-<form method="POST" action="?" id="form1" name="form1">
+<form method="POST" action="?" id="myform" name="myform"  onSubmit="return CheckForm();">
   <table width="100%" border="0" cellpadding="5" cellspacing="0">
-  
     <tr> 
-      <td colspan="2" class="border2" style="text-align:center"><a href="http://connect.opensns.qq.com/apply" target="_blank" >审请接入</a></td>
+      <td colspan="2" class="border2" style="text-align:center"><a href="http://connect.qq.com" target="_blank" >审请接入</a></td>
     </tr>
     <tr> 
       <td width="30%" align="right" class="border">APP ID</td>

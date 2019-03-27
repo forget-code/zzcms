@@ -26,16 +26,8 @@ $rs = mysql_query($sql);
 <script language="JavaScript" src="/js/gg.js"></script>
 </head>
 <body>
-<table width="100%" border="0" cellpadding="0" cellspacing="0">
-  <tr> 
-    <td class="admintitle">管理员信息管理</td>
-  </tr>
-</table>
-<table width="100%" border="0" cellspacing="0" cellpadding="5">
-  <tr>
-    <td align="center" class="border"><a href="adminadd.php">管理员添加</a></td>
-  </tr>
-</table>
+<div class="admintitle">管理员信息管理</div>
+<div class="border center"><input name="submit3" type="submit" class="buttons" onClick="javascript:location.href='adminadd.php'" value="添加管理员"></div>
 <table width="100%" border="0" cellpadding="5" cellspacing="1">
   <tr> 
     <td width="5%" align="center" class="border">ID</td>
@@ -66,8 +58,8 @@ $rs = mysql_query($sql);
     <td align="center"><?php echo $row["logins"]?></td>
     <td><?php echo $row["showloginip"]?></td>
     <td><?php echo $row["showlogintime"]?></td>
-    <td align="center"><a href="adminmodify.php?admin=<?php echo $row["admin"]?>">修改权限</a> 
-	 | <a href="adminpwd.php?admin=<?php echo $row["admin"]?>">修改密码</a> |   
+    <td align="center"><a href="adminmodify.php?admins=<?php echo $row["admin"]?>">修改权限</a> 
+	 | <a href="adminpwd.php?admins=<?php echo $row["admin"]?>">修改密码</a> |   
 	 <?php
 $rsn2=mysql_query("select id from zzcms_admin where groupid=(select id from zzcms_admingroup where groupname='超级管理员')");
 $rown2=mysql_num_rows($rsn2);//超级管理员数	 

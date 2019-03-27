@@ -6,8 +6,6 @@ include("admin.php");
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <link href="style.css" rel="stylesheet" type="text/css">
 <?php
-
-checkadminisdo("helps");
 $id=$_REQUEST["id"];
 if ($id<>""){
 checkid($id);
@@ -19,33 +17,23 @@ checkid($b);
 ?>
 <script type="text/javascript" src="/3/ckeditor/ckeditor.js"></script>
 <script language = "JavaScript">
-function CheckForm()
-{
-if (document.myform.title.value=="")
-  {
+function CheckForm(){
+if (document.myform.title.value==""){
     alert("标题不能为空！");
 	document.myform.title.focus();
 	return false;
   }
-
 } 
-	</script>
+</script>
 </head>
-
 <body>
-<table width="100%" border="0" align="center" cellpadding="0" cellspacing="0">
-  <tr> 
-    <td class="admintitle">修改<?php if ($b==1) { echo "帮助"; }else { echo "公告";}?>信息</td>
-  </tr>
-</table>
-
+<div class="admintitle">修改<?php if ($b==1) { echo "帮助"; }else { echo "公告";}?>信息</div>
 <?php
 $sql="select * from zzcms_help where id='$id'";
 $rs=mysql_query($sql);
 $row=mysql_fetch_array($rs);
 ?>
-<form action="help_save.php?action=modify" method="post" name="myform" id="myform" onSubmit="return CheckForm();">
-        
+<form action="help_save.php?action=modify" method="post" name="myform" id="myform" onSubmit="return CheckForm();">  
   <table width="100%" border="0" cellspacing="0" cellpadding="5">
     <tr> 
       <td width="162" align="right" class="border">标题：</td>

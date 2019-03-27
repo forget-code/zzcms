@@ -1,6 +1,5 @@
 <?php
 include("admin.php");
-checkadminisdo("friendlink");
 ?>
 <html>
 <head>
@@ -32,62 +31,51 @@ $action=$_REQUEST["action"];
 }else{
 $action="";
 }
-if( isset($_GET["page"]) && $_GET["page"]!="") 
-{
+if( isset($_GET["page"]) && $_GET["page"]!="") {
     $page=$_GET['page'];
 }else{
     $page=1;
 }
-$id="";
+
+if ($action<>""){
+checkadminisdo("friendlink");
 if(!empty($_POST['id'])){
     for($i=0; $i<count($_POST['id']);$i++){
-    $id=$id.($_POST['id'][$i].',');
-    }
-	$id=substr($id,0,strlen($id)-1);//去除最后面的","
-}
-if ($action<>""){
-	if ($id==""){
-	
-	echo "<script>alert('操作失败！至少要选中一条信息。');</script>";
-	
-	}else{
+    $id=$_POST['id'][$i];
 	switch ($action){
 	case "pass";
-	if (strpos($id,",")>0){
-		$sql="update zzcms_link set passed=1 where id in (". $id .")";
-	}else{
-		$sql="update zzcms_link set passed=1 where id='$id'";
-	}
-	mysql_query($sql);
-	echo "<script>location.href='?shenhe=no&page=".$page."'</script>";
-	break;
+	$sql="select passed from zzcms_link where id ='$id'";
+	$rs = mysql_query($sql); 
+	$row = mysql_fetch_array($rs);
+		if ($row['passed']=='0'){
+		mysql_query("update zzcms_link set passed=1 where id ='$id'");
+		}else{
+		mysql_query("update zzcms_link set passed=0 where id ='$id'");
+		}
+	break;	
 	case "elite";
-	if (strpos($id,",")>0){
-		$sql="update zzcms_link set elite=1 where id in (". $id .")";
-	}else{
-		$sql="update zzcms_link set elite=1 where id='$id'";
-	}
-	mysql_query($sql);
-	echo "<script>location.href='?page=".$page."'</script>";
+	$sql="select elite from zzcms_link where id ='$id'";
+	$rs = mysql_query($sql); 
+	$row = mysql_fetch_array($rs);
+		if ($row['elite']=='0'){
+		mysql_query("update zzcms_link set elite=1 where id ='$id'");
+		}else{
+		mysql_query("update zzcms_link set elite=0 where id ='$id'");
+		}
 	break;
-	
 	case "del";
-	if (strpos($id,",")>0){
-		$sql="delete from zzcms_link  where id in (". $id .")";
-	}else{
-		$sql="delete from zzcms_link  where id='$id'";
+	mysql_query("delete from zzcms_link where id ='$id'");
+	break;	
+	}	
 	}
-	mysql_query($sql);
-	echo "<script>location.href='?page=".$page."'</script>";
-	break;
-	}
-	}
+}else{
+echo "<script>alert('操作失败！至少要选中一条信息。');history.back()</script>";
+}
+echo "<script>location.href='?keyword=".$keyword."&page=".$page."'</script>";	
 }
 ?>
 <div class="admintitle">友情链接管理</div>
-	<table width="100%" border="0" cellpadding="5" cellspacing="0" class="border">
-    <tr> 
-      <td> 
+      <div class="border"> 
         <table width="100%" border="0" cellspacing="0" cellpadding="0">
           <tr>
             <td>
@@ -101,9 +89,8 @@ if ($action<>""){
 			  </form>
             </td>
           </tr>
-        </table> </td>
-    </tr>
-</table>
+        </table> </div>
+   
 <?php
 $page_size=pagesize_ht;  //每页多少条数据
 $offset=($page-1)*$page_size;
@@ -134,25 +121,20 @@ echo "暂无信息";
 <form name="myform" id="myform" method="post" action="">
   <table width="100%" border="0" cellpadding="5" cellspacing="0" class="border">
     <tr>
-    <td><input name="chkAll" type="checkbox" id="chkAll" onClick="CheckAll(this.form)" value="checkbox">
-        全选
-<input name="submit" type="submit" onClick="myform.action='?action=del'" value="删除选中的信息">
-        <input name="submit2" type="submit" onClick="myform.action='?action=pass'" value="审核选中的信息">
-        <input name="submit22" type="submit" onClick="myform.action='?action=elite'" value="推荐选中的信息">
-        <input name="page" type="hidden" id="page" value="<?php echo $page?>"> <input name="shenhe" type="hidden" id="shenhe" value="<?php echo $shenhe?>">	
-      </td>
-  </tr>
+      <td><input name="submit2" type="submit" onClick="myform.action='?action=pass'" value="【取消/审核】选中的信息">
+          <input name="submit22" type="submit" onClick="myform.action='?action=elite'" value="【取消/推荐】选中的信息">
+          <input name="submit" type="submit" onClick="myform.action='?action=del'" value="删除选中的信息">
+      <input name="page" type="hidden" id="page" value="<?php echo $page?>"> <input name="shenhe" type="hidden" id="shenhe" value="<?php echo $shenhe?>">      </td></tr>
 </table>
 
   <table width="100%" border="0" cellpadding="5" cellspacing="1">
     <tr> 
-      <td width="5%" align="center" class="border">ID</td>
+      <td width="5%" align="center" class="border"><label for="chkAll" style="text-decoration: underline;cursor: hand;">全选</label> </td>
       <td width="5%" class="border">类型</td>
       <td width="10%" class="border">网站名称</td>
       <td width="10%" class="border">网站描述</td>
       <td width="10%" class="border">申请时间</td>
-      <td width="5%" align="center" class="border">是否审核</td>
-      <td width="5%" align="center" class="border">是否推荐</td>
+      <td width="5%" align="center" class="border">信息状态</td>
       <td width="5%" align="center" class="border">操作</td>
     </tr>
 <?php
@@ -172,21 +154,28 @@ while($row = mysql_fetch_array($rs)){
         <?php }else{
 		  echo "未填写LOGO地址";
 		  }
-		 ?>
-      </td>
+		 ?>      </td>
       <td><?php echo $row["content"]?></td>
       <td><?php echo $row["sendtime"]?></td>
       <td align="center" > 
-        <?php if ($row["passed"]==1) { echo"已审核";} else{ echo"<font color=red>未审核</font>";}?>      </td>
-      <td align="center"> 
-        <?php if ($row["elite"]==1) { echo"是";} else{ echo"<font color=red>否</font>";}?>      </td>
+        <?php if ($row["passed"]==1) { echo"已审核";} else{ echo"<font color=red>未审核</font>";}?>  <br>
+		<?php if ($row["elite"]==1) { echo"已推荐";} else{ echo"未推荐";}?>		    </td>
       <td align="center" class="docolor"><a href="link_modify.php?id=<?php echo $row["id"]?>&page=<?php echo $page ?>">修改</a>      </td>
     </tr>
 <?php
 }
 ?>
   </table>
-<table width="100%" border="0" cellpadding="0" cellspacing="0" class="border">
+  <table width="100%" border="0" cellpadding="5" cellspacing="0" class="border">
+    <tr>
+      <td><input name="chkAll" type="checkbox" id="chkAll" onClick="CheckAll(this.form)" value="checkbox">
+        <label for="chkAll" style="text-decoration: underline;cursor: hand;">全选</label>
+        <input name="submit23" type="submit" onClick="myform.action='?action=pass'" value="【取消/审核】选中的信息">
+        <input name="submit222" type="submit" onClick="myform.action='?action=elite'" value="【取消/推荐】选中的信息">
+      <input name="submit4" type="submit" onClick="myform.action='?action=del'" value="删除选中的信息"></td>
+    </tr>
+  </table>
+  <table width="100%" border="0" cellpadding="0" cellspacing="0" class="border">
   <tr> 
     <td height="30" align="center">页次：<strong><font color="#CC0033"><?php echo $page?></font>/<?php echo $totlepage?>　</strong> 
       <strong><?php echo $page_size?></strong>条/页　共<strong><?php echo $totlenum ?></strong>条

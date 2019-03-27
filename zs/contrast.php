@@ -6,6 +6,7 @@
 <title>信息对比</title>
 <?php include("../inc/conn.php");?>
 <link href="/template/<?php echo siteskin?>/style.css" rel="stylesheet" type="text/css">
+<script type="text/javascript" src="/js/qt.js"></script> 
 </head>
 <body>
 <?php
@@ -32,7 +33,7 @@ $rs=mysql_query($sql);
   <tr> 
     <td width="10%" align="center" bgcolor="#FFFFFF">【产品图片】 </td>
 	 <?php while ($row=mysql_fetch_array($rs)){?>
-    <td bgcolor="#FFFFFF" style="font-weight:bold" width="<?php echo $tdwidth ?>%"><a href="<?php echo $row["img"]?>" target="_blank"><img src="<?php echo getsmallimg($row["img"])?>" alt="<?php echo $row["proname"]?>"  border="0" ></a></td>
+    <td bgcolor="#FFFFFF" style="font-weight:bold" width="<?php echo $tdwidth ?>%"><a href="<?php echo $row["img"]?>" target="_blank"><img src="<?php echo getsmallimg($row["img"])?>" alt="<?php echo $row["proname"]?>"  border="0" onload="resizeimg(200,200,this)" ></a></td>
     <?php
 	}
 	?>

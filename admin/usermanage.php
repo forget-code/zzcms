@@ -9,15 +9,12 @@ include("admin.php");
 <script language="JavaScript" src="/js/gg.js"></script>
 </head>
 <?php
-checkadminisdo("userreg");
 if (isset($_REQUEST["action"])){
 $action=$_REQUEST["action"];
 }else{
 $action="";
 }
-
-if( isset($_GET["page"]) && $_GET["page"]!="") 
-{
+if( isset($_GET["page"]) && $_GET["page"]!="") {
     $page=$_GET['page'];
 }else{
     $page=1;
@@ -52,26 +49,23 @@ $keyword="";
 }
 
 if ($action=="pass"){
-$id="";
+checkadminisdo("userreg");//本页涉及到用户密码信息，验证权限放在开始的地方
 if(!empty($_POST['id'])){
     for($i=0; $i<count($_POST['id']);$i++){
-    $id=$id.($_POST['id'][$i].',');
-    }
-	$id=substr($id,0,strlen($id)-1);//去除最后面的","
-}
-
-if ($id==""){
-echo "<script>alert('操作失败！至少要选中一条信息。');history.back()</script>";
-}else{
-	 if (strpos($id,",")>0){
-		$sql="update zzcms_user set passed=1 where id in (". $id .")";
-	}else{
-		$sql="update zzcms_user set passed=1 where id='$id'";
+    $id=$_POST['id'][$i];
+	$sql="select passed from zzcms_user where id ='$id'";
+	$rs = mysql_query($sql); 
+	$row = mysql_fetch_array($rs);
+		if ($row['passed']=='0'){
+		mysql_query("update zzcms_user set passed=1 where id ='$id'");
+		}else{
+		mysql_query("update zzcms_user set passed=0 where id ='$id'");
+		}
 	}
-
-mysql_query($sql);
-echo "<script>location.href='?shenhe=no&keyword=".$keyword."&page=".$page."'</script>";
+}else{
+echo "<script>alert('操作失败！至少要选中一条信息。');history.back()</script>";
 }
+echo "<script>location.href='?keyword=".$keyword."&page=".$page."'</script>";	
 }
 ?>
 <body>
@@ -79,19 +73,19 @@ echo "<script>location.href='?shenhe=no&keyword=".$keyword."&page=".$page."'</sc
 <form name="form1" method="post" action="?">
   <table width="100%" border="0" cellpadding="5" cellspacing="0">
     <tr> 
-      <td class="border"> <input name="kind" type="radio" value="username" <?php if ($kind=="username") { echo "checked";}?> >
-        按用户名
-<input type="radio" name="kind" value="comane" <?php if ($kind=="comane") { echo "checked";}?>>
-        按公司名 
-        <input type="radio" name="kind" value="id" <?php if ($kind=="id") { echo "checked";}?>>
-        按用户ID 
-        <input type="radio" name="kind" value="email" <?php if ($kind=="email") { echo "checked";}?>>
-        按E-mail 
-        <input type="radio" name="kind" value="mobile" <?php if ($kind=="mobile") { echo "checked";}?>>
-        按手机号
-        <input type="radio" name="kind" value="tel" <?php if ($kind=="tel") { echo "checked";}?>>
-        按电话号 
-        <input name="keyword" type="text" id="keyword" size="16" value="<?php echo $keyword?>">
+      <td class="border"> <input name="kind" id="username" type="radio" value="username" <?php if ($kind=="username") { echo "checked";}?> >
+        <label for="username">按用户名</label>
+<input name="kind" type="radio" value="comane" id="comane" checked <?php if ($kind=="comane") { echo "checked";}?>>
+         <label for="comane">按公司名 </label>
+        <input type="radio" name="kind" value="id" id="id" <?php if ($kind=="id") { echo "checked";}?>>
+         <label for="id">按用户ID </label>
+        <input type="radio" name="kind" value="email" id="email" <?php if ($kind=="email") { echo "checked";}?>>
+         <label for="email">按E-mail</label> 
+        <input type="radio" name="kind" value="mobile" id="mobile"<?php if ($kind=="mobile") { echo "checked";}?>>
+         <label for="mobile">按手机号</label>
+        <input type="radio" name="kind" value="tel"  id="tel"<?php if ($kind=="tel") { echo "checked";}?>>
+         <label for="tel">按电话号</label> 
+        <input name="keyword" type="text" id="keyword" value="<?php echo $keyword?>" size="30" maxlength="255">
         <input type="submit" name="Submit2" value="查寻">
       </td>
     </tr>
@@ -117,7 +111,7 @@ if ($keyword<>"") {
 	$sql2=$sql2. " and username like '%".$keyword."%' ";
 	break;
 	case "id";
-	$sql2=$sql2. " and id = ".$keyword."";
+	$sql2=$sql2. " and id = '".$keyword."'";
 	break;
 	case "comane";
 	$sql2=$sql2. " and comane like '%".$keyword."%'";
@@ -167,14 +161,14 @@ echo "暂无信息";
 <table width="100%" border="0" cellpadding="5" cellspacing="0" class="border">
   <tr> 
       <td> 
-        <input name="submit"  type="submit" onClick="myform.action='?action=pass'" value="审核选中的信息">
+        <input name="submit"  type="submit" onClick="myform.action='?action=pass'" value="【取消/审核】选中的信息">
         <input name="submit3" type="submit" onClick="deluser(this.form)"value="删除选中的信息">
-      </td>
+        <input name="pageurl" type="hidden"  value="usermanage.php?kind=<?php echo $kind?>&keyword=<?php echo $keyword?>&shenhe=<?php echo $shenhe?>&page=<?php echo $page ?>"> </td>
   </tr>
 </table>
   <table width="100%" border="0" cellpadding="5" cellspacing="1">
     <tr class="title"> 
-      <td width="5%" align="center" class="border"> ID</td>
+      <td width="5%" align="center" class="border"> <label for="chkAll" style="text-decoration: underline;cursor: hand;">全选</label> </td>
       <td width="10%" align="center" class="border"> 用户名</td>
       <td width="10%" class="border">公司名称</td>
       <td width="5%" align="center" class="border">企业类型</td>
@@ -194,7 +188,16 @@ while($row = mysql_fetch_array($rs)){
        <a name="<?php echo $row["id"]?>"></a></td>
       <td align="center">
 	  <a href="<?php echo getpageurl("zt",$row["id"])?>" target="_blank"><?php echo str_replace($keyword,"<font color=red>".$keyword."</font>",$row["username"])?></a>
-	  <br>密码：<?php echo $row["passwordtrue"] ?>
+<?php
+	$rsn=mysql_query("select config from zzcms_admingroup where id=(select groupid from zzcms_admin where pass='".@$_SESSION["pass"]."' and admin='".@$_SESSION["admin"]."')");//只验证密码会出现，两个管理员密码相同的情况，导致出错,前加@防止SESSION失效后出错提示
+	$rown=mysql_fetch_array($rsn);
+	echo "<br>密码：";
+	if(str_is_inarr($rown["config"],'userreg')=='no'){
+		echo "无【用户管理】权限，密码不于显示"; 
+	}else{
+		if ($row["passwordtrue"]!=''){ echo $row["passwordtrue"];}else{ echo $row["password"];} 
+	}
+?>
 	  </td>
       <td> 
         <?php if ($row["comane"]<>"") {
@@ -251,8 +254,8 @@ while($row = mysql_fetch_array($rs)){
 <table width="100%" border="0" cellpadding="5" cellspacing="0" class="border">
   <tr>
     <td><input name="chkAll" type="checkbox" id="chkAll" onClick="CheckAll(this.form)" value="checkbox">
-        全选 
-        <input name="submit2"  type="submit" onClick="myform.action='?action=pass'" value="审核选中的信息"> 
+        <label for="chkAll" style="text-decoration: underline;cursor: hand;">全选</label>  
+        <input name="submit2"  type="submit" onClick="myform.action='?action=pass'" value="【取消/审核】选中的信息"> 
         <input name="submit4" type="submit" onClick="deluser(this.form)"value="删除选中的信息">
         <input name="page" type="hidden" id="page" value="<?php echo $page?>"> </td>
   </tr>

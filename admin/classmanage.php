@@ -15,17 +15,14 @@ showmsg('请选择类别');
 <script language="JavaScript" src="/js/gg.js"></script>
 <script language="JavaScript" src="/js/jquery.js"></script>
 <script language="JavaScript" type="text/JavaScript">
-function ConfirmDelBig()
-{
+function ConfirmDelBig(){
    if(confirm("确定要删除此类吗？"))
      return true;
    else
      return false;	 
 }
-function CheckForm()
-{  
-if (document.form1.bigclassname.value=="")
-  {
+function CheckForm(){  
+if (document.form1.bigclassname.value==""){
     alert("名称不能为空！");
 	document.form1.bigclassname.focus();
 	return false;
@@ -83,13 +80,7 @@ if ($bigclassid<>""){
 echo "<script>location.href='?'</script>";
 }
 ?>
-
-<table width="100%" border="0" cellpadding="0" cellspacing="0">
-  <tr> 
-    <td class="admintitle">类别管理</td>
-  </tr>
-</table>
- 
+<div class="admintitle">类别管理</div> 
 <table width="100%" border="0" cellpadding="5" cellspacing="0">
   <tr> 
     <td align="center" class="border">

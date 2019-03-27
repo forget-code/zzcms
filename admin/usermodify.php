@@ -31,7 +31,6 @@ return false;
 </head>
 <body>
 <?php
-checkadminisdo("userreg");
 if (isset($_REQUEST["action"])){
 $action=$_REQUEST["action"];
 }else{
@@ -52,6 +51,7 @@ if ($id=="") {
 	}else{
 		$row=mysql_fetch_array($rs);
 		if ($action=="modify") {
+		checkadminisdo("userreg");
 			$usersf=trim($_POST["usersf"]);
 			$password=trim($_POST["password"]);
 			$sex=trim($_POST["sex"]);
@@ -305,7 +305,7 @@ document.getElementById("showimg").innerHTML="<img src='"+sd+"' width=200>";
 }
 }
 </script> 
-        <table width="200" height="200" border="0" cellpadding="5" cellspacing="1" bgcolor="#999999">
+        <table width="120" height="120" border="0" cellpadding="5" cellspacing="1" bgcolor="#999999">
           <tr>
             <td align="center" bgcolor="#FFFFFF" id="showimg" onclick='openimg()'><?php
 				  if($row["img"]<>"" && $row["img"]<>"/image/nopic.gif"){

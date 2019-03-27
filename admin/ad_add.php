@@ -25,33 +25,26 @@ $simgheight=100;
 }
 ?>
 <script language = "JavaScript">
-function CheckForm()
-{
-	  
-if (document.myform.title.value=="")
-  {
+function CheckForm(){	  
+if (document.myform.title.value==""){
     alert("标题不能为空！");
 	document.myform.title.focus();
 	return false;
-  }
-  if (document.myform.link.value=="")
-  {
+}
+if (document.myform.link.value==""){
     alert("链接地址不能为空！");
 	document.myform.link.focus();
 	return false;
-  }
-
+}
 //定义正则表达式部分
 var strP=/^\d+$/;
-if(!strP.test(document.myform.imgwidth.value)) 
-{
+if(!strP.test(document.myform.imgwidth.value)) {
 alert("图片宽度只能填数字！"); 
 document.myform.imgwidth.focus(); 
 return false; 
 }
 
-if(!strP.test(document.myform.imgheight.value)) 
-{
+if(!strP.test(document.myform.imgheight.value)) {
 alert("图片高度只能填数字！"); 
 document.myform.imgheight.focus(); 
 return false; 
@@ -60,21 +53,14 @@ return false;
 </script>
 <script language="javascript" src="/js/timer.js"></script>	
 </head>
-
 <body>
-<table width="100%" border="0" cellpadding="0" cellspacing="0">
-  <tr> 
-    <td class="admintitle">添加广告</td>
-  </tr>
-</table>
+<div class="admintitle">添加广告</div>
 <form name="myform" method="post" action="ad_save.php" onSubmit="return CheckForm();">
   <table width="100%" border="0" cellpadding="5" cellspacing="0">
     <tr> 
       <td width="20%" align="right" class="border">所属类别：</td>
       <td width="80%" class="border"> 
-        
-		<?php
-
+<?php
 $sql = "select * from zzcms_adclass where parentid<>'A' order by xuhao asc";
 $rs=mysql_query($sql);
 ?>
@@ -157,9 +143,9 @@ while($row = mysql_fetch_array($rs)){
     </tr>
     <tr> 
       <td align="right" class="border">上传图片： <input name="img" type="hidden" id="img" ></td>
-      <td class="border"> <script type="text/javascript">
-function showtxt()
-{
+      <td class="border"> 
+<script type="text/javascript">
+function showtxt(){
 var sd =window.showModalDialog('/uploadimg_form.php?noshuiyin=1','','dialogWidth=400px;dialogHeight=300px');
 //for chrome 
 if(sd ==undefined) {  

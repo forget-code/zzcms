@@ -1,4 +1,5 @@
 <?php
+if(!isset($_SESSION)){session_start();}
 include("../inc/conn.php");
 include("../inc/top2.php");
 include("../inc/bottom.php");

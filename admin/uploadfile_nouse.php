@@ -1,5 +1,5 @@
 <?php
-set_time_limit(1800) ;
+//set_time_limit(1800) ;
 include("admin.php");
 ?>
 <html>
@@ -21,11 +21,7 @@ $mlname=trim($_GET["mlname"]);
 $mlname="";
 }
 ?>
-<table width="100%" border="0" cellpadding="0" cellspacing="0">
-  <tr> 
-    <td class="admintitle">删除无用的上传文件</td>
-  </tr>
-</table>
+<div class="admintitle">删除无用的上传文件</div>
 <table width="100%" border="0" cellpadding="5" cellspacing="0" class="border">
   <tr> 
     <td>

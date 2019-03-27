@@ -16,7 +16,7 @@ public $bImg; //大图的全路径
 public $datu; //大图的命名
 function upfile() {
 if (!is_uploaded_file(@$this->fileName[tmp_name])){//是否存在文件
-   echo "<script>alert('请点击“浏览”，选择您要上传的文件！\\n\\n支持的图片类型为：swf',如果选择后还出此提示，可能是你的服务器只能上传2M以下的文件);parent.window.close();</script>";
+   echo "<script>alert('请点击“浏览”，选择您要上传的文件！\\n\\n支持的图片类型为：swf,\\n\\n如果选择后还出此提示，可能是你的服务器只能上传2M以下的文件');parent.window.close();</script>";
    exit;
 }
 if ($this->max_file_size*1024*1024 < $this->fileName["size"]){//检查文件大小

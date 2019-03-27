@@ -10,7 +10,7 @@ if (isset($_SESSION["admin"]) && isset($_SESSION["pass"])){
 		showmsg('管理员密码不正确，你无权进入该页面','/admin/login.php');
 		}
 	}else{
-	showmsg('你无权进入该页面','/admin/login.php');
+	showmsg('管理员已不存在，你无权进入该页面','/admin/login.php');
 	}
 }else{
 session_write_close();

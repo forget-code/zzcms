@@ -10,15 +10,7 @@ include("admin.php");
 </head>
 <body>
 <?php
-checkadminisdo("helps");
-if (isset($_REQUEST["action"])){
-$action=$_REQUEST["action"];
-}else{
-$action="";
-}
-
-if( isset($_GET["page"]) && $_GET["page"]!="") 
-{
+if( isset($_GET["page"]) && $_GET["page"]!="") {
     $page=$_GET['page'];
 }else{
     $page=1;
@@ -40,11 +32,7 @@ $keyword=$_REQUEST["keyword"];
 $keyword="";
 }
 ?>
-<table width="100%" border="0" cellpadding="0" cellspacing="0">
-  <tr> 
-    <td class="admintitle"><?php if ($b==1 ){echo"帮助"; }else{ echo"公告";}?>信息管理</td>
-  </tr>
-</table>
+<div class="admintitle"><?php if ($b==1 ){echo"帮助"; }else{ echo"公告";}?>信息管理</div>
 <table width="100%" border="0" cellpadding="5" cellspacing="0">
   <tr> 
     <td class="border"> <table width="100%" border="0" cellspacing="0" cellpadding="0">
@@ -95,7 +83,7 @@ echo "暂无信息";
   </table>
   <table width="100%" border="0" cellspacing="1" cellpadding="5">
     <tr> 
-      <td width="5%" align="center" class="border">选择</td>
+      <td width="5%" align="center" class="border"><label for="chkAll" style="text-decoration: underline;cursor: hand;">全选</label></td>
       <td width="10%" class="border">标题</td>
       <td width="5%" align="center" class="border">首页显示</td>
       <td width="10%" align="center" class="border">发布时间</td>
@@ -118,7 +106,7 @@ while($row = mysql_fetch_array($rs)){
   <table width="100%" border="0" cellpadding="5" cellspacing="0" class="border">
     <tr> 
       <td> <input name="chkAll" type="checkbox" id="chkAll" onClick="CheckAll(this.form)" value="checkbox">
-        全选 
+        <label for="chkAll" style="text-decoration: underline;cursor: hand;">全选</label> 
         <input name="submit" type="submit" onClick="myform.action='del.php';myform.target='_self';return ConfirmDel()" value="删除选中的信息"></td>
     </tr>
   </table>

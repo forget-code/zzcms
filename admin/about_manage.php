@@ -37,16 +37,8 @@ function ConfirmDelBig()
      return false;	 
 }
 </script>
-<table width="100%" border="0" cellpadding="0" cellspacing="0">
-  <tr> 
-    <td class="admintitle">网站底部链接管理</td>
-  </tr>
-</table>
-<table width="100%" border="0" cellpadding="5" cellspacing="0">
-  <tr> 
-    <td align="center" class="border"><a href="about.php?action=add">添加网站底部链接</a></td>
-  </tr>
-</table>
+<div class="admintitle">网站底部链接管理</div>
+<div align="center" class="border center"><a href="about.php?action=add">添加网站底部链接</a></div>
 <?php
 $sql="Select * From zzcms_about";
 $rs=mysql_query($sql);

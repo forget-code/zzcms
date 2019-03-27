@@ -26,7 +26,7 @@ $smallclassname="";
 }
 
 $title=trim($_POST["title"]);
-$link=trim($_POST["link"]);
+$link=addhttp(trim($_POST["link"]));
 $laiyuan=trim($_POST["laiyuan"]);
 $content=str_replace("'","",stripfxg(trim($_POST["content"])));
 $img=getimgincontent($content);

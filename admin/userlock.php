@@ -7,20 +7,22 @@ $page=trim($_REQUEST["page"]);
 if ($id<>"") {
 	if ($action=="lock") {
 		mysql_query("Update zzcms_user set lockuser=1 where id='$id'");
-		//锁定时审核此用户发布的信息（使之为False）
+		//锁定时审核此用户发布的信息（使之为0）
 		mysql_query("Update zzcms_main set passed=0 where editor=(select username from zzcms_user where id='id')");
 		mysql_query("Update zzcms_pp set passed=0 where editor=(select username from zzcms_user where id='id')");
 		mysql_query("Update zzcms_job set passed=0 where editor=(select username from zzcms_user where id='id')");
 		mysql_query("Update zzcms_zh set passed=0 where editor=(select username from zzcms_user where id='$id')");
 		mysql_query("Update zzcms_zx set passed=0 where editor=(select username from zzcms_user where id='$id')");
+		mysql_query("Update zzcms_special set passed=0 where editor=(select username from zzcms_user where id='id')");
 	}else{
 		mysql_query("Update zzcms_user set lockuser=0 where id='$id'");
 		//解锁时审核此用户发布的信息（使之为1）
 		mysql_query("Update zzcms_main set passed=1 where editor=(select username from zzcms_user where id='$id')");
-		mysql_query("Update zzcms_pp set passed=0 where editor=(select username from zzcms_user where id='id')");
-		mysql_query("Update zzcms_job set passed=0 where editor=(select username from zzcms_user where id='id')");
+		mysql_query("Update zzcms_pp set passed=1 where editor=(select username from zzcms_user where id='id')");
+		mysql_query("Update zzcms_job set passed=1 where editor=(select username from zzcms_user where id='id')");
 		mysql_query("Update zzcms_zh set passed=1 where editor=(select username from zzcms_user where id='$id')");
 		mysql_query("Update zzcms_zx set passed=1 where editor=(select username from zzcms_user where id='$id')");
+		mysql_query("Update zzcms_special set passed=1 where editor=(select username from zzcms_user where id='id')");
 	}      
 }
 mysql_close($conn);

@@ -1,6 +1,10 @@
 <?php
 include("../inc/conn.php");
+include("../inc/fy.php");
 include("check.php");
+$fpath="text/dls_print.txt";
+$fcontent=file_get_contents($fpath);
+$f_array=explode("\n",$fcontent) ;
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="zh-CN">
@@ -28,23 +32,11 @@ include("check.php");
 <div class="main">
 <?php
 if (check_user_power("dls_print")=="no"){
-?>
-<div class="border" style="background-color:#FFFFFF;padding:10px;text-align:center"> 
-        提示：您所在的用户组没有此权限！<br>
-<br>
-<input name="Submit22" type="button" class="buttons"  value="升级成VIP会员" onClick="location.href='/one/vipuser.php'"/>
-</div>
-<?php
+echo $f_array[0];
 exit;
 }
-
 ?>
-<table width="100%" border="0" cellpadding="0" cellspacing="0">
-  <tr> 
-    <td height="35" align="center"><a href="javascript:window.print()"><img src="/image/ico-dy.gif" width="18" height="17" border="0"> 
-      打印</a></td>
-  </tr>
-</table>
+<div class="box center"><a href="javascript:window.print()"><?php echo $f_array[1]?></a></div>
 <table width="100%" border="0" cellspacing="0" cellpadding="0">
   <tr>
     <td align="center"> 
@@ -58,12 +50,13 @@ if(!empty($_POST['id'])){
 }
 
 if (!isset($id) || $id==""){
-echo "<script lanage='javascript'>alert('操作失败！\\n至少要选中一条信息。');window.opener=null;window.close()</script>";
+echo $f_array[2];
 mysql_close($conn);
 exit;
 }
  	if (strpos($id,",")>0){
-	$sql="select * from zzcms_dl where passed=1 and saver='".$username."' and id in (". $id .") and id in(select max(id) from zzcms_dl group by tel)";
+	//$sql="select * from zzcms_dl where passed=1 and saver='".$username."' and id in (". $id .") and id in(select max(id) from zzcms_dl group by tel)";
+	$sql="select * from zzcms_dl where passed=1 and saver='".$username."' and id in (". $id .")";
 	}else{
 	$sql="select * from zzcms_dl where passed=1 and saver='".$username."' and id='$id' order by id desc";
 	}
@@ -71,17 +64,12 @@ exit;
 $rs=mysql_query($sql);
 $row=mysql_num_rows($rs);
 if (!$row){
-echo "暂无".channeldl."商信息";
+echo $f_array[3];
 }else{
 ?>
       <table width="100%" border="0" cellpadding="2" cellspacing="0">
         <tr> 
-          <td width="6%" height="30" align="center" class="x"><strong>序号</strong></td>
-          <td width="6%" class="x"><strong>联系人</strong></td>
-          <td width="14%" height="30" class="x"><strong><?php echo channeldl?>区域</strong></td>
-          <td width="20%" height="30" class="x"><strong><?php echo channeldl?>品种</strong></td>
-          <td width="34%" height="30" class="x"><strong>联系方式</strong></td>
-          <td width="20%" height="30" class="x"><strong>申请时间</strong></td>
+         <?php echo $f_array[4]?>
         </tr>
         <?php
 $i=1;		
@@ -92,7 +80,7 @@ while ($row=mysql_fetch_array($rs)){
           <td width="6%" height="30" class="x"><?php echo $row['dlsname']?></td>
           <td width="14%" height="30" class="x"><?php echo $row['province'].$row['city']?></td>
           <td width="20%" height="30" class="x"><?php echo $row['cp']?></td>
-          <td width="34%" height="30" class="x">电话：<?php echo $row['tel']?> E-mail：<?php echo $row['email']?></td>
+          <td width="34%" height="30" class="x"><?php echo  $f_array[5].$row['tel'].$f_array[6].$row['email']?></td>
           <td width="20%" height="30" class="x"> <?php echo $row['sendtime']?></td>
         </tr>
         <?php
@@ -109,6 +97,5 @@ mysql_close($conn);
   </tr>
 </table>
 </div>
-
 </body>
 </html>

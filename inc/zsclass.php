@@ -4,7 +4,7 @@ global $siteskin;
 checkid($column_b);
 checkid($column_s);
 checkid($column_p);
-$fp=zzcmsroot."cache/".$siteskin."/zsclass.htm";
+$fp=zzcmsroot."cache/".$siteskin."/zsclass_".$style.".htm";
 if (cache_update_time!=0 && file_exists($fp) && time()-filemtime($fp)<3600*24*cache_update_time ) {//12小时更新一次,
 	$f=fopen($fp,"r+");
 	$fcontent="";
@@ -19,7 +19,7 @@ if ($row){
 $n=1;
 $tdwidth=floor(100/$column_b);//取整
 $liwidth=floor(100/$column_s);//取整
-$str="<div style='position:relative;z-index:3'>";
+$str="<div style='position:relative;z-index:4'>";
 if ($style==1){
 $str=$str."<table border=0 cellspacing=0 cellpadding=0 class='zsclass_tablebg'><tr>";
 }else{
@@ -30,7 +30,7 @@ if ($style==1){
 $str=$str. "<td valign='top' class='zsclass_td_style1' onmouseover=\"adSetBg(this)\" onMouseOut=\"adReBg(this)\"  width='".$tdwidth."%'> \n";
 $str=$str. "<div class='zsclass_b' onMouseOver=\"showfilter2(zsLayer$n)\" onMouseOut=\"showfilter2(zsLayer$n)\">\n";
 }else{
-if ($n % 2==0){ 
+	if ($n % 2==0){ 
 	$str=$str. "<td valign='top' class='zsclass_td' width='".$tdwidth."%'> \n";	
 	}else{
 	$str=$str. "<td valign='top' class='zsclass_td2' width='".$tdwidth."%'> \n";	
@@ -42,16 +42,13 @@ $str=$str. "<h2>";
 	$str=$str. "<img src=".$row["img"].">";
 	}
 $str=$str. "<a href=".getpageurl2("zs",$row["classzm"],'').">".cutstr($row["classname"],$long_b)."</a>";
-
 	if($showcount=='yes'){
 	$rsnumb=mysql_query("select count(*) as total from zzcms_main where bigclasszm='".$row["classzm"]."' ");//统计所属大类下的信息数
 	$rown = mysql_fetch_array($rsnumb);
 	$totlenum = $rown['total'];
 	$str=$str. "<span>(共 <font color=#FF6600>" .$totlenum. "</font> 条)</span>" ;
 	}
-	
 $str=$str. "</h2>\n";
-
 if ($style==1){//为1时大类下显示小类
 	if ($adv=="yes"){
 	//$str=$str.showad(2,4,"no","yes","no",0,0,5,$row["classname"],"分类招商间","no");//两种方法都可以
@@ -135,7 +132,7 @@ $str=$str. '</div>';
 $str= '暂无分类信息';
 }
 	if (cache_update_time!=0){
-	$fp=zzcmsroot."cache/".$siteskin."/zsclass.htm";
+	$fp=zzcmsroot."cache/".$siteskin."/zsclass_".$style.".htm";
 	if (!file_exists(zzcmsroot."cache/".$siteskin)) {mkdir(zzcmsroot."cache/".$siteskin,0777,true);}
 	$f=fopen($fp,"w+");//fopen()的其它开关请参看相关函数
 	fputs($f,$str);

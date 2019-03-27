@@ -15,8 +15,7 @@ $action=$_REQUEST["action"];
 $action="";
 }
 
-if( isset($_GET["page"]) && $_GET["page"]!="") 
-{
+if( isset($_GET["page"]) && $_GET["page"]!="") {
     $page=$_GET['page'];
 }else{
     $page=1;
@@ -54,13 +53,22 @@ if(!empty($_POST['id'])){
 	$ids=explode("|",$ids);
 	$id=$ids[0];
 	$classzm=$ids[1];
+	
+	$sql="select passed from zzcms_dl where id ='$id'";
+	$rs = mysql_query($sql); 
+	$row = mysql_fetch_array($rs);
+	if ($row['passed']=='0'){
 	mysql_query("update zzcms_dl set passed=1 where id ='$id'");
 	mysql_query("update zzcms_dl_".$classzm." set passed=1 where dlid ='$id'");
-    }	
+    }else{
+	mysql_query("update zzcms_dl set passed=0 where id ='$id'");
+	mysql_query("update zzcms_dl_".$classzm." set passed=0 where dlid ='$id'");
+	}
+	
+	}	
 }else{
 echo "<script lanage='javascript'>alert('操作失败！至少要选中一条信息。');history.back()</script>";
 }
-//echo "<script>location.href='?shenhe=no&keyword=".$keyword."&page=".$page."'<//script>";
 echo "<script>location.href='?keyword=".$keyword."&page=".$page."'</script>";
 }
 ?>
@@ -161,7 +169,7 @@ echo "暂无信息";
       <td> 
         <input name="submit" type="submit" onClick="myform.action='dl_sendmail.php';myform.target='_blank' "  value="给接收者发邮件提醒">
         <input name="submit23" type="submit" onClick="myform.action='dl_sendsms.php';myform.target='_blank' "  value="给接收者发手机短信提醒">
-        <input name="submit4" type="submit"  onClick="myform.action='?action=pass';myform.target='_self'" value="审核选中的信息"> 
+        <input name="submit4" type="submit"  onClick="myform.action='?action=pass';myform.target='_self'" value="【取消/审核】选中的信息"> 
         <input type="submit" onClick="myform.action='del.php';myform.target='_self';return ConfirmDel()" value="删除选中的信息">
         <input name="pagename" type="hidden"  value="dl_manage.php?b=<?php echo $b?>&shenhe=<?php echo $shenhe?>&page=<?php echo $page ?>"> 
         <input name="tablename" type="hidden"  value="zzcms_dl"> </td>
@@ -169,7 +177,7 @@ echo "暂无信息";
   </table>
   <table width="100%" border="0" cellpadding="5" cellspacing="1">
     <tr> 
-      <td width="5%" align="center" class="border">选择</td>
+      <td width="5%" align="center" class="border"> <label for="chkAll" style="text-decoration: underline;cursor: hand;">全选</label></td>
       <td width="10%" class="border">类别</td>
       <td width="10%" class="border"><?php echo channeldl?>品种</td>
       <td width="10%" class="border"><?php echo channeldl?>区域</td>
@@ -229,10 +237,10 @@ while($row = mysql_fetch_array($rs)){
     <tr> 
       <td> 
         <input name="chkAll" type="checkbox" id="chkAll" onClick="CheckAll(this.form)" value="checkbox">
-        全选 
+         <label for="chkAll" style="text-decoration: underline;cursor: hand;">全选</label>
         <input name="submit2" type="submit" onClick="myform.action='dl_sendmail.php';myform.target='_blank' "  value="给接收者发邮件提醒">
         <input name="submit232" type="submit" onClick="myform.action='dl_sendsms.php';myform.target='_blank' "  value="给接收者发手机短信提醒">
-        <input name="submit5" type="submit"  onClick="myform.action='?action=pass';myform.target='_self'" value="审核选中的信息"> 
+        <input name="submit5" type="submit"  onClick="myform.action='?action=pass';myform.target='_self'" value="【取消/审核】选中的信息"> 
         <input name="submit3" type="submit" onClick="myform.action='del.php';myform.target='_self';return ConfirmDel()" value="删除选中的信息"> 
       </td>
     </tr>

@@ -1,6 +1,9 @@
 <?php
 include("../inc/conn.php");
 include("check.php");
+$fpath="text/msg.txt";
+$fcontent=file_get_contents($fpath);
+$f_array=explode("\n",$fcontent) ;
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="zh-CN">
@@ -56,22 +59,18 @@ include("left.php");
 <?php 
 if ($action=="add") {
 ?>
-<table width="100%" border="0" cellspacing="0" cellpadding="0">
-  <tr>
-    <td class="admintitle">添加短信内容模板</td>
-  </tr>
-</table>
+<div class="admintitle"><?php echo $f_array[0]?></div>
 <form action="?action=savedata&saveas=add" method="POST" name="myform" id="myform" onSubmit="return CheckForm();">
   <table width="100%" border="0" cellpadding="5" cellspacing="1">
     <tr> 
-      <td width="10%" align="right" class="border">内容</td>
+      <td width="10%" align="right" class="border"><?php echo $f_array[1]?></td>
       <td class="border"> <textarea name="info_content" id="info_content" ></textarea> 
        	<script type="text/javascript">CKEDITOR.replace('info_content');	</script>      </td>
     </tr>
     <tr> 
       <td align="right" class="border">&nbsp;</td>
       <td class="border"> 
-        <input type="submit" name="Submit" value="提 交" ></td>
+        <input type="submit" name="Submit" value="<?php echo $f_array[2]?>" ></td>
     </tr>
 </table>
  </form>
@@ -82,23 +81,18 @@ $sql="select * from zzcms_msg where id=".$_REQUEST["id"]."";
 $rs=mysql_query($sql);
 $row=mysql_fetch_array($rs);
 ?>
-<table width="100%" border="0" cellspacing="0" cellpadding="0">
-  <tr> 
-    <td class="admintitle">修改短信内容模板</td>
-  </tr>
-</table>
-  
+<div class="admintitle"><?php echo $f_array[3]?></div>  
 <form action="?action=savedata&saveas=modify" method="POST" name="myform" id="myform" onSubmit="return CheckForm();">
   <table width="100%" border="0" cellpadding="5" cellspacing="1">
     <tr> 
-      <td width="10%" align="right" class="border">内容</td>
+      <td width="10%" align="right" class="border"><?php echo $f_array[4]?></td>
       <td class="border"> <textarea name="info_content" id="info_content" ><?php echo $row["content"]?></textarea> 
 	  	<script type="text/javascript">CKEDITOR.replace('info_content');	</script>        </td>
     </tr>
     <tr>
       <td align="right" class="border"><input name="id" type="hidden" id="id2" value="<?php echo $row["id"]?>"></td>
       <td class="border">
-<input type="submit" name="Submit2" value="提 交"></td>
+<input type="submit" name="Submit2" value="<?php echo $f_array[5]?>"></td>
     </tr>
 </table>
   </form>

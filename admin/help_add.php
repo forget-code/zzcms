@@ -6,20 +6,15 @@ include("admin.php");
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <link href="style.css" rel="stylesheet" type="text/css">
 <?php
-
-checkadminisdo("helps");
 $b=$_REQUEST["b"];
 if ($b<>"") {
 checkid($b);
 }
 ?>
-
 <script type="text/javascript" src="/3/ckeditor/ckeditor.js"></script>
 <script language = "JavaScript">	
-function CheckForm()
-{
-if (document.myform.title.value=="")
-  {
+function CheckForm(){
+if (document.myform.title.value==""){
     alert("标题不能为空！");
 	document.myform.title.focus();
 	return false;
@@ -37,15 +32,9 @@ function doChange(objText, pic){
 }
 	</script>
 </head>
-
 <body>
-<table width="100%" border="0" align="center" cellpadding="0" cellspacing="0">
-  <tr> 
-    <td class="admintitle">发布<?php if ($b==1) { echo "帮助"; }else { echo "公告";}?>信息</td>
-  </tr>
-</table>
-<form action="help_save.php?action=add" method="post" name="myform" id="myform" onSubmit="return CheckForm();">
-        
+<div class="admintitle">发布<?php if ($b==1) { echo "帮助"; }else { echo "公告";}?>信息</div>
+<form action="help_save.php?action=add" method="post" name="myform" id="myform" onSubmit="return CheckForm();">      
   <table width="100%" border="0" cellpadding="5" cellspacing="0">
     <tr> 
       <td width="100" align="right" class="border" >标题： </td>

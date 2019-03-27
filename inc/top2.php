@@ -12,7 +12,6 @@ if (isset($_COOKIE['agent'])){//获取js里的agent信息,使通一，
 	$siteskin="mobile/".siteskin_mobile;//如果获取的值是其它的："Android","iPhone","SymbianOS","Windows Phone","iPod"，则启用手机模板
 	}
 }
-
 }
 function sitetop(){
 global $siteskin;

@@ -1,6 +1,9 @@
 <?php
 include("../inc/conn.php");
 include("check.php");
+$fpath="text/zhsave.txt";
+$fcontent=file_get_contents($fpath);
+$f_array=explode("|||",$fcontent) ;
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="zh-CN">
@@ -11,7 +14,8 @@ include("check.php");
 <link href="style.css" rel="stylesheet" type="text/css">
 <?php
 if (check_usergr_power("zh")=="no" && $usersf=='个人'){
-showmsg('个人用户没有此权限');
+echo $f_array[0];
+exit;
 }
 
 if (isset($_POST["page"])){//返回列表页用
@@ -56,37 +60,37 @@ include("left.php");
   <tr> 
     <td class="tstitle"> <?php
 	if ($_REQUEST["action"]=="add") {
-      echo "添加 ";
+      echo $f_array[1];
 	  }else{
-	  echo"修改";
+	  echo $f_array[2];
 	  }
-	  echo"成功";
+	  echo $f_array[3];
      ?>
       </td>
   </tr>
   <tr> 
           <td><table width="100%" border="0" cellspacing="0" cellpadding="5">
               <tr bgcolor="#FFFFFF"> 
-                <td width="25%" align="right" bgcolor="#FFFFFF">标题：</td>
+                <td width="25%" align="right" bgcolor="#FFFFFF"><?php echo $f_array[4]?> </td>
                 <td width="75%"><?php echo $title?></td>
               </tr>
               <tr bgcolor="#FFFFFF"> 
-                <td align="right" bgcolor="#FFFFFF">地点：</td>
+                <td align="right" bgcolor="#FFFFFF"><?php echo $f_array[5]?></td>
                 <td><?php echo  $address?></td>
               </tr>
               <tr bgcolor="#FFFFFF"> 
-                <td align="right" bgcolor="#FFFFFF">时间：</td>
-                <td><?php echo $timestart?>至<?php echo $timeend?></td>
+                <td align="right" bgcolor="#FFFFFF"><?php echo $f_array[6]?></td>
+                <td><?php echo $timestart?>-<?php echo $timeend?></td>
               </tr>
             </table></td>
   </tr>
   <tr> 
     <td><table width="100%" border="0" cellpadding="5" cellspacing="1">
         <tr> 
-          <td width="120" align="center" class="border"><a href="zhadd.php">继续添加</a></td>
-                <td width="120" align="center" class="border"><a href="zhmodify.php?id=<?php echo $id?>">修改</a></td>
-                <td width="120" align="center" class="border"><a href="zhmanage.php?page=<?php echo $page?>">返回</a></td>
-                <td width="120" align="center" class="border"><a href="<?php echo getpageurl("zh",$id)?>" target="_blank">预览</a></td>
+          <td width="120" align="center" class="border"><a href="zhadd.php"><?php echo $f_array[7]?></a></td>
+                <td width="120" align="center" class="border"><a href="zhmodify.php?id=<?php echo $id?>"><?php echo $f_array[8]?></a></td>
+                <td width="120" align="center" class="border"><a href="zhmanage.php?page=<?php echo $page?>"><?php echo $f_array[9]?></a></td>
+                <td width="120" align="center" class="border"><a href="<?php echo getpageurl("zh",$id)?>" target="_blank"><?php echo $f_array[10]?></a></td>
         </tr>
       </table></td>
   </tr>

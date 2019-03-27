@@ -7,7 +7,6 @@ include("admin.php");
 <link href="style.css" rel="stylesheet" type="text/css">
 <title></title>
 <?php
-
 if (isset($_REQUEST['action'])){
 $action=$_REQUEST['action'];
 }else{
@@ -24,6 +23,7 @@ if ($action=="add") {
 checkadminisdo("label");//可查看不可修改
 $title=trim($_POST["title"]);
 $title_old=trim($_POST["title_old"]);
+$startnumber=trim($_POST["startnumber"]);
 $numbers=trim($_POST["numbers"]);
 $row=trim($_POST["row"]);
 $start=stripfxg($_POST["start"]);
@@ -32,7 +32,7 @@ $ends=stripfxg($_POST["ends"]);
 
 $f="../template/".siteskin."/label/".$classname."/".$title.".txt";
 $fp=fopen($f,"w+");//fopen()的其它开关请参看相关函数
-$str=$title . "|||"  . $numbers . "|||" . $row . "|||" . $start . "|||" . $mids . "|||" . $ends;
+$str=$title . "|||" .$startnumber. "|||"  . $numbers . "|||" . $row . "|||" . $start . "|||" . $mids . "|||" . $ends;
 fputs($fp,$str);
 fclose($fp);
 $title==$title_old ?$msg='修改成功':$msg='添加成功';
@@ -50,11 +50,9 @@ $f="../template/".siteskin."/label/".$classname."/".trim($_POST["title"]).".txt"
 }
 ?>
 <script language = "JavaScript">
-function CheckForm()
-{
+function CheckForm(){
 var re=/^[0-9a-zA-Z_]{1,20}$/; //只输入数字和字母的正则
-if (document.myform.title.value=="")
-  {
+if (document.myform.title.value==""){
     alert("标签名称不能为空！");
 	document.myform.title.focus();
 	return false;
@@ -66,15 +64,13 @@ if(document.myform.title.value.search(re)==-1)  {
   }      
 //定义正则表达式部分
 var strP=/^\d+$/;
-if(!strP.test(document.myform.numbers.value)) 
-{
+if(!strP.test(document.myform.numbers.value)) {
 alert("只能填数字！"); 
 document.myform.numbers.focus(); 
 return false; 
 } 
 
-if(!strP.test(document.myform.row.value)) 
-{
+if(!strP.test(document.myform.row.value)) {
 alert("只能填数字！"); 
 document.myform.row.focus(); 
 return false; 
@@ -82,15 +78,9 @@ return false;
 }  
 </script>
 </head>
-
 <body>
-<table width="100%" border="0" align="center" cellpadding="0" cellspacing="0">
-  <tr> 
-    <td class="admintitle"><?php echo  $classname?>标签添加</td>
-  </tr>
-</table>
+<div class="admintitle"><?php echo  $classname?>标签添加</div>
 <form action="" method="post" name="myform" id="myform" onSubmit="return CheckForm();">
-        
   <table width="100%" border="0" cellpadding="5" cellspacing="0">
     <tr> 
       <td width="150" align="right" class="border" >现有标签：</td>
@@ -107,9 +97,9 @@ showmsg('只能是txt这种格式');//防止直接输入php 文件地址显示PH
 
 if (file_exists("../template/".siteskin."/label/".$classname."")==false){
 echo '文件不存在';
-}else{	
-	$dir = opendir("../template/".siteskin."/label/".$classname."");
-	while(($file = readdir($dir))!=false){
+}else{			
+$dir = opendir("../template/".siteskin."/label/".$classname."");
+while(($file = readdir($dir))!=false){
 	if ($file!="." && $file!="..") { //不读取. ..
     //$f = explode('.', $file);//用$f[0]可只取文件名不取后缀。
 		if ($labelname==$file){
@@ -118,7 +108,7 @@ echo '文件不存在';
 		echo "<li><a href='?classname=".$classname."&labelname=".$file."'>".$file."</a></li>";
 		}
 	} 
-	}
+}
 closedir($dir);
 }
 //读取现有标签中的内容
@@ -134,20 +124,21 @@ fclose($f);
 $fcontent=removeBOM($fcontent);//去除BOM信息，使修改时不用再重写标签名
 $f=explode("|||",$fcontent) ;
 $title=$f[0];
-$numbers=$f[1];
-$row=$f[2];
-$start=$f[3];
-$mids=$f[4];
-$ends=$f[5];	
+$startnumber=$f[1];
+$numbers=$f[2];
+$row=$f[3];
+$start=$f[4];
+$mids=$f[5];
+$ends=$f[6];	
 }else{
 $title="";
+$startnumber=0;
 $numbers="";
 $row="";
 $start="";
 $mids="";
 $ends="";
 } 
-
 	   ?>
 	   </div>
       </td>
@@ -159,13 +150,17 @@ $ends="";
 <input name="title_old" type="hidden" id="title_old" value="<?php echo $title?>" size="50" maxlength="255">      </td>
     </tr>
     <tr> 
-      <td align="right" class="border" >调用记录条数：</td>
-      <td class="border" ><input name="numbers" type="text"  value="<?php echo $numbers?>" size="10" maxlength="255"> 
+      <td align="right" class="border" >调用条数：</td>
+      <td class="border" >从第
+        <input name="startnumber" type="text" id="startnumber"  value="<?php echo $startnumber?>" size="5" maxlength="50">
+        条开始，调用
+        <input name="numbers" type="text"  value="<?php echo $numbers?>" size="5" maxlength="50">
+        条 
       </td>
     </tr>
     <tr> 
       <td align="right" class="border" >列数：</td>
-      <td class="border" > <input name="row" type="text" id="row" value="<?php echo $row?>" size="20" maxlength="255">
+      <td class="border" > <input name="row" type="text" id="row" value="<?php echo $row?>" size="5" maxlength="50">
         （分几列显示）</td>
     </tr>
     <tr> 

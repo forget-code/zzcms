@@ -1,6 +1,6 @@
 <?php
 function fixed($str){
-//checkver($str);
+checkver($str);
 if (strpos($str,"{#showad:")!==false){
 $n=count(explode("{#showad:",$str));//循环之前取值
 	for ($i=1;$i<$n;$i++){ 

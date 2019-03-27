@@ -16,24 +16,26 @@ $id=0;
 $domain=$_SERVER['HTTP_HOST']; //取得用户所访问的域名全称
 $dian= strpos($domain,'.');//.出现的位置
 $editor=substr($domain,0,$dian);//从二级域名中获取用户名
-//echo $editor;
 $channel=strtolower($_SERVER['REQUEST_URI']);
+//echo $channel;
 if($id<>0){//ID放前面，EDITOR放后面
 $sql="select * from zzcms_user where id='$id'";
-}elseif ($editor<>"" && $editor<>"www" && $editor<>"demo"){
+}elseif ($editor<>"" && $editor<>"www" && $editor<>"demo" && $domain<>str_replace("http://","",siteurl)){//针对用二级域名的情况
 $sql="select * from zzcms_user where username='$editor'";
 }elseif(isset($editorinzsshow)) {
 $sql="select * from zzcms_user where username='".$editorinzsshow."'";	//当两都为空时从zsshow接收值
 }else{
 showmsg ("参数不足!");
 }
-
 $rs=mysql_query($sql);
 $row=mysql_num_rows($rs);
 if (!$row){
 	showmsg ("不存在该用户信息!",siteurl);
 }else{
 	$row=mysql_fetch_array($rs);
+	if ($row["lockuser"]==1){
+	showmsg ("用户被锁定!展厅不于显示",siteurl);
+	}
 	$id=$row["id"];
 	$editor=$row["username"];
 	$somane=$row["somane"];
@@ -157,7 +159,7 @@ $showdaohang="用户配置表中无此用户信息";
 $row=mysql_fetch_array($rs);
 $showdaohang="<ul>";
 if(strpos($row["daohang"],"网站首页")!==false ){
-if(strpos($channel,"zt/show.php")!==false){$showdaohang=$showdaohang."<li class='current'>";}else{$showdaohang=$showdaohang."<li>";}
+if(strpos($channel,"zt/show")!==false){$showdaohang=$showdaohang."<li class='current'>";}else{$showdaohang=$showdaohang."<li>";}
 	if(sdomain=="Yes" ){
 	$showdaohang=$showdaohang."<a href='".getpageurlzt($editor,$id)."'>展厅首页</a>";
 	}else{
@@ -167,42 +169,42 @@ if(strpos($channel,"zt/show.php")!==false){$showdaohang=$showdaohang."<li class=
 }
 
 if(strpos($row["daohang"],"招商信息")!==false){
-	if(strpos($channel,"zt/zs")!==false){$showdaohang=$showdaohang."<li class='current'>";}else{$showdaohang=$showdaohang."<li>";}
+	if(strpos($channel,"zt/zs")!==false||strpos($channel,"sell")!==false){$showdaohang=$showdaohang."<li class='current'>";}else{$showdaohang=$showdaohang."<li>";}
 	$showdaohang=$showdaohang.ztdaohangurl(channelzs."信息","sell","zs");
 	$showdaohang=$showdaohang."</li>";
 }
 if(strpos($row["daohang"],"品牌信息")!==false ){
-	if(strpos($channel,"zt/pp")!==false){$showdaohang=$showdaohang."<li class='current'>";}else{$showdaohang=$showdaohang."<li>";}
+	if(strpos($channel,"zt/pp")!==false||strpos($channel,"brand")!==false){$showdaohang=$showdaohang."<li class='current'>";}else{$showdaohang=$showdaohang."<li>";}
 	$showdaohang=$showdaohang.ztdaohangurl("品牌信息","brand","pp");
 	$showdaohang=$showdaohang."</li>";
 }
 if(strpos($row["daohang"],"公司简介")!==false ){
-if(strpos($channel,"zt/companyshow")!==false){$showdaohang=$showdaohang."<li class='current'>";}else{$showdaohang=$showdaohang."<li>";}
+if(strpos($channel,"companyshow")!==false){$showdaohang=$showdaohang."<li class='current'>";}else{$showdaohang=$showdaohang."<li>";}
 	$showdaohang=$showdaohang.ztdaohangurl("公司简介","introduce","companyshow");
 	$showdaohang=$showdaohang."</li>";
 }
 if(strpos($row["daohang"],"公司新闻")!==false ){
-if(strpos($channel,"zt/news")!==false){$showdaohang=$showdaohang."<li class='current'>";}else{$showdaohang=$showdaohang."<li>";}
+if(strpos($channel,"news")!==false){$showdaohang=$showdaohang."<li class='current'>";}else{$showdaohang=$showdaohang."<li>";}
 	$showdaohang=$showdaohang.ztdaohangurl("公司新闻","news","news");
 	$showdaohang=$showdaohang."</li>";
 }
 if(strpos($row["daohang"],"招聘信息")!==false ){
-if(strpos($channel,"zt/job")!==false){$showdaohang=$showdaohang."<li class='current'>";}else{$showdaohang=$showdaohang."<li>";}
+if(strpos($channel,"job")!==false){$showdaohang=$showdaohang."<li class='current'>";}else{$showdaohang=$showdaohang."<li>";}
 	$showdaohang=$showdaohang.ztdaohangurl("招聘信息","jobs","job");
 	$showdaohang=$showdaohang."</li>";
 }
 if(strpos($row["daohang"],"资质证书")!==false ){
-if(strpos($channel,"zt/licence")!==false){$showdaohang=$showdaohang."<li class='current'>";}else{$showdaohang=$showdaohang."<li>";}
+if(strpos($channel,"licence")!==false){$showdaohang=$showdaohang."<li class='current'>";}else{$showdaohang=$showdaohang."<li>";}
 	$showdaohang=$showdaohang.ztdaohangurl("资质证书","licence","licence");
 	$showdaohang=$showdaohang."</li>";
 }
 if(strpos($row["daohang"],"联系方式")!==false ){
-if(strpos($channel,"zt/contact")!==false){$showdaohang=$showdaohang."<li class='current'>";}else{$showdaohang=$showdaohang."<li>";}
+if(strpos($channel,"contact")!==false){$showdaohang=$showdaohang."<li class='current'>";}else{$showdaohang=$showdaohang."<li>";}
 	$showdaohang=$showdaohang.ztdaohangurl("联系方式","contact","contact");
 	$showdaohang=$showdaohang."</li>";
 }
 if(strpos($row["daohang"],"在线留言")!==false ){
-if(strpos($channel,"zt/liuyan")!==false){$showdaohang=$showdaohang."<li class='current'>";}else{$showdaohang=$showdaohang."<li>";}
+if(strpos($channel,"liuyan")!==false){$showdaohang=$showdaohang."<li class='current'>";}else{$showdaohang=$showdaohang."<li>";}
 	$showdaohang=$showdaohang.ztdaohangurl("在线留言","guestbook","liuyan");
 	$showdaohang=$showdaohang."</li>";
 }

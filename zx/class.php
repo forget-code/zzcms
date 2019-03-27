@@ -1,4 +1,4 @@
-﻿<?php
+<?php
 include("../inc/conn.php");
 include("../inc/top.php");
 include("../inc/bottom.php");
@@ -12,7 +12,7 @@ checkid($b);
 $skin='';
 $bigclassname="";
 if ($b<>"") {
-$sql="select classname,skin,title,keyword,discription from zzcms_zxclass where classid='".$b."'";
+$sql="select classname,title,keyword,discription,skin from zzcms_zxclass where classid='".$b."'";
 $rs=mysql_query($sql);
 $row=mysql_num_rows($rs);
 	if ($row){
@@ -21,11 +21,11 @@ $row=mysql_num_rows($rs);
 	$classtitle=$row["title"];
 	$classkeyword=$row["keyword"];
 	$classdiscription=$row["discription"];
-	$skin=$row["skin"];
+	$skin=explode("|",$row["skin"]);
+	$skin=$skin[0];
 	}
 }
 if ($skin==''){$skin='zx_class.htm';}
-
 $fp="../template/".$siteskin."/".$skin;
 if (file_exists($fp)==false){
 WriteErrMsg($fp.'模板文件不存在');

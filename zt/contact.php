@@ -50,8 +50,9 @@ $lxfs=$lxfs."</ul>";
 $lxfs=$lxfs."<ul>";
 $lxfs=$lxfs."<li><b>".$comane."</b></li>";
 $lxfs=$lxfs."<li>地址：".$address."</li>";
-$lxfs=$lxfs."<li>电话：<a href='/zt/show.php?id=$id#dl_liuyan' style='color:#FF3300'>填写".channeldl."信息，联系方式自动显示。</a> </li>";
-$lxfs=$lxfs."<li>传真：<a href='/zt/show.php?id=$id#dl_liuyan' style='color:#FF3300'>填写".channeldl."信息，联系方式自动显示。</a>  </li>";
+$url="http://".$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI'];
+$lxfs=$lxfs."<li>电话：<a href='/zt/liuyan.php?id=$id&fromurl=".$url."#liuyan' style='color:#FF3300'>填写".channeldl."信息，联系方式自动显示。</a> </li>";
+$lxfs=$lxfs."<li>传真：<a href='/zt/liuyan.php?id=$id&fromurl=".$url."#liuyan' style='color:#FF3300'>填写".channeldl."信息，联系方式自动显示。</a>  </li>";
 $lxfs=$lxfs."<li>网址：" ;
 if(sdomain=="Yes"){
 $lxfs=$lxfs. "<a href='http://".$editor.".".substr(siteurl,strpos(siteurl,".")+1)."'>http://".$editor.".".substr(siteurl,strpos(siteurl,".")+1)."</a>";
@@ -59,9 +60,9 @@ $lxfs=$lxfs. "<a href='http://".$editor.".".substr(siteurl,strpos(siteurl,".")+1
 $lxfs=$lxfs. "<a href='".addhttp($homepage)."' target='_blank'>".$homepage."</a>";
 }
 $lxfs=$lxfs."</li>" ;						
-$lxfs=$lxfs."<li>手机：<a href='/zt/show.php?id=$id#dl_liuyan' style='color:#FF3300'>填写".channeldl."信息，联系方式自动显示。</a></li>";
-$lxfs=$lxfs."<li>email：<a href='/zt/show.php?id=$id#dl_liuyan' style='color:#FF3300'>填写".channeldl."信息，联系方式自动显示。</a> </li>";
-$lxfs=$lxfs."<li>QQ：<a href='/zt/show.php?id=$id#dl_liuyan' style='color:#FF3300'>填写".channeldl."信息，联系方式自动显示。</a> </li>";		  
+$lxfs=$lxfs."<li>手机：<a href='/zt/liuyan.php?id=$id&fromurl=".$url."#liuyan' style='color:#FF3300'>填写".channeldl."信息，联系方式自动显示。</a></li>";
+$lxfs=$lxfs."<li>email：<a href='/zt/liuyan.php?id=$id&fromurl=".$url."#liuyan' style='color:#FF3300'>填写".channeldl."信息，联系方式自动显示。</a> </li>";
+$lxfs=$lxfs."<li>QQ：<a href='/zt/liuyan.php?id=$id&fromurl=".$url."#liuyan' style='color:#FF3300'>填写".channeldl."信息，联系方式自动显示。</a> </li>";		  
 $lxfs=$lxfs."</ul>";
 }
 $lxfs=$lxfs."</div>";

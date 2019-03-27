@@ -51,10 +51,9 @@ $(document).ready(function(){
                 <td bgcolor="#FFFFFF">{#sendtime}</td>
               </tr>
           </table></td>
-          <td align="center" valign="top" bgcolor="#FFFFFF" style="padding-left:8px"><a href='{#img}' ><img src='{#img}' alt='{#ppname}' width="220" height="80" border='0'/><br />
+          <td align="center" valign="top" bgcolor="#FFFFFF" style="padding-left:8px"><a href='{#img}' ><img src='{#img}' alt='{#ppname}' onload="resizeimg(120,120,this)" border='0'/></a><br />
             <br />
-            <input class="botton" onclick="javascript:location.href('#liuyan')" value="留言加盟" type="button" name="Submit" />
-          </a></td>
+            <input class="botton" onclick="window.location.href='#liuyan'" value="留言加盟" type="button" name="Submit" /></td>
         </tr>
       </table>
 	</div>
@@ -76,7 +75,8 @@ $(document).ready(function(){
                <td width="35%">{textarea}<br />
 						<input name="contents2" id="contents2" style="display:none" />
 			<span id="ts_contents"></span>
-                 <input id="saver" value="{#saver}" type="hidden" name="saver" /></td>
+                 <input id="saver" value="{#saver}" type="hidden" name="saver" />
+<input id="fromurl" value="{#fromurl}" type="hidden" name="fromurl" /></td>
                <td width="65%"><input id="chcontent1" onclick="showinfo('content',1);document.ly.contents.focus();" value="愿加盟“{#ppname}”这个品牌，请与我联系。" type="checkbox" name="chcontent" />
                  <label id="content1" for="chcontent1">愿加盟“{#ppname}”这个品牌，请与我联系。</label>
                  <br />

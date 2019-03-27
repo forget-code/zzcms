@@ -114,8 +114,7 @@ $n=$n+1;
 return $str;
 }
 
-function showzsforsearch($num,$strnum,$order,$classname,$showtime,$keyword)
-{
+function showzsforsearch($num,$strnum,$order,$classname,$showtime,$keyword){
 $n=1;
 $str="";
 	$sql="select id,proname,sendtime,passed,elite,hit,city,comane,userid from zzcms_main where passed=1 ";
@@ -167,8 +166,7 @@ $str=$str. "暂无信息";
 return $str;
 }
 
-function showzsorder($classid,$sj,$num,$strnum,$keyword)
-{
+function showzsorder($classid,$sj,$num,$strnum,$keyword){
 $n=1;
 $str="";
 $sql="select cpid from zzcms_dl where passed=1 and cpid<>0 ";

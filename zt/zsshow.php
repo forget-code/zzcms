@@ -1,11 +1,17 @@
 <?php
+if(!isset($_SESSION)){session_start();} 
 include("../inc/conn.php");
+
+$token = md5(uniqid(rand(), true));    
+$_SESSION['token']= $token; 
+
 if(isset($_REQUEST['cpid'])){
 $cpid=$_REQUEST['cpid'];
 checkid($cpid);
 }else{
 $cpid=0;
 }
+
 if (isset($_COOKIE["zzcmscpid"])){
 	if ($cpid<>$_COOKIE["zzcmscpid"]){
 	setcookie("zzcmscpid",$cpid.",".$_COOKIE["zzcmscpid"],time()+3600*24*360);
@@ -164,6 +170,7 @@ $strout=str_replace("{#proname}",$cpmc,$strout);
 $strout=str_replace("{#cpid}",$cpid,$strout);
 $strout=str_replace("{#fbr}",$fbr,$strout);
 $strout=str_replace("{#bigclassid}",$bigclasszm,$strout);
+$strout=str_replace("{#token}",$token,$strout);
 
 $companyname="";
 $somane=$rown="";
@@ -206,5 +213,6 @@ $strout=str_replace("{#station}",$station,$strout);
 $strout=str_replace("{#sitebottom}",$sitebottom,$strout);
 $strout=str_replace("{#sitetop}",$sitetop,$strout);
 echo  $strout;
-}			  
+}	
+session_write_close();		  
 ?>

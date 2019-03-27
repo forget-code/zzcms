@@ -1,6 +1,9 @@
 <?php
 include("../inc/conn.php");
 include("check.php");
+$fpath="text/jobmodify.txt";
+$fcontent=file_get_contents($fpath);
+$f_array=explode("|||",$fcontent) ;
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="zh-CN">
@@ -10,32 +13,14 @@ include("check.php");
 <link href="style.css" rel="stylesheet" type="text/css">
 <?php
 if (check_usergr_power("job")=="no" && $usersf=='个人'){
-showmsg('个人用户没有此权限');
+echo $f_array[0];
+exit;
 }
 ?>
 <title></title>
 <script language = "JavaScript">
 function CheckForm(){
-	ischecked=false;
- 	for(var i=0;i<document.myform.bigclassid.length;i++){ 
-		if(document.myform.bigclassid[i].checked==true)  {
-		 ischecked=true ;
-   		} 
-	}
-	if(document.myform.bigclassid.checked==true)  {
-		 ischecked=true ;
-   		} 
- 	if (ischecked==false){
-	alert("请选择类别！");	
-    return false;
-	}	
-  if (document.myform.jobname.value==""){
-	document.myform.jobname.focus();
-    document.myform.jobname.value='此处不能为空';
-    document.myform.jobname.select();
-	document.myform.jobname.style.backgroundColor="FFCC00";
-	return false;
-  }   
+<?php echo $f_array[1]?>  
 }
 
 function doClick_E(o){
@@ -91,20 +76,16 @@ markit();
 showmsg('非法操作！警告：你的操作已被记录！小心封你的用户及IP！');
 }
 ?>
-<table width="100%" border="0" cellspacing="0" cellpadding="0">
-  <tr>
-    <td class="admintitle">修改招聘信息</td>
-  </tr>
-</table>
+<div class="admintitle"><?php echo $f_array[2]?></div>
 <form action="jobsave.php" method="post" name="myform" id="myform" onSubmit="return CheckForm();">
         <table width="100%" border="0" cellpadding="3" cellspacing="1">
           <tr> 
             <td width="18%" align="right" valign="top" class="border2" ><br>
-              类别 <font color="#FF0000">*</font></td>
+              <?php echo $f_array[3]?> <font color="#FF0000">*</font></td>
             <td width="82%" class="border2" > <table width="100%" border="0" cellpadding="0" cellspacing="1">
                 <tr> 
                   <td> <fieldset>
-                    <legend>请选择所属大类</legend>
+                    <legend><?php echo $f_array[4]?></legend>
                     <?php
         $sqlB = "select * from zzcms_jobclass where parentid='0' order by xuhao asc";
 		$rsB = mysql_query($sqlB,$conn); 
@@ -133,7 +114,7 @@ echo "<div id='E_con$n' style='display:block;'>";
 }else{
 echo "<div id='E_con$n' style='display:none;'>";
 }
-echo "<fieldset><legend>请选择所属小类</legend>";
+echo "<fieldset><legend>".$f_array[5]."</legend>";
 $sqlS="select * from zzcms_jobclass where parentid='$rowB[classid]' order by xuhao asc";
 $rsS = mysql_query($sqlS,$conn); 
 $nn=0;
@@ -158,16 +139,16 @@ echo "</div>";
               </table></td>
           </tr>
           <tr>
-            <td align="right" class="border" >职位<font color="#FF0000"> *</font></td>
+            <td align="right" class="border" ><?php echo $f_array[6]?><font color="#FF0000"> *</font></td>
             <td class="border" ><input name="jobname" type="text" id="jobname" value="<?php echo $row["jobname"]?>" size="60" maxlength="45"></td>
           </tr>
 		   
           <tr> 
-            <td align="right" class="border" >内容<font color="#FF0000">*</font></td>
+            <td align="right" class="border" ><?php echo $f_array[7]?><font color="#FF0000">*</font></td>
             <td class="border" > <textarea name="sm" cols="60" rows="4" id="sm"><?php echo $row["sm"] ?></textarea></td>
           </tr>
           <tr> 
-            <td align="right" class="border">工作地点 <font color="#FF0000">*</font></td>
+            <td align="right" class="border"><?php echo $f_array[8]?> <font color="#FF0000">*</font></td>
             <td class="border">
 			              
 <select name="province" id="province"></select>
@@ -185,7 +166,7 @@ new PCAS('province', 'city', 'xiancheng', '<?php echo $row['province']?>', '<?ph
             <td class="border2" > <input name="ypid" type="hidden" id="ypid2" value="<?php echo $row["id"] ?>"> 
               <input name="action" type="hidden" id="action2" value="modify"> 
               <input name="page" type="hidden" id="action" value="<?php echo $page ?>"> 
-              <input name="Submit" type="submit" class="buttons" value="保存修改结果"></td>
+              <input name="Submit" type="submit" class="buttons" value="<?php echo $f_array[9]?>"></td>
           </tr>
         </table>
 	  </form>

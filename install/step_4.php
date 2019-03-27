@@ -86,7 +86,7 @@ var re=/^[A-Za-z0-9\\-_-]*$/;
       </tr>
       <tr> 
         <td align="right">网站访问地址</td>
-        <td align="left"> <input name="url" type="text" id="url" value="http://localhost" style="width:150px"/></td>
+        <td align="left"> <input name="url" type="text" id="url" value="http://<?php echo $_SERVER['HTTP_HOST'];?>" style="width:150px"/></td>
       </tr>
       <tr> 
         <td align="right"><strong>填写管理员信息</strong></td>

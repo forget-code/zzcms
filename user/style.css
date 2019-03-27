@@ -48,11 +48,8 @@ a:hover {
 	background-position: center top;
 	height:25px; 
 	line-height:25px;
-
 	text-align:center;
-
 }
-
 .border {
 	background-color: #E4EDF9;
 	font-size: 9pt;
@@ -67,7 +64,6 @@ a:hover {
 	border: 1px solid #FFFFFF;
 	color: #135294;
 }
-
 .fenyei {
 	text-align: right;
 	padding:5px;
@@ -189,3 +185,4 @@ font-weight:bold;
 	background-color: #FFFFFF;
 }
 .box{margin:1px;padding:10px;background-color:#FFF}
+.center{text-align:center}

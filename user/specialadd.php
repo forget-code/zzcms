@@ -2,6 +2,9 @@
 if(!isset($_SESSION)){session_start();} 
 include("../inc/conn.php");
 include("check.php");
+$fpath="text/specialadd.txt";
+$fcontent=file_get_contents($fpath);
+$f_array=explode("|||",$fcontent) ;
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="zh-CN">
@@ -12,26 +15,12 @@ include("check.php");
 <link href="style.css" rel="stylesheet" type="text/css">
 <?php
 if (check_usergr_power("special")=="no" && $usersf=='个人'){
-showmsg('个人用户没有此权限');
+showmsg('个人用户没有此权限','null');//设为null提示后，不返回到上一页，防止由user/index.php?goto='zsadd.php'过来的造成死循环提示
 }
-
 ?>
-
 <script language = "JavaScript">
-function CheckForm()
-{
-if (document.myform.bigclassid.value=="")
-  {
-    alert("请选择大类名称！");
-	document.myform.bigclassid.focus();
-	return false;
-  }
-if (document.myform.title.value=="")
-  {
-    alert("标题不能为空！");
-	document.myform.title.focus();
-	return false;
-  } 
+function CheckForm(){
+<?php echo $f_array[0]?> 
 }  
 
 function doChange(objText, pic){
@@ -43,11 +32,9 @@ function doChange(objText, pic){
 		pic.options[i] = new Option(arr[i], arr[i]);
 	}
 } 
-function showlink()
-{
+function showlink(){
 whichEl = eval("link");
-if (whichEl.style.display == "none")
-{
+if (whichEl.style.display == "none"){
 eval("link.style.display=\"\";");
 eval("trlaiyuan.style.display=\"none\";");
 eval("trcontent.style.display=\"none\";");
@@ -67,7 +54,7 @@ eval("trquanxian.style.display=\"\";");
 eval("trquanxian2.style.display=\"\";");
 }
 } 
-	</script>
+</script>
 </head>
 <body>
 <div class="main">
@@ -75,8 +62,13 @@ eval("trquanxian2.style.display=\"\";");
 include("top.php");
 ?>
 <div class="pagebody">
+<div class="left">
+<?php
+include("left.php");
+?>
+</div>
 <div class="right">
-      <div class="admintitle">发布专题信息</div>
+      <div class="admintitle"><?php echo $f_array[1]?></div>
       <?php
 $tablename="zzcms_special";
 include("checkaddinfo.php");
@@ -91,14 +83,13 @@ $s=$_REQUEST["s"];
 <form action="specialsave.php" method="post" name="myform" id="myform" onSubmit="return CheckForm();">
         <table width="100%" border="0" cellpadding="3" cellspacing="1">
           <tr> 
-            <td align="right" class="border2">类别 <font color="#FF0000">*</font></td>
+            <td align="right" class="border2"><?php echo $f_array[2]?> <font color="#FF0000">*</font></td>
             <td width="678" class="border2"> 
               <?php
-
 $sql = "select * from zzcms_specialclass where parentid<>0 order by xuhao asc";
 $rs=mysql_query($sql);
 ?>
-              <script language = "JavaScript" type="text/JavaScript">
+<script language = "JavaScript" type="text/JavaScript">
 var onecount;
 subcat = new Array();
         <?php 
@@ -112,20 +103,19 @@ subcat[<?php echo $count?>] = new Array("<?php echo trim($row["classname"])?>","
         ?>
 onecount=<?php echo $count ?>;
 
-function changelocation(locationid)
-    {
+function changelocation(locationid){
     document.myform.smallclassid.length = 1; 
     var locationid=locationid;
     var i;
-    for (i=0;i < onecount; i++)
-        {
-            if (subcat[i][1] == locationid)
-            { 
+    for (i=0;i < onecount; i++){
+            if (subcat[i][1] == locationid){ 
                 document.myform.smallclassid.options[document.myform.smallclassid.length] = new Option(subcat[i][0], subcat[i][2]);
             }        
-        }
-    }</script> <select name="bigclassid" onchange="changelocation(document.myform.bigclassid.options[document.myform.bigclassid.selectedIndex].value)" size="1">
-                <option value="" selected="selected">请选择大类别</option>
+    }
+    }
+	</script> 
+	<select name="bigclassid" onchange="changelocation(document.myform.bigclassid.options[document.myform.bigclassid.selectedIndex].value)" size="1">
+                <option value="" selected="selected"><?php echo $f_array[3]?></option>
                 <?php
 	$sql = "select * from zzcms_specialclass where isshowforuser=1 and parentid=0 order by xuhao asc";
     $rs=mysql_query($sql);
@@ -147,7 +137,7 @@ function changelocation(locationid)
 		?>		
               </select> 
 			  <select name="smallclassid">
-                <option value="0">不指定小类</option>
+                <option value="0"><?php echo $f_array[4]?></option>
                 <?php
 if ($b!=''){//从index.php获取的大类值优先
 $sql="select * from zzcms_specialclass where parentid=".$b." order by xuhao asc";
@@ -172,7 +162,7 @@ $rs=mysql_query($sql);
 			  </td>
           </tr>
           <tr> 
-            <td width="139" align="right" class="border">标题 <font color="#FF0000">*</font></td>
+            <td width="139" align="right" class="border"><?php echo $f_array[5]?> <font color="#FF0000">*</font></td>
 			
             <td class="border">
 			<script type="text/javascript" src="/js/jquery.js"></script>  
@@ -185,41 +175,41 @@ $(document).ready(function(){
 </script>  
 			 <input name="title" type="text" id="title" size="50" maxlength="255"> 
               <input type="checkbox" name="checkbox" value="checkbox" onclick="showlink()">
-              外链新闻 
+              <?php echo $f_array[6]?> 
 			  <span id="quote"></span>              </td>
           </tr>
           <tr id="link" style="display:none"> 
-            <td align="right" class="border" >链接地址 <font color="#FF0000">*</font></td>
+            <td align="right" class="border" ><?php echo $f_array[7]?> <font color="#FF0000">*</font></td>
             <td class="border" ><input name="link" type="text" id="laiyuan3" size="50" maxlength="255" />            </td>
           </tr>
           <tr id="trlaiyuan"> 
-            <td align="right" class="border2" >信息来源：</td>
+            <td align="right" class="border2" ><?php echo $f_array[8]?></td>
             <td class="border2" > <input name="laiyuan" type="text" id="laiyuan" value="<?php echo sitename?>" size="50" maxlength="50" /></td>
           </tr>
           <tr id="trcontent"> 
-            <td align="right" class="border2" >内容 <font color="#FF0000">*</font></td>
+            <td align="right" class="border2" ><?php echo $f_array[9]?><font color="#FF0000">*</font></td>
             <td class="border2" > <textarea name="content" id="content"></textarea> 
              <script type="text/javascript" src="/3/ckeditor/ckeditor.js"></script>
 			  <script type="text/javascript">CKEDITOR.replace('content');</script>            </td>
           </tr>
           <tr id="trseo">
-            <td colspan="2" align="center" class="border2" ><strong>SEO优化设置</strong></td>
+            <td colspan="2" align="center" class="border2" ><strong><?php echo $f_array[10]?></strong></td>
           </tr>
           <tr id="trkeywords">
-            <td align="right" class="border" >关键词（keywords）</td>
+            <td align="right" class="border" ><?php echo $f_array[11]?></td>
             <td class="border" ><input name="keywords" type="text" id="keywords" size="50" maxlength="50" /></td>
           </tr>
           <tr id="trdescription">
-            <td align="right" class="border2" >描述（description）</td>
+            <td align="right" class="border2" ><?php echo $f_array[12]?></td>
             <td class="border2" ><input name="description" type="text" id="description" size="50" maxlength="50" /></td>
           </tr>
           <tr id="trquanxian">
-            <td colspan="2" align="center" class="border2" ><strong>浏览权限设置</strong></td>
+            <td colspan="2" align="center" class="border2" ><strong><?php echo $f_array[13]?></strong></td>
           </tr>
           <tr id="trquanxian2">
             <td align="right" class="border" >&nbsp;</td>
             <td class="border" ><select name="groupid">
-                <option value="0">全部用户</option>
+                <option value="0"><?php echo $f_array[14]?></option>
                 <?php
 		  $rs=mysql_query("Select * from zzcms_usergroup ");
 		  $row = mysql_num_rows($rs);
@@ -231,35 +221,23 @@ $(document).ready(function(){
 	 ?>
               </select>
                 <select name="jifen" id="jifen">
-                  <option value="0">请选择无权限用户是否可用积分查看</option>
-                  <option value="0" >无权限用户不可用积分查看</option>
-                  <option value="10" >付我10积分可查看</option>
-                  <option value="20" >付我20积分可查看</option>
-                  <option value="30" >付我30积分可查看</option>
-                  <option value="50" >付我50积分可查看</option>
-                  <option value="100" >付我100积分可查看</option>
-                  <option value="200" >付我200积分可查看</option>
-                  <option value="500" >付我500积分可查看</option>
-                  <option value="1000">付我1000积分可查看</option>
+                 <?php echo $f_array[15]?>
                 </select>
             </td>
           </tr>
           <tr> 
             <td align="right" class="border">&nbsp;</td>
-            <td class="border"> <input name="Submit" type="submit" class="buttons" value="发 布">
+            <td class="border"> <input name="Submit" type="submit" class="buttons" value="<?php echo $f_array[16]?>">
               <input name="editor" type="hidden" id="editor2" value="<?php echo $username?>" />
               <input name="action" type="hidden" id="action3" value="add"></td>
           </tr>
         </table>
 </form>
 </div>
-<div class="left">
-<?php
-include("left.php");
-session_write_close();
-?>
-</div>
 </div>
 </div>
 </body>
 </html>
+<?php
+session_write_close();
+?>

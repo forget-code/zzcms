@@ -1,6 +1,9 @@
 <?php
 include("../inc/conn.php");
 include("check.php");
+$fpath="text/zs_elite.txt";
+$fcontent=file_get_contents($fpath);
+$f_array=explode("|||",$fcontent) ;
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="zh-CN">
@@ -12,17 +15,7 @@ include("check.php");
 <script language="javascript" src="/js/timer.js"></script>
 <script language = "JavaScript">
 function CheckForm(){
-if (document.myform.eliteendtime.value==""){
-	document.myform.eliteendtime.focus();
-    alert('请选择到期时间');
-	return false;
-}
-if (document.myform.tag.value==""){
-	document.myform.tag.focus();
-    alert('关键词不能为空');
-	return false;
-  }
-}    
+<?php echo $f_array[0]?>  
 </script> 
 </head>
 <body>
@@ -64,7 +57,7 @@ $eliteendtime=$_POST["eliteendtime"];
 
 if (strtotime($eliteendtime)<=time()){
 $err=1;
-$errmsg='时间已过期';
+$errmsg=$f_array[1];
 }
 
 if (isset($_POST["oldeliteendtime"])){
@@ -86,7 +79,7 @@ $row=mysql_num_rows($rs);
 if ($row){
 $row = mysql_fetch_array($rs);
 $err=1;
-$errmsg="此关键词已有中标产品:<a href='/zs/search.php?keyword=".$row['tag']."'>".$row['proname']."</a><br>中标期限至：".$row['eliteendtime'];
+$errmsg=$f_array[2]."<a href='/zs/search.php?keyword=".$row['tag']."'>".$row['proname']."</a><br>".$f_array[3].$row['eliteendtime'];
 }
 if ($err==1){
 WriteErrMsg($errmsg);
@@ -104,17 +97,18 @@ $rown = mysql_fetch_array($rsn);
 	if ($rown["totleRMB"]>=$jfpay){
 	mysql_query("update zzcms_user set totleRMB=totleRMB-$jfpay where username='".$username."'");
 	mysql_query("update zzcms_main set elitestarttime='".date('Y-m-d')."',eliteendtime='$eliteendtime',tag='$tag',elite=1 where id='$id'");
-	mysql_query("insert into zzcms_pay (username,dowhat,RMB,mark,sendtime) values('$username','投标".channelzs."信息','-$jfpay','产品ID：<a href=zsmanage.php?id=$id>$id</a>','".date('Y-m-d H:i:s')."')");
-	echo "<script>alert('成功,计费时间".$oldeliteendtime."至".$eliteendtime.",共计".$day."天，".jf_set_elite."个金币/天，共付出".$jfpay."个金币');location.href='zsmanage.php?page=".$_REQUEST["page"]."'</script>";
+	mysql_query("insert into zzcms_pay (username,dowhat,RMB,mark,sendtime) values('$username','".channelzs.$f_array[4]."','-$jfpay','".$f_array[5]."<a href=zsmanage.php?id=$id>$id</a>','".date('Y-m-d H:i:s')."')");
+	echo str_replace("{#jfpay}",$jfpay,str_replace("{#jf_set_elite}",jf_set_elite,str_replace("{#day}",$day,str_replace("{#eliteendtime}",$eliteendtime,str_replace("{#oldeliteendtime}",$oldeliteendtime,$f_array[6])))));
+	echo "<script>location.href='zsmanage.php?page=".$_REQUEST["page"]."'</script>";
 	}else{
-	echo "<script>alert('失败，你的金币不足".$jfpay."');history.back()</script>";
+	echo str_replace("{#jfpay}",$jfpay,$f_array[7]);
 	}			
 }elseif (jifen=="No") {
-echo "<script>alert('积分功能关闭，无法使用此功能！');history.back(-1)</script>";
+echo $f_array[8];
 }
 break;
 case 'no':
-echo "<script>alert('你所在的用户组没有此权限');history.back()'</script>";
+echo $f_array[9];
 }
 
 }
@@ -125,28 +119,28 @@ $rs = mysql_query($sql);
 $row = mysql_fetch_array($rs);
 if ($row["editor"]<>$username) {
 markit();
-showmsg('非法操作！警告：你的操作已被记录！小心封你的用户及IP！');
+echo  $f_array[10];
+exit;
 }
 ?>
-<div class="admintitle">投标</div>
+<div class="admintitle"><?php echo $f_array[11]?></div>
 <form action="?" method="post" name="myform" id="myform" onSubmit="return CheckForm();">
         <table width="100%" border="0" cellpadding="3" cellspacing="1">
           <tr> 
-            <td width="18%" align="right" class="border" >产品名称</td>
+            <td width="18%" align="right" class="border" ><?php echo $f_array[12]?></td>
             <td width="82%" class="border" > <?php echo $row["proname"]?></td>
           </tr>
           <tr> 
-            <td align="right" class="border" >到期时间<font color="#FF0000">&nbsp; 
-              </font></td>
+            <td align="right" class="border" ><?php echo $f_array[13]?></td>
             <td class="border" > <input name="eliteendtime" type="text" id="eliteendtime" value="<?php echo $row["eliteendtime"]?>" size="30" maxlength="45" onFocus="JTC.setday(this)">
               <input name="oldeliteendtime" type="hidden"  value="<?php echo $row["eliteendtime"]?>" size="30" maxlength="45" />
-              <?php echo jf_set_elite?>积分/天</td>
+              <?php echo jf_set_elite.$f_array[14]?></td>
           </tr>
           
           <tr> 
-            <td align="right" class="border" >关键词（tag）</td>
+            <td align="right" class="border" ><?php echo $f_array[15]?></td>
             <td class="border" > <input name="tag" type="text" id="tag" value="<?php echo $row["tag"] ?>" size="10" maxlength="4">
-              (多个关键词以“,”隔开)</td>
+              <?php echo $f_array[16]?></td>
           </tr>
           <tr> 
             <td align="center" class="border" >&nbsp;</td>
@@ -155,7 +149,7 @@ showmsg('非法操作！警告：你的操作已被记录！小心封你的用�
               <span class="border">
               <input name="page" type="hidden" id="page" value="<?php echo $_GET["page"]?>" />
               </span>
-              <input name="Submit" type="submit" class="buttons" value="提交"></td>
+              <input name="Submit" type="submit" class="buttons" value="<?php echo $f_array[17]?>"></td>
           </tr>
         </table>
 	  </form>

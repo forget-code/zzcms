@@ -1,0 +1,9 @@
+﻿我的财务记录
+暂无信息
+<td width="42" align="center" class="border">序号</td><td width="144" class="border">摘要</td><td width="123" class="border">记帐金额（元）</td><td width="213" class="border">记帐时间</td><td width="254" class="border">备注</td>
+
+
+
+
+
+

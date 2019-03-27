@@ -7,7 +7,6 @@ include ("admin.php");
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8"></head>
 <body>
 <?php
-
 checkadminisdo("friendlink");
 if (isset($_POST["page"])){//只从修改页传来的值
 $page=$_POST["page"];
@@ -20,8 +19,8 @@ $classid=$_POST["bigclassid"];
 $classid=0;
 }
 $FriendSiteName=trim($_REQUEST["sitename"]);
-$url=trim($_REQUEST["url"]);
-$logo=trim($_REQUEST["logo"]);
+$url=addhttp(trim($_REQUEST["url"]));
+$logo=addhttp(trim($_REQUEST["logo"]));
 $content=trim($_REQUEST["content"]);
 
 if (isset($_POST["passed"])){

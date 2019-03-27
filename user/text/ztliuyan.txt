@@ -1,0 +1,9 @@
+﻿展厅内留言
+暂无信息
+<td width="373" class="border">部分内容</td><td width="201" class="border">留言时间</td><td width="190" class="border">是否查看</td><td width="77" align="center" class="border">操作</td><td width="77" align="center" class="border">删除</td>
+<font color=red>未查看</font>
+已查看
+查看
+全选
+删除
+

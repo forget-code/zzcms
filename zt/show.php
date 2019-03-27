@@ -54,7 +54,14 @@ $zslist2 =str_replace("{#imgbig}",isaddsiteurl($row["img"]),$zslist2) ;
 $zslist2 =str_replace("{#proname}",cutstr($row["proname"],8),$zslist2) ;
 $zslist2 =str_replace("{#gg}",$row["gg"],$zslist2) ;
 $zslist2 =str_replace("{#city}",$row["province"].$row["city"],$zslist2) ;
-$zslist2 =str_replace("{#prouse}",cutstr($row['prouse'],200),$zslist2) ;	
+
+$prouse_long=strbetween($zslist2,"{#prouse:","}");
+if ($prouse_long!=''){
+$zslist2 =str_replace("{#prouse:".$prouse_long."}",cutstr($row['prouse'],$prouse_long),$zslist2) ;
+}else{
+$zslist2 =str_replace("{#prouse}",cutstr($row['prouse'],150),$zslist2) ;
+}
+	
 $zslist2 =str_replace("{#editor}",$row['editor'],$zslist2) ;	
 $zslist2 =str_replace("{#linkliuyan}",$linkliuyan,$zslist2) ;
 
@@ -101,8 +108,8 @@ $str=$str. "<tr class='bgcolor2'> ";
 $str=$str. "<td width='25%'>产品名称</td>";
 $str=$str. "<td width='25%'>代理区域</td>";
 $str=$str. "<td width='13%'>联系人</td>";
-$str=$str. "<td width='11%'>联系方式</td>";
-$str=$str. "<td width='26%'>留言时间</td>";
+$str=$str. "<td width='17%'>联系方式</td>";
+$str=$str. "<td width='20%'>留言时间</td>";
 $str=$str. "</tr>";
 while ($row=mysql_fetch_array($rs)){
 $str=$str. "<tr class='bgcolor1'> ";
@@ -116,9 +123,9 @@ if (sdomain=="Yes"){
 	}
 }else{
 	if (whtml=="Yes"){ 
-	$str=$str. siteurl."<a href='/zt/zsshow-".$row["cpid"].".htm'>";
+	$str=$str. "<a href='/sell/zsshow-".$row["cpid"].".htm'>";
 	}else{
-	$str=$str. siteurl."<a href='/zt/zsshow.php?cpid=".$row["cpid"]."'>";
+	$str=$str. "<a href='/zt/zsshow.php?cpid=".$row["cpid"]."'>";
 	}
 }	
 

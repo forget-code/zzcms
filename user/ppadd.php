@@ -2,6 +2,9 @@
 if(!isset($_SESSION)){session_start();} 
 include("../inc/conn.php");
 include("check.php");
+$fpath="text/ppadd.txt";
+$fcontent=file_get_contents($fpath);
+$f_array=explode("|||",$fcontent) ;
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="zh-CN">
@@ -10,52 +13,15 @@ include("check.php");
 <meta http-equiv="X-UA-Compatible" content="IE=EmulateIE7" />
 <?php
 if (check_usergr_power("pp")=="no" && $usersf=='个人'){
-showmsg('个人用户没有此权限');
+echo $f_array[11];
+exit;
 }
 ?>
 <title></title>
 <script language = "JavaScript">
-function CheckForm()
-{
- if (document.myform.name.value=="")
-  {
-	document.myform.name.focus();
-    document.myform.name.value='此处不能为空';
-    document.myform.name.select();
-	document.myform.name.style.backgroundColor="FFFF00";
-	return false;
-  }
-	ischecked=false;
- 	for(var i=0;i<document.myform.bigclassid.length;i++)
-	{ 
-		if(document.myform.bigclassid[i].checked==true)  
-   		{
-		 ischecked=true ;
-   		} 
-	}
-   if(document.myform.bigclassid.checked==true)  
-   		{
-		 ischecked=true ;
-   		} 
- 	if (ischecked==false)
-  	{
-	alert("请选择大类别！");	
-    return false;
-	}
-	
- 
-	
-   if(document.myform.smallclassid.checked==true)  
-   		{
-		 ischecked=true ;
-   		} 
- 	if (ischecked==false)
-  	{
-	alert("请选择小类别！");	
-    return false;
-	}
-	
- } 
+function CheckForm(){
+<?php echo $f_array[0]?>
+} 
 
 function doClick_E(o){
 	 var id;
@@ -75,7 +41,6 @@ function doClick_E(o){
 	   }
 	 //document.write(classnum)
 	 }
-
 </script>
 </head>
 <link href="style.css" rel="stylesheet" type="text/css">
@@ -91,7 +56,7 @@ include("left.php");
 ?>
 </div>
 <div class="right">
-<div class="admintitle">发布品牌信息</div>
+<div class="admintitle"><?php echo $f_array[1]?></div>
 <?php
 $tablename="zzcms_main";
 include("checkaddinfo.php");
@@ -99,16 +64,16 @@ include("checkaddinfo.php");
 <form  action="ppsave.php" method="post" name="myform" id="myform" onSubmit="return CheckForm();">
         <table width="100%" border="0" cellpadding="3" cellspacing="1">
           <tr> 
-            <td width="20%" align="right" class="border2" > 名称 <font color="#FF0000">*</font></td>
-            <td class="border2" > <input name="name" type="text" id="name" onclick="javascript:if (this.value=='此处不能为空') {this.value=''};this.style.backgroundColor='';" onblur="javascript:if (this.value=='此处不能为空') {this.value=''};this.style.backgroundColor='';" size="60" maxlength="45" /></td>
+            <td width="20%" align="right" class="border2" ><?php echo $f_array[2]?><font color="#FF0000">*</font></td>
+            <td class="border2" > <input name="name" type="text" id="name" onclick="javascript:if (this.value=='<?php echo $f_array[3]?>') {this.value=''};this.style.backgroundColor='';" onblur="javascript:if (this.value=='<?php echo $f_array[3]?>') {this.value=''};this.style.backgroundColor='';" size="60" maxlength="45" /></td>
           </tr>
           <tr> 
-            <td align="right" valign="top" class="border">类别<font color="#FF0000"> 
+            <td align="right" valign="top" class="border"><?php echo $f_array[4]?><font color="#FF0000"> 
               *</font></td>
             <td valign="middle" class="border" > <table width="100%" border="0" cellpadding="5" cellspacing="1">
                 <tr> 
                   <td> <fieldset>
-                    <legend>请选择所属大类</legend>
+                    <legend><?php echo $f_array[5]?></legend>
                     <?php
         $sql = "select * from zzcms_zsclass where parentid='A' order by xuhao asc";
 		$rs = mysql_query($sql,$conn); 
@@ -139,7 +104,7 @@ echo "<div id='E_con$n' style='display:block;'>";
 }else{
 echo "<div id='E_con$n' style='display:none;'>";
 }
-echo "<fieldset><legend>请选择所属小类</legend>";
+echo "<fieldset><legend>".$f_array[6]."</legend>";
 
 $sqln="select * from zzcms_zsclass where parentid='$row[classzm]' order by xuhao asc";
 $rsn = mysql_query($sqln,$conn); 
@@ -161,14 +126,13 @@ echo "</div>";
           </tr>
 		  
           <tr> 
-            <td align="right" class="border" >介绍 <font color="#FF0000">*</font></td>
-            <td class="border" > <textarea name="sm" cols="100%" rows="10" id="sm" onclick="javascript:if (this.value=='此处不能为空') {this.value=''};this.style.backgroundColor='';" onblur="javascript:if (this.value=='此处不能为空') {this.value=''};this.style.backgroundColor='';"></textarea></td>
+            <td align="right" class="border" ><?php echo $f_array[7]?> <font color="#FF0000">*</font></td>
+            <td class="border" > <textarea name="sm" cols="100%" rows="10" id="sm" onclick="javascript:if (this.value=='<?php echo $f_array[3]?>') {this.value=''};this.style.backgroundColor='';" onblur="javascript:if (this.value=='<?php echo $f_array[3]?>') {this.value=''};this.style.backgroundColor='';"></textarea></td>
           </tr>
           <tr> 
-            <td align="right" class="border" >LOGO（小于<?php echo  maximgsize?>K）<br /> 
+            <td align="right" class="border" ><?php echo str_replace("{#maximgsize}",maximgsize,$f_array[8])?><br /> 
             <script src="/js/swfobject.js" type="text/javascript"></script> <script type="text/javascript">
-function showtxt(num)
-{
+function showtxt(num){
 var sd =window.showModalDialog('/uploadimg_form.php?noshuiyin=1','','dialogWidth=400px;dialogHeight=300px');
 //for chrome 
 if(sd ==undefined) {  
@@ -183,7 +147,7 @@ document.getElementById("showimg"+num).innerHTML="<img src='"+sd+"' width=120>";
 </script> <input name="img1" type="hidden" id="img1" value="/image/nopic.gif"/></td>
             <td class="border" > <table height="120" border="0" cellpadding="5" cellspacing="5">
                 <tr align="center" bgcolor="#FFFFFF"> 
-                  <td width="120" id="showimg1" onClick="showtxt(1)"> <input name="Submit2" type="button"  value="上传图片" /></td>
+                  <td width="120" id="showimg1" onClick="showtxt(1)"> <input name="Submit2" type="button"  value="<?php echo $f_array[9]?>" /></td>
                 </tr>
               </table></td>
           </tr>
@@ -191,7 +155,7 @@ document.getElementById("showimg"+num).innerHTML="<img src='"+sd+"' width=120>";
           <tr> 
             <td align="center" class="border2" >&nbsp;</td>
             <td class="border2" > <input name="action" type="hidden" id="action2" value="add" /> 
-              <input name="Submit" type="submit" class="buttons" value="填好了，发布信息" /></td>
+              <input name="Submit" type="submit" class="buttons" value="<?php echo $f_array[10]?>" /></td>
           </tr>
         </table>
 </form>

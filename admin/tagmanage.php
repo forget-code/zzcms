@@ -25,16 +25,14 @@ function ConfirmDelBig(){
      return false;	 
 }
 function CheckForm(){  
-if (document.form1.tag.value=="")
-  {
+if (document.myform.tag.value==""){
     alert("关键词不能为空！");
-	document.form1.tag.focus();
+	document.myform.tag.focus();
 	return false;
   }
-    if (document.form1.url.value=="")
-  {
+    if (document.myform.url.value==""){
     alert("链接地址不能为空！");
-	document.form1.url.focus();
+	document.myform.url.focus();
 	return false;
   } 
 }
@@ -79,23 +77,21 @@ $xuhao=$_POST["xuhao".$row["id"].""];//表单名称是动态显示的，并于FO
 mysql_query("update ".$_SESSION['tabletag']." set xuhao='$xuhao' where id=".$row['id']."");
 }
 }
+
 if ($action=="del"){
-$id=trim($_REQUEST["id"]);
-if ($id<>""){
-	$sql="delete from ".$_SESSION['tabletag']." where id='$id'";
-	mysql_query($sql);
-}    
-echo "<script>location.href='?'</script>";
+if(!empty($_POST['id'])){
+    for($i=0; $i<count($_POST['id']);$i++){
+    $id=$_POST['id'][$i];
+	mysql_query("delete from ".$_SESSION['tabletag']." where id ='$id'");
+	}
+}else{
+echo "<script>alert('操作失败！至少要选中一条信息。');history.back()</script>";
+}
+echo "<script>location.href='?'</script>";	
 }
 ?>
-<div class="admintitle">关键词设置</div>
-<table width="100%" border="0" cellpadding="5" cellspacing="0">
-  <tr> 
-    <td align="center" class="border">
-      <input name="submit3" type="submit" class="buttons" onClick="javascript:location.href='?dowhat=addtag'" value="添加关键词">
-      </td>
-  </tr>
-</table>
+<div class="admintitle"><?php echo $_SESSION['tabletag']?>关键词设置</div>
+<div  class="border center"><input name="submit3" type="submit" class="buttons" onClick="javascript:location.href='?dowhat=addtag'" value="添加关键词"></div>
 	<?php
 	$sql="Select * From ".$_SESSION['tabletag']." order by xuhao asc";
 	$rs=mysql_query($sql);
@@ -104,10 +100,12 @@ echo "<script>location.href='?'</script>";
 	echo "暂无信息";
 	}else{
 ?>
-      <form name="form1" method="post" action="?action=px">
-        
+      <form name="myform" method="post" action="">
+<div class="border"><input type="submit" onClick="myform.action='?action=del';myform.target='_self';return ConfirmDelBig()" value="删除选中的信息"></div>
   <table width="100%" border="0" cellpadding="5" cellspacing="1" >
-    <tr> 
+    <tr>
+      <td width="5%" align="center" class="border"><label for="chkAll" style="text-decoration: underline;cursor: hand;">
+      全选</label>      </td> 
       <td width="265" height="25" class="border">关键词</td>
       <td width="302" class="border">url</td>
       <td width="237" class="border">排序</td>
@@ -116,18 +114,23 @@ echo "<script>location.href='?'</script>";
     <?php
 	while ($row=mysql_fetch_array($rs)){
 ?>
-     <tr class="bgcolor1" onMouseOver="fSetBg(this)" onMouseOut="fReBg(this)">  
+     <tr class="bgcolor1" onMouseOver="fSetBg(this)" onMouseOut="fReBg(this)">
+       <td align="center" class="docolor"><input name="id[]" type="checkbox" id="id" value="<?php echo $row["id"]?>"></td>  
       <td width="265" height="22"><?php echo $row["keyword"]?><a name="B<?php echo $row["id"]?>"></a></td>
       <td width="302"><?php echo $row["url"]?></td>
       <td width="237" height="22"><input name="<?php echo "xuhao".$row["id"]?>" type="text" id="<?php echo "xuhao".$row["id"]?>" value="<?php echo $row["xuhao"]?>" size="4" maxlength="4"> 
-       <input type="submit" name="Submit" value="更新序号"></td>
-      <td class="docolor"> <a href="?dowhat=modifytag&id=<?php echo $row["id"]?>">修改名称</a> 
-        | <a href="?action=del&id=<?php echo $row["id"]?>" onClick="return ConfirmDelBig();">删除</a></td>
+       <input type="submit" name="Submit" value="更新序号" onClick="myform.action='?action=px'"></td>
+      <td class="docolor"> <a href="?dowhat=modifytag&id=<?php echo $row["id"]?>">修改名称</a></td>
     </tr>
     <?php
 	}
 	?>
   </table>
+  <div class="border">
+   
+    <input name="chkAll" type="checkbox" id="chkAll" onClick="CheckAll(this.form)" value="checkbox">
+ <label for="chkAll" style="text-decoration: underline;cursor: hand;">全选</label>
+    <input type="submit" onClick="myform.action='?action=del';myform.target='_self';return ConfirmDelBig()" value="删除选中的信息"></div>
 	  </form>
 <?php
 }
@@ -213,7 +216,7 @@ TemO.appendChild(newline);
 }    
 </script>
 
-<form name="form1" method="post" action="?dowhat=addtag" onSubmit="return CheckForm();">
+<form name="myform" method="post" action="?dowhat=addtag" onSubmit="return CheckForm();">
   <table width="100%" border="0" cellpadding="5" cellspacing="0" class="border">
     <tr> 
       <td width="24%" align="right">&nbsp;</td>
@@ -304,7 +307,7 @@ $rs=mysql_query($sql);
 $row=mysql_fetch_array($rs);
 ?>
 <div class="admintitle">修改关键词</div>
-<form name="form1" method="post" action="?dowhat=modifytag" onSubmit="return CheckForm();">
+<form name="myform" method="post" action="?dowhat=modifytag" onSubmit="return CheckForm();">
   <table width="100%" border="0" cellpadding="5" cellspacing="0" class="border">
     
     <tr> 

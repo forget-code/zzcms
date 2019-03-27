@@ -16,114 +16,89 @@ $action="";
 }
 ?>
 <script language="JavaScript" type="text/JavaScript">	
-function checkform()
-{
+function checkform(){
 //定义正则表达式部分
 var strP=/^\d+$/;
-if(!strP.test(document.form1.showadvdate.value)) 
-{
+if(!strP.test(document.form1.showadvdate.value)) {
 alert("只能填数字！"); 
 document.form1.showadvdate.focus(); 
 return false; 
 } 
-
-if(!strP.test(document.form1.jf_reg.value)) 
-{
+if(!strP.test(document.form1.jf_reg.value)) {
 alert("只能填数字！"); 
 document.form1.jf_reg.focus(); 
 return false; 
 } 
-if(!strP.test(document.form1.jf_login.value)) 
-{
+if(!strP.test(document.form1.jf_login.value)) {
 alert("只能填数字！"); 
 document.form1.jf_login.focus(); 
 return false; 
 } 
-if(!strP.test(document.form1.jf_addreginfo.value)) 
-{
+if(!strP.test(document.form1.jf_addreginfo.value)) {
 alert("只能填数字！"); 
 document.form1.jf_addreginfo.focus(); 
 return false; 
 } 
-if(!strP.test(document.form1.jf_lookmessage.value)) 
-{
+if(!strP.test(document.form1.jf_lookmessage.value)) {
 alert("只能填数字！"); 
 document.form1.jf_lookmessage.focus(); 
 return false; 
 } 
-if(!strP.test(document.form1.jf_look_dl.value)) 
-{
+if(!strP.test(document.form1.jf_look_dl.value)) {
 alert("只能填数字！"); 
 document.form1.jf_look_dl.focus(); 
 return false; 
 } 
-if(!strP.test(document.form1.jf_set_adv.value)) 
-{
+if(!strP.test(document.form1.jf_set_adv.value)) {
 alert("只能填数字！"); 
 document.form1.jf_set_adv.focus(); 
 return false; 
 } 
-if(!strP.test(document.form1.jf_set_elite.value)) 
-{
+if(!strP.test(document.form1.jf_set_elite.value)) {
 alert("只能填数字！"); 
 document.form1.jf_set_elite.focus(); 
 return false; 
 } 
-if(!strP.test(document.form1.maximgsize.value)) 
-{
+if(!strP.test(document.form1.maximgsize.value)) {
 alert("只能填数字！"); 
 document.form1.maximgsize.focus(); 
 return false; 
 } 
-if(!strP.test(document.form1.maxflvsize.value)) 
-{
+if(!strP.test(document.form1.maxflvsize.value)) {
 alert("只能填数字！"); 
 document.form1.maxflvsize.focus(); 
 return false; 
 } 
-if(!strP.test(document.form1.pagesize_qt.value)) 
-{
+if(!strP.test(document.form1.pagesize_qt.value)) {
 alert("只能填数字！"); 
 document.form1.pagesize_qt.focus(); 
 return false; 
 } 
-if(!strP.test(document.form1.pagesize_ht.value)) 
-{
+if(!strP.test(document.form1.pagesize_ht.value)) {
 alert("只能填数字！"); 
 document.form1.pagesize_ht.focus(); 
 return false; 
 } 
-if(!strP.test(document.form1.liuyanysnum.value)) 
-{
+if(!strP.test(document.form1.liuyanysnum.value)) {
 alert("只能填数字！"); 
 document.form1.liuyanysnum.focus(); 
 return false; 
 } 
-
-if(!strP.test(document.form1.cache_update_time.value)) 
-{
+if(!strP.test(document.form1.cache_update_time.value)) {
 alert("只能填数字！"); 
 document.form1.cache_update_time.focus(); 
 return false; 
 }
-
-if(!strP.test(document.form1.html_update_time.value)) 
-{
+if(!strP.test(document.form1.html_update_time.value)) {
 alert("只能填数字！"); 
 document.form1.html_update_time.focus(); 
 return false; 
 }  
-
 }
 </script>
 </head>
 <body>
-  
-<table width="100%" border="0" cellpadding="0" cellspacing="0">
-  <tr> 
-    <td class="admintitle">网站设置</td>
-  </tr>
-</table>
+<div class="admintitle">网站设置</div>
 <table width="100%" border="0" cellpadding="5" cellspacing="0" class="border">
   <tr> 
     <td bgcolor="#FFFFFF" style="color:#999999"><a href="#SiteInfo">基本信息</a> 
@@ -159,7 +134,7 @@ function showconfig(){
     </tr>
     <tr> 
       <td align="right" class="border">网站地址</td>
-      <td width="70%" class="border"> <input name="siteurl" type="text" id="siteurl" value="<?php echo siteurl?>" size="50" maxlength="255"></td>
+      <td width="70%" class="border"> <input name="siteurl" type="text" id="siteurl" value="<?php echo addhttp(siteurl)?>" size="50" maxlength="255"></td>
     </tr>
     <tr> 
       <td align="right" class="border">网站Logo地址</td>
@@ -654,7 +629,8 @@ closedir($dir);
     <tr> 
       <td align="right" class="border">水印图片地址</td>
       <td class="border"><a href="/image/sy.png"></a>
-	  <input name="syurl" type="text" id="syurl" value="<?php echo syurl?>" size="50" maxlength="255">（必须为png格式的图片）
+	  <input name="syurl" type="text" id="syurl" value="<?php echo syurl?>" size="50" maxlength="255">
+	  （必须为png格式的图片，地址前不能加 /）
 	   <script type="text/javascript">
 function openimg2()
 {
@@ -777,7 +753,7 @@ $usergr_power=substr($usergr_power,0,strlen($usergr_power)-1);//去除最后面�
 	$fcontent=$fcontent. "define('sqluser','".trim($_POST['sqluser'])."');//用户名\r\n";
 	$fcontent=$fcontent. "define('sqlpwd','".html_entity_decode(trim($_POST['sqlpwd']))."');//密码\r\n";//html_entity_decode针对&被转变成&amp;
 	$fcontent=$fcontent. "define('sqlhost','".trim($_POST['sqlhost'])."');//连接服务器,本机填(local)，外地填IP地址\r\n";
-	$fcontent=$fcontent. "define('zzcmsver','Powered By <a target=_blank style=font-weight:bold href=http://www.zzcms.net><font color=#FF6600 face=Arial>ZZ</font><font color=#025BAD face=Arial>CMS7.0</font></a>');//版本\r\n";
+	$fcontent=$fcontent. "define('zzcmsver','Powered By <a target=_blank style=font-weight:bold href=http://www.zzcms.net><font color=#FF6600 face=Arial>ZZ</font><font color=#025BAD face=Arial>CMS7.1</font></a>');//版本\r\n";
 	$fcontent=$fcontent. "define('sitename','". trim($_POST['sitename'])."') ;//网站名称\r\n";
 	$fcontent=$fcontent. "define('siteurl','". trim($_POST['siteurl'])."') ;//网站地址\r\n";
 	$fcontent=$fcontent. "define('logourl','". trim($_POST['logourl'])."') ;//Logo地址\r\n";
@@ -819,8 +795,8 @@ $usergr_power=substr($usergr_power,0,strlen($usergr_power)-1);//去除最后面�
 	$fcontent=$fcontent. "define('allowrepeatreg','". trim($_POST['allowrepeatreg'])."') ;//是否允许重复注册用户\r\n";
 	$fcontent=$fcontent. "define('showdlinzs','". trim($_POST['showdlinzs'])."') ;//招商信息内是否显示代理留言数\r\n";
 	$fcontent=$fcontent. "define('zsliststyle','". trim($_POST['zsliststyle'])."') ;//招商列表页默认显示格式\r\n";
-	$fcontent=$fcontent. "define('siteskin','". trim($_POST['siteskin'])."') ;//网站电脑版当前使用模板\r\n";	
-	$fcontent=$fcontent. "define('siteskin_mobile','". trim($_POST['siteskin_mobile'])."') ;//网站手机版当前使用模板\r\n";	
+	$fcontent=$fcontent. "define('siteskin','". trim($_POST['siteskin'])."') ;//网站电脑端模板\r\n";	
+	$fcontent=$fcontent. "define('siteskin_mobile','". trim($_POST['siteskin_mobile'])."') ;//网站手机端模板\r\n";	
 	$fcontent=$fcontent. "define('checksqlin','". trim($_POST['checksqlin'])."') ;//是否开启防SQL注入功能\r\n";	
 	$fcontent=$fcontent. "define('cache_update_time','". trim($_POST['cache_update_time'])."') ;//缓存更新周期\r\n";
 	$fcontent=$fcontent. "define('html_update_time','". trim($_POST['html_update_time'])."') ;//静态页更新周期\r\n";	

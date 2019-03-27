@@ -8,14 +8,12 @@ include("admin.php");
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <script language="JavaScript" src="/js/gg.js"></script>
 <?php
-checkadminisdo("licence");
 if (isset($_REQUEST["action"])){
 $action=$_REQUEST["action"];
 }else{
 $action="";
 }
-if( isset($_GET["page"]) && $_GET["page"]!="") 
-{
+if( isset($_GET["page"]) && $_GET["page"]!="") {
     $page=$_GET['page'];
 }else{
     $page=1;
@@ -32,32 +30,29 @@ $keyword="";
 }
 
 if ($action=="pass"){
-$id="";
+checkadminisdo("licence");
 if(!empty($_POST['id'])){
     for($i=0; $i<count($_POST['id']);$i++){
-    $id=$id.($_POST['id'][$i].',');
-    }
-	$id=substr($id,0,strlen($id)-1);//去除最后面的","
-}
-if ($id==""){
-$founderr=1;
-$ErrMsg="<li>操作失败！至少要选中一条信息。</li>";
-WriteErrMsg($ErrMsg);
-}else{
-	if (strpos($id,",")>0){
-		$sql="update zzcms_licence set passed=1 where id in (". $id .")";
-	}else{
-		$sql="update zzcms_licence set passed=1 where id='$id'";
+    $id=$_POST['id'][$i];
+	$sql="select passed from zzcms_licence where id ='$id'";
+	$rs = mysql_query($sql); 
+	$row = mysql_fetch_array($rs);
+		if ($row['passed']=='0'){
+		mysql_query("update zzcms_licence set passed=1 where id ='$id'");
+		}else{
+		mysql_query("update zzcms_licence set passed=0 where id ='$id'");
+		}
 	}
-mysql_query($sql);
-echo "<script>location.href='?shenhe=no&keyword=".$keyword."&page=".$page."'</script>";
+}else{
+echo "<script>alert('操作失败！至少要选中一条信息。');history.back()</script>";
 }
+echo "<script>location.href='?keyword=".$keyword."&page=".$page."'</script>";	
 }
 ?>
 </head>
 <body>
 <div class="admintitle">资质证书管理</div>
-<div>
+<div  class="border">
 <form action="?" name="form1" method="post"> 
 标题： <input name="keyword" type="text" id="keyword" value="<?php echo $keyword?>"> <input type="submit" name="Submit" value="查找">
 </form> 
@@ -90,7 +85,7 @@ echo "暂无信息";
   <table width="100%" border="0" cellpadding="5" cellspacing="0" class="border">
     <tr> 
       <td>
-<input name="submit"  type="submit" onClick="pass(this.form)" value="审核选中的信息">
+<input name="submit"  type="submit" onClick="pass(this.form)" value="【取消/审核】选中的信息">
         <input name="submit4" type="submit" onClick="myform.action='del.php';myform.target='_self';return ConfirmDel()" value="删除选中的信息"> 
         <input name="pagename" type="hidden"  value="licence.php?shenhe=<?php echo $shenhe?>&page=<?php echo $page ?>"> 
         <input name="tablename" type="hidden"  value="zzcms_licence"> </td>
@@ -98,7 +93,7 @@ echo "暂无信息";
   </table>
   <table width="100%" border="0" cellpadding="5" cellspacing="1">
     <tr> 
-      <td width="5%" align="center" class="border">选取</td>
+      <td width="5%" align="center" class="border"> <label for="chkAll" style="text-decoration: underline;cursor: hand;">全选</label></td>
       <td width="20%" class="border">证件</td>
       <td width="20%" class="border">资质证书名称</td>
       <td width="5%" class="border">用户</td>
@@ -121,8 +116,8 @@ while($row = mysql_fetch_array($rs)){
 <table width="100%" border="0" cellpadding="5" cellspacing="0" class="border">
   <tr> 
     <td> <input name="chkAll" type="checkbox" id="chkAll" onClick="CheckAll(this.form)" value="checkbox">
-      全选 
-      <input name="submit2"  type="submit" onClick="pass(this.form)" value="审核选中的信息">
+       <label for="chkAll" style="text-decoration: underline;cursor: hand;">全选</label> 
+      <input name="submit2"  type="submit" onClick="pass(this.form)" value="【取消/审核】选中的信息">
         <input name="submit42" type="submit" onClick="myform.action='del.php';myform.target='_self';return ConfirmDel()" value="删除选中的信息"> 
       </td>
   </tr>

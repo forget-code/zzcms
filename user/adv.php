@@ -1,27 +1,23 @@
 <?php
 include("../inc/conn.php");
 include("check.php");
+$fpath="text/adv.txt";
+$fcontent=file_get_contents($fpath);
+$f_array=explode("|||",$fcontent) ;
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="zh-CN">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=EmulateIE7" />
-<title>自助广告</title>
+<title><?php echo $f_array[0]?></title>
 <link href="style.css" rel="stylesheet" type="text/css">
 <script language = "JavaScript">
-function CheckForm()
-{
-  if (document.myform.adv.value=="")
-  {
-    alert("请填写广告词！");
-	document.myform.adv.focus();
-	return false;
-  } 
+function CheckForm(){
+<?php echo $f_array[1]?>
 }
 
-function showtxt()
-{
+function showtxt(){
 var sd =window.showModalDialog('/uploadimg_form.php?noshuiyin=1','','dialogWidth=400px;dialogHeight=300px');
 //for chrome 
 if(sd ==undefined) {  
@@ -70,7 +66,7 @@ $oldimg="";
 $rs=mysql_query("select usersf from zzcms_user where username='".$_COOKIE["UserName"]."' ");
 $row=mysql_fetch_array($rs);
 if ($row["usersf"]=="个人"){
-echo "个人用户不能抢占广告位";
+echo  $f_array[2];
 mysql_close($conn);
 exit;
 }
@@ -91,7 +87,7 @@ if ($oldimg<>$img){
 	//if ($row){
 	//mysql_query("update zzcms_ad set title='<b>新的广告内容正在审核中...</b>',link='###' where username='".$_COOKIE["UserName"]."'");
 	//}
-	echo "<script>alert('广告修改成功！提示：通过审核后新广告内容才显示');location.href='adv2.php'</script>";
+	echo $f_array[3];
 }
 		
 if ($action=="add"){
@@ -102,7 +98,7 @@ if ($oldimg<>$img && $oldimg!=''){
 		unlink($f);		
 		}
 }
-		echo "<script>alert('广告词设置成功！现在可以抢占广告位置了');location.href='adv2.php'</script>";
+		echo $f_array[4];
 }
 
 ?>
@@ -118,11 +114,7 @@ include("left.php");
 ?>
 </div>
 <div class="right">
-<table width="100%" border="0" cellpadding="0" cellspacing="0">
-  <tr>
-    <td class="admintitle">自助广告</td>
-  </tr>
-</table>
+<div class="admintitle"><?php echo $f_array[0]?></div>
 <?php
 $rs=mysql_query("select * from zzcms_textadv where username='".$_COOKIE["UserName"]."'");
 $row=mysql_num_rows($rs);
@@ -132,24 +124,21 @@ $row=mysql_fetch_array($rs);
 <form name="myform" method="post" action="?action=modify" onSubmit="return CheckForm();"> 
         <table width="100%" border="0" cellpadding="3" cellspacing="1">
           <tr> 
-            <td width="27%" align="right" class="border"> <p><strong>广告内容<br>
-                </strong>最多15个字符<br>
-              </p></td>
+            <td width="27%" align="right" class="border"><?php echo $f_array[5]?></td>
             <td width="73%" class="border"> <input name="adv" type="text" id="adv" value="<?php echo $row["adv"]?>" size="40" maxlength="15"> 
               <?php
-			
-			$rsn=mysql_query("select id,comane from zzcms_user where username='".$_COOKIE["UserName"]."'");
-           $rown=mysql_fetch_array($rsn);
+		$rsn=mysql_query("select id,comane from zzcms_user where username='".$_COOKIE["UserName"]."'");
+        $rown=mysql_fetch_array($rsn);
 			?>
               <input name="advlink" type="hidden" id="advlink4" value="<?php echo getpageurl("zt",$rown["id"])?>"> 
               <input name="company" type="hidden" id="company" value="<?php echo $rown["comane"]?>"> 
             </td>
           </tr>
           <tr> 
-            <td align="right" class="border"><strong>广告图片 
+            <td align="right" class="border"><strong><?php echo $f_array[6]?></strong> 
               <input name="oldimg" type="hidden" id="oldimg" value="<?php echo $row["img"]?>" />
               <input name="img" type="hidden" id="img" value="<?php echo $row["img"]?>" size="50" />
-              </strong></td>
+              </td>
             <td class="border"> <table width="120" height="120" border="0" cellpadding="5" cellspacing="0" class="borderforimg">
                 <tr> 
                   <td align="center" id="showimg" onclick='showtxt()'> 
@@ -166,9 +155,9 @@ $row=mysql_fetch_array($rs);
 						}elseif (strpos("gif|jpg|png|bmp",substr($row["img"],-3))!==false ){
                     	echo "<img src='".$row["img"]."' width='120'  border='0'> ";
                     	}
-						echo "点击可更换图片";
+						echo $f_array[7];
 					}else{
-                     echo "<input name='Submit2' type='button'  value='上传图片'/>";
+                     echo "<input name='Submit2' type='button'  value='".$f_array[8]."'/>";
                     }	
 				  ?>
                   </td>
@@ -176,19 +165,19 @@ $row=mysql_fetch_array($rs);
               </table></td>
           </tr>
           <tr> 
-            <td align="right" class="border2"><strong>显示效果</strong></td>
+            <td align="right" class="border2"><strong><?php echo $f_array[9]?></strong></td>
             <td class="border2"> 
               <?php if ($row["adv"]<>""){ echo "<a href='".$row["advlink"]."' target='_blank'>".$row["adv"]."</a>";}?>
             </td>
           </tr>
           <tr> 
-            <td align="right" class="border"><strong>信息状态</strong></td>
+            <td align="right" class="border"><strong><?php echo $f_array[10]?></strong></td>
             <td class="border">
-              <?php if ($row["passed"]==1){ echo "广告词已通过审核"; }else{ echo "<font color=red>未审核</font>";}?>
+              <?php if ($row["passed"]==1){ echo $f_array[11]; }else{ echo $f_array[12];}?>
             </td>
           </tr>
           <tr> 
-            <td colspan="2" align="center" class="border2"> <input name="Submit2" type="submit" class="buttons" value="修 改"> 
+            <td colspan="2" align="center" class="border2"> <input name="Submit2" type="submit" class="buttons" value="<?php echo $f_array[13]?>"> 
             </td>
           </tr>
         </table>
@@ -199,9 +188,7 @@ $row=mysql_fetch_array($rs);
     <form name="myform" method="post" action="?action=add" onSubmit="return CheckForm();">    
         <table width="100%" border="0" cellpadding="3" cellspacing="1">
           <tr> 
-            <td width="27%" align="right" class="border"> <p><strong>广告内容<br>
-                </strong>最多15个字符<br>
-              </p></td>
+            <td width="27%" align="right" class="border"><?php echo $f_array[5]?></td>
             <td width="73%" class="border"> <input name="adv" type="text" id="adv" size="40" maxlength="15"> 
               <?php
 			
@@ -213,24 +200,24 @@ $row=mysql_fetch_array($rs);
             </td>
           </tr>
           <tr> 
-            <td align="right" class="border"><strong>广告图片 
+            <td align="right" class="border"><strong><?php echo $f_array[6]?></strong> 
               <input name="img" type="hidden" id="img3" size="50" />
-              </strong></td>
+              </td>
             <td class="border"> <table width="120" height="120" border="0" cellpadding="5" cellspacing="1" bgcolor="#999999">
                 <tr> 
                   <td align="center" bgcolor="#FFFFFF" id="showimg" onclick='showtxt()'> 
-                    <input name='Submit2' type='button'  value='上传图片'/> </td>
+                    <input name='Submit2' type='button'  value='<?php echo $f_array[8]?>'/> </td>
                 </tr>
               </table></td>
           </tr>
           <tr> 
-            <td align="right" class="border2"><strong>显示效果</strong></td>
+            <td align="right" class="border2"><strong><?php echo $f_array[9]?></strong></td>
             <td class="border2"> 
               <?php if ($adv<>""){ echo"<a href='".$advlink."' target='_blank'>".$adv."</a>";}?>
             </td>
           </tr>
           <tr> 
-            <td colspan="2" align="center" class="border"> <input name="Submit3" type="submit" class="buttons" value="发 布"> 
+            <td colspan="2" align="center" class="border"> <input name="Submit3" type="submit" class="buttons" value="<?php echo $f_array[14]?>"> 
             </td>
           </tr>
         </table>

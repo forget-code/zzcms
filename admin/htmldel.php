@@ -11,7 +11,7 @@ include("admin.php");
 <div class="border px14">
 <?php
 checkadminisdo("siteconfig");
-$dir="../html/dl";
+$dir="../html/".siteskin."/dl";
 del_dirandfile($dir);	
 ?>
 </div>

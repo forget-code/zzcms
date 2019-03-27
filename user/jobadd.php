@@ -2,6 +2,9 @@
 if(!isset($_SESSION)){session_start();} 
 include("../inc/conn.php");
 include("check.php");
+$fpath="text/jobadd.txt";
+$fcontent=file_get_contents($fpath);
+$f_array=explode("|||",$fcontent) ;
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="zh-CN">
@@ -10,52 +13,14 @@ include("check.php");
 <meta http-equiv="X-UA-Compatible" content="IE=EmulateIE7" />
 <?php
 if (check_usergr_power("job")=="no" && $usersf=='个人'){
-showmsg('个人用户没有此权限');
+echo $f_array[0];
+exit;
 }
 ?>
 <title></title>
 <script language = "JavaScript">
 function CheckForm(){
-	ischecked=false;
- 	for(var i=0;i<document.myform.bigclassid.length;i++){ 
-		if(document.myform.bigclassid[i].checked==true)  {
-		 ischecked=true ;
-   		} 
-	}
-   if(document.myform.bigclassid.checked==true)  {
-		 ischecked=true ;
-   		} 
- 	if (ischecked==false){
-	alert("请选择大类别！");	
-    return false;
-	}
-
-  if (document.myform.province.value=="请选择省份"){
-	document.myform.province.focus();
-    alert("请选择省份！");
-	return false;
-  }  
-  
-  if (document.myform.city.value==0){
-	document.myform.city.focus();
-    alert("请选择城市！");
-	return false;
-  }   
-ischecked=false;
- 	for(var i=0;i<document.myform.smallclassid.length;i++){ 
-		if(document.myform.smallclassid[i].checked==true)  
-   		{
-		 ischecked=true ;
-   		} 
-	}
-	
-   if(document.myform.smallclassid.checked==true)  {
-		 ischecked=true ;
-   		} 
- 	if (ischecked==false){
-	alert("请选择小类别！");	
-    return false;
-	}
+<?php echo $f_array[1]?>
 }	
 function doClick_E(o){
 	 var id;
@@ -92,7 +57,7 @@ include("left.php");
 ?>
 </div>
 <div class="right">
-<div class="admintitle">发布招聘信息</div>
+<div class="admintitle"><?php echo $f_array[2]?></div>
 <?php
 $tablename="zzcms_main";
 include("checkaddinfo.php");
@@ -100,12 +65,12 @@ include("checkaddinfo.php");
 <form  action="jobsave.php" method="post" name="myform" id="myform" onSubmit="return CheckForm();">
         <table width="100%" border="0" cellpadding="3" cellspacing="1">
           <tr> 
-            <td width="20%" align="right" valign="top" class="border">职位类别<font color="#FF0000"> 
+            <td width="20%" align="right" valign="top" class="border"><?php echo $f_array[3]?><font color="#FF0000"> 
               *</font></td>
             <td valign="middle" class="border" > <table width="100%" border="0" cellpadding="5" cellspacing="1">
                 <tr> 
                   <td> <fieldset>
-                    <legend>请选择所属大类</legend>
+                    <legend><?php echo $f_array[4]?></legend>
                     <?php
         $sql = "select * from zzcms_jobclass where parentid='0' order by xuhao asc";
 		$rs = mysql_query($sql,$conn); 
@@ -136,7 +101,7 @@ echo "<div id='E_con$n' style='display:block;'>";
 }else{
 echo "<div id='E_con$n' style='display:none;'>";
 }
-echo "<fieldset><legend>请选择所属小类</legend>";
+echo "<fieldset><legend>".$f_array[5]."</legend>";
 
 $sqln="select * from zzcms_jobclass where parentid='$row[classid]' order by xuhao asc";
 $rsn = mysql_query($sqln,$conn); 
@@ -157,16 +122,16 @@ echo "</div>";
               </table></td>
           </tr>
           <tr>
-            <td align="right" class="border" >职位<font color="#FF0000">*</font></td>
+            <td align="right" class="border" ><?php echo $f_array[6]?><font color="#FF0000">*</font></td>
             <td class="border" ><input name="jobname" type="text" id="jobname" size="50" maxlength="255" /></td>
           </tr>
 		
           <tr> 
-            <td align="right" class="border" >内容 <font color="#FF0000">*</font></td>
+            <td align="right" class="border" > <?php echo $f_array[7]?><font color="#FF0000">*</font></td>
             <td class="border" > <textarea name="sm" cols="80%" rows="10"></textarea></td>
           </tr>
           <tr> 
-            <td align="right" class="border2">工作地点 <font color="#FF0000">*</font></td>
+            <td align="right" class="border2"><?php echo $f_array[8]?> <font color="#FF0000">*</font></td>
             <td class="border2">       
 <select name="province" id="province"></select>
 <select name="city" id="city"></select>
@@ -181,7 +146,7 @@ new PCAS('province', 'city', 'xiancheng', '<?php echo @$_SESSION['province']?>',
           <tr> 
             <td align="center" class="border2" >&nbsp;</td>
             <td class="border2" > <input name="action" type="hidden" id="action2" value="add" /> 
-              <input name="Submit" type="submit" class="buttons" value="填好了，发布信息" /></td>
+              <input name="Submit" type="submit" class="buttons" value="<?php echo $f_array[9]?>" /></td>
           </tr>
         </table>
 </form>

@@ -32,8 +32,7 @@ checkadminisdo("bottomlink");
 ?>
 <script type="text/javascript" src="/3/ckeditor/ckeditor.js"></script>
 <script language="JavaScript">
-function CheckForm()
-{
+function CheckForm(){
 if (document.myform.title.value=="")
   {
     alert("标题不能为空！");
@@ -47,11 +46,7 @@ if (document.myform.title.value=="")
 <?php 
 if ($action=="add") {
 ?>
-<table width="100%" border="0" cellspacing="0" cellpadding="0">
-  <tr>
-    <td class="admintitle">添加公司信息</td>
-  </tr>
-</table>
+<div class="admintitle">添加公司信息</div>
 <form action="?action=savedata&saveas=add" method="POST" name="myform" id="myform" onSubmit="return CheckForm();">
   <table width="100%" border="0" cellpadding="5" cellspacing="0">
     <tr> 
@@ -78,12 +73,7 @@ $sql="select * from zzcms_about where id=".$_REQUEST["id"]."";
 $rs=mysql_query($sql);
 $row=mysql_fetch_array($rs);
 ?>
-<table width="100%" border="0" cellspacing="0" cellpadding="0">
-  <tr> 
-    <td class="admintitle">修改公司信息</td>
-  </tr>
-</table>
-  
+<div class="admintitle">修改公司信息</div>  
 <form action="?action=savedata&saveas=modify" method="POST" name="myform" id="myform" onSubmit="return CheckForm();">
   <table width="100%" border="0" cellpadding="5" cellspacing="0">
     <tr> 

@@ -35,10 +35,10 @@ while($row=mysql_fetch_array($rs)){
 echo "已完成";
 }
 
-//$sql="select id from zzcms_usermessage where looked=0";
-//$rs=mysql_query($sql);
-//$row=mysql_num_rows($rs);
-//echo "用户返馈信息 ".$row." 条 [ <a href='usermessage_manage.php'>查看</a> ]<br>";
+$sql="select id from zzcms_usermessage where reply is null";
+$rs=mysql_query($sql);
+$row=mysql_num_rows($rs);
+echo "用户返馈信息 ".$row." 条 [ <a href='usermessage.php'>查看</a> ]<br>";
 
 $sql="select id from zzcms_user where passed=0";
 $rs=mysql_query($sql);
@@ -74,6 +74,11 @@ $sql="select id from zzcms_zx where passed=0";
 $rs=mysql_query($sql);
 $row=mysql_num_rows($rs);
 echo "待审资讯信息 ".$row." 条 [ <a href='zx_manage.php?shenhe=no'>查看</a> ]<br>";
+
+$sql="select id from zzcms_special where passed=0";
+$rs=mysql_query($sql);
+$row=mysql_num_rows($rs);
+echo "待审专题信息 ".$row." 条 [ <a href='special_manage.php?shenhe=no'>查看</a> ]<br>";
 
 $sql="select id from zzcms_job where passed=0";
 $rs=mysql_query($sql);

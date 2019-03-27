@@ -1,6 +1,9 @@
 <?php
 include("../inc/conn.php");
 include("check.php");
+$fpath="text/managepwd.txt";
+$fcontent=file_get_contents($fpath);
+$f_array=explode("|||",$fcontent) ;
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//Dtd XHTML 1.0 transitional//EN" "http://www.w3.org/tr/xhtml1/Dtd/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="zh-CN">
@@ -14,50 +17,10 @@ include '../3/ucenter_api/config.inc.php';//集成ucenter
 include '../3/ucenter_api/uc_client/client.php';//集成ucenter
 include '../3/mobile_msg/inc.php';
 ?>
-<title></title>
+<title><?php echo $f_array[0]?></title>
 <script>
-
 function CheckForm(){
-if (document.form1.oldpassword.value=="" )
-  {
-    alert("旧密码不能为空！");
-	document.form1.oldpassword.focus();
-	return false;
-  }
-if (document.form1.password.value=="" )
-  {
-    alert("新密码不能为空！");
-	document.form1.password.focus();
-	return false;
-  }
-if (document.form1.pwdconfirm.value=="" )
-  {
-    alert("确认新密码不能为空！");
-	document.form1.pwdconfirm.focus();
-	return false;
-  }  
-if (document.form1.password.value !="")
-	{
-		//创建正则表达式
-    	var re=/^[0-9a-zA-Z]{4,14}$/; //只输入数字和字母的正则
-    	if(document.form1.password.value.search(re)==-1)
-    	{
-		alert("密码只能为字母和数字，字符介于4到14个。");
-		document.form1.password.value="";
-		document.form1.password.focus();
-		return false;
-    	}
-	}	
-if (document.form1.password.value !="" && document.form1.pwdconfirm.value !=""){
-	if (document.form1.password.value!=document.form1.pwdconfirm.value)
-	{
-	alert ("两次密码输入不一致，请重新输入。");
-	//document.form1.pass.value='';
-	document.form1.pwdconfirm.value='';
-	document.form1.pwdconfirm.focus();
-	return false;
-	}	
-	}
+<?php echo $f_array[1]?>
 }
 </script>
 </head>
@@ -77,7 +40,7 @@ $password=md5(trim($_POST["password"]));
 	$row=mysql_fetch_array($rs);
 	if ($oldpassword<>$row["password"]){
 	$founderr=1;
-	$errmsg="<li>你输入的旧密码不对，没有权限修改！</li>";
+	$errmsg=$f_array[2];
 	}
 	if ($founderr==1){
 	WriteErrMsg($errmsg);
@@ -87,10 +50,8 @@ $password=md5(trim($_POST["password"]));
 $smtp=new smtp(smtpserver,25,true,sender,smtppwd,sender);//25:smtp服务器的端口一般是25
 //$smtp->debug = true; //是否开启调试,只在测试程序时使用，正式使用时请将此行注释
 $to = $row['email']; //收件人
-$subject = "修改密码成功—".sitename;
-$body= "<table width='100%'><tr><td style='font-size:14px;line-height:25px'>".$username . "：<br>&nbsp;&nbsp;&nbsp;&nbsp;您好！<br>您的密码修改成功<br>用户名：".$username." 新密码为：".trim($_POST["password"])." &nbsp;&nbsp;<br>如非本人操作请及时登陆网站修改你的密码。<a href='".siteurl."/user/login.php'>现在登陆>>></a>";
-$body=$body."</td></tr></table>";
-
+$subject = $f_array[3].sitename;
+$body= str_replace("{#siteurl}",siteurl,str_replace("{#password}",trim($_POST["password"]),str_replace("{#username}",$username,$f_array[4])));
 $fp="../template/".siteskin."/email.htm";
 $f= fopen($fp,'r');
 $strout = fread($f,filesize($fp));
@@ -100,8 +61,7 @@ $strout=str_replace("{#siteurl}",siteurl,$strout) ;
 $strout=str_replace("{#logourl}",logourl,$strout) ;
 $body=$strout;
 $send=$smtp->sendmail($to,sender,$subject,$body,"HTML");//邮件的类型可选值是 TXT 或 HTML 
-
-$msg=$username."：您好！您的密码修改成功<br>用户名：".$username." 新密码为：".trim($_POST["password"])."<br>如非本人操作请及时登陆网站修改你的密码。";
+$msg= str_replace("{#password}",trim($_POST["password"]),str_replace("{#username}",$username,$f_array[5]));
 $msg = iconv("UTF-8","GBK",$msg);
 $result = sendSMS(smsusername,smsuserpass,$row['mobile'],$msg,apikey_mobile_msg);//发手机短信	
 		}
@@ -110,7 +70,7 @@ $result = sendSMS(smsusername,smsuserpass,$row['mobile'],$msg,apikey_mobile_msg)
 		$ucresult = uc_user_edit($username, $_POST['oldpassword'], $_POST['password'], $row["email"]);
 		}
 		//end
-	echo "<SCRIPT language=JavaScript>alert('成功修改密码！');history.go(-1)</SCRIPT>";
+	echo $f_array[6];
 	}
 }else{
 
@@ -126,27 +86,27 @@ include("left.php");
 ?>
 </div>
 <div class="right">
-<div class="admintitle">修改密码</div>
+<div class="admintitle"><?php echo $f_array[0]?></div>
 <form name="form1" action="?" method="post" onsubmit="return CheckForm()">
 <table width="100%" border="0" cellpadding="5" cellspacing="1">
     <tr>             
-            <td width="382" align="right" class="border">用户名：</td>  
+            <td width="382" align="right" class="border"><?php echo $f_array[7]?></td>  
       <td width="612" class="border"><?php echo $username ?></td>
             </tr>
             <tr>   
-            <td width="382" align="right" class="border2">旧密码：</td>      
+            <td width="382" align="right" class="border2"><?php echo $f_array[8]?></td>      
       <td class="border2"> 
         <INPUT  type="password" maxLength="16" size="30" name="oldpassword"> 
               </td>
             </tr>
             <tr> 
-            <td width="382" align="right" class="border">新密码：</td>     
+            <td width="382" align="right" class="border"><?php echo $f_array[9]?></td>     
       <td class="border"> 
         <INPUT  type="password" maxLength="16" size="30" name="password"> 
               </td>
             </tr>
             <tr>      
-            <td width="382" align="right" class="border2">确认新密码：</td>     
+            <td width="382" align="right" class="border2"><?php echo $f_array[10]?></td>     
       <td class="border2">
 <INPUT name=pwdconfirm   type=password id="pwdconfirm" size="30" maxLength="16">
                 <input name="action" type="hidden" id="action" value="modify"> 
@@ -155,7 +115,7 @@ include("left.php");
             <tr>      
       <td align="center" class="border">&nbsp; </td>   
       <td class="border"> 
-        <input name="Submit"   type="submit" class="buttons" id="Submit" value="保存修改结果">
+        <input name="Submit"   type="submit" class="buttons" id="Submit" value="<?php echo $f_array[11]?>">
       </td>
             </tr>
           </table>

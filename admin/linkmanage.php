@@ -26,26 +26,26 @@ if(!empty($_POST['id'])){
 	switch ($action){
 	case "pass";
 	$sql="select passed from zzcms_link where id ='$id'";
-	$rs = mysql_query($sql); 
-	$row = mysql_fetch_array($rs);
+	$rs = query($sql); 
+	$row = fetch_array($rs);
 		if ($row['passed']=='0'){
-		mysql_query("update zzcms_link set passed=1 where id ='$id'");
+		query("update zzcms_link set passed=1 where id ='$id'");
 		}else{
-		mysql_query("update zzcms_link set passed=0 where id ='$id'");
+		query("update zzcms_link set passed=0 where id ='$id'");
 		}
 	break;	
 	case "elite";
 	$sql="select elite from zzcms_link where id ='$id'";
-	$rs = mysql_query($sql); 
-	$row = mysql_fetch_array($rs);
+	$rs = query($sql); 
+	$row = fetch_array($rs);
 		if ($row['elite']=='0'){
-		mysql_query("update zzcms_link set elite=1 where id ='$id'");
+		query("update zzcms_link set elite=1 where id ='$id'");
 		}else{
-		mysql_query("update zzcms_link set elite=0 where id ='$id'");
+		query("update zzcms_link set elite=0 where id ='$id'");
 		}
 	break;
 	case "del";
-	mysql_query("delete from zzcms_link where id ='$id'");
+	query("delete from zzcms_link where id ='$id'");
 	break;	
 	}	
 	}
@@ -86,15 +86,15 @@ $sql2=$sql2. " and bigclassid =".$b." ";
 if ($keyword<>"") {
 $sql2=$sql2. " and sitename like '%".$keyword."%' ";
 }
-$rs = mysql_query($sql.$sql2); 
-$row = mysql_fetch_array($rs);
+$rs = query($sql.$sql2); 
+$row = fetch_array($rs);
 $totlenum = $row['total'];    
 $totlepage=ceil($totlenum/$page_size);
 
 $sql="select * from zzcms_link where id<>0 ";
 $sql=$sql.$sql2;
 $sql=$sql . " order by id desc limit $offset,$page_size";
-$rs = mysql_query($sql); 
+$rs = query($sql); 
 if(!$totlenum){
 echo "暂无信息";
 }else{
@@ -119,14 +119,14 @@ echo "暂无信息";
       <td width="5%" align="center" class="border">操作</td>
     </tr>
 <?php
-while($row = mysql_fetch_array($rs)){
+while($row = fetch_array($rs)){
 ?>
     <tr bgcolor="#FFFFFF" onMouseOver="this.bgColor='#E6E6E6'" onMouseOut="this.bgColor='#FFFFFF'"> 
       <td align="center" > <input name="id[]" type="checkbox" id="id" value="<?php echo $row["id"]?>"></td>
       <td ><a href="?b=<?php echo $row["bigclassid"]?>">
 	  <?php
-	  $rsn=mysql_query("select bigclassname from zzcms_linkclass where bigclassid=".$row["bigclassid"]." ");
-	  $rown=mysql_fetch_array($rsn);
+	  $rsn=query("select bigclassname from zzcms_linkclass where bigclassid=".$row["bigclassid"]." ");
+	  $rown=fetch_array($rsn);
 	  echo $rown["bigclassname"]?></a></td>
       <td><b><?php echo $row["sitename"]?></b><br> 
         <a href="<?php echo $row["url"]?>" target="_blank"><?php echo $row["url"]?></a><br> 
@@ -156,7 +156,7 @@ while($row = mysql_fetch_array($rs)){
 </form>
 <?php
 }
-mysql_close($conn);
+
 ?>
 </body>
 </html>

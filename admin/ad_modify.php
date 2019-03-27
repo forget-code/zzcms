@@ -58,8 +58,8 @@ checkid($id);
 $id=0;
 }
 $sql="select * from zzcms_ad where id='$id'";
-$rs=mysql_query($sql);
-$row=mysql_fetch_array($rs);
+$rs=query($sql);
+$row=fetch_array($rs);
 ?>
 <form action="ad_save.php" method="post" name="myform" >
   <table width="100%" border="0" cellpadding="5" cellspacing="0">
@@ -68,14 +68,14 @@ $row=mysql_fetch_array($rs);
       <td width="81%" class="border"> 
        <?php
 $sqln = "select * from zzcms_adclass where parentid<>'A' order by xuhao asc";
-$rsn=mysql_query($sqln);
+$rsn=query($sqln);
 ?>
         <script language = "JavaScript" type="text/JavaScript">
 var onecount;
 subcat = new Array();
         <?php 
         $count = 0;
-        while($rown = mysql_fetch_array($rsn)){
+        while($rown = fetch_array($rsn)){
         ?>
 subcat[<?php echo $count?>] = new Array("<?php echo trim($rown["classname"])?>","<?php echo trim($rown["parentid"])?>","<?php echo trim($rown["classname"])?>");
         <?php
@@ -100,8 +100,8 @@ function changelocation(locationid)
           <option value="" selected="selected">请选择大类别</option>
           <?php
 	$sqln = "select * from zzcms_adclass where  parentid='A' order by xuhao asc";
-    $rsn=mysql_query($sqln);
-	while($rown = mysql_fetch_array($rsn)){
+    $rsn=query($sqln);
+	while($rown = fetch_array($rsn)){
 	?>
           <option value="<?php echo trim($rown["classname"])?>" <?php if ($rown["classname"]==$row["bigclassname"]) { echo "selected";}?>><?php echo trim($rown["classname"])?></option>
           <?php
@@ -112,8 +112,8 @@ function changelocation(locationid)
           <?php
 
 $sqln="select * from zzcms_adclass where parentid='" .$row["bigclassname"]."' order by xuhao asc";
-$rsn=mysql_query($sqln);
-while($rown = mysql_fetch_array($rsn)){
+$rsn=query($sqln);
+while($rown = fetch_array($rsn)){
 	?>
           <option value="<?php echo $rown["classname"]?>" <?php if ($rown["classname"]==$row["smallclassname"]) { echo "selected";}?>><?php echo $rown["classname"]?></option>
           <?php
@@ -226,8 +226,6 @@ while($rown = mysql_fetch_array($rsn)){
     </tr>
   </table>
 </form>
-<?php
-mysql_close($conn);
-?>
+
 </body>
 </html>

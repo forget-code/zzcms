@@ -32,12 +32,12 @@ showmsg('少ID参数！') ;
 $id=$_GET["id"];
 //checkid($id);
 $sql="Select * from zzcms_admingroup where id='$id'";
-$rs = mysql_query($sql,$conn); 
-$row= mysql_num_rows($rs);
+$rs = query($sql,$conn); 
+$row= num_rows($rs);
 if (!$row){
 echo "暂无信息";
 }else{
-$row= mysql_fetch_array($rs);
+$row= fetch_array($rs);
 ?>
 <div class="admintitle">修改管理员组</div>
 <form name="form1" method="post" action="admingroupsave.php" onSubmit="return checkform()">
@@ -111,9 +111,15 @@ $row= mysql_fetch_array($rs);
     </tr>
     <tr>
       <td align="right" class="border" >报价</td>
-      <td class="border" ><input name="config[]" type="checkbox" id="baojia" value="baojia" <?php if(str_is_inarr($row["config"],'baojia')=='yes') { echo"checked";}?>>
-          <label for="baojia">报价管理 </label>
-       </td>
+      <td class="border" ><label><input name="config[]" type="checkbox" value="baojia" <?php if(str_is_inarr($row["config"],'baojia')=='yes') { echo"checked";}?>>
+          报价管理 </label>       </td>
+    </tr>
+    <tr>
+      <td align="right" class="border" >问答</td>
+      <td class="border" ><label><input name="config[]" type="checkbox" value="ask" <?php if(str_is_inarr($row["config"],'ask')=='yes') { echo"checked";}?>>
+          问答管理 </label>
+        <label><input name="config[]" type="checkbox" value="askclass" <?php if(str_is_inarr($row["config"],'askclass')=='yes') { echo"checked";}?>>
+        问答类别管理</label></td>
     </tr>
     <tr> 
       <td align="right"  class="border">广告</td>

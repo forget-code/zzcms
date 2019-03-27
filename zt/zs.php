@@ -32,6 +32,7 @@ $pagedescription=$comane."—".channelzs."信息列表";
 
 if (isset($_REQUEST["page_size"])){
 $page_size=$_REQUEST["page_size"];
+checkid($page_size);
 setcookie("page_size_zs",$page_size,time()+3600*24*360);
 }else{
 	if (isset($_COOKIE["page_size_zs"])){
@@ -52,8 +53,8 @@ $sql2=$sql2." and bigclasszm='".$bigclass."' ";
 if ($smallclass<>'A'){
 $sql2=$sql2." and smallclasszm like '%".$smallclass."%' ";
 }
-$rs = mysql_query($sql.$sql2);
-$row = mysql_fetch_array($rs);
+$rs = query($sql.$sql2);
+$row = fetch_array($rs);
 $totlenum = $row['total'];
 $offset=($page-1)*$page_size;//$page_size在上面被设为COOKIESS
 $totlepage=ceil($totlenum/$page_size);
@@ -61,7 +62,7 @@ $totlepage=ceil($totlenum/$page_size);
 $sql=" select * from zzcms_main where editor='".$editor."' and passed=1 ";
 $sql=$sql.$sql2;
 $sql=$sql." order by xuhao desc limit $offset,$page_size";
-$rs = mysql_query($sql); 
+$rs = query($sql); 
 
 //echo $sql;
 
@@ -71,7 +72,7 @@ $strout=str_replace("{loop}".$list."{/loop}","暂无信息",$strout) ;
 }else{
 $list2='';
 $i=1;
-while ($row= mysql_fetch_array($rs)){
+while ($row= fetch_array($rs)){
 
 if (whtml=="Yes"){
 $link="/sell/zsshow-".$row['id'].".htm";
@@ -79,10 +80,10 @@ $link="/sell/zsshow-".$row['id'].".htm";
 $link="zsshow.php?cpid=".$row['id'] ;
 }
 
-$rsn=mysql_query("select classname from zzcms_zsclass where classzm='".$row["bigclasszm"]."'");
-		$rown=mysql_num_rows($rsn);
+$rsn=query("select classname from zzcms_zsclass where classzm='".$row["bigclasszm"]."'");
+		$rown=num_rows($rsn);
 		if ($rown){
-		$rown=mysql_fetch_array($rsn);
+		$rown=fetch_array($rsn);
 		$bigclassname=$rown["classname"];
 		}else{
 		$bigclassname="大类已删除";
@@ -90,11 +91,11 @@ $rsn=mysql_query("select classname from zzcms_zsclass where classzm='".$row["big
 		
 $slb='';
 if(strpos($row["smallclasszm"],',')!==false){ 		
-$rsn=mysql_query("select classzm,classname from zzcms_zsclass where parentid='".$row["bigclasszm"]."' and classzm in(".$row['smallclasszm'].")");
-		$rown=mysql_num_rows($rsn);
+$rsn=query("select classzm,classname from zzcms_zsclass where parentid='".$row["bigclasszm"]."' and classzm in(".$row['smallclasszm'].")");
+		$rown=num_rows($rsn);
 		if ($rown){
 		$slb=" - ";
-		while ($rown= mysql_fetch_array($rsn)){
+		while ($rown= fetch_array($rsn)){
 			if (whtml=="Yes"){
 			$slb=$slb." [ <a href='zs-".$id."-".$row["bigclasszm"]."-".$rown["classzm"].".htm'>".$rown["classname"]."</a> ] ";
 			}else{
@@ -104,10 +105,10 @@ $rsn=mysql_query("select classzm,classname from zzcms_zsclass where parentid='".
 		}
 
 }else{		
-$rsn=mysql_query("select classname,classzm from zzcms_zsclass where classzm='".$row["smallclasszm"]."'");
-		$rown=mysql_num_rows($rsn);
+$rsn=query("select classname,classzm from zzcms_zsclass where classzm='".$row["smallclasszm"]."'");
+		$rown=num_rows($rsn);
 		if ($rown){
-		$rown=mysql_fetch_array($rsn);
+		$rown=fetch_array($rsn);
 			if (whtml=="Yes"){
 			$slb=" - <a href='zs-".$id."-".$row["bigclasszm"]."-".$rown["classzm"].".htm'>".$rown["classname"]."</a>";
 			}else{
@@ -208,6 +209,6 @@ $strout=str_replace("{#skin}",$skin,$strout);
 
 $strout=str_replace("{#sitebottom}",$sitebottom,$strout);
 $strout=str_replace("{#sitetop}",$sitetop,$strout);
-mysql_close($conn);
+
 echo  $strout;
 ?>

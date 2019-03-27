@@ -1,5 +1,7 @@
 <?php
 if(@$step==3){
+$token = md5(uniqid(rand(), true));    
+$_SESSION['token']= $token; 
 ?>
 <div class="body">      
   <table width="100%" border="0" cellpadding="5" cellspacing="1" bgcolor="#dddddd">
@@ -36,6 +38,7 @@ $files_array=array("../inc/config.php","../inc/wjt.php","../skin/test.txt","../t
 
 <form action="index.php" method="post" id="myform">
 <input type="hidden" name="step" value="4"/>
+<input name="token" type="hidden"  value="<?php echo $token?>"/>
     <input type="button" value="上一步" class="btn" onclick="history.back(-1);"/>
     <input type="submit" value="下一步" class="btn" <?php if(!$pass) echo ' disabled';?>/>
 &nbsp;&nbsp;

@@ -38,8 +38,8 @@ $action="";
 if ($action=="px"){
 checkadminisdo("zsclass");
 $sqlb="Select * From zzcms_zsclass where parentid='A'";
-$rsb=mysql_query($sqlb);
-while($rowb= mysql_fetch_array($rsb)){
+$rsb=query($sqlb);
+while($rowb= fetch_array($rsb)){
 
 $xuhao=$_POST["xuhao".$rowb["classid"]];//表单名称是动态显示的，并于FORM里的名称相同。
 	   if (trim($xuhao) == "" ||  is_numeric($xuhao) == false){ 
@@ -49,10 +49,10 @@ $xuhao=$_POST["xuhao".$rowb["classid"]];//表单名称是动态显示的，并�
 		   }else{
 	       $xuhao = $xuhao;
 	  		}
-mysql_query("update zzcms_zsclass set xuhao='$xuhao' where classid='".$rowb['classid']."'");
+query("update zzcms_zsclass set xuhao='$xuhao' where classid='".$rowb['classid']."'");
 $sqls="Select * From zzcms_zsclass where parentid='".$rowb['classzm']."'";
-$rss=mysql_query($sqls);
-while($rows= mysql_fetch_array($rss)){
+$rss=query($sqls);
+while($rows= fetch_array($rss)){
 
 $xuhaos=$_POST["xuhaos".$rows["classid"]];//表单名称是动态显示的，并于FORM里的名称相同。
 	   if (trim($xuhaos) == "" ||  is_numeric($xuhaos) == false){ 
@@ -62,7 +62,7 @@ $xuhaos=$_POST["xuhaos".$rows["classid"]];//表单名称是动态显示的，并
 		   }else{
 	       $xuhaos = $xuhaos;
 	   }
-mysql_query("update zzcms_zsclass set xuhao='$xuhaos' where classid='".$rows['classid']."'");
+query("update zzcms_zsclass set xuhao='$xuhaos' where classid='".$rows['classid']."'");
 }
 }
 }
@@ -70,8 +70,8 @@ if ($action=="delbig"){
 checkadminisdo("zsclass");
 $bigclassid=trim($_REQUEST["bigclassid"]);
 if ($bigclassid<>""){
-	mysql_query("delete from zzcms_zsclass where parentid='$bigclassid'");
-	mysql_query("delete from zzcms_zsclass where classzm='$bigclassid'");
+	query("delete from zzcms_zsclass where parentid='$bigclassid'");
+	query("delete from zzcms_zsclass where classzm='$bigclassid'");
 }
     
 echo "<script>location.href='?'</script>";
@@ -81,7 +81,7 @@ checkadminisdo("zsclass");
 $SmallClassID=trim($_REQUEST["SmallClassID"]);
 $bigclassid=trim($_REQUEST["bigclassid"]);//返回列表定位用
 if ($SmallClassID<>""){
-	mysql_query("delete from zzcms_zsclass where classid='$SmallClassID'");
+	query("delete from zzcms_zsclass where classid='$SmallClassID'");
 }
 echo "<script>location.href='?#B".$bigclassid."'</script>";
 }
@@ -98,7 +98,7 @@ echo "<script>location.href='?#B".$bigclassid."'</script>";
 </table>
 <?php
 $sql="Select * From zzcms_zsclass where parentid='A' order by xuhao";
-$rs=mysql_query($sql,$conn);
+$rs=query($sql,$conn);
 ?>
 <form name="form1" method="post" action="?action=px">
   <table width="100%" border="0" align="center" cellpadding="5" cellspacing="1">
@@ -110,7 +110,7 @@ $rs=mysql_query($sql,$conn);
       <td width="27%" class="border" ><strong>操作</strong></td>
     </tr>
       <?php
-	while($row= mysql_fetch_array($rs)){
+	while($row= fetch_array($rs)){
 ?>
     <tr bgcolor="#F1F1F1"> 
       <td style="font-weight:bold"><a name="B<?php echo $row["classzm"]?>"></a><img src="image/icobig.gif" width="9" height="9"> 
@@ -127,8 +127,8 @@ $rs=mysql_query($sql,$conn);
     <?php
 	$n=0;
 	$sqln="Select * From zzcms_zsclass Where parentid='" .$row["classzm"]. "' order by xuhao";
-	$rsn=mysql_query($sqln);	
-	while($rown= mysql_fetch_array($rsn)){
+	$rsn=query($sqln);	
+	while($rown= fetch_array($rsn)){
 ?>
     <tr class="bgcolor1" onMouseOver="fSetBg(this)" onMouseOut="fReBg(this)"> 
       <td ><a name="S<?php echo $rown["classid"]?>"></a><img src="image/icosmall.gif" width="23" height="11"> 
@@ -144,7 +144,7 @@ $rs=mysql_query($sql,$conn);
 		$n=$n+1;
 	}
 	}
-	mysql_close($conn);
+	
 	?>
   </table>
 </form>

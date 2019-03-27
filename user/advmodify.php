@@ -44,8 +44,8 @@ $id=$_REQUEST["id"];
 $id=0;
 }
 $sqlzx="select * from zzcms_ztad where id='$id'";
-$rszx = mysql_query($sqlzx); 
-$rowzx = mysql_fetch_array($rszx);
+$rszx = query($sqlzx); 
+$rowzx = fetch_array($rszx);
 if ($rowzx["editor"]<>$username) {
 markit();
 echo $f_array[2];
@@ -114,7 +114,7 @@ exit;
 </div>
 </div>
 <?php
-mysql_close($conn);
+
 unset ($f_array);
 ?>
 </body>

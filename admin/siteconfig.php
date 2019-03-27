@@ -97,7 +97,7 @@ return false;
   <tr> 
     <td bgcolor="#FFFFFF" style="color:#999999"><a href="#SiteInfo">基本信息</a> 
       | <a href="#siteskin">网站风格</a> | <a href="#SiteOption">功能参数</a> | <a href="#SiteOpen">运行状态</a> 
-      | <a href="#stopwords">限制字符</a> |  <a href="#wjtset">文 件 头</a> | <a href="#sendmail">邮件设置</a> 
+      | <a href="#stopwords">限制字符</a> |  <a href="wjtset.php">文 件 头</a> | <a href="#sendmail">邮件设置</a> 
       | <a href="#sendSms">手机短信</a>  <br> <a href="#qiangad">广告设置</a> | <a href="#userjf">积分功能</a> | <a href="#UpFile">上传文件</a> 
       | <a href="#addimage">添加水印</a> | <a href="#alipay_set">支付接口</a> 
       | <a href="#qqlogin_set">QQ登录</a> | <a href="#bbs_set">整合Discuz!论坛</a></td>
@@ -133,7 +133,7 @@ function showconfig(){
     </tr>
     <tr> 
       <td align="right" class="border">网站地址</td>
-      <td width="70%" class="border"> <input name="siteurl" type="text" id="siteurl" value="<?php echo addhttp(siteurl)?>" size="50" maxlength="255"></td>
+      <td width="70%" class="border"> <input name="siteurl" type="text" id="siteurl" value="<?php echo addhttp(CutFenGeXian(siteurl,'/'))?>" size="50" maxlength="255"></td>
     </tr>
     <tr> 
       <td align="right" class="border">网站Logo地址</td>
@@ -191,59 +191,60 @@ function showconfig(){
     </tr>
     <tr> 
       <td align="right" class="border">展厅二级域名</td>
-      <td class="border"><input type="radio" name="sdomain" id="sdomainY" value="Yes" <?php if ( sdomain=="Yes" ){ echo  "checked";}?>>
-        <label for='sdomainY'>开 </label>
-          <input type="radio" name="sdomain" id="sdomainN" value="No" <?php if ( sdomain=="No" ){ echo  "checked";}?>>
-        <label for='sdomainN'>关</label></td>
+      <td class="border"> <label><input type="radio" name="sdomain" id="sdomainY" value="Yes" <?php if ( sdomain=="Yes" ){ echo  "checked";}?>>
+       开 </label>
+         <label> <input type="radio" name="sdomain" id="sdomainN" value="No" <?php if ( sdomain=="No" ){ echo  "checked";}?>>
+        关</label></td>
     </tr>
     <tr> 
       <td align="right" class="border">伪静态</td>
-      <td class="border"><input type="radio" name="whtml" value="Yes" <?php if ( whtml=="Yes" ){ echo  "checked";}?>>
-        开 
-        <input type="radio" name="whtml" value="No" <?php if ( whtml=="No" ){ echo  "checked";}?>>
-        关</td>
+      <td class="border"> <label><input type="radio" name="whtml" value="Yes" <?php if ( whtml=="Yes" ){ echo  "checked";}?>>
+        开  </label>
+         <label><input type="radio" name="whtml" value="No" <?php if ( whtml=="No" ){ echo  "checked";}?>>
+        关 </label></td>
     </tr>
     <tr>
       <td align="right" class="border">防SQL注入功能</td>
-      <td class="border"><input type="radio" name="checksqlin" value="Yes" <?php if ( checksqlin=="Yes" ){ echo  "checked";}?>>
-        开
-        <input type="radio" name="checksqlin" value="No" <?php if ( checksqlin=="No" ){ echo  "checked";}?>>
-        关</td>
+      <td class="border"> <label><input type="radio" name="checksqlin" value="Yes" <?php if ( checksqlin=="Yes" ){ echo  "checked";}?>>
+        开 </label>
+        <label> <input type="radio" name="checksqlin" value="No" <?php if ( checksqlin=="No" ){ echo  "checked";}?>>
+        关 </label></td>
     </tr>
     <tr> 
       <td align="right" class="border">是否允许重复注册用户</td>
-      <td class="border"><input type="radio" name="allowrepeatreg" value="Yes" <?php if ( allowrepeatreg=="Yes" ){ echo  "checked";}?>>
-        是 
-          <input type="radio" name="allowrepeatreg" value="No" <?php if ( allowrepeatreg=="No" ){ echo  "checked";}?>>
-          否</td>
+      <td class="border"> <label><input type="radio" name="allowrepeatreg" value="Yes" <?php if ( allowrepeatreg=="Yes" ){ echo  "checked";}?>>
+        是  </label>
+           <label><input type="radio" name="allowrepeatreg" value="No" <?php if ( allowrepeatreg=="No" ){ echo  "checked";}?>>
+          否 </label></td>
     </tr>
     <tr> 
       <td align="right" class="border">让未审核的注册用户发布信息</td>
-      <td class="border"> <input type="radio" name="isaddinfo" value="Yes" <?php if ( isaddinfo=="Yes" ){ echo  "checked";}?>>
-        开 
-        <input type="radio" name="isaddinfo" value="No" <?php if ( isaddinfo=="No" ){ echo  "checked";}?>>
-        关</td>
+      <td class="border">  <label><input type="radio" name="isaddinfo" value="Yes" <?php if ( isaddinfo=="Yes" ){ echo  "checked";}?>>
+        开 </label> 
+         <label><input type="radio" name="isaddinfo" value="No" <?php if ( isaddinfo=="No" ){ echo  "checked";}?>>
+        关 </label></td>
     </tr>
     <tr> 
       <td align="right" class="border"><?php echo channeldl?>商信息库的联系方式</td>
-      <td class="border"> <input type="radio" name="isshowcontact" value="Yes" <?php if ( isshowcontact=="Yes" ){ echo  "checked";}?>>
-        开（即非注册用户可看） 
-        <input type="radio" name="isshowcontact" value="No" <?php if ( isshowcontact=="No" ){ echo  "checked";}?>>
-        关</td>
+      <td class="border">  <label><input type="radio" name="isshowcontact" value="Yes" <?php if ( isshowcontact=="Yes" ){ echo  "checked";}?>>
+        开（即非注册用户可看）  </label>
+         <label><input type="radio" name="isshowcontact" value="No" <?php if ( isshowcontact=="No" ){ echo  "checked";}?>>
+        关 </label></td>
     </tr>
     <tr>
       <td align="right" class="border"><?php echo channelzs?>小类别设为</td>
-      <td class="border"><input type="radio" name="zsclass_isradio" value="Yes" <?php if ( zsclass_isradio=="Yes" ){ echo  "checked";}?>>
-        单选
-        <input type="radio" name="zsclass_isradio" value="No" <?php if ( zsclass_isradio=="No" ){ echo  "checked";}?>>
-        多选 </td>
+      <td class="border"> <label><input type="radio" name="zsclass_isradio" value="Yes" <?php if ( zsclass_isradio=="Yes" ){ echo  "checked";}?>>
+        单选 </label>
+        <label> <input type="radio" name="zsclass_isradio" value="No" <?php if ( zsclass_isradio=="No" ){ echo  "checked";}?>>
+        多选 </label> </td>
     </tr>
     <tr> 
       <td align="right" class="border"><?php echo channelzs?>产品信息内显示<?php echo channeldl?>留言条数</td>
-      <td class="border"><input type="radio" name="showdlinzs" value="Yes" <?php if ( showdlinzs=="Yes" ){ echo  "checked";}?>>
-        开 
-        <input type="radio" name="showdlinzs" value="No" <?php if ( showdlinzs=="No" ){ echo  "checked";}?>>
-        关（<span style="color:#FF0000"><?php echo channelzs.channeldl?>信息量大时建议关闭此功能，避免联表查寻导致<?php echo channelzs?>列表页打开太慢</span>）</td>
+      <td class="border"> <label><input type="radio" name="showdlinzs" value="Yes" <?php if ( showdlinzs=="Yes" ){ echo  "checked";}?>>
+        开  </label>
+        <label><input type="radio" name="showdlinzs" value="No" <?php if ( showdlinzs=="No" ){ echo  "checked";}?>>
+        关（<span style="color:#FF0000"><?php echo channelzs.channeldl?>信息量大时建议关闭此功能，避免联表查寻导致<?php echo channelzs?>列表页打开太慢</span>）
+		 </label></td>
     </tr>
     <tr>
       <td align="right" class="border">网站缓存更新时间</td>
@@ -283,7 +284,28 @@ function showconfig(){
 <label for="zt">显示展厅 </label></td>
     </tr>
     <tr>
-      <td align="right" class="border">产品更多属性设置</td>
+      <td align="right" class="border">功能模块开关</td>
+      <td class="border"><label> <input name="channel[]" type="checkbox" value="zh" <?php if(str_is_inarr(channel,'zh')=='yes') { echo"checked";}?>>
+          展会</label>
+         <label> <input name="channel[]" type="checkbox" value="wangkan" <?php if(str_is_inarr(channel,'wangkan')=='yes') { echo"checked";}?>>
+           网刊</label>
+          <label> <input name="channel[]" type="checkbox"  value="zx" <?php if(str_is_inarr(channel,'zx')=='yes') { echo"checked";}?>>
+          资讯</label>
+          <label><input name="channel[]" type="checkbox"  value="pp" <?php if(str_is_inarr(channel,'pp')=='yes') { echo"checked";}?>>
+           品牌 </label>
+          <label><input name="channel[]" type="checkbox" value="special" <?php if(str_is_inarr(channel,'special')=='yes') { echo"checked";}?>>
+          专题</label>
+          <label><input name="channel[]" type="checkbox" value="job"  <?php if(str_is_inarr(channel,'job')=='yes') { echo"checked";}?>>
+          
+        招聘</label>
+        <label><input name="channel[]" type="checkbox"  value="baojia"  <?php if(str_is_inarr(channel,'baojia')=='yes') { echo"checked";}?>>
+        行情 </label>
+		 <label><input name="channel[]" type="checkbox"  value="ask"  <?php if(str_is_inarr(channel,'ask')=='yes') { echo"checked";}?>>
+        问答 </label>
+		</td>
+    </tr>
+    <tr>
+      <td align="right" class="border">项目更多属性设置</td>
       <td class="border"><input name="shuxing_name" type="text" id="shuxing_name" value="<?php echo shuxing_name?>" size="50" maxlength="255">
         （以“|”分开，前台模板中以{#shuxing0}，{#shuxing1}，{#shuxing2}...，这样的标签做调用）</td>
     </tr>
@@ -648,8 +670,7 @@ document.getElementById("syimg").innerHTML="<img src='"+value+"' width=120>";
         <table border="0" cellpadding="5" cellspacing="1" bgcolor="#999999">
           <tr>
             <td align="center" bgcolor="#FFFFFF" id="syimg" onClick="openwindow('/uploadimg_form.php?noshuiyin=1&imgid=2',400,300)">
-			<?php echo "<img src='/".syurl."' border=0 width=200 /><br>点击可更换图片";?>           
-			 </td>
+			<?php echo "<img src='/".syurl."' border=0 width=200 /><br>点击可更换图片";?>			 </td>
           </tr>
         </table></td>
     </tr>
@@ -744,6 +765,11 @@ if (isset($_POST['usergr_power'])){
 foreach($_POST['usergr_power'] as $i){$usergr_power .=$i."#";}
 $usergr_power=substr($usergr_power,0,strlen($usergr_power)-1);//去除最后面的"#"
 }
+$channel="";
+if (isset($_POST['channel'])){
+foreach($_POST['channel'] as $i){$channel .=$i."#";}
+$channel=substr($channel,0,strlen($channel)-1);//去除最后面的"#"
+}
 	$fpath="../inc/config.php";
 	$fp=fopen($fpath,"w+");//fopen()的其它开关请参看相关函数
 	$fcontent="<" . "?php\r\n";
@@ -751,7 +777,7 @@ $usergr_power=substr($usergr_power,0,strlen($usergr_power)-1);//去除最后面�
 	$fcontent=$fcontent. "define('sqluser','".trim($_POST['sqluser'])."');//用户名\r\n";
 	$fcontent=$fcontent. "define('sqlpwd','".html_entity_decode(trim($_POST['sqlpwd']))."');//密码\r\n";//html_entity_decode针对&被转变成&amp;
 	$fcontent=$fcontent. "define('sqlhost','".trim($_POST['sqlhost'])."');//连接服务器,本机填(local)，外地填IP地址\r\n";
-	$fcontent=$fcontent. "define('zzcmsver','Powered By <a target=_blank style=font-weight:bold href=http://www.zzcms.net><font color=#FF6600 face=Arial>ZZ</font><font color=#025BAD face=Arial>CMS8.0</font></a>');//版本\r\n";
+	$fcontent=$fcontent. "define('zzcmsver','Powered By <a target=_blank style=font-weight:bold href=http://www.zzcms.net><font color=#FF6600 face=Arial>ZZ</font><font color=#025BAD face=Arial>CMS8.1</font></a>');//版本\r\n";
 	$fcontent=$fcontent. "define('sitename','". trim($_POST['sitename'])."') ;//网站名称\r\n";
 	$fcontent=$fcontent. "define('siteurl','". trim($_POST['siteurl'])."') ;//网站地址\r\n";
 	$fcontent=$fcontent. "define('logourl','". trim($_POST['img'])."') ;//Logo地址\r\n";
@@ -783,13 +809,13 @@ $usergr_power=substr($usergr_power,0,strlen($usergr_power)-1);//去除最后面�
 	$fcontent=$fcontent. "define('apikey_mobile_msg','". trim($_POST['apikey_mobile_msg'])."') ;//apikey_mobile_msg\r\n";		
 	$fcontent=$fcontent. "define('isshowcontact','". trim($_POST['isshowcontact'])."') ;//是否公开代理商联系方式\r\n";	
 	$fcontent=$fcontent. "define('liuyanysnum','". trim($_POST['liuyanysnum'])."'); //延时时间\r\n";	
-	
+	$fcontent=$fcontent. "define('channel','". $channel."') ;//功能模块开关\r\n";
 	$fcontent=$fcontent. "define('usergr_power','". $usergr_power."') ;//个人用户权限\r\n";
-	$fcontent=$fcontent. "define('shuxing_name','". CutFenGeXian(trim($_POST['shuxing_name']))."') ;//产品更多属性设置\r\n";
-	$fcontent=$fcontent. "define('wordsincomane','". CutFenGeXian(trim($_POST['wordsincomane']))."') ;//公司名称中必填行业性关键字\r\n";	
-	$fcontent=$fcontent. "define('lastwordsincomane','". CutFenGeXian(trim($_POST['lastwordsincomane']))."') ;//公司名称中必填公司类型性关键字\r\n";
-	$fcontent=$fcontent. "define('nowordsincomane','". CutFenGeXian(trim($_POST['nowordsincomane']))."') ;//公司名称中禁用关键字\r\n";	
-	$fcontent=$fcontent. "define('stopwords','". CutFenGeXian(trim($_POST['stopwords']))."') ;//网站禁用关键字\r\n";
+	$fcontent=$fcontent. "define('shuxing_name','". CutFenGeXian(trim($_POST['shuxing_name']),"|")."') ;//产品更多属性设置\r\n";
+	$fcontent=$fcontent. "define('wordsincomane','". CutFenGeXian(trim($_POST['wordsincomane']),"|")."') ;//公司名称中必填行业性关键字\r\n";	
+	$fcontent=$fcontent. "define('lastwordsincomane','". CutFenGeXian(trim($_POST['lastwordsincomane']),"|")."') ;//公司名称中必填公司类型性关键字\r\n";
+	$fcontent=$fcontent. "define('nowordsincomane','". CutFenGeXian(trim($_POST['nowordsincomane']),"|")."') ;//公司名称中禁用关键字\r\n";	
+	$fcontent=$fcontent. "define('stopwords','". CutFenGeXian(trim($_POST['stopwords']),"|")."') ;//网站禁用关键字\r\n";
 	$fcontent=$fcontent. "define('allowrepeatreg','". trim($_POST['allowrepeatreg'])."') ;//是否允许重复注册用户\r\n";
 	$fcontent=$fcontent. "define('showdlinzs','". trim($_POST['showdlinzs'])."') ;//招商信息内是否显示代理留言数\r\n";
 	$fcontent=$fcontent. "define('zsliststyle','". trim($_POST['zsliststyle'])."') ;//招商列表页默认显示格式\r\n";
@@ -802,7 +828,7 @@ $usergr_power=substr($usergr_power,0,strlen($usergr_power)-1);//去除最后面�
 	$fcontent=$fcontent. "define('zsclass_isradio','". trim($_POST['zsclass_isradio'])."') ;//小类别是否设为单选（设为否时为多选）\r\n";		
 	$fcontent=$fcontent. "define('checkistrueemail','". trim($_POST['checkistrueemail'])."') ;//用户注册时是否开启邮箱验证功能\r\n";
 	$fcontent=$fcontent. "define('sdomain','". trim($_POST['sdomain'])."') ;//用户展厅页是否启用二级域名\r\n";
-	$fcontent=$fcontent. "define('whtml','". trim($_POST['whtml'])."') ;//是否使用生成HTML页功能\r\n";
+	$fcontent=$fcontent. "define('whtml','". trim($_POST['whtml'])."') ;//是否开启伪静态\r\n";
 	$fcontent=$fcontent. "define('isshowad_when_timeend','". trim($_POST['isshowad_when_timeend'])."') ;//到期的广告是否还让显示\r\n";
 	$fcontent=$fcontent. "define('showadtext','". trim($_POST['showadtext'])."') ;//到期的广告前台显示语\r\n";	
 	$fcontent=$fcontent. "define('qiangad','". trim($_POST['qiangad'])."') ;//是否开通抢占广告位功能\r\n";

@@ -11,8 +11,8 @@ $pagedescription=$comane."-留言板";
 $fromurl=$_GET["fromurl"];
 
 if (isset($_COOKIE["UserName"])) {
-$rs=mysql_query("select somane,phone,email from zzcms_user where username='".$_COOKIE["UserName"]."'");
-$row=mysql_fetch_array($rs);
+$rs=query("select somane,phone,email from zzcms_user where username='".$_COOKIE["UserName"]."'");
+$row=fetch_array($rs);
 
 $somane=$row["somane"];
 $phone=$row["phone"];
@@ -33,11 +33,11 @@ $strout = fread($f,filesize($fp));
 fclose($f);
 $guestbook=strbetween($strout,"{guestbook}","{/guestbook}");
 $list=strbetween($guestbook,"{loop}","{/loop}");
-$rs=mysql_query("select title,content,linkmen,phone,email,looked,sendtime from zzcms_guestbook where saver='".$editor."'and passed=1 order by id desc limit 0,10");
-$row=mysql_num_rows($rs);
+$rs=query("select title,content,linkmen,phone,email,looked,sendtime from zzcms_guestbook where saver='".$editor."'and passed=1 order by id desc limit 0,10");
+$row=num_rows($rs);
 if ($row){
 $list2='';
-while ($row=mysql_fetch_array($rs)){
+while ($row=fetch_array($rs)){
 $list2 = $list2. str_replace("{#content}",cutstr($row["content"],8),$list) ;
 	if ($row["looked"]==0){ 
 	$list2 =str_replace("{#looked}","(尚未被查看)",$list2) ;

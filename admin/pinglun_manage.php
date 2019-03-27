@@ -26,16 +26,16 @@ if(!empty($_POST['id'])){
 	switch ($action){
 	case "pass";
 	$sql="select passed from zzcms_pinglun where id ='$id'";
-	$rs = mysql_query($sql); 
-	$row = mysql_fetch_array($rs);
+	$rs = query($sql); 
+	$row = fetch_array($rs);
 		if ($row['passed']=='0'){
-		mysql_query("update zzcms_pinglun set passed=1 where id ='$id'");
+		query("update zzcms_pinglun set passed=1 where id ='$id'");
 		}else{
-		mysql_query("update zzcms_pinglun set passed=0 where id ='$id'");
+		query("update zzcms_pinglun set passed=0 where id ='$id'");
 		}
 	break;	
 	case "del";
-	mysql_query("delete from zzcms_pinglun where id ='$id'");
+	query("delete from zzcms_pinglun where id ='$id'");
 	break;	
 	}	
 	}
@@ -61,11 +61,11 @@ $sql=$sql." and passed=0 ";
 if ($keyword<>"") {
 	$sql=$sql. " and content like '%".$keyword."%' ";
 }
-$rs = mysql_query($sql,$conn); 
-$totlenum= mysql_num_rows($rs);  
+$rs = query($sql,$conn); 
+$totlenum= num_rows($rs);  
 $totlepage=ceil($totlenum/$page_size);
 $sql=$sql . " order by id desc limit $offset,$page_size";
-$rs = mysql_query($sql,$conn); 
+$rs = query($sql,$conn); 
 if(!$totlenum){
 echo "暂无信息";
 }else{
@@ -90,7 +90,7 @@ echo "暂无信息";
       <td width="10%" align="center" class="border">评论人IP</td>
     </tr>
 <?php
-while($row = mysql_fetch_array($rs)){
+while($row = fetch_array($rs)){
 ?>
     <tr class="bgcolor1" onMouseOver="fSetBg(this)" onMouseOut="fReBg(this)"> 
       <td align="center" class="docolor"> <input name="id[]" type="checkbox" id="id" value="<?php echo $row["id"]?>"></td>
@@ -118,7 +118,7 @@ while($row = mysql_fetch_array($rs)){
 <div class="border center"><?php echo showpage_admin()?></div>
 <?php
 }
-mysql_close($conn);
+
 ?>
 </body>
 </html>

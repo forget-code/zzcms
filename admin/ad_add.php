@@ -63,14 +63,14 @@ return false;
       <td width="80%" class="border"> 
 <?php
 $sql = "select * from zzcms_adclass where parentid<>'A' order by xuhao asc";
-$rs=mysql_query($sql);
+$rs=query($sql);
 ?>
         <script language = "JavaScript" type="text/JavaScript">
 var onecount;
 subcat = new Array();
         <?php 
         $count = 0;
-        while($row = mysql_fetch_array($rs)){
+        while($row = fetch_array($rs)){
         ?>
 subcat[<?php echo $count?>] = new Array("<?php echo trim($row["classname"])?>","<?php echo trim($row["parentid"])?>","<?php echo trim($row["classname"])?>");
         <?php
@@ -95,8 +95,8 @@ function changelocation(locationid){
           <option value="" selected="selected">请选择大类别</option>
           <?php
 	$sql = "select * from zzcms_adclass where parentid='A' order by xuhao asc";
-    $rs=mysql_query($sql);
-	while($row = mysql_fetch_array($rs)){
+    $rs=query($sql);
+	while($row = fetch_array($rs)){
 	?>
           <option value="<?php echo trim($row["classname"])?>" <?php if ($row["classname"]==@$_SESSION["bigclassid"]) { echo "selected";}?>><?php echo trim($row["classname"])?></option>
           <?php
@@ -107,8 +107,8 @@ function changelocation(locationid){
           <?php
 if ($_SESSION["bigclassid"]!=""){
 $sql="select * from zzcms_adclass where parentid='" .$_SESSION["bigclassid"]."' order by xuhao asc";
-$rs=mysql_query($sql);
-while($row = mysql_fetch_array($rs)){
+$rs=query($sql);
+while($row = fetch_array($rs)){
 	?>
           <option value="<?php echo $row["classname"]?>" <?php if ($row["classname"]==@$_SESSION["smallclassid"]) { echo "selected";}?>><?php echo $row["classname"]?></option>
           <?php
@@ -191,8 +191,6 @@ while($row = mysql_fetch_array($rs)){
     </tr>
   </table>
 </form>
-<?php
-mysql_close($conn);
-?>
+
 </body>
 </html>

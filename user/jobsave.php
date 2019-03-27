@@ -11,7 +11,7 @@ include("check.php");
 <title></title>
 <link href="style/<?php echo siteskin_usercenter?>/style.css" rel="stylesheet" type="text/css">
 <?php
-if (check_usergr_power("job")=="no" && $usersf=='个人'){
+if (str_is_inarr(usergr_power,'job')=="no" && $usersf=='个人'){
 showmsg('个人用户没有此权限');
 }
 if (isset($_REQUEST["page"])){ 
@@ -23,14 +23,14 @@ $bigclassid=trim($_POST["bigclassid"]);
 $smallclassid = isset($_POST['smallclassid'])?$_POST['smallclassid']:'0';
 $smallclassname="未指定小类";
 if (isset($bigclassid)){
-$rs = mysql_query("select * from zzcms_jobclass where classid='$bigclassid'"); 
-$row= mysql_fetch_array($rs);
+$rs = query("select * from zzcms_jobclass where classid='$bigclassid'"); 
+$row= fetch_array($rs);
 $bigclassname=$row["classname"];
 }
 
 if ($smallclassid !=0){
-$rs = mysql_query("select * from zzcms_jobclass where classid='$smallclassid'"); 
-$row= mysql_fetch_array($rs);
+$rs = query("select * from zzcms_jobclass where classid='$smallclassid'"); 
+$row= fetch_array($rs);
 $smallclassname=$row["classname"];
 }
 
@@ -39,8 +39,8 @@ $sm=$_POST["sm"];
 $province=$_POST["province"];
 $city=$_POST["city"];
 $xiancheng=$_POST["xiancheng"];
-$rs=mysql_query("select comane,id from zzcms_user where username='".$username."'");
-$row=mysql_fetch_array($rs);
+$rs=query("select comane,id from zzcms_user where username='".$username."'");
+$row=fetch_array($rs);
 $comane=$row["comane"];
 $userid=$row["id"];
 
@@ -48,8 +48,8 @@ $cpid=isset($_POST["ypid"])?$_POST["ypid"]:0;
 //判断大小类是否一致，修改产品时有用
 if ($smallclassid<>0){ 
 $sql="select * from zzcms_jobclass where parentid='".$bigclassid."' and  classid='".$smallclassid."'";
-$rs=mysql_query($sql);
-$row=mysql_fetch_array($rs);
+$rs=query($sql);
+$row=fetch_array($rs);
 if (!$row){
 echo"<script>alert('请选择小类');location.href='jobmodify.php?id=".$cpid."'</script>";
 }
@@ -58,26 +58,26 @@ echo"<script>alert('请选择小类');location.href='jobmodify.php?id=".$cpid."'
 //判断是不是重复信息
 if ($_REQUEST["action"]=="add" ){
 $sql="select * from zzcms_job where jobname='".$cp_name."' and editor='".$username."' ";
-$rs=mysql_query($sql);
-$row=mysql_num_rows($rs);
+$rs=query($sql);
+$row=num_rows($rs);
 if ($row){
 showmsg('您已发布过这条信息，请不要发布重复的信息！','jobmanage.php');
 }
 }elseif($_REQUEST["action"]=="modify"){
 $sql="select * from zzcms_job where jobname='".$cp_name."' and editor='".$username."' and id<>".$cpid." ";
-$rs=mysql_query($sql);
-$row=mysql_num_rows($rs);
+$rs=query($sql);
+$row=num_rows($rs);
 if ($row){
 showmsg('您已发布过这条信息，请不要发布重复的信息！','jobmanage.php');
 }
 }
   
 if ($_POST["action"]=="add"){
-$isok=mysql_query("Insert into zzcms_job(jobname,bigclassid,bigclassname,smallclassid,smallclassname,sm,province,city,xiancheng,sendtime,editor,userid,comane) values('$cp_name','$bigclassid','$bigclassname','$smallclassid','$smallclassname','$sm','$province','$city','$xiancheng','".date('Y-m-d H:i:s')."','$username','$userid','$comane')") ;  
-$cpid=mysql_insert_id();		
+$isok=query("Insert into zzcms_job(jobname,bigclassid,bigclassname,smallclassid,smallclassname,sm,province,city,xiancheng,sendtime,editor,userid,comane) values('$cp_name','$bigclassid','$bigclassname','$smallclassid','$smallclassname','$sm','$province','$city','$xiancheng','".date('Y-m-d H:i:s')."','$username','$userid','$comane')") ;  
+$cpid=insert_id();		
 }elseif ($_POST["action"]=="modify"){
 
-$isok=mysql_query("update zzcms_job set jobname='$cp_name',bigclassid='$bigclassid',bigclassname='$bigclassname',smallclassid='$smallclassid',smallclassname='$smallclassname',sm='$sm',
+$isok=query("update zzcms_job set jobname='$cp_name',bigclassid='$bigclassid',bigclassname='$bigclassname',smallclassid='$smallclassid',smallclassname='$smallclassname',sm='$sm',
 province='$province',city='$city',xiancheng='$xiancheng',sendtime='".date('Y-m-d H:i:s')."',
 editor='$username',userid='$userid',comane='$comane',passed=0 where id='$cpid'");
 }

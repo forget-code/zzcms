@@ -5,7 +5,7 @@ if (strpos($str,"{#showad:")!==false){
 $n=count(explode("{#showad:",$str));//循环之前取值
 	for ($i=1;$i<$n;$i++){ 
 	$cs=strbetween($str,"{#showad:","}");
-	$str=str_replace("{#showad:".$cs."}",showad($cs),$str);	//$cs直接做为一个整体字符串参数传入，调用时再转成数组遍历每项值
+	if ($cs<>''){$str=str_replace("{#showad:".$cs."}",showad($cs),$str);}	//$cs直接做为一个整体字符串参数传入，调用时再转成数组遍历每项值
 	}	
 }
 if (strpos($str,"{#showzx:")!==false){

@@ -47,8 +47,8 @@ $id=$_REQUEST["id"];
 $id=0;
 }
 $sqlzh="select * from zzcms_zh where id='$id'";
-$rszh = mysql_query($sqlzh); 
-$rowzh = mysql_fetch_array($rszh);
+$rszh = query($sqlzh); 
+$rowzh = fetch_array($rszh);
 if ($rowzh["editor"]<>$username) {
 markit();
 showmsg('非法操作！警告：你的操作已被记录！小心封你的用户及IP！');
@@ -63,8 +63,8 @@ showmsg('非法操作！警告：你的操作已被记录！小心封你的用�
                 <?php
 		  
 		$sql="select * from zzcms_zhclass";
-		$rs=mysql_query($sql);
-		while($row= mysql_fetch_array($rs)){
+		$rs=query($sql);
+		while($row= fetch_array($rs)){
 			?>
                 <option value="<?php echo $row["bigclassid"]?>"  <?php if ($row["bigclassid"]==$rowzh["bigclassid"]) { echo "selected";}?> ><?php echo $row["bigclassname"]?></option>
                 <?php
@@ -111,7 +111,7 @@ showmsg('非法操作！警告：你的操作已被记录！小心封你的用�
 </div>
 </div>
 <?php
-mysql_close($conn);
+
 unset ($f_array);
 ?>
 </body>

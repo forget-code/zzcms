@@ -58,24 +58,24 @@ if(!preg_match("/1[3458]{1}\d{9}$/",$tel) && !preg_match('/^400(\d{3,4}){2}$/',$
 showmsg('电话号码不正确','back');
 }
 
-$rs=mysql_query("select groupid from zzcms_user where username='".$saver."' ");
-$row=mysql_fetch_array($rs);
+$rs=query("select groupid from zzcms_user where username='".$saver."' ");
+$row=fetch_array($rs);
 $savergroupid=$row['groupid'];
 
 if ($cp<>'' && $dlsname<>'' && $tel<>''){
-$rs=mysql_query("select * from zzcms_dl where dlsname='$dlsname' and tel='$tel' and saver='$saver' and cpid='$cpid'");
-$row=mysql_num_rows($rs);
+$rs=query("select * from zzcms_dl where dlsname='$dlsname' and tel='$tel' and saver='$saver' and cpid='$cpid'");
+$row=num_rows($rs);
 if ($row){
 echo "<script>alert('您已留过言了！');history.back(-1)</script>";
 }else{
-mysql_query("insert into zzcms_dl (cp,cpid,classzm,province,city,content,company,companyname,dlsname,tel,email,editor,saver,savergroupid,sendtime)values('$cp','$cpid','$bigclassid','$province','$city','$contents','$company','$companyname','$dlsname','$tel','$email','".@$_COOKIE["UserName"]."','$saver','$savergroupid','".date('Y-m-d H:i:s')."')");
+query("insert into zzcms_dl (cp,cpid,classzm,province,city,content,company,companyname,dlsname,tel,email,editor,saver,savergroupid,sendtime)values('$cp','$cpid','$bigclassid','$province','$city','$contents','$company','$companyname','$dlsname','$tel','$email','".@$_COOKIE["UserName"]."','$saver','$savergroupid','".date('Y-m-d H:i:s')."')");
 $_SESSION["dlliuyan"]=$saver;//供留言后显示联系方式处用
-$dlid=mysql_insert_id();
+$dlid=insert_id();
 
-mysql_query("Insert into zzcms_dl_".$bigclassid."(dlid,cpid,cp,province,city,content,company,companyname,dlsname,tel,email,editor,saver,savergroupid,sendtime) values('$dlid','$cpid','$cp','$province','$city','$contents','$company','$companyname','$dlsname','$tel','$email','".@$_COOKIE["UserName"]."','$saver','$savergroupid','".date('Y-m-d H:i:s')."')") ; 
+query("Insert into zzcms_dl_".$bigclassid."(dlid,cpid,cp,province,city,content,company,companyname,dlsname,tel,email,editor,saver,savergroupid,sendtime) values('$dlid','$cpid','$cp','$province','$city','$contents','$company','$companyname','$dlsname','$tel','$email','".@$_COOKIE["UserName"]."','$saver','$savergroupid','".date('Y-m-d H:i:s')."')") ; 
 
-$rsn=mysql_query("select id,username,sex,email,mobile,somane from zzcms_user where username='".$saver."'");
-$rown=mysql_fetch_array($rsn);
+$rsn=query("select id,username,sex,email,mobile,somane from zzcms_user where username='".$saver."'");
+$rown=fetch_array($rsn);
 $id=$rown["id"];//供返回展厅首页用	
 
 if (whendlsave=="Yes"){

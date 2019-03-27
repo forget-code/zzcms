@@ -15,7 +15,7 @@ $action="";
 
 if ($action=="add") {
 checkadminisdo("label");//可查看不可修改
-$title=trim($_POST["title"]);
+$title=nostr(trim($_POST["title"]));
 $title_old=trim($_POST["title_old"]);
 $bigclassid=trim($_POST["bigclassid"]);
 $numbers=trim($_POST["numbers"]);
@@ -35,7 +35,7 @@ echo "<script>alert('".$msg."');location.href='?labelname=".$title.".txt'</scrip
 
 if ($action=="del") {
 checkadminisdo("label");//可查看不可修改
-$f="../template/".siteskin."/label/adclass/".trim($_POST["title"]).".txt";
+$f="../template/".siteskin."/label/adclass/".nostr(trim($_POST["title"])).".txt";
 	if (file_exists($f)){
 	unlink($f);
 	}else{
@@ -153,8 +153,8 @@ $ends="";
           <option value="empty" selected>不指定大类</option>
           <?php
        $sql = "select * from zzcms_adclass where parentid='A'order by xuhao asc";
-       $rs=mysql_query($sql);
-		   while($r=mysql_fetch_array($rs)){
+       $rs=query($sql);
+		   while($r=fetch_array($rs)){
 			?>
           <option value="<?php echo $r["classname"]?>" <?php if ($r["classname"]==$bigclassid) { echo "selected";}?>> <?php echo trim($r["classname"])?></option>
           <?php   

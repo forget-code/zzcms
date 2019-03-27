@@ -31,11 +31,11 @@ $advlink=trim($_POST["advlink"]);
 $img=trim($_POST["img"]);
 $oldimg=$_POST["oldimg"];
 
-mysql_query("update zzcms_textadv set adv='$adv',advlink='$advlink',img='$img',passed=1 where id='$id'");
-$rs=mysql_query("select * from zzcms_textadv where id='$id'");
-$row=mysql_fetch_array($rs);
+query("update zzcms_textadv set adv='$adv',advlink='$advlink',img='$img',passed=1 where id='$id'");
+$rs=query("select * from zzcms_textadv where id='$id'");
+$row=fetch_array($rs);
 $advusername=$row["username"];
-mysql_query("update zzcms_ad set title='$adv',link='$advlink',img='$img' where username=".$advusername."");//如果抢占了广告位了，同时更改
+query("update zzcms_ad set title='$adv',link='$advlink',img='$img' where username=".$advusername."");//如果抢占了广告位了，同时更改
 	if ($oldimg<>$img && $oldimg<>"/image/nopic.gif" ){
 	$f="../".$oldimg;
 		if (file_exists($f)){
@@ -48,8 +48,8 @@ mysql_query("update zzcms_ad set title='$adv',link='$advlink',img='$img' where u
 <div class="admintitle">修改用户审请的文字广告</div>
 <form name="myform" method="post" action="?action=modify">
   <?php
-$rs=mysql_query("select * from zzcms_textadv where id='$id'");
-$row=mysql_fetch_array($rs);
+$rs=query("select * from zzcms_textadv where id='$id'");
+$row=fetch_array($rs);
 ?>
   <table width="100%" border="0" cellpadding="5" cellspacing="0">
     <tr> 

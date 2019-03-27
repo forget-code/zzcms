@@ -15,7 +15,7 @@ $action="";
 }
 if ($action=="add") {
 checkadminisdo("label");
-$title=trim($_POST["title"]);
+$title=nostr(trim($_POST["title"]));
 $title_old=trim($_POST["title_old"]);
 
 
@@ -45,7 +45,7 @@ echo "<script>location.href='?labelname=".$title.".txt';alert('".$msg."')</scrip
 
 if ($action=="del") {
 checkadminisdo("label");
-$f="../template/".siteskin."/label/helpshow/".trim($_POST["title"]).".txt";
+$f="../template/".siteskin."/label/helpshow/".nostr(trim($_POST["title"])).".txt";
 	if (file_exists($f)){
 	unlink($f);
 	}else{
@@ -230,8 +230,6 @@ $ends="";
     </tr>
   </table>
 </form>
-<?php
-mysql_close($conn);
-?>		  
+		  
 </body>
 </html>

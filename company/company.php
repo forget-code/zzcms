@@ -13,6 +13,7 @@ fclose($f);
 
 if (isset($_REQUEST["page_size"])){
 $page_size=$_REQUEST["page_size"];
+checkid($page_size);
 setcookie("page_size_company",$page_size,time()+3600*24*360);
 }else{
 	if (isset($_COOKIE["page_size_company"])){
@@ -37,8 +38,8 @@ checkid($s,1);
 $bigclassname="";
 if ($b<>0){
 $sql="select * from zzcms_userclass where classid='$b'";
-$rs=mysql_query($sql);
-$row=mysql_fetch_array($rs);
+$rs=query($sql);
+$row=fetch_array($rs);
 if ($row){
 $bigclassname=$row["classname"];
 }
@@ -47,8 +48,8 @@ $bigclassname=$row["classname"];
 $smallclassname="";
 if ($s<>0){
 $sql="select * from zzcms_userclass where classid='$s'";
-$rs=mysql_query($sql);
-$row=mysql_fetch_array($rs);
+$rs=query($sql);
+$row=fetch_array($rs);
 if ($row){
 $smallclassname=$row["classname"];
 }
@@ -85,8 +86,8 @@ $sql2=$sql2." and bigclassid=".$b." ";
 if ($s<>0){
 $sql2=$sql2." and smallclassid=".$s." ";
 }
-$rs = mysql_query($sql.$sql2); 
-$row = mysql_fetch_array($rs);
+$rs = query($sql.$sql2); 
+$row = fetch_array($rs);
 $totlenum = $row['total'];
 $offset=($page-1)*$page_size;//$page_size在上面被设为COOKIESS
 $totlepage=ceil($totlenum/$page_size);
@@ -94,14 +95,14 @@ $totlepage=ceil($totlenum/$page_size);
 $sql="select * from zzcms_user where passed=1 and usersf='公司' and lockuser=0 ";
 $sql=$sql.$sql2;
 $sql=$sql." order by groupid desc,id desc limit $offset,$page_size";
-$rs = mysql_query($sql); 
+$rs = query($sql); 
 if(!$totlenum){
 $strout=str_replace("{loop}".$clist."{/loop}","暂无信息",$strout) ;
 $strout=str_replace("{#fenyei}","",$strout) ;
 }else{
 $i=0;
 $clist2="";
-while($row= mysql_fetch_array($rs)){
+while($row= fetch_array($rs)){
 
 if (sdomain=="Yes"){
 $zturl="http://".$row["username"].".".substr(siteurl,strpos(siteurl,".")+1);
@@ -110,8 +111,8 @@ $zturl=getpageurl("zt",$row["id"]);
 }
 
 
-$rsn=mysql_query("select grouppic,groupname from zzcms_usergroup where groupid=".$row["groupid"]."");
-$rown=mysql_fetch_array($rsn);
+$rsn=query("select grouppic,groupname from zzcms_usergroup where groupid=".$row["groupid"]."");
+$rown=fetch_array($rsn);
 $usergrouppic=$rown["grouppic"];
 $usergroupname=$rown["groupname"];
 
@@ -120,11 +121,11 @@ if ($row["renzheng"]==1) {
 $usergroup=$usergroup."<img src='/image/ico_renzheng.png' alt='认证会员'>";
 }
 
-$rsn=mysql_query("select xuhao,proname,id from zzcms_main where editor='".$row["username"]."' and passed=1 order by xuhao asc limit 0,3");
-$rown=mysql_num_rows($rsn);
+$rsn=query("select xuhao,proname,id from zzcms_main where editor='".$row["username"]."' and passed=1 order by xuhao asc limit 0,3");
+$rown=num_rows($rsn);
 $cp="";
 if ($rown){
-	while($rown=mysql_fetch_array($rsn)){
+	while($rown=fetch_array($rsn)){
 	$cp=$cp."<a href='".getpageurl("zs",$rown["id"])."'>".cutstr($rown["proname"],8)."</a>&nbsp;&nbsp;";
        } 
 }else{

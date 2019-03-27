@@ -12,7 +12,7 @@ $f_array=explode("|||",$fcontent) ;
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=EmulateIE7" />
 <?php
-if (check_usergr_power("zs")=="no" && $usersf=='个人'){
+if (str_is_inarr(usergr_power,'zs')=="no" && $usersf=='个人'){
 echo $f_array[0];//不返回到上一页，防止由user/index.php?goto='zsadd.php'过来的造成死循环提示
 exit;
 }
@@ -137,9 +137,9 @@ $(document).ready(function(){
                     <legend><?php echo $f_array[9]?></legend>
                     <?php
         $sql = "select * from zzcms_zsclass where parentid='A' order by xuhao asc";
-		$rs = mysql_query($sql,$conn); 
+		$rs = query($sql,$conn); 
 		$n=0;
-		while($row= mysql_fetch_array($rs)){
+		while($row= fetch_array($rs)){
 		$n ++;
 		if (@$_SESSION['bigclassid']==$row['classzm']){
 		echo "<input name='bigclassid' type='radio' id='E$n'  onclick='javascript:doClick_E(this);uncheckall()' value='$row[classzm]' checked/><label for='E$n'>$row[classname]</label>";
@@ -155,9 +155,9 @@ $(document).ready(function(){
                   <td> 
                     <?php
 $sql="select * from zzcms_zsclass where parentid='A' order by xuhao asc";
-$rs = mysql_query($sql,$conn); 
+$rs = query($sql,$conn); 
 $n=0;
-while($row= mysql_fetch_array($rs)){
+while($row= fetch_array($rs)){
 $n ++;
 if (@$_SESSION['bigclassid']==$row["classzm"]) {  
 echo "<div id='E_con$n' style='display:block;'>";
@@ -167,9 +167,9 @@ echo "<div id='E_con$n' style='display:none;'>";
 echo "<fieldset class='fieldsetstyle'><legend>".$f_array[10]."</legend>";
 
 $sqln="select * from zzcms_zsclass where parentid='$row[classzm]' order by xuhao asc";
-$rsn = mysql_query($sqln,$conn); 
+$rsn = query($sqln,$conn); 
 $nn=0;
-while($rown= mysql_fetch_array($rsn)){
+while($rown= fetch_array($rsn)){
 if (zsclass_isradio=='Yes'){
 echo "<input name='smallclassid[]' id='radio$nn$n' type='radio' value='$rown[classzm]' />";
 }else{
@@ -187,8 +187,8 @@ echo "</div>";
               </table></td>
           </tr>
 		   <?php 
-		  $rs = mysql_query("select * from zzcms_zsclass_shuxing order by xuhao asc"); 
-		$row= mysql_num_rows($rs);
+		  $rs = query("select * from zzcms_zsclass_shuxing order by xuhao asc"); 
+		$row= num_rows($rs);
 		if ($row){
 		  ?>
           <tr> 
@@ -196,7 +196,7 @@ echo "</div>";
             <td class="border2" > 
 	<?php
 	$n=0;
-	while($row= mysql_fetch_array($rs)){
+	while($row= fetch_array($rs)){
 	$n ++;
 	echo "<input name='shuxing' type='radio' id='shuxing$n' value='$row[bigclassid]'/><label for='shuxing$n'>$row[bigclassname]</label>";	
 	}
@@ -431,7 +431,7 @@ if (check_user_power("zsshow_template")=="yes"){
 </div>
 </div>
 <?php
-mysql_close($conn);
+
 session_write_close();
 unset ($f_array);
 ?>

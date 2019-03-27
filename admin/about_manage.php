@@ -22,7 +22,7 @@ $id="";
 if ($action=="del"){
 checkadminisdo("bottomlink");
 	if ($id<>"" ){
-	mysql_query("delete from zzcms_about where id='$id'") ;
+	query("delete from zzcms_about where id='$id'") ;
 	}
 	echo "<script>location.href='about_manage.php'</script>";
 }
@@ -41,8 +41,8 @@ function ConfirmDelBig()
 <div align="center" class="border center"><a href="about.php?action=add">添加网站底部链接</a></div>
 <?php
 $sql="Select * From zzcms_about";
-$rs=mysql_query($sql);
-$row=mysql_num_rows($rs);
+$rs=query($sql);
+$row=num_rows($rs);
 if (!$row){
 echo "暂无信息";
 }else{
@@ -55,7 +55,7 @@ echo "暂无信息";
     <td width="260" height="20" align="center" class="border">操作选项</td>
   </tr>
   <?php
-while($row = mysql_fetch_array($rs)){
+while($row = fetch_array($rs)){
 ?>
  <tr class="bgcolor1" onMouseOver="fSetBg(this)" onMouseOut="fReBg(this)">  
     <td width="118" height="22" align="center" ><?php echo $row["id"]?></td>

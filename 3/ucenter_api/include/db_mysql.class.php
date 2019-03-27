@@ -17,7 +17,7 @@ class dbstuff {
 				$dbcharset = !$dbcharset && in_array(strtolower($charset), array('gbk', 'big5', 'utf-8')) ? str_replace('-', '', $charset) : $dbcharset;
 				$serverset = $dbcharset ? 'character_set_connection='.$dbcharset.', character_set_results='.$dbcharset.', character_set_client=binary' : '';
 				$serverset .= $this->version() > '5.0.1' ? ((empty($serverset) ? '' : ',').'sql_mode=\'\'') : '';
-				$serverset && mysql_query("SET $serverset", $this->link);
+				$serverset && query("SET $serverset", $this->link);
 			}
 			$dbname && @mysql_select_db($dbname, $this->link);
 		}
@@ -29,7 +29,7 @@ class dbstuff {
 	}
 
 	function fetch_array($query, $result_type = MYSQL_ASSOC) {
-		return mysql_fetch_array($query, $result_type);
+		return fetch_array($query, $result_type);
 	}
 
 	function fetch_first($sql) {
@@ -43,7 +43,7 @@ class dbstuff {
 		global $debug, $discuz_starttime, $sqldebug, $sqlspenttimes;
 
 		$func = $type == 'UNBUFFERED' && @function_exists('mysql_unbuffered_query') ?
-			'mysql_unbuffered_query' : 'mysql_query';
+			'mysql_unbuffered_query' : 'query';
 		if(!($query = $func($sql, $this->link))) {
 			if(in_array($this->errno(), array(2006, 2013)) && substr($type, 0, 5) != 'RETRY') {
 				$this->close();
@@ -77,7 +77,7 @@ class dbstuff {
 	}
 
 	function num_rows($query) {
-		$query = mysql_num_rows($query);
+		$query = num_rows($query);
 		return $query;
 	}
 

@@ -68,7 +68,7 @@ include("checkaddinfo.php");
 </div> 
 </div>
 <?php
-mysql_close($conn);
+
 unset ($f_array);
 ?> 
 </body>

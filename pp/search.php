@@ -19,11 +19,14 @@ $yiju="Pname";
 
 if (isset($_GET['keyword'])){
 $keywordNew=nostr(trim($_GET['keyword']));
-setcookie("zskeyword",$keywordNew,time()+3600*24);
+setcookie("keyword",$keywordNew,time()+3600*24);
+setcookie("b","xxx",1);
+setcookie("s","xxx",1);
+echo "<script>location.href='search.php'</script>";
 $keyword=$keywordNew;
 }else{
-	if (isset($_COOKIE['zskeyword'])){
-	$keyword=trim($_COOKIE['zskeyword']);
+	if (isset($_COOKIE['keyword'])){
+	$keyword=trim($_COOKIE['keyword']);
 	}else{
 	$keyword="";
 	}
@@ -31,11 +34,13 @@ $keyword=$keywordNew;
 
 if (isset($_GET['b'])){
 $bNew=$_GET['b'];
-setcookie("zsb",$bNew,time()+3600*24);
+setcookie("b",$bNew,time()+3600*24);
+setcookie("s","xxx",1);
+echo "<script>location.href='search.php'</script>";
 $b=$bNew;
 }else{
-	if (isset($_COOKIE['zsb'])){
-	$b=$_COOKIE['zsb'];
+	if (isset($_COOKIE['b'])){
+	$b=$_COOKIE['b'];
 	}else{
 	$b="";
 	}
@@ -43,22 +48,22 @@ $b=$bNew;
 
 if (isset($_GET['s'])){
 $sNew=$_GET['s'];
-setcookie("zss",$sNew,time()+3600*24);
+setcookie("s",$sNew,time()+3600*24);
 $s=$sNew;
 }else{
 	if (isset($_COOKIE['zss'])){
-	$s=$_COOKIE['zss'];
+	$s=$_COOKIE['s'];
 	}else{
 	$s="";
 	}
 }
 
 if (isset($_GET['delb'])){
-setcookie("zsb","xxx",1);
+setcookie("b","xxx",1);
 echo "<script>location.href='search.php'</script>";
 }
 if (isset($_GET['dels'])){
-setcookie("zss","xxx",1);
+setcookie("s","xxx",1);
 echo "<script>location.href='search.php'</script>";
 }
 
@@ -77,8 +82,8 @@ setcookie("page_size_pp",$page_size,time()+3600*24*360);
 $bigclassname='';
 if ($b<>""){
 $sql="select classname from zzcms_zsclass where classzm='".$b."'";
-$rs=mysql_query($sql);
-$row=mysql_fetch_array($rs);
+$rs=query($sql);
+$row=fetch_array($rs);
 if ($row){
 $bigclassname=$row["classname"];
 }
@@ -87,8 +92,8 @@ $bigclassname=$row["classname"];
 $smallclassname='';
 if ($s<>"") {
 $sql="select classname from zzcms_zsclass where classzm='".$s."'";
-$rs=mysql_query($sql);
-$row=mysql_fetch_array($rs);
+$rs=query($sql);
+$row=fetch_array($rs);
 if ($row){
 	$smallclassname=$row["classname"];
 	}
@@ -97,12 +102,12 @@ if ($row){
 function formbigclass(){
 		$str="";
         $sql = "select * from zzcms_zsclass where parentid='A'";
-        $rs=mysql_query($sql);
-		$row=mysql_num_rows($rs);
+        $rs=query($sql);
+		$row=num_rows($rs);
 		if (!$row){
 		$str= "请先添加类别名称。";
 		}else{
-			while($row=mysql_fetch_array($rs)){
+			while($row=fetch_array($rs)){
 			$str=$str. "<a href=?b=".$row["classzm"].">".$row["classname"]."</a>&nbsp;&nbsp;";
 			}
 		}
@@ -112,10 +117,10 @@ function formbigclass(){
 		function formsmallclass($b){
 		$str="";
         $sql="select * from zzcms_zsclass where parentid='" .$b. "' order by xuhao asc";
-        $rs=mysql_query($sql);
-		$row=mysql_num_rows($rs);
+        $rs=query($sql);
+		$row=num_rows($rs);
 		if ($row){
-			while($row=mysql_fetch_array($rs)){
+			while($row=fetch_array($rs)){
 			$str=$str. "<a href=?s=".$row["classzm"].">".$row["classname"]."</a>&nbsp;&nbsp;";
 			}
 		}	
@@ -171,8 +176,8 @@ $sql2=$sql2. "and bigclasszm='".$b."' ";
 if ($s<>"") {
 $sql2=$sql2." and smallclasszm ='".$s."'  ";
 }
-$rs = mysql_query($sql.$sql2); 
-$row = mysql_fetch_array($rs);
+$rs = query($sql.$sql2); 
+$row = fetch_array($rs);
 $totlenum = $row['total'];
 $offset=($page-1)*$page_size;//$page_size在上面被设为COOKIESS
 $totlepage=ceil($totlenum/$page_size);
@@ -180,7 +185,7 @@ $totlepage=ceil($totlenum/$page_size);
 $sql="select * from zzcms_pp where passed=1 ";
 $sql=$sql.$sql2;	
 $sql=$sql." order by id desc limit $offset,$page_size";
-$rs = mysql_query($sql); 
+$rs = query($sql); 
 if(!$totlenum){
 $strout=str_replace("{#fenyei}","",$strout) ;
 $strout=str_replace("{loop}".$list."{/loop}","暂无信息",$strout) ;
@@ -190,7 +195,7 @@ $list2='';
 $i=0;
 $title_num=strbetween($list,"{#title:","}");
 $content_num=strbetween($list,"{#content:","}");
-while($row= mysql_fetch_array($rs)){
+while($row= fetch_array($rs)){
 
 $list2 = $list2. str_replace("{#img}",getsmallimg($row['img']),$list) ;
 $list2 =str_replace("{#imgbig}",$row['img'],$list2) ;
@@ -228,6 +233,6 @@ $strout=str_replace("{#formkeyword}",$keyword,$strout);
 $strout=str_replace("{#sitebottom}",sitebottom(),$strout);
 $strout=str_replace("{#sitetop}",sitetop(),$strout);
 $strout=showlabel($strout);
-mysql_close($conn);
+
 echo  $strout;
 ?>

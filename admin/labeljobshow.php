@@ -14,7 +14,7 @@ $action="";
 }
 if ($action=="add") {
 checkadminisdo("label");
-$title=trim($_POST["title"]);
+$title=nostr(trim($_POST["title"]));
 $title_old=trim($_POST["title_old"]);
 $bigclassid=trim($_POST["bigclassid"]);
 $smallclassid=trim($_POST["smallclassid"]);
@@ -37,7 +37,7 @@ echo "<script>alert('".$msg."');location.href='?labelname=".$title.".txt'</scrip
 
 if ($action=="del") {
 checkadminisdo("label");
-$f="../template/".siteskin."/label/jobshow/".trim($_POST["title"]).".txt";
+$f="../template/".siteskin."/label/jobshow/".nostr(trim($_POST["title"])).".txt";
 	if (file_exists($f)){
 	unlink($f);
 	}else{
@@ -46,14 +46,14 @@ $f="../template/".siteskin."/label/jobshow/".trim($_POST["title"]).".txt";
 }
 
 $sql = "select * from zzcms_jobclass order by classid asc";
-$rs=mysql_query($sql);
+$rs=query($sql);
 ?>
 <script language = "JavaScript">
 var onecount;
 subcat = new Array();
         <?php
         $count = 0;
-		while ($r=mysql_fetch_array($rs)){
+		while ($r=fetch_array($rs)){
         ?>
 subcat[<?php echo $count?>] = new Array("<?php echo trim($r['classname'])?>","<?php echo trim($r['parentid'])?>","<?php echo trim($r['classid'])?>");
         <?php
@@ -210,8 +210,8 @@ $ends="";
           <option value="empty" selected>不指定大类</option>
           <?php
        $sql = "select * from zzcms_jobclass where parentid='0' order by xuhao asc";
-       $rs=mysql_query($sql);
-		   while($r=mysql_fetch_array($rs)){
+       $rs=query($sql);
+		   while($r=fetch_array($rs)){
 			?>
           <option value="<?php echo $r["classid"]?>" <?php if ($r["classid"]==$bigclassid) { echo "selected";}?>> 
          <?php echo trim($r["classname"])?></option>
@@ -222,8 +222,8 @@ $ends="";
           <option value="empty" selected>不指定小类</option>
           <?php if ($bigclassid<>""){
 			$sql="select * from zzcms_jobclass where parentid='" . $bigclassid ."' order by classid asc";
-			$rs=mysql_query($sql);
-			while($r=mysql_fetch_array($rs)){
+			$rs=query($sql);
+			while($r=fetch_array($rs)){
 			?>
           <option value="<?php echo $r["classid"]?>" <?php if ($r["classid"]==$smallclassid) { echo "selected";}?>><?php echo $r["classname"]?></option>
           <?php   

@@ -34,15 +34,15 @@ $sql="select * from zzcms_dl where saver<>'' and id in (". $id .")";//没有接收人
 }else{
 $sql="select * from zzcms_dl where saver<>'' and id=".$id."";
 }
-$rs=mysql_query($sql);
-$row=mysql_num_rows($rs);
-	while($row=mysql_fetch_array($rs)){
-	$rsn=mysql_query("select username,sex,mobile,somane from zzcms_user where username='".$row["saver"]."'");
-	$rown=mysql_num_rows($rsn);
+$rs=query($sql);
+$row=num_rows($rs);
+	while($row=fetch_array($rs)){
+	$rsn=query("select username,sex,mobile,somane from zzcms_user where username='".$row["saver"]."'");
+	$rown=num_rows($rsn);
 	if (!$rown){	
 		echo "没有这个用户";
 	}else{
-		$rown=mysql_fetch_array($rsn);
+		$rown=fetch_array($rsn);
 		$fbr_mobile=$rown["mobile"];
 		$somane=$rown["somane"];
 		$sex=$rown["sex"];

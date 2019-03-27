@@ -3,6 +3,8 @@
 //exit;
 //}
 
+if (isset($_COOKIE["UserName"])){
+
 $fpath="text/top.txt";
 $fcontent=file_get_contents($fpath);
 $f_array_top=explode("\n",$fcontent) ;
@@ -27,7 +29,7 @@ $f_array_top=explode("\n",$fcontent) ;
       <li><a href="managepwd.php"  target="_self"><span><?php echo $f_array_top[6]?></span></a></li>
 	  
 	  <?php
-	  if (check_usergr_power('zt')=='yes' || $usersf=='公司'){
+	  if (str_is_inarr(usergr_power,'zt')=='yes' || $usersf=='公司'){
 	  ?>
 	  <li><a href="ztconfig.php"  target="_self"><span><?php echo $f_array_top[7]?></span></a></li>
 	   <?php 
@@ -40,7 +42,7 @@ $f_array_top=explode("\n",$fcontent) ;
 <div class="userbar"> <span style="float:right"> [ <a href="/<?php echo getpageurl3("index")?>" target="_top"> 
   <?php echo $f_array_top[8]?></a> 
   <?php
-	if (check_usergr_power('zt')=='yes' || $usersf=='公司'){
+	if (str_is_inarr(usergr_power,'zt')=='yes' || $usersf=='公司'){
 	echo " | ";
 		if (sdomain=="Yes"){
 			echo "<a href='http://".$username.".".substr(siteurl,strpos(siteurl,".")+1)."' target='_blank'>".$f_array_top[9]."</a>";
@@ -52,22 +54,23 @@ $f_array_top=explode("\n",$fcontent) ;
         | <a href='/one/help.php#64' target='blank'><?php echo $f_array_top[10]?></a> | <a href="logout.php" target="_top"><?php echo $f_array_top[11]?></a> ] </span>
 		<?php echo $f_array_top[12]?><strong><?php echo $_COOKIE["UserName"];?></strong>( <?php echo ShowUserSf();?>) 
 <?php
+}
 
 function ShowUserSf(){
 global $f_array_top;
 	if ($_COOKIE["UserName"]<>"" ){
 		$sql="select groupname,grouppic from zzcms_usergroup where groupid=(select groupid from zzcms_user where username='".$_COOKIE["UserName"]."')";
-        $rs=mysql_query($sql);
-		$row=mysql_fetch_array($rs);
-		$rownum=mysql_num_rows($rs);
+        $rs=query($sql);
+		$row=fetch_array($rs);
+		$rownum=num_rows($rs);
 		if ($rownum){
         $str= "<b>".$row["groupname"]."</b><img src='../".$row["grouppic"]."'> " ;
 		}
  		   
 		$sql="select groupid,totleRMB,startdate,enddate from zzcms_user where username='" .$_COOKIE["UserName"]. "'";
-        $rs=mysql_query($sql);
-		$row=mysql_fetch_array($rs);
-		$rownum=mysql_num_rows($rs);
+        $rs=query($sql);
+		$row=fetch_array($rs);
+		$rownum=num_rows($rs);
 		if ($rownum){
 			if ($row["groupid"]>1){
 			$str=$str .$f_array_top[13].$row["startdate"]." 至 ".$row["enddate"];

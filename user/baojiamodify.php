@@ -25,7 +25,7 @@ if (document.myform.province.value=="请选择省份"){alert("请选择省份！
 if (document.myform.price.value==""){alert("请填写价格！");document.myform.price.focus();return false;}
 if (document.myform.danwei.value==""){alert("请填写计价单位！");document.myform.danwei.focus();return false;}
 //定义正则表达式部分
-var strP=/^\d+$/;
+var strP=/^\d+(\.\d+)?$/;
 if(!strP.test(document.myform.price.value)) {
 alert("价格只能填数字！"); 
 document.myform.price.focus(); 
@@ -62,11 +62,11 @@ $page=1;
 }
 
 $sql="select * from zzcms_baojia where id='$id'";
-$rs = mysql_query($sql); 
-$row = mysql_fetch_array($rs);
+$rs = query($sql); 
+$row = fetch_array($rs);
 if ($row["editor"]<>$username) {
 markit();
-mysql_close($conn);
+
 showmsg('非法操作！警告：你的操作已被记录！小心封你的用户及IP！');
 exit;
 }
@@ -86,8 +86,8 @@ exit;
                 <option value="" selected="selected">请选择类别</option>
                 <?php
 		$sqln="select * from zzcms_zsclass where parentid='A'";
-		$rsn=mysql_query($sqln);
-		while($rown= mysql_fetch_array($rsn)){
+		$rsn=query($sqln);
+		while($rown= fetch_array($rsn)){
 		if ($rown["classzm"]==$row["classzm"]){
 			echo "<option value='".$rown['classzm']."' selected>".$rown["classname"]."</option>";
 			}else{
@@ -159,9 +159,7 @@ new PCAS('province', 'city', 'xiancheng', '<?php echo $row['province']?>', '<?ph
 </div>
 </div>
 </div>
-<?php
-mysql_close($conn);
-?>
+
 </div>
 </body>
 </html>

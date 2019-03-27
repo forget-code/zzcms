@@ -35,7 +35,7 @@ echo "script lanage='javascript'>alert('操作失败！至少要选中一条信�
 		$sql="delete from zzcms_usernoreg where id='$id'";
 	}
 
-mysql_query($sql);
+query($sql);
 echo "<script>location.href='?page=".$page."'</script>";
 }
 }
@@ -55,12 +55,12 @@ $sql="select * from zzcms_usernoreg where id<>0 ";
 if ($keyword<>"") {
 	$sql=$sql. " and username like '%".$keyword."%' ";
 }
-$rs = mysql_query($sql,$conn); 
-$totlenum= mysql_num_rows($rs);  
+$rs = query($sql,$conn); 
+$totlenum= num_rows($rs);  
 $totlepage=ceil($totlenum/$page_size);
 
 $sql=$sql . " order by id desc limit $offset,$page_size";
-$rs = mysql_query($sql,$conn); 
+$rs = query($sql,$conn); 
 if(!$totlenum){
 echo "暂无信息";
 }else{
@@ -83,7 +83,7 @@ echo "暂无信息";
       <td width="10%" align="center" class="border">审请时间</td>
     </tr>
 <?php
-while($row = mysql_fetch_array($rs)){
+while($row = fetch_array($rs)){
 ?>
      <tr class="bgcolor1" onMouseOver="fSetBg(this)" onMouseOut="fReBg(this)">  
       <td align="center" class="docolor"> <input name="id[]" type="checkbox" id="id" value="<?php echo $row["id"]?>"></td>
@@ -108,7 +108,7 @@ while($row = mysql_fetch_array($rs)){
 <div class="border center"><?php echo showpage_admin()?></div>
 <?php
 }
-mysql_close($conn);
+
 ?>
 </body>
 </html>

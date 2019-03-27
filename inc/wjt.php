@@ -62,4 +62,10 @@ define('wangkanlistdescription','wangkanlistdescription') ;//wangkanlistdescript
 define('wangkanshowtitle','wangkanshowtitle') ;//wangkanshowtitle
 define('wangkanshowkeyword','wangkanshowkeyword') ;//wangkanshowkeyword
 define('wangkanshowdescription','wangkanshowdescription') ;//wangkanshowdescription
+define('asklisttitle','问答') ;//asklisttitle
+define('asklistkeyword','问答') ;//asklistkeyword
+define('asklistdescription','问答') ;//asklistdescription
+define('askshowtitle','问答') ;//askshowtitle
+define('askshowkeyword','问答') ;//askshowkeyword
+define('askshowdescription','问答') ;//askshowdescription
 ?>

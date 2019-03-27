@@ -12,12 +12,12 @@ $zhid=0;
 }
 
 $sql="select * from zzcms_zh where id='$zhid'";
-$rs=mysql_query($sql);
-$row=mysql_fetch_array($rs);
+$rs=query($sql);
+$row=fetch_array($rs);
 if (!$row){
 echo showmsg("不存在相关信息！");
 }else{
-mysql_query("update zzcms_zh set hit=hit+1 where id='$zhid'");
+query("update zzcms_zh set hit=hit+1 where id='$zhid'");
 $title=$row["title"];
 $bigclassid=$row["bigclassid"];
 $sendtime=date("Y-m-d",strtotime($row['sendtime']));
@@ -30,8 +30,8 @@ $timeend=date("Y-m-d",strtotime($row["timeend"]));
 $content=$row["content"];
 
 
-$rs=mysql_query("select bigclassname from zzcms_zhclass where bigclassid='".$bigclassid."'");
-$row=mysql_fetch_array($rs);
+$rs=query("select bigclassname from zzcms_zhclass where bigclassid='".$bigclassid."'");
+$row=fetch_array($rs);
 if ($row){
 $bigclassname=$row["bigclassname"];
 }else{

@@ -39,8 +39,8 @@ $swkclassid="";
 	   
         <?php
 		$sql = "select * from zzcms_wangkanclass order by xuhao asc";
-	    $rs=mysql_query($sql);
-        $row=mysql_num_rows($rs);
+	    $rs=query($sql);
+        $row=num_rows($rs);
 		if (!$row){
 			echo "请先添加栏目。";
 		}else{
@@ -48,7 +48,7 @@ $swkclassid="";
 		<select name="bigclassid" id="bigclassid">
                 <option value="" selected="selected">请选择类别</option>
                 <?php
-		while($row= mysql_fetch_array($rs)){
+		while($row= fetch_array($rs)){
 			?>
                 <option value="<?php echo $row["bigclassid"]?>" <?php if ($row["bigclassid"]==$swkclassid) { echo "selected";}?>><?php echo $row["bigclassname"]?></option>
                 <?php
@@ -79,8 +79,6 @@ $swkclassid="";
     </tr>
   </table>
 </form>
-<?php
-mysql_close($conn);
-?>	  
+	  
 </body>
 </html>

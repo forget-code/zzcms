@@ -34,8 +34,8 @@ $addinfo_number=trim($_POST["addinfo_number"]);
 $addinfototle_number=trim($_POST["addinfototle_number"]);
 $looked_dls_number_oneday=trim($_POST["looked_dls_number_oneday"]);
 	$sql="Select * From zzcms_usergroup Where groupid=".$groupid."";
-		$rs=mysql_query($sql);
-		$row=mysql_num_rows($rs);
+		$rs=query($sql);
+		$row=num_rows($rs);
 		if ($row){
 			$FoundErr=1;
 			$ErrMsg="<li>用户组ID“" . $groupid . "”已经存在！</li>";
@@ -43,13 +43,13 @@ $looked_dls_number_oneday=trim($_POST["looked_dls_number_oneday"]);
 	
 	if ($FoundErr==0){
 		$sql="select * from zzcms_usergroup where groupname='" . $groupname . "'";
-		$rs=mysql_query($sql);
-		$row=mysql_num_rows($rs);
+		$rs=query($sql);
+		$row=num_rows($rs);
 		if ($row){
 			$FoundErr=1;
 			$ErrMsg=$ErrMsg . "<li>“" . $groupname . "”已经存在！</li>";
 		}else{	
-		mysql_query("insert into zzcms_usergroup (
+		query("insert into zzcms_usergroup (
 		groupname,grouppic,groupid,RMB,config,
 		refresh_number,addinfo_number,addinfototle_number,looked_dls_number_oneday
 		)values(
@@ -170,8 +170,7 @@ function CheckAll(form){
           <label for="set_elite">置顶信息</label>
           <input type="checkbox" name="config[]" value="uploadflv" id="uploadflv">
           <label for="uploadflv">上传视频</label>
-          <input type="checkbox" name="config[]" value="uploadmoreimg" id="uploadmoreimg">
-          <label for="uploadmoreimg">上传多个产品图</label>
+        
           <input type="checkbox" name="config[]" value="set_zt" id="set_zt">
           <label for="set_zt">装修展厅</label>
           <input type="checkbox" name="config[]" value="passed" id="passed">
@@ -216,5 +215,5 @@ function CheckAll(form){
 </form>
 <?php
 }
-mysql_close($conn);
+
 ?>

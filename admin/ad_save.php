@@ -50,14 +50,14 @@ $endtime=date('Y-m-d',time()+60*60*24*365);
 $elite=$_POST["elite"];
 
 if ($_REQUEST["action"]=="add"){
-mysql_query("INSERT INTO zzcms_ad (bigclassname,smallclassname,title,titlecolor,link,img,imgwidth,imgheight,username,starttime,endtime,elite,sendtime)VALUES('$bigclassname','$smallclassname','$title','$titlecolor','$link','$img','$imgwidth','$imgheight','$username','$starttime','$endtime','$elite','".date('Y-m-d H:i:s',time()-(showadvdate+1)*60*60*24)."')");
-$newsid=mysql_insert_id();
+query("INSERT INTO zzcms_ad (bigclassname,smallclassname,title,titlecolor,link,img,imgwidth,imgheight,username,starttime,endtime,elite,sendtime)VALUES('$bigclassname','$smallclassname','$title','$titlecolor','$link','$img','$imgwidth','$imgheight','$username','$starttime','$endtime','$elite','".date('Y-m-d H:i:s',time()-(showadvdate+1)*60*60*24)."')");
+$newsid=insert_id();
 
 }elseif ($_REQUEST["action"]=="modify") {
 $newsid=trim($_POST["newsid"]);
 $oldimg=trim($_POST["oldimg"]);
 $nextuser=trim($_POST["nextuser"]);
-mysql_query("update zzcms_ad set bigclassname='$bigclassname',smallclassname='$smallclassname',title='$title',titlecolor='$titlecolor',link='$link',img='$img',imgwidth='$imgwidth',imgheight='$imgheight',username='$username',nextuser='$nextuser',starttime='$starttime',endtime='$endtime',elite='$elite' where id='$newsid'");	
+query("update zzcms_ad set bigclassname='$bigclassname',smallclassname='$smallclassname',title='$title',titlecolor='$titlecolor',link='$link',img='$img',imgwidth='$imgwidth',imgheight='$imgheight',username='$username',nextuser='$nextuser',starttime='$starttime',endtime='$endtime',elite='$elite' where id='$newsid'");	
 	if ($oldimg<>$img || $oldimg<>"/image/nopic.gif") {
 	//deloldimg();
 	}

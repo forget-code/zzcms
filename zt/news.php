@@ -26,6 +26,7 @@ $pagedescription=$comane."—新闻";
 
 if (isset($_REQUEST["page_size"])){
 $page_size=$_REQUEST["page_size"];
+checkid($page_size);
 setcookie("page_size_news",$page_size,time()+3600*24*360);
 }else{
 	if (isset($_COOKIE["page_size_news"])){
@@ -44,21 +45,21 @@ if( isset($_GET["page"]) && $_GET["page"]!="")
 $list=strbetween($strout,"{loop}","{/loop}");
 
 $sql="select * from zzcms_zx where editor='".$editor."'and bigclassname='公司新闻' and passed=1 ";
-$rs = mysql_query($sql); 
+$rs = query($sql); 
 $offset=($page-1)*$page_size;//$page_size在上面被设为COOKIESS
-$totlenum= mysql_num_rows($rs);  
+$totlenum= num_rows($rs);  
 $totlepage=ceil($totlenum/$page_size);
 
 $sql=$sql." order by id desc limit $offset,$page_size";
-$rs = mysql_query($sql); 
-$row= mysql_num_rows($rs);//返回记录数
+$rs = query($sql); 
+$row= num_rows($rs);//返回记录数
 if(!$row){
 $strout=str_replace("{#fenyei}","",$strout) ;
 $strout=str_replace("{loop}".$list."{/loop}","暂无信息",$strout) ;
 }else{
 $list2='';
 $i=1;
-while ($row= mysql_fetch_array($rs)){
+while ($row= fetch_array($rs)){
 
 if (whtml=="Yes"){
 $link="newsshow-".$row['id'].".htm";
@@ -135,6 +136,6 @@ $strout=str_replace("{#skin}",$skin,$strout);
 
 $strout=str_replace("{#sitebottom}",$sitebottom,$strout);
 $strout=str_replace("{#sitetop}",$sitetop,$strout);
-mysql_close($conn);
+
 echo  $strout;
 ?>

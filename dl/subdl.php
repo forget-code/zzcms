@@ -3,13 +3,13 @@ function bigclass($b){
 $str="";
 $n=1;
 $sql="select classname,classid,classzm from zzcms_zsclass where parentid='A' order by xuhao";
-$rs=mysql_query($sql);
-$row=mysql_num_rows($rs);
+$rs=query($sql);
+$row=num_rows($rs);
 if (!$row){
 $str="暂无分类";
 }else{
 
-while ($row=mysql_fetch_array($rs)){
+while ($row=fetch_array($rs)){
 $str=$str."<li>";
 	if($row['classzm']==$b){
 	$str=$str."<a href='".getpageurl2("dl",$row["classzm"],"")."' class='current'>".$row["classname"]."</a>";
@@ -36,8 +36,8 @@ function showdl($style,$num,$strnum,$b,$editor,$saver,$keyword,$cpid){
 	$sql=$sql."order by id desc ";
 	$sql=$sql." limit 0,$num";
 //echo $sql;
-$rs=mysql_query($sql);
-$row=mysql_num_rows($rs);
+$rs=query($sql);
+$row=num_rows($rs);
 if ($row){	
 switch ($style){
 	case 1;	
@@ -51,7 +51,7 @@ switch ($style){
     $str=$str."<td width='20%' align='center' ><strong>发布日期</strong></td>";
     $str=$str."</tr>";
     $n=1;
-	while($row=mysql_fetch_array($rs)){
+	while($row=fetch_array($rs)){
 	$str=$str." <tr class='bgcolor2'>";
 	$str=$str." <td height='25'>";
 	$str=$str." <a href='".getpageurl("zs",$row["cpid"])."'>".cutstr($row["cp"],16)."</a>" ;
@@ -72,7 +72,7 @@ switch ($style){
 case 2;
 	$str="<ul>";
 	$n=1;
-	while ($row=mysql_fetch_array($rs)){
+	while ($row=fetch_array($rs)){
 	$str=$str."<li>";
 	$str=$str."<span style='float:right' title=更新时间>".date("Y-m-d",strtotime($row["sendtime"]))."</span>";
 	$str=$str."<a href='".siteurl.getpageurl("dl",$row["id"])."' target='_blank' title='".$row["cp"]."'>";

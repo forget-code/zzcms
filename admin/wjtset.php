@@ -202,8 +202,7 @@ function showconfig(){
         <input name="baojiashowkeyword" type="text"  value="<?php echo baojiashowkeyword?>" size="50" maxlength="255">
         <br>
         description<br>
-        <input name="baojiashowdescription" type="text"  value="<?php echo baojiashowdescription?>" size="50" maxlength="255">
-      </td>
+        <input name="baojiashowdescription" type="text"  value="<?php echo baojiashowdescription?>" size="50" maxlength="255">      </td>
     </tr>
     <tr>
       <td align="right" class="border">网刊列表页</td>
@@ -226,6 +225,29 @@ function showconfig(){
         <br>
         description<br>
         <input name="wangkanshowdescription" type="text"  value="<?php echo wangkanshowdescription?>" size="50" maxlength="255">      </td>
+    </tr>
+    <tr>
+      <td align="right" class="border">问答列表页</td>
+      <td class="border"> title<br>
+          <input name="asklisttitle" type="text" value="<?php echo asklisttitle?>" size="50" maxlength="255">
+          <br>
+        keywords<br>
+        <input name="asklistkeyword" type="text"  value="<?php echo asklistkeyword?>" size="50" maxlength="255">
+        <br>
+        description<br>
+        <input name="asklistdescription" type="text"  value="<?php echo asklistdescription?>" size="50" maxlength="255"></td>
+    </tr>
+    <tr>
+      <td align="right" class="border">问答信息页</td>
+      <td class="border"> title<br>
+          <input name="askshowtitle" type="text"  value="<?php echo askshowtitle?>" size="50" maxlength="255">
+          <br>
+        keywords<br>
+        <input name="askshowkeyword" type="text"  value="<?php echo askshowkeyword?>" size="50" maxlength="255">
+        <br>
+        description<br>
+        <input name="askshowdescription" type="text"  value="<?php echo askshowdescription?>" size="50" maxlength="255">
+      </td>
     </tr>
     <tr> 
       <td align="right" class="border">&nbsp;</td>
@@ -311,6 +333,14 @@ function SaveConfig(){
 	$fcontent=$fcontent. "define('wangkanshowtitle','". trim($_POST['wangkanshowtitle'])."') ;//wangkanshowtitle\n";
 	$fcontent=$fcontent. "define('wangkanshowkeyword','". trim($_POST['wangkanshowkeyword'])."') ;//wangkanshowkeyword\n";
 	$fcontent=$fcontent. "define('wangkanshowdescription','". trim($_POST['wangkanshowdescription'])."') ;//wangkanshowdescription\n";
+	
+	$fcontent=$fcontent. "define('asklisttitle','". trim($_POST['asklisttitle'])."') ;//asklisttitle\n";
+	$fcontent=$fcontent. "define('asklistkeyword','". trim($_POST['asklistkeyword'])."') ;//asklistkeyword\n";
+	$fcontent=$fcontent. "define('asklistdescription','". trim($_POST['asklistdescription'])."') ;//asklistdescription\n";
+	$fcontent=$fcontent. "define('askshowtitle','". trim($_POST['askshowtitle'])."') ;//askshowtitle\n";
+	$fcontent=$fcontent. "define('askshowkeyword','". trim($_POST['askshowkeyword'])."') ;//askshowkeyword\n";
+	$fcontent=$fcontent. "define('askshowdescription','". trim($_POST['askshowdescription'])."') ;//askshowdescription\n";
+	
 	$fcontent=$fcontent. "?" . ">";
 	fputs($fp,$fcontent);//把替换后的内容写入文件
 	fclose($fp);

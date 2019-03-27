@@ -14,8 +14,8 @@ checkid($id);
 $id=0;
 }
 $sql="select * from zzcms_baojia where id='$id'";
-$rs=mysql_query($sql);
-$row=mysql_fetch_array($rs);
+$rs=query($sql);
+$row=fetch_array($rs);
 
 ?>
 <script language = "JavaScript">
@@ -60,8 +60,8 @@ if (document.myform.cp.value==""){
       <td class="border"> 
 	   <?php
 		$sqln = "select * from zzcms_zsclass where parentid='A' order by xuhao asc";
-	    $rsn=mysql_query($sqln);
-        $rown=mysql_num_rows($rsn);
+	    $rsn=query($sqln);
+        $rown=num_rows($rsn);
 		if (!$rown){
 			echo "请先添加栏目。";
 		}else{
@@ -69,7 +69,7 @@ if (document.myform.cp.value==""){
 		<select name="classid" id="classid">
                 <option value="" selected="selected">请选择类别</option>
                 <?php
-		while($rown= mysql_fetch_array($rsn)){
+		while($rown= fetch_array($rsn)){
 			?>
                 <option value="<?php echo $rown["classzm"]?>" <?php if ($rown["classzm"]==$row["classzm"]) { echo "selected";}?>><?php echo $rown["classname"]?></option>
                 <?php

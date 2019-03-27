@@ -40,11 +40,11 @@ checkyzm($_POST["yzm"]);
 
 if ($_POST["action"]=="add"){
 if ($cp<>'' && $truename<>'' && $tel<>''){
-mysql_query("Insert into zzcms_baojia(classzm,cp,province,city,price,danwei,companyname,truename,tel,address,email,sendtime,editor) values('$classid','$cp','$province','$city','$price','$danwei','$companyname','$truename','$tel','$address','$email','".date('Y-m-d H:i:s')."','$username')") ;   
-$id=mysql_insert_id();	
+query("Insert into zzcms_baojia(classzm,cp,province,city,price,danwei,companyname,truename,tel,address,email,sendtime,editor) values('$classid','$cp','$province','$city','$price','$danwei','$companyname','$truename','$tel','$address','$email','".date('Y-m-d H:i:s')."','$username')") ;   
+$id=insert_id();	
 }	
 }elseif ($_POST["action"]=="modify"){
-mysql_query("update zzcms_baojia set classzm='$classid',cp='$cp',province='$province',city='$city',price='$price',danwei='$danwei',companyname='$companyname',truename='$truename',tel='$tel',address='$address',email='$email',sendtime='".date('Y-m-d H:i:s')."' where id='$id'");
+query("update zzcms_baojia set classzm='$classid',cp='$cp',province='$province',city='$city',price='$price',danwei='$danwei',companyname='$companyname',truename='$truename',tel='$tel',address='$address',email='$email',sendtime='".date('Y-m-d H:i:s')."' where id='$id'");
 }
 $_SESSION['danwei']=$danwei;
 $_SESSION['bigclassid']=$classid;
@@ -94,9 +94,7 @@ include("left.php");
       </table></td>
   </tr>
 </table>
-<?php
-mysql_close($conn);
-?>
+
 </div>
 </div>
 </div>

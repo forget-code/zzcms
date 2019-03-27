@@ -67,8 +67,6 @@ function CheckForm()
           </tr>
         </table>
       </form>
-<?php
-mysql_close($conn);
-?>	  
+	  
 </body>
 </html>

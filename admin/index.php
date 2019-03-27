@@ -44,8 +44,8 @@ function switchSysBar(){
 </tr>
     <tr> 
       <td colspan="3" class="userbar"> 
-        <?php $rs=mysql_query("select groupname from zzcms_admingroup where id=(select groupid from zzcms_admin where admin='".@$_SESSION["admin"]."')");
-	  $row= mysql_fetch_array($rs);
+        <?php $rs=query("select groupname from zzcms_admingroup where id=(select groupid from zzcms_admin where admin='".@$_SESSION["admin"]."')");
+	  $row= fetch_array($rs);
 	  echo "您好<b>".@$_SESSION["admin"]."</b>(" .$row["groupname"].")";
 	  ?>
         [ <a href="/index.php" target="_top">返回首页</a> | <a href="loginout.php" target="_top">安全退出</a> 
@@ -70,8 +70,6 @@ function switchSysBar(){
 	</td>
 </tr>
 </table>
-<?php
-mysql_close($conn);
-?>	
+	
 </body>
 </html>

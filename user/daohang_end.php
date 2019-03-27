@@ -37,7 +37,7 @@ include("left.php");
 			echo"<a href='".getpageurl("zt",$userid)."' target='_blank'>".siteurl.getpageurl("zt",$userid)."</a>";
 		}
 	}
-mysql_close($conn); 
+ 
 ?>
 </div>
 </div>      

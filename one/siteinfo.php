@@ -10,10 +10,10 @@ checkid($info_id);
 $info_id=0;
 }
 
-$rs=mysql_query("Select * From zzcms_about where id='$info_id'" ) ;
-$row=mysql_num_rows($rs);
+$rs=query("Select * From zzcms_about where id='$info_id'" ) ;
+$row=num_rows($rs);
 if ($row){
-$row=mysql_fetch_array($rs);
+$row=fetch_array($rs);
 $content=$row["content"];
 $title=$row["title"];
 }else{

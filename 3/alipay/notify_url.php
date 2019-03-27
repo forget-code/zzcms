@@ -71,12 +71,12 @@ if($verify_result) {//验证成功
 
 	//——请根据您的业务逻辑来编写程序（以上代码仅作参考）——
 	$sql="select * from zzcms_pay where mark='".$trade_no."' and username='".@$_COOKIE['UserName']."'";
-				$rs=mysql_query($sql);	
-				$row=mysql_num_rows($rs);
+				$rs=query($sql);	
+				$row=num_rows($rs);
 				if (!$row){//如果没有记录刚写入
 				$jf=$total_fee*jifen_bilu;
-				mysql_query("update zzcms_user set totleRMB=totleRMB+".$jf." where username='".@$_COOKIE['UserName']."'");//写入冲值金额到用户表
-				mysql_query("insert into zzcms_pay (username,dowhat,RMB,mark,sendtime) values('".@$_COOKIE['UserName']."','支付宝在线充值','$total_fee','$trade_no','".date('Y-m-d H:i:s')."')");//写入冲值记录
+				query("update zzcms_user set totleRMB=totleRMB+".$jf." where username='".@$_COOKIE['UserName']."'");//写入冲值金额到用户表
+				query("insert into zzcms_pay (username,dowhat,RMB,mark,sendtime) values('".@$_COOKIE['UserName']."','支付宝在线充值','$total_fee','$trade_no','".date('Y-m-d H:i:s')."')");//写入冲值记录
 				echo "充值成功";
 				}
 			

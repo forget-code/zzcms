@@ -24,8 +24,8 @@ $FoundErr=0;
 $ErrMsg="";
 
 $sql="Select * from zzcms_usergroup where id='$id'";
-$rs=mysql_query($sql);
-$row=mysql_num_rows($rs);
+$rs=query($sql);
+$row=num_rows($rs);
 if (!$row){
 	$FoundErr=1;
 	$ErrMsg=$ErrMsg . "<li>此用户组不存在！</li>";
@@ -50,12 +50,12 @@ if (!$row){
 	$looked_dls_number_oneday=trim($_POST["looked_dls_number_oneday"]);
 	
 	if ($FoundErr==0) {
-	mysql_query("update zzcms_usergroup set groupname='$groupname',grouppic='$grouppic',groupid='$groupid',RMB='$RMB',config='$config',
+	query("update zzcms_usergroup set groupname='$groupname',grouppic='$grouppic',groupid='$groupid',RMB='$RMB',config='$config',
 	refresh_number='$refresh_number',addinfo_number='$addinfo_number',addinfototle_number='$addinfototle_number',
 	looked_dls_number_oneday='$looked_dls_number_oneday' where id='$id'");
 		if ($groupid<>$oldgroupid){
-			mysql_query("Update zzcms_user set groupid=" . $groupid . " where groupid=" . $oldgroupid."");
-			mysql_query("Update zzcms_main set groupid=" . $groupid . " where groupid=" . $oldgroupid."");
+			query("Update zzcms_user set groupid=" . $groupid . " where groupid=" . $oldgroupid."");
+			query("Update zzcms_main set groupid=" . $groupid . " where groupid=" . $oldgroupid."");
      	}		
 		echo "<script>location.href='usergroupmanage.php'</script>";
 	}
@@ -64,8 +64,8 @@ if ($FoundErr==1) {
 	WriteErrMsg($ErrMsg);
 }else{
 $sql="Select * from zzcms_usergroup where id='$id'";
-$rs=mysql_query($sql);
-$row=mysql_fetch_array($rs);
+$rs=query($sql);
+$row=fetch_array($rs);
 ?>
 
 <script language="JavaScript" type="text/JavaScript">
@@ -170,8 +170,6 @@ function CheckAll(form){
           <label for="set_elite">置顶信息</label>
           <input type="checkbox" name="config[]" value="uploadflv" id="uploadflv" <?php if(str_is_inarr($row["config"],'uploadflv')=='yes'){echo "checked";}?>>
           <label for="uploadflv">上传视频</label>
-          <input type="checkbox" name="config[]" value="uploadmoreimg" id="uploadmoreimg" <?php if(str_is_inarr($row["config"],'uploadmoreimg')=='yes'){echo "checked";}?>>
-          <label for="uploadmoreimg">上传多个产品图</label>
           <input type="checkbox" name="config[]" value="set_zt" id="set_zt" <?php if(str_is_inarr($row["config"],'set_zt')=='yes'){echo "checked";}?>>
           <label for="set_zt">装修展厅</label>
           <input type="checkbox" name="config[]" value="passed" id="passed" <?php if(str_is_inarr($row["config"],'passed')=='yes'){echo "checked";}?>>

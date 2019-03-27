@@ -21,7 +21,7 @@ $strout=str_replace("{#pagedescription}",dllistdescription,$strout);
 $strout=str_replace("{#sitebottom}",sitebottom(),$strout);
 $strout=str_replace("{#sitetop}",sitetop(),$strout);
 $strout=showlabel($strout);
-mysql_close($conn);
+
 echo  $strout;
 $t2 = microtime(true);
 echo '耗时'.round($t2-$t1,3).'秒';

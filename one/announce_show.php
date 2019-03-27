@@ -15,12 +15,12 @@ checkid($id);
 $id=0;
 }
 $sql="Select * From zzcms_help where id='$id'";
-$rs=mysql_query($sql);
-$row=mysql_num_rows($rs);
+$rs=query($sql);
+$row=num_rows($rs);
 if (!$row){
 echo "不存在相关信息！";
 }else{
-$row=mysql_fetch_array($rs);
+$row=fetch_array($rs);
 ?>
 <title>网站公告-<?php echo $row["title"]?></title>
 <link href="../template/<?php echo siteskin?>/style.css" rel="stylesheet" type="text/css">

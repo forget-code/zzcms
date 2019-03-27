@@ -100,8 +100,8 @@ eval("submenu" + sid + ".style.display=\"none\";");
           <option value="" selected>请选择类别</option>
           <?php
 		$sql="select * from zzcms_zsclass where parentid='A'";
-		$rs=mysql_query($sql);
-		while($row= mysql_fetch_array($rs)){
+		$rs=query($sql);
+		while($row= fetch_array($rs)){
 			?>
           <option value="<?php echo $row["classzm"]?>"<?php if (@$_SESSION['bigclassid']==$row["classzm"]){echo 'selected';}?>><?php echo $row["classname"]?></option>
           <?php

@@ -52,10 +52,10 @@ $n=$_GET['n'];
 $n=0;
 }
 	$sql="select email from zzcms_user where groupid=$groupid order by id asc limit $n,$size";
-	$rs=mysql_query($sql); 
-	$row=mysql_num_rows($rs); 
+	$rs=query($sql); 
+	$row=num_rows($rs); 
 	if ($row){
-		while ($row=mysql_fetch_array($rs)){
+		while ($row=fetch_array($rs)){
 		$to=$row['email']; //收件人
 		
 		$send=$smtp->sendmail($to,sender,$subject,$mailbody,"HTML");//邮件的类型可选值是 TXT 或 HTML 

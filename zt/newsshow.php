@@ -7,13 +7,13 @@ checkid($newsid);
 $newsid=0;
 }
 
-$rs=mysql_query("select * from zzcms_zx where id='$newsid'");
-$row=mysql_num_rows($rs);
+$rs=query("select * from zzcms_zx where id='$newsid'");
+$row=num_rows($rs);
 if(!$row){
 showmsg('无记录');
 }else{
-mysql_query("update zzcms_zx set hit=hit+1 where id='$newsid'");
-$row=mysql_fetch_array($rs);
+query("update zzcms_zx set hit=hit+1 where id='$newsid'");
+$row=fetch_array($rs);
 $editorinzsshow=$row["editor"];//供传值到top.php
 $title=$row['title'];
 $sendtime=date("Y-m-d",strtotime($row['sendtime']));

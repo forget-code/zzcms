@@ -1,14 +1,17 @@
 <?php
 //set_time_limit(1800) ;
 include("admin.php");
+checkadminisdo("zs");
 ?>
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <title></title>
 <link href="style.css" rel="stylesheet" type="text/css">
+</head>
+<body>
+<div id="loading" class="left-title" style="display:block">正在保存，请稍候...</div>
 <?php
-checkadminisdo("zs");
 $cpid=trim($_POST["cpid"]);
 $bigclassid=trim($_POST["bigclassid"]);
 
@@ -102,12 +105,12 @@ if ($eliteendtime=="") {
 $eliteendtime=date('Y-m-d H:i:s',time()+365*3600*24);
 }
 
-$isok=mysql_query("update zzcms_main set bigclasszm='$bigclassid',smallclasszm='$smallclassid',shuxing='$shuxing',szm='$szm',prouse='$prouse',proname='$cpname',sm='$sm',img='$img',flv='$flv',zc='$zc',yq='$yq',shuxing_value='$shuxing_value',title='$title',keywords='$keyword',description='$discription',sendtime='$sendtime',tag='$tag' where id='$cpid'");
+$isok=query("update zzcms_main set bigclasszm='$bigclassid',smallclasszm='$smallclassid',shuxing='$shuxing',szm='$szm',prouse='$prouse',proname='$cpname',sm='$sm',img='$img',flv='$flv',zc='$zc',yq='$yq',shuxing_value='$shuxing_value',title='$title',keywords='$keyword',description='$discription',sendtime='$sendtime',tag='$tag' where id='$cpid'");
 if ($editor<>$oldeditor) {
-$rs=mysql_query("select groupid,qq,comane,id,renzheng from zzcms_user where username='".$editor."'");
-$row = mysql_num_rows($rs);
+$rs=query("select groupid,qq,comane,id,renzheng from zzcms_user where username='".$editor."'");
+$row = num_rows($rs);
 if ($row){
-$row = mysql_fetch_array($rs);
+$row = fetch_array($rs);
 $groupid=$row["groupid"];
 $userid=$row["id"];
 $qq=$row["qq"];
@@ -120,19 +123,17 @@ $qq="";
 $comane="";
 $renzheng=0;
 }
-mysql_query("update zzcms_main set editor='$editor',userid='$userid',groupid='$groupid',qq='$qq',comane='$comane',renzheng='$renzheng' where id='$cpid'");
+query("update zzcms_main set editor='$editor',userid='$userid',groupid='$groupid',qq='$qq',comane='$comane',renzheng='$renzheng' where id='$cpid'");
 }
-mysql_query("update zzcms_main set passed='$passed',elite='$elite',elitestarttime='$elitestarttime',eliteendtime='$eliteendtime' where id='$cpid'");
-mysql_close($conn);
+query("update zzcms_main set passed='$passed',elite='$elite',elitestarttime='$elitestarttime',eliteendtime='$eliteendtime' where id='$cpid'");
+
 //echo "<script>location.href='zs_manage.php?keyword=".$_POST["editor"]."&page=".$_REQUEST["page"]."'<//script>";
 ?>
-</head>
-<body>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
 <table width="500" border="0" align="center" cellpadding="0" cellspacing="0">
   <tr>
-    <td align="center" class="left-title">
+    <td class="left-title">
 	<?php
 	  if ($isok){
 	  echo"成功";
@@ -162,7 +163,7 @@ mysql_close($conn);
 <br>
   <?php 
 if ($msg<>'' ){echo "<div class='border'>" .$msg."</div>";}
+echo "<script language=javascript>document.getElementById('loading').style.display='none';</script>";
 ?>
-
 </body>
 </html>

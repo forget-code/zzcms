@@ -62,7 +62,7 @@ return $str;
 }
 
 function showpage1(){
-global $page,$totlepage,$totlenum,$page_size,$keyword,$yiju,$szm;
+global $page,$totlepage,$totlenum,$page_size,$keyword,$yiju,$szm,$typeid;
 //$cs="&keyword=".$keyword."&province=".$province."&city=".$city."&xiancheng=".$xiancheng."&b=".$b."&s=".$s."&sj=".$sj."&yiju=".$yiju;
 //这个用在搜索页中，在搜索页中上面的大多数参数都写在cookies中了
 $str="";
@@ -70,7 +70,7 @@ $cs='';
 if ($keyword!=''){$cs=$cs."&keyword=".$keyword;}
 if ($yiju!=''){$cs=$cs."&yiju=".$yiju;}
 if ($szm!=''){$cs=$cs."&szm=".$szm;}
-
+if ($typeid!=999){$cs=$cs."&typeid=".$typeid;}
 $str=$str."<a><nobr>共".$totlenum."</nobr></a>";
 		if ($page<>1) {
 			$str=$str . "<a href='?page=1".$cs."' title='转到第一页'><nobr>&lt;&lt;</nobr></a>";

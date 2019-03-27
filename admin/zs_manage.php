@@ -22,12 +22,12 @@ if(!empty($_POST['id'])){
     for($i=0; $i<count($_POST['id']);$i++){
     $id=$_POST['id'][$i];
 	$sql="select passed from zzcms_main where id ='$id'";
-	$rs = mysql_query($sql); 
-	$row = mysql_fetch_array($rs);
+	$rs = query($sql); 
+	$row = fetch_array($rs);
 		if ($row['passed']=='0'){
-		mysql_query("update zzcms_main set passed=1 where id ='$id'");
+		query("update zzcms_main set passed=1 where id ='$id'");
 		}else{
-		mysql_query("update zzcms_main set passed=0 where id ='$id'");
+		query("update zzcms_main set passed=0 where id ='$id'");
 		}
 	}
 }else{
@@ -61,12 +61,12 @@ echo "<script>location.href='?keyword=".$keyword."&page=".$page."'</script>";
           <td>
     <?php	
 $sql="select * from zzcms_zsclass where parentid='A' order by xuhao";
-$rs = mysql_query($sql); 
-$row = mysql_num_rows($rs);
+$rs = query($sql); 
+$row = num_rows($rs);
 if (!$row){
 echo '暂无分类';
 }else{
-while($row = mysql_fetch_array($rs)){
+while($row = fetch_array($rs)){
 echo "<a href=?b=".$row['classzm'].">";  
 	if ($row["classzm"]==$b) {
 	echo "<b>".$row["classname"]."</b>";
@@ -117,15 +117,15 @@ if ($showwhat=="vip" ){
 	$sql2=$sql2." and editor in(select username from zzcms_user where groupid>1) ";
 }
 
-$rs = mysql_query($sql.$sql2,$conn); 
-$row = mysql_fetch_array($rs);
+$rs = query($sql.$sql2,$conn); 
+$row = fetch_array($rs);
 $totlenum = $row['total'];
 $totlepage=ceil($totlenum/$page_size);
 
 $sql="select * from zzcms_main where id<>0 ";
 $sql=$sql.$sql2;
 $sql=$sql . " order by id desc limit $offset,$page_size";
-$rs = mysql_query($sql,$conn); 
+$rs = query($sql,$conn); 
 if(!$totlenum){
 echo "暂无信息";
 }else{
@@ -150,7 +150,7 @@ echo "暂无信息";
       <td width="5%" align="center" class="border">操作</td>
     </tr>
 <?php
-while($row = mysql_fetch_array($rs)){
+while($row = fetch_array($rs)){
 ?>
     <tr class="bgcolor1" onMouseOver="fSetBg(this)" onMouseOut="fReBg(this)"> 
       <td align="center" class="docolor"> <input name="id[]" type="checkbox" id="id2" value="<?php echo $row["id"]?>"></td>
@@ -159,20 +159,20 @@ while($row = mysql_fetch_array($rs)){
       <td align="center">
 	  <?php
 	$sqln="select classname from zzcms_zsclass where classzm='".$row["bigclasszm"]."' ";
-	$rsn = mysql_query($sqln); 
-	$rown = mysql_fetch_array($rsn);
+	$rsn = query($sqln); 
+	$rown = fetch_array($rsn);
 	echo "<a href='?b=".$row["bigclasszm"]."' >".$rown["classname"]."</a>";
 	if (strpos($row["smallclasszm"],",")>0){
 	$sqln="select classname from zzcms_zsclass where parentid='".$row["bigclasszm"]."' and classzm in (".$row["smallclasszm"].") ";
-	$rsn = mysql_query($sqln);
+	$rsn = query($sqln);
 	echo "<br/> ";
-	while($rown = mysql_fetch_array($rsn)){
+	while($rown = fetch_array($rsn)){
 	echo " [".$rown["classname"]."]";
 	}
 	}else{
 	$sqln="select classname from zzcms_zsclass where classzm='".$row["smallclasszm"]."' ";
-	$rsn = mysql_query($sqln); 
-	$rown = mysql_fetch_array($rsn);
+	$rsn = query($sqln); 
+	$rown = fetch_array($rsn);
 	echo "<br/>".$rown["classname"];
 	}
 	  ?>

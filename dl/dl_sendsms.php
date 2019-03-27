@@ -56,12 +56,12 @@ $size=5;//每轮群发个数
 $sleeps=1;//每个间隔时间
 
 $sql_n="select content from zzcms_msg where elite=1";
-$rs_n=mysql_query($sql_n);
-$row_n=mysql_num_rows($rs_n);
+$rs_n=query($sql_n);
+$row_n=num_rows($rs_n);
 if (!$row_n){
 showmsg('未设邮件内容，请先设邮件内容','/user/index.php?gotopage=msg_manage.php');
 }else{
-$row_n=mysql_fetch_array($rs_n);
+$row_n=fetch_array($rs_n);
 }
 $msg=$row_n['content'];
 $msg = iconv("UTF-8","GBK",$msg);
@@ -71,10 +71,10 @@ $n=$_GET['n'];
 $n=0;
 }
 $sql2=$sql." order by id asc limit $n,$size";
-	$rs=mysql_query($sql2); 
-	$row=mysql_num_rows($rs); 
+	$rs=query($sql2); 
+	$row=num_rows($rs); 
 	if ($row){
-		while ($row=mysql_fetch_array($rs)){
+		while ($row=fetch_array($rs)){
 		$fbr_mobile=$row['tel']; //收件人
 		//=============== 发 信 ================
 		$result = sendSMS(smsusername,smsuserpass,$fbr_mobile,$msg,apikey_mobile_msg);

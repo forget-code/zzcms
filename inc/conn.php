@@ -1,5 +1,5 @@
 <?php
-//error_reporting(0);
+error_reporting(0);
 define('zzcmsroot', str_replace("\\", '/', substr(dirname(__FILE__), 0, -3)));//-3截除当前目录inc
 ini_set("date.timezone","Asia/Chongqing");//设时区。php.ini里date.timezone选项，默认情况下是关闭的
 include(zzcmsroot."/inc/config.php");
@@ -28,4 +28,24 @@ mysql_select_db(sqldb,$conn) or showmsg ("没有".sqldb."这个数据库,或是�
 //if (isset($_SESSION["admin"])){
 //admindo();//如果管理员登录，记录管理员操作记录
 //}
+
+  
+//执行语句   
+function query($sql){   
+global $conn;
+return mysql_query($sql,$conn);     
+}  
+
+function num_rows($rs) {
+return mysql_num_rows($rs);
+} 
+
+function fetch_array($rs) {
+return mysql_fetch_array($rs);
+}
+
+function insert_id() {
+global $conn;
+return mysql_insert_id($conn);
+}
 ?>

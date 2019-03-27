@@ -25,12 +25,12 @@ $id=0;
 <body>
 <?php
 $sql="select * from zzcms_dl where id='$id'";
-$rs=mysql_query($sql,$conn);
-$row=mysql_num_rows($rs);
+$rs=query($sql,$conn);
+$row=num_rows($rs);
 if (!$row){
 echo $f_array[1];
 }else{
-$row=mysql_fetch_array($rs);
+$row=fetch_array($rs);
 $dlsname=$row['dlsname'];
 $company=$row['company'];
 $companyname=$row['companyname'];
@@ -98,7 +98,7 @@ exit;
  <?php
          switch  (check_user_power("look_dls_liuyan")){
 			case "yes" ;
-			mysql_query("update zzcms_dl set looked=1 where id='$id'");
+			query("update zzcms_dl set looked=1 where id='$id'");
             echo showlx($dlsname,$company,$companyname,$tel,$email);
 			break;
 			case "no";
@@ -122,12 +122,12 @@ exit;
 					<?php		
 			    	}elseif ($action=="kan" && $looked==0) {
                     $sql="select totleRMB from zzcms_user where username='".$_COOKIE["UserName"]."'";
-					$rsuser=mysql_query($sql);
-					$rowuser=mysql_fetch_array($rsuser);
+					$rsuser=query($sql);
+					$rowuser=fetch_array($rsuser);
 			        	if ($rowuser["totleRMB"]>=jf_lookmessage) {
-						mysql_query("update zzcms_user set totleRMB=totleRMB-".jf_lookmessage." where username='".$_COOKIE["UserName"]."'");//查看时扣除积分
-						mysql_query("insert into zzcms_pay (username,dowhat,RMB,mark,sendtime) values('".@$_COOKIE['UserName']."','".$f_array[15]."','-".jf_lookmessage."','<a href=dls_show.php?id=$id>$id</a>','".date('Y-m-d H:i:s')."')");//写入冲值记录 
-			       		mysql_query("update zzcms_dl set looked=1 where id='$id'");
+						query("update zzcms_user set totleRMB=totleRMB-".jf_lookmessage." where username='".$_COOKIE["UserName"]."'");//查看时扣除积分
+						query("insert into zzcms_pay (username,dowhat,RMB,mark,sendtime) values('".@$_COOKIE['UserName']."','".$f_array[15]."','-".jf_lookmessage."','<a href=dls_show.php?id=$id>$id</a>','".date('Y-m-d H:i:s')."')");//写入冲值记录 
+			       		query("update zzcms_dl set looked=1 where id='$id'");
 						echo showlx($dlsname,$company,$companyname,$tel,$email);
 						}else{
 						echo str_replace("{#jf_lookmessage}",jf_lookmessage,$f_array[16]);

@@ -13,6 +13,7 @@
 $id='';
 if(!empty($_POST['id'])){
     for($i=0; $i<count($_POST['id']);$i++){
+	checkid($_POST['id'][$i]);
     $id=$id.($_POST['id'][$i].',');
     }
 	$id=substr($id,0,strlen($id)-1);//去除最后面的","
@@ -26,13 +27,13 @@ exit;
 $tdwidth=floor(90/$i);//取整,左边占10%
 
 $sql="select * from zzcms_main where id in ($id)" ;
-$rs=mysql_query($sql);
+$rs=query($sql);
 ?>
 
 <table width="100%" height="218" border="0" align="center" cellpadding="5" cellspacing="1" class="bgcolor3">
   <tr> 
     <td width="10%" align="center" bgcolor="#FFFFFF">【产品图片】 </td>
-	 <?php while ($row=mysql_fetch_array($rs)){?>
+	 <?php while ($row=fetch_array($rs)){?>
     <td bgcolor="#FFFFFF" style="font-weight:bold" width="<?php echo $tdwidth ?>%"><a href="<?php echo $row["img"]?>" target="_blank"><img src="<?php echo getsmallimg($row["img"])?>" alt="<?php echo $row["proname"]?>"  border="0" onload="resizeimg(200,200,this)" ></a></td>
     <?php
 	}
@@ -42,7 +43,7 @@ $rs=mysql_query($sql);
     <td width="100" align="center">【产品名称】 </td>
     <?php 
 	 mysql_data_seek($rs,0);
-	while ($row=mysql_fetch_array($rs)){?>
+	while ($row=fetch_array($rs)){?>
     <td style="font-weight:bold"><?php echo $row["proname"]?></td>
     <?php
 	}
@@ -53,7 +54,7 @@ $rs=mysql_query($sql);
     <td width="100" align="center" bgcolor="#FFFFFF">【主要功能】</td>
        <?php 
 	 mysql_data_seek($rs,0);
-	while ($row=mysql_fetch_array($rs)){?>
+	while ($row=fetch_array($rs)){?>
     <td valign="top" bgcolor="#FFFFFF" ><?php echo $row["prouse"]?></td>
    <?php
    }
@@ -63,7 +64,7 @@ $rs=mysql_query($sql);
     <td width="100" align="center">【规格包装】</td>
        <?php 
 	 mysql_data_seek($rs,0);
-	while ($row=mysql_fetch_array($rs)){?>
+	while ($row=fetch_array($rs)){?>
     <td><?php echo $row["gg"]?></td>
    <?php
    }
@@ -73,7 +74,7 @@ $rs=mysql_query($sql);
     <td width="100" align="center"><strong><?php echo channelzs?>区域</strong></td>
         <?php 
 	 mysql_data_seek($rs,0);
-	while ($row=mysql_fetch_array($rs)){?>
+	while ($row=fetch_array($rs)){?>
     <td><?php echo $row["city"]?></td>
     <?php
 	}
@@ -83,7 +84,7 @@ $rs=mysql_query($sql);
     <td width="100" align="center" bgcolor="#FFFFFF"><strong>产品说明</strong></td>
         <?php 
 	 mysql_data_seek($rs,0);
-	while ($row=mysql_fetch_array($rs)){?>
+	while ($row=fetch_array($rs)){?>
     <td valign="top" bgcolor="#FFFFFF"><?php //echo $row["sm"]?></td>
    <?php
    }
@@ -93,7 +94,7 @@ $rs=mysql_query($sql);
     <td width="100" align="center"><strong>可提供的支持</strong></td>
         <?php 
 	 mysql_data_seek($rs,0);
-	while ($row=mysql_fetch_array($rs)){?>
+	while ($row=fetch_array($rs)){?>
     <td valign="top"><?php echo nl2br($row["zc"])?></td>
     <?php
 	}
@@ -103,7 +104,7 @@ $rs=mysql_query($sql);
     <td width="100" align="center" bgcolor="#FFFFFF"><strong>对<?php echo channeldl?>商的要求</strong></td>
        <?php 
 	 mysql_data_seek($rs,0);
-	while ($row=mysql_fetch_array($rs)){?>
+	while ($row=fetch_array($rs)){?>
     <td valign="top" bgcolor="#FFFFFF"><?php echo nl2br($row["yq"])?></td>
    <?php
    }
@@ -113,7 +114,7 @@ $rs=mysql_query($sql);
     <td width="100" align="center"><strong>备注</strong></td>
         <?php 
 	 mysql_data_seek($rs,0);
-	while ($row=mysql_fetch_array($rs)){?>
+	while ($row=fetch_array($rs)){?>
     <td><?php echo nl2br($row["other"])?></td>
    <?php
    }
@@ -126,8 +127,6 @@ $rs=mysql_query($sql);
     <td align="center"><input type="button" name="Submit" value="关闭本窗口" onClick="javascript:window.close()"></td>
   </tr>
 </table>
-<?php
-mysql_close($conn);
-?>
+
 </body>
 </html>

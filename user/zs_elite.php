@@ -75,10 +75,10 @@ $tag=$_POST["tag"];
 }
 
 $sql="select id,proname,eliteendtime,tag from zzcms_main where tag='".$tag."' and id<>'$id'";
-$rs = mysql_query($sql); 
-$row=mysql_num_rows($rs);
+$rs = query($sql); 
+$row=num_rows($rs);
 if ($row){
-$row = mysql_fetch_array($rs);
+$row = fetch_array($rs);
 $err=1;
 $errmsg=$f_array[2]."<a href='/zs/search.php?keyword=".$row['tag']."'>".$row['proname']."</a><br>".$f_array[3].$row['eliteendtime'];
 }
@@ -93,12 +93,12 @@ switch (check_user_power('set_elite')){
 case 'yes':
 if (jifen=="Yes"){
 $sqln="select totleRMB from zzcms_user where username='".$username."'";
-$rsn = mysql_query($sqln);
-$rown = mysql_fetch_array($rsn);
+$rsn = query($sqln);
+$rown = fetch_array($rsn);
 	if ($rown["totleRMB"]>=$jfpay){
-	mysql_query("update zzcms_user set totleRMB=totleRMB-$jfpay where username='".$username."'");
-	mysql_query("update zzcms_main set elitestarttime='".date('Y-m-d')."',eliteendtime='$eliteendtime',tag='$tag',elite=1 where id='$id'");
-	mysql_query("insert into zzcms_pay (username,dowhat,RMB,mark,sendtime) values('$username','".channelzs.$f_array[4]."','-$jfpay','".$f_array[5]."<a href=zsmanage.php?id=$id>$id</a>','".date('Y-m-d H:i:s')."')");
+	query("update zzcms_user set totleRMB=totleRMB-$jfpay where username='".$username."'");
+	query("update zzcms_main set elitestarttime='".date('Y-m-d')."',eliteendtime='$eliteendtime',tag='$tag',elite=1 where id='$id'");
+	query("insert into zzcms_pay (username,dowhat,RMB,mark,sendtime) values('$username','".channelzs.$f_array[4]."','-$jfpay','".$f_array[5]."<a href=zsmanage.php?id=$id>$id</a>','".date('Y-m-d H:i:s')."')");
 	echo str_replace("{#jfpay}",$jfpay,str_replace("{#jf_set_elite}",jf_set_elite,str_replace("{#day}",$day,str_replace("{#eliteendtime}",$eliteendtime,str_replace("{#oldeliteendtime}",$oldeliteendtime,$f_array[6])))));
 	echo "<script>location.href='zsmanage.php?page=".$_REQUEST["page"]."'</script>";
 	}else{
@@ -116,8 +116,8 @@ echo $f_array[9];
 }else{
 
 $sql="select id,editor,proname,eliteendtime,tag from zzcms_main where id='$id'";
-$rs = mysql_query($sql); 
-$row = mysql_fetch_array($rs);
+$rs = query($sql); 
+$row = fetch_array($rs);
 if ($row["editor"]<>$username) {
 markit();
 echo  $f_array[10];

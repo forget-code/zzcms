@@ -13,7 +13,7 @@ $f_array=explode("|||",$fcontent) ;
 <title><?php echo $f_array[0]?></title>
 <link href="style/<?php echo siteskin_usercenter?>/style.css" rel="stylesheet" type="text/css">
 <?php
-if (check_usergr_power("zt")=="no" && $usersf=='个人'){
+if (str_is_inarr(usergr_power,'zt')=="no" && $usersf=='个人'){
 echo $f_array[1];
 exit;
 }
@@ -26,7 +26,7 @@ $action="";
 if($action=="modify"){
 $skin=$_POST["skin"];
 
-mysql_query("update zzcms_usersetting set skin='$skin' where username='".$username."'");			
+query("update zzcms_usersetting set skin='$skin' where username='".$username."'");			
 echo $f_array[2];
 }
 ?>
@@ -49,9 +49,14 @@ include("left.php");
 <table width="100%" border="0" cellpadding="5" cellspacing="1" class="bgcolor">
                   <tr>        
                     <?php 
-$rs=mysql_query("select skin from zzcms_usersetting where username='".$username."'");
-$row=mysql_fetch_array($rs);					
-$dir = opendir("../skin");
+$rs=query("select skin from zzcms_usersetting where username='".$username."'");
+$row=fetch_array($rs);					
+$fp=zzcmsroot."skin";	
+if (file_exists($fp)==false){
+WriteErrMsg($fp.'模板目录不存在');
+exit;
+}				
+$dir = opendir($fp);
 $i=0;
 while(($file = readdir($dir))!=false){
   if ($file!="." && $file!=".." && strpos($file,".zip")==false && strpos($file,".rar")==false && strpos($file,".txt")==false && $file!='mobile') { //不读取. ..

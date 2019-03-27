@@ -45,8 +45,8 @@ $page_size=pagesize_qt;
 $bigclassname="";
 if ($b<>""){
 $sql="select * from zzcms_zsclass where classzm='".$b."'";
-$rs=mysql_query($sql);
-$row=mysql_fetch_array($rs);
+$rs=query($sql);
+$row=fetch_array($rs);
 if ($row){
 $bigclassname=$row["classname"];
 }
@@ -95,8 +95,8 @@ $sql2=$sql2." and province ='".$province."' ";
 }
 
 $strout=str_replace("{#sql}",$sql.$sql2,$strout) ;
-$rs = mysql_query($sql.$sql2); 
-$row = mysql_fetch_array($rs);
+$rs = query($sql.$sql2); 
+$row = fetch_array($rs);
 $totlenum = $row['total'];
 $offset=($page-1)*$page_size;
 $totlepage=ceil($totlenum/$page_size);
@@ -107,7 +107,7 @@ $sql="select id,cp,dlsname,province,city,xiancheng,content,tel,sendtime,saver fr
 }
 $sql=$sql.$sql2;
 $sql=$sql." order by id desc limit $offset,$page_size";
-$rs = mysql_query($sql); 
+$rs = query($sql); 
 //echo $sql;
 $dl=strbetween($strout,"{dl}","{/dl}");
 $dllist=strbetween($strout,"{loop}","{/loop}");
@@ -117,7 +117,7 @@ $strout=str_replace("{dl}".$dl."{/dl}","暂无信息",$strout) ;
 }else{
 $i=0;
 $dllist2='';
-while($row= mysql_fetch_array($rs)){
+while($row= fetch_array($rs)){
 if ($b<>''){
 $dllist2 = $dllist2. str_replace("{#id}" ,$row["dlid"],$dllist) ;
 }else{
@@ -136,10 +136,10 @@ $dllist2 = str_replace("{#cp}" ,"<a href='".getpageurl("dl",$row["id"])."'>".cut
 }
 
 if ($row["saver"]<>"") {
-	$rsn=mysql_query("select comane,id from zzcms_user where username='".$row["saver"]."'");
-	$r=mysql_num_rows($rsn);
+	$rsn=query("select comane,id from zzcms_user where username='".$row["saver"]."'");
+	$r=num_rows($rsn);
 	if ($r){
-	$r=mysql_fetch_array($rsn);
+	$r=fetch_array($rsn);
 	$gs="<a href='".getpageurl("zt",$r["id"])."'>".cutstr($r["comane"],6)."</a> ";
 	}else{
 	$gs="不存在该公司信息";

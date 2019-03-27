@@ -25,12 +25,12 @@ if(!empty($_POST['id'])){
     for($i=0; $i<count($_POST['id']);$i++){
     $id=$_POST['id'][$i];
 	$sql="select passed from zzcms_userdomain where id ='$id'";
-	$rs = mysql_query($sql); 
-	$row = mysql_fetch_array($rs);
+	$rs = query($sql); 
+	$row = fetch_array($rs);
 		if ($row['passed']=='0'){
-		mysql_query("update zzcms_userdomain set passed=1 where id ='$id'");
+		query("update zzcms_userdomain set passed=1 where id ='$id'");
 		}else{
-		mysql_query("update zzcms_userdomain set passed=0 where id ='$id'");
+		query("update zzcms_userdomain set passed=0 where id ='$id'");
 		}
 	}
 }else{
@@ -62,8 +62,8 @@ if ($keyword<>"") {
 	$sql2=$sql2. " and domain like '%".$keyword."%'";
 	}
 }
-$rs = mysql_query($sql.$sql2,$conn); 
-$row = mysql_fetch_array($rs);
+$rs = query($sql.$sql2,$conn); 
+$row = fetch_array($rs);
 $totlenum = $row['total']; 
 $totlepage=ceil($totlenum/$page_size);
 
@@ -71,7 +71,7 @@ $totlepage=ceil($totlenum/$page_size);
 $sql="select * from zzcms_userdomain where id<>0 ";
 $sql=$sql.$sql2;
 $sql=$sql . " order by id desc limit $offset,$page_size";
-$rs = mysql_query($sql,$conn); 
+$rs = query($sql,$conn); 
 if(!$totlenum){
 echo "暂无信息";
 }else{
@@ -105,7 +105,7 @@ echo "暂无信息";
  <td width="5%" height="20" align="center" class="border">操作</td>
   </tr>
   <?php
-while($row = mysql_fetch_array($rs)){
+while($row = fetch_array($rs)){
 ?>
  <tr class="bgcolor1" onMouseOver="fSetBg(this)" onMouseOut="fReBg(this)">  
     <td height="22" align="center" ><input name="id[]" type="checkbox" id="id" value="<?php echo $row["id"]?>"></td>

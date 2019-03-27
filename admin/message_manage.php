@@ -24,7 +24,7 @@ $id=$_REQUEST["id"];
 $id="";
 }
 if ($action=="del"){
-mysql_query("delete from zzcms_message where id='$id'");
+query("delete from zzcms_message where id='$id'");
 echo "<script>location.href='?page=".$page."'</script>";
 }
 ?>
@@ -40,8 +40,8 @@ echo "<script>location.href='?page=".$page."'</script>";
 </table>
 <?php
 $sql="select * from zzcms_message order by ID desc"; 
-$rs=mysql_query($sql);
-$row=mysql_num_rows($rs);
+$rs=query($sql);
+$row=num_rows($rs);
 if (!$row){
 echo "暂无信息";
 }else{
@@ -56,7 +56,7 @@ echo "暂无信息";
     <td width="150" align="center" class="border">操作</td>
   </tr>
 <?php
-while($row = mysql_fetch_array($rs)){
+while($row = fetch_array($rs)){
 ?>
    <tr class="bgcolor1" onMouseOver="fSetBg(this)" onMouseOut="fReBg(this)">  
     <td width="71" align="center"><?php echo $row["id"]?></td>

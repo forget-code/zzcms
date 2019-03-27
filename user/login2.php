@@ -65,8 +65,6 @@ $("#getcode_math").click(function(){
       </tr>
     </table>
 </form>
- <?php
-mysql_close($conn);
-?>			  
+ 			  
 </body>
 </html>

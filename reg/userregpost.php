@@ -31,9 +31,15 @@ $email=trim($_POST["email"]);
 $daohang="网站首页,招商信息,品牌信息,公司简介,资质证书,联系方式,在线留言,招聘信息";
 $founderr=0;
 if ($username!='' && $password!=''){
+
+if(! preg_match("/^[a-zA-Z0-9_]{4,15}$/",$username)){//ereg()PHP5.3以后的版本不再支持
+$founderr=1;
+$msg= "<li>用户名只能为字母和数字，字符介于4到15个！</li>";
+}
+	
 $sql="select count(*) as total from zzcms_user where where username='".$username."' ";
-$rs = mysql_query($sql); 
-$row = mysql_fetch_array($rs);
+$rs = query($sql); 
+$row = fetch_array($rs);
 $totlenum = $row['total'];
 	if($totlenum){ 
 	$founderr=1;
@@ -41,13 +47,33 @@ $totlenum = $row['total'];
 	}
 	
 $sql="select count(*) as total from zzcms_usernoreg where username='".$username."'";
-$rs = mysql_query($sql);
-$row= mysql_fetch_array($rs);
+$rs = query($sql);
+$row= fetch_array($rs);
 $totlenum = $row['total'];
 	if($totlenum){ 
 	$founderr=1;
-	$msg= "<li>您填写的用户名已存在！请更换用户名</li>";
+	$msg= "<li>您填写的用户名已存在！请更换用户名！</li>";
 	}	
+
+if ($somane!=''&& $phone!=''&& $email!=''){
+	if(!preg_match("/^[\x7f-\xff]+$/",$somane)){
+	$founderr=1;
+	$msg='<li>姓名只能用中文</li>';
+	}
+
+	if(!preg_match("/1[3458]{1}\d{9}$/",$phone) && !preg_match('/^400(\d{3,4}){2}$/',$phone) && !preg_match('/^400(-\d{3,4}){2}$/',$phone) && !preg_match('/^(010|02\d{1}|0[3-9]\d{2})-\d{7,9}(-\d+)?$/',$phone)){//分别是手机，400电话(加-和不加两种情况都可以)，和普通电话
+	$founderr=1;
+	$msg='<li>电话号码不正确！</li>';
+	}
+
+	if(! preg_match("/^[a-zA-Z0-9_.]+@([a-zA-Z0-9_]+.)+[a-zA-Z]{2,3}$/",$email)) {
+	$founderr=1;
+	$msg= "<li>Email格式不正确！</li>";
+	}
+}else{
+$founderr=1;
+$msg= "<li>联系人、电话、E-mail为必填项！</li>";
+}	
 	
 if ($founderr==1){
 WriteErrMsg($msg);
@@ -59,7 +85,7 @@ $checkcode=date("YmdHis").rand(100,999);
 
 $sql="INSERT INTO zzcms_usernoreg (username,password,usersf,comane,somane,phone,email,checkcode,regdate)
 VALUES('$username','$password','$usersf','$comane','$somane','$phone','$email','$checkcode','".date('Y-m-d H:i:s')."')";
-mysql_query($sql);
+query($sql);
 //sendemail
 $smtp=new smtp(smtpserver,25,true,sender,smtppwd,sender);//25:smtp服务器的端口一般是25
 $to = $email; //收件人
@@ -98,8 +124,8 @@ echo "验证邮件发送失败。";
 }
 
 }else{ //if(checkistrueemail=="Yes" )
-mysql_query("INSERT INTO zzcms_user (username,password,passwordtrue,usersf,comane,content,somane,sex,phone,email,img,totleRMB,regdate,lastlogintime)VALUES('$username','".md5($password)."','$password','$usersf','$comane','&nbsp;','$somane','1','$phone','$email','/image/nopic.gif','".jf_reg."','".date('Y-m-d H:i:s')."','".date('Y-m-d H:i:s')."')");
-mysql_query("INSERT INTO zzcms_usersetting (username,skin,skin_mobile,swf,daohang)VALUES('$username','tongyong','1','6.swf','$daohang')");
+query("INSERT INTO zzcms_user (username,password,passwordtrue,usersf,comane,content,somane,sex,phone,email,img,totleRMB,regdate,lastlogintime)VALUES('$username','".md5($password)."','$password','$usersf','$comane','&nbsp;','$somane','1','$phone','$email','/image/nopic.gif','".jf_reg."','".date('Y-m-d H:i:s')."','".date('Y-m-d H:i:s')."')");
+query("INSERT INTO zzcms_usersetting (username,skin,skin_mobile,swf,daohang)VALUES('$username','tongyong','1','6.swf','$daohang')");
 setcookie("UserName",$username,time()+3600*24*365,"/");//直接登录
 setcookie("PassWord",md5($password),time()+3600*24*365,"/");
 session_write_close();
@@ -158,7 +184,7 @@ echo "<script>location.href='/user/login.php?username=".$username."'</script>";
 }//end if(checkistrueemail=="Yes" )
 }//end if($founderr==1)
 }//end if($username!='' && $password!='')
-mysql_close($conn);
+
 ?>
 </div>
 </body>

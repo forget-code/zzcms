@@ -1,7 +1,9 @@
 <?php 
+if(!isset($_SESSION)){session_start();} 
 error_reporting(0);
 set_time_limit(0);
 set_magic_quotes_runtime(0);
+
 include '../inc/config.php';
 if($_POST) extract($_POST, EXTR_SKIP);//把数组中的键名直接注册为了变量。就像把$_POST[ai]直接注册为了$ai。
 if($_GET) extract($_GET, EXTR_SKIP);
@@ -119,6 +121,7 @@ switch($step) {
 		include 'step_'.$step.'.php';
 	break;
 }
+session_write_close();
 ?>
 </div>
 </body>

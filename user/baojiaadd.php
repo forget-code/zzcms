@@ -25,7 +25,7 @@ if (document.myform.province.value=="请选择省份"){alert("请选择意向省
 if (document.myform.price.value==""){alert("请填写价格！");document.myform.price.focus();return false;}
 if (document.myform.danwei.value==""){alert("请填写计价单位！");document.myform.danwei.focus();return false;}
 //定义正则表达式部分
-var strP=/^\d+$/;
+var strP=/^\d+(\.\d+)?$/;
 if(!strP.test(document.myform.price.value)) {
 alert("价格只能填数字！"); 
 document.myform.price.focus(); 
@@ -69,8 +69,8 @@ include("checkaddinfo.php");
           <option value="" selected>请选择类别 </option>
           <?php
 		$sql="select * from zzcms_zsclass where parentid='A'";
-		$rs=mysql_query($sql);
-		while($row= mysql_fetch_array($rs)){
+		$rs=query($sql);
+		while($row= fetch_array($rs)){
 			?>
           <option value="<?php echo $row["classzm"]?>"<?php if (@$_SESSION['bigclassid']==$row["classzm"]){echo 'selected';}?>><?php echo $row["classname"]?></option>
           <?php
@@ -103,8 +103,8 @@ new PCAS('province', 'city', 'xiancheng', '<?php echo @$_SESSION['province']?>',
     </tr>
 	<?php
 	$sql="select * from zzcms_user where username='".$username."'";
-	$rs=mysql_query($sql);
-	$row= mysql_fetch_array($rs);
+	$rs=query($sql);
+	$row= fetch_array($rs);
 	?>
     <tr style="display:none" id='submenu1'>
       <td align="right" class="border">公司名称：</td>
@@ -146,7 +146,7 @@ new PCAS('province', 'city', 'xiancheng', '<?php echo @$_SESSION['province']?>',
 </div>
 </div>
 <?php
-mysql_close($conn);
+
 session_write_close();
 ?>
 </body>

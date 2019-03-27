@@ -30,10 +30,10 @@ if ($action=="savedata" ){
 	$saveas=trim($_REQUEST["saveas"]);
 	$content=stripfxg(rtrim($_POST["info_content"]));
 	if ($saveas=="add"){
-	mysql_query("insert into zzcms_msg (content)VALUES('$content') ");
+	query("insert into zzcms_msg (content)VALUES('$content') ");
 	$go=1;
 	}elseif ($saveas=="modify"){
-	mysql_query("update zzcms_msg set content='$content' where id=". $_POST['id']." ");
+	query("update zzcms_msg set content='$content' where id=". $_POST['id']." ");
 	$go=1;
 	}
 }
@@ -75,8 +75,8 @@ if ($action=="add") {
 }
 if ($action=="modify") {
 $sql="select * from zzcms_msg where id=".$_REQUEST["id"]."";
-$rs=mysql_query($sql);
-$row=mysql_fetch_array($rs);
+$rs=query($sql);
+$row=fetch_array($rs);
 ?>
 <div class="admintitle"><?php echo $f_array[3]?></div>  
 <form action="?action=savedata&saveas=modify" method="POST" name="myform" id="myform">

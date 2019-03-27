@@ -14,7 +14,7 @@ $f_array=explode("|||",$fcontent) ;
 <title><?php echo $f_array[1]?></title>
 <link href="style/<?php echo siteskin_usercenter?>/style.css" rel="stylesheet" type="text/css">
 <?php
-if (check_usergr_power("special")=="no" && $usersf=='个人'){
+if (str_is_inarr(usergr_power,'special')=="no" && $usersf=='个人'){
 showmsg('个人用户没有此权限','null');//设为null提示后，不返回到上一页，防止由user/index.php?goto='zsadd.php'过来的造成死循环提示
 }
 ?>
@@ -88,14 +88,14 @@ $s=$_REQUEST["s"];
             <td width="82%" class="border2"> 
               <?php
 $sql = "select * from zzcms_specialclass where parentid<>0 order by xuhao asc";
-$rs=mysql_query($sql);
+$rs=query($sql);
 ?>
 <script language = "JavaScript" type="text/JavaScript">
 var onecount;
 subcat = new Array();
         <?php 
         $count = 0;
-        while($row = mysql_fetch_array($rs)){
+        while($row = fetch_array($rs)){
         ?>
 subcat[<?php echo $count?>] = new Array("<?php echo trim($row["classname"])?>","<?php echo trim($row["parentid"])?>","<?php echo trim($row["classid"])?>");
         <?php
@@ -119,8 +119,8 @@ function changelocation(locationid){
                 <option value="" selected="selected"><?php echo $f_array[3]?></option>
                 <?php
 	$sql = "select * from zzcms_specialclass where isshowforuser=1 and parentid=0 order by xuhao asc";
-    $rs=mysql_query($sql);
-	while($row = mysql_fetch_array($rs)){
+    $rs=query($sql);
+	while($row = fetch_array($rs)){
 		if ($row["classid"]==@$b){
 	?>
 	 <option value="<?php echo trim($row["classid"])?>" selected><?php echo trim($row["classname"])?></option>
@@ -142,16 +142,16 @@ function changelocation(locationid){
                 <?php
 if ($b!=''){//从index.php获取的大类值优先
 $sql="select * from zzcms_specialclass where parentid=".$b." order by xuhao asc";
-$rs=mysql_query($sql);
-while($row = mysql_fetch_array($rs)){
+$rs=query($sql);
+while($row = fetch_array($rs)){
 				?>
 				  <option value="<?php echo $row["classid"]?>" <?php if ($row["classid"]==$s) { echo "selected";}?>><?php echo $row["classname"]?></option>
                 <?php
 	}
 }elseif($_SESSION["bigclassid"]!=''){
 $sql="select * from zzcms_specialclass where parentid=" .@$_SESSION["bigclassid"]." order by xuhao asc";
-$rs=mysql_query($sql);
-	while($row = mysql_fetch_array($rs)){
+$rs=query($sql);
+	while($row = fetch_array($rs)){
 	?>
    <option value="<?php echo $row["classid"]?>" <?php if ($row["classid"]==$_SESSION["smallclassid"]) { echo "selected";}?>><?php echo $row["classname"]?></option>
 <?php 
@@ -210,10 +210,10 @@ $(document).ready(function(){
             <td class="border" ><select name="groupid" class="biaodan">
                 <option value="0"><?php echo $f_array[14]?></option>
                 <?php
-		  $rs=mysql_query("Select * from zzcms_usergroup ");
-		  $row = mysql_num_rows($rs);
+		  $rs=query("Select * from zzcms_usergroup ");
+		  $row = num_rows($rs);
 		  if ($row){
-		  while($row = mysql_fetch_array($rs)){
+		  while($row = fetch_array($rs)){
 		  	echo "<option value='".$row["groupid"]."'>".$row["groupname"]."</option>";
 		  }
 		  }

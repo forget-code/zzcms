@@ -16,8 +16,8 @@ if ($action=="add"){
 	$groupid=$_POST["groupid"];
 	
 	$sql="select admin from zzcms_admin where admin='".$admins."'";
-	$rs = mysql_query($sql,$conn);
-	$row= mysql_num_rows($rs);//返回记录数
+	$rs = query($sql,$conn);
+	$row= num_rows($rs);//返回记录数
 	if($row){ 
 	$founderr=1;
 	$ErrMsg="您填写的用户名已存在！请更换用户名！";
@@ -27,7 +27,7 @@ if ($action=="add"){
 		WriteErrMsg($ErrMsg);
 		}else{
 		$sql="insert into zzcms_admin (admin,pass,groupid) values ('$admins','$passs','$groupid')";
-		mysql_query($sql,$conn);
+		query($sql,$conn);
 		echo "<script>location.href='adminlist.php'</script>";	
 		}
 }else{
@@ -64,8 +64,8 @@ return false;
 	   <select name="groupid" id="groupid">
           <?php
     $sql="Select * from zzcms_admingroup order by id asc";
-    $rs = mysql_query($sql,$conn); 
-	while($row= mysql_fetch_array($rs)){
+    $rs = query($sql,$conn); 
+	while($row= fetch_array($rs)){
 	echo "<option value='".$row["id"]."'>".$row["groupname"]."</option>";
 	}
 	?>

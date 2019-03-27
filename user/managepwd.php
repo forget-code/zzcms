@@ -36,8 +36,8 @@ if ($action=="modify") {
 $oldpassword=md5(trim($_POST["oldpassword"]));
 $password=md5(trim($_POST["password"]));
 	$sql="select password,email,mobile from zzcms_user where username='" . $username . "'";
-	$rs=mysql_query($sql);
-	$row=mysql_fetch_array($rs);
+	$rs=query($sql);
+	$row=fetch_array($rs);
 	if ($oldpassword<>$row["password"]){
 	$founderr=1;
 	$errmsg=$f_array[2];
@@ -45,7 +45,7 @@ $password=md5(trim($_POST["password"]));
 	if ($founderr==1){
 	WriteErrMsg($errmsg);
 	}else{
-	mysql_query("update zzcms_user set password='$password',passwordtrue='".trim($_POST["password"])."' where username='".$username."'");
+	query("update zzcms_user set password='$password',passwordtrue='".trim($_POST["password"])."' where username='".$username."'");
 		if (whenmodifypassword=="Yes"){
 $smtp=new smtp(smtpserver,25,true,sender,smtppwd,sender);//25:smtp服务器的端口一般是25
 //$smtp->debug = true; //是否开启调试,只在测试程序时使用，正式使用时请将此行注释
@@ -127,7 +127,7 @@ include("left.php");
 </div>
 <?php
 }
-mysql_close($conn);
+
 unset ($f_array);
 ?>
 </body>

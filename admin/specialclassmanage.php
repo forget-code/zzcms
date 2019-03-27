@@ -39,19 +39,19 @@ $dowhat="";
 }
 switch ($dowhat){
 case "addbigclass";
-checkadminisdo("zxclass");
+checkadminisdo("specialclass");
 addbigclass();
 break;
 case "addsmallclass";
-checkadminisdo("zxclass");
+checkadminisdo("specialclass");
 addsmallclass();
 break;
 case "modifybigclass";
-checkadminisdo("zxclass");
+checkadminisdo("specialclass");
 modifybigclass();
 break;
 case "modifysmallclass";
-checkadminisdo("zxclass");
+checkadminisdo("specialclass");
 modifysmallclass();
 break;
 default;
@@ -65,10 +65,10 @@ $action=$_REQUEST['action'];
 $action="";
 }
 if ($action=="px") {
-checkadminisdo("zxclass");
+checkadminisdo("specialclass");
 $sql="Select * From zzcms_specialclass where parentid=0";
-$rs=mysql_query($sql);
-while ($row=mysql_fetch_array($rs)){
+$rs=query($sql);
+while ($row=fetch_array($rs)){
 $xuhao=$_POST["xuhao".$row["classid"].""];//表单名称是动态显示的，并于FORM里的名称相同。
 	   if (trim($xuhao) == "" || is_numeric($xuhao) == false) {
 	       $xuhao = 0;
@@ -77,11 +77,11 @@ $xuhao=$_POST["xuhao".$row["classid"].""];//表单名称是动态显示的，并
 	   }else{
 	       $xuhao = $xuhao;
 	   }
-mysql_query("update zzcms_specialclass set xuhao='$xuhao' where classid='".$row['classid']."'");
+query("update zzcms_specialclass set xuhao='$xuhao' where classid='".$row['classid']."'");
 
 $sqln="Select * From zzcms_specialclass where parentid=".$row["classid"]."";
-$rsn=mysql_query($sqln);
-while ($rown=mysql_fetch_array($rsn)){
+$rsn=query($sqln);
+while ($rown=fetch_array($rsn)){
 $xuhaos=$_POST["xuhaos".$rown["classid"].""];//表单名称是动态显示的，并于FORM里的名称相同。
 	   if (trim($xuhaos) == "" || is_numeric($xuhaos) == false) {
 	       $xuhaos = 0;
@@ -90,29 +90,29 @@ $xuhaos=$_POST["xuhaos".$rown["classid"].""];//表单名称是动态显示的，
 	   }else{
 	       $xuhaos = $xuhaos;
 	   }
-mysql_query("update zzcms_specialclass set xuhao='$xuhaos' where classid='".$rown['classid']."'");
+query("update zzcms_specialclass set xuhao='$xuhaos' where classid='".$rown['classid']."'");
 }
 }
 }
 
 if ($action=="delbig") {
-checkadminisdo("zxclass");
+checkadminisdo("specialclass");
 $bigclassid=trim($_GET["bigclassid"]);
 if ($bigclassid<>"") {
-	mysql_query("delete from zzcms_specialclass where parentid=" . $bigclassid. "");
-	mysql_query("delete from zzcms_specialclass where classid=" . $bigclassid. "");
+	query("delete from zzcms_specialclass where parentid=" . $bigclassid. "");
+	query("delete from zzcms_specialclass where classid=" . $bigclassid. "");
 }
-//mysql_close($conn);      
+//      
 echo "<script>location.href='?'</script>";
 }
 
 if ($action=="delsmall") {
-checkadminisdo("zxclass");
+checkadminisdo("specialclass");
 $smallclassid=trim($_GET["smallclassid"]);
 if ($smallclassid<>"") {
-	mysql_query("delete from zzcms_specialclass where classid=" . $smallclassid. "");
+	query("delete from zzcms_specialclass where classid=" . $smallclassid. "");
 }
-//mysql_close($conn);      
+//      
 echo "<script>location.href='?#B".$_REQUEST["bigclassid"]."'</script>";
 }
 ?>
@@ -126,8 +126,8 @@ echo "<script>location.href='?#B".$_REQUEST["bigclassid"]."'</script>";
 </table>
 <?php
 $sql="Select * From zzcms_specialclass where parentid=0 order by xuhao";
-$rs=mysql_query($sql);
-$row=mysql_num_rows($rs);
+$rs=query($sql);
+$row=num_rows($rs);
 if (!$row){
 echo "暂无分类信息";
 }else{
@@ -140,7 +140,7 @@ echo "暂无分类信息";
       <td width="25%" class="border" ><strong>排序</strong></td>
       <td width="28%" class="border" ><strong>操作</strong></td>
     </tr>
-    <?php while ($row=mysql_fetch_array($rs)){?>
+    <?php while ($row=fetch_array($rs)){?>
     <tr bgcolor="#F1F1F1"> 
       <td style="font-weight:bold"><a name="B<?php echo $row["classid"]?>"></a><img src="image/icobig.gif" width="9" height="9"> 
         <?php echo $row["classname"]?></td>
@@ -162,10 +162,10 @@ echo "暂无分类信息";
 		
 	$n=0;
 	$sqln="Select * From zzcms_specialclass Where parentid=" . $row["classid"] . " order by xuhao";
-	$rsn=mysql_query($sqln);
-	$rown=mysql_num_rows($rsn);
+	$rsn=query($sqln);
+	$rown=num_rows($rsn);
 	if ($rown){
-	while ($rown=mysql_fetch_array($rsn)){
+	while ($rown=fetch_array($rsn)){
 	?>
     <tr class="bgcolor1" onMouseOver="fSetBg(this)" onMouseOut="fReBg(this)">  
       <td ><a name="S<?php echo $rown["classid"]?>"></a><img src="image/icosmall.gif" width="23" height="11"> 
@@ -195,7 +195,7 @@ echo "暂无分类信息";
 </form>
 <?php
 }
-//mysql_close($conn);	  
+//	  
 }
 
 function addbigclass(){
@@ -226,15 +226,15 @@ for($i=0; $i<count($_POST['classname']);$i++){
 
 	if ($classname!=''){
 	$sql="Select * From zzcms_specialclass Where classname='" . $classname . "'";
-	$rs=mysql_query($sql);
-	$row=mysql_num_rows($rs);
+	$rs=query($sql);
+	$row=num_rows($rs);
 		if (!$row) {
-		mysql_query("insert into zzcms_specialclass (classname,parentid,isshowforuser,isshowininfo)values('$classname',0,'$isshowforuser','$isshowininfo')");	
+		query("insert into zzcms_specialclass (classname,parentid,isshowforuser,isshowininfo)values('$classname',0,'$isshowforuser','$isshowininfo')");	
 		}
 	}
 }	
-$rsbcid=mysql_query("select classid from zzcms_specialclass where classname='".$classname."'");
-$rowbcid=mysql_fetch_array($rsbcid);
+$rsbcid=query("select classid from zzcms_specialclass where classname='".$classname."'");
+$rowbcid=fetch_array($rsbcid);
 $bcid=$rowbcid["classid"];
 echo "<script>location.href='?#B".$bcid."'</script>";	
 }
@@ -306,7 +306,7 @@ TemO.appendChild(newline);
 </form>
 <?php
 }
-//mysql_close($conn);
+//
 }
 
 function addsmallclass(){
@@ -335,10 +335,10 @@ if ($action=="add") {
 	}
 	if ($classname!=''){
 	$sql="Select * From zzcms_specialclass Where parentid=" . $bigclassid . " AND classname='" . $classname . "'";
-	$rs=mysql_query($sql);
-	$row=mysql_num_rows($rs);
+	$rs=query($sql);
+	$row=num_rows($rs);
 		if (!$row) {
-		mysql_query("insert into zzcms_specialclass (parentid,classname,isshowforuser,isshowininfo)values('$bigclassid','$classname','$isshowforuser','$isshowininfo')");
+		query("insert into zzcms_specialclass (parentid,classname,isshowforuser,isshowininfo)values('$bigclassid','$classname','$isshowforuser','$isshowininfo')");
 		}
 	}
 	}	
@@ -356,8 +356,8 @@ WriteErrMsg($ErrMsg);
       <td width="74%" class="border"> 
         <?php
 		$sqlb = "Select * From zzcms_specialclass where parentid=0";
-	    $rsb=mysql_query($sqlb);
-        $rowb=mysql_num_rows($rsb);
+	    $rsb=query($sqlb);
+        $rowb=num_rows($rsb);
 		if (!$rowb){
 			echo "请先添加大类。";
 		}else{
@@ -365,7 +365,7 @@ WriteErrMsg($ErrMsg);
 		<select name="bigclassid" id="bigclassid">
                 <option value="" selected="selected">请选择类别</option>
                 <?php
-		while($rowb= mysql_fetch_array($rsb)){
+		while($rowb= fetch_array($rsb)){
 			?>
                 <option value="<?php echo $rowb["classid"]?>" <?php if ($rowb["classid"]==$bigclassid) { echo "selected";}?>><?php echo $rowb["classname"]?></option>
                 <?php
@@ -437,7 +437,7 @@ TemO.appendChild(newline);
 </form>
 <?php
 }
-//mysql_close($conn);
+//
 }
 
 function modifybigclass(){
@@ -454,7 +454,7 @@ $classid="";
 $FoundErr=0;
 $ErrMsg="";
 if ($classid==""){
-//mysql_close($conn);
+//
 echo "<script>location.href='?'</script>";
 }
 
@@ -488,8 +488,8 @@ if ($discription==""){
 $discription=$classname;
 }
 	$sql="Select * from zzcms_specialclass where classid=" .$classid."";
-	$rs=mysql_query($sql);
-	$row=mysql_num_rows($rs);
+	$rs=query($sql);
+	$row=num_rows($rs);
 	if (!$row){
 	$FoundErr=1;
 	$ErrMsg=$ErrMsg . "<li>此产品大类不存在！</li>";
@@ -497,8 +497,8 @@ $discription=$classname;
 	
 	if ($classname<>$oldclassname) {
 	$sqln="Select * from zzcms_specialclass where parentid=0 and classname='".$classname."'";
-	$rsn=mysql_query($sqln);
-	$rown=mysql_num_rows($rsn);
+	$rsn=query($sqln);
+	$rown=num_rows($rsn);
 	if ($rown){
 	
 		$FoundErr=1;
@@ -507,12 +507,12 @@ $discription=$classname;
 	}
 		
 	if ($FoundErr==0){
-	mysql_query("update zzcms_specialclass set classname='$classname',isshowforuser='$isshowforuser',isshowininfo='$isshowininfo',title='$title',keyword='$keyword',discription='$discription' where classid=" .$classid."");
+	query("update zzcms_specialclass set classname='$classname',isshowforuser='$isshowforuser',isshowininfo='$isshowininfo',title='$title',keyword='$keyword',discription='$discription' where classid=" .$classid."");
 	
 		if ($classname<>$oldclassname) {//类名改变的情况下
-			mysql_query("Update zzcms_special set bigclassname='" . $classname . "'  where bigclassid=" . $classid . " ");	
+			query("Update zzcms_special set bigclassname='" . $classname . "'  where bigclassid=" . $classid . " ");	
 		}	
-		//mysql_close($conn);
+		//
 		echo "<script>location.href='?#B".$classid."'</script>";
 	}
 }
@@ -521,8 +521,8 @@ if ($FoundErr==1){
 WriteErrMsg($ErrMsg);
 }else{
 $sql="Select * from zzcms_specialclass where classid=" .$classid."";
-$rs=mysql_query($sql);
-$row=mysql_fetch_array($rs);
+$rs=query($sql);
+$row=fetch_array($rs);
 ?>
 <div class="admintitle">修改大类</div>
 <form name="form1" method="post" action="?dowhat=modifybigclass" onSubmit="return CheckForm();">
@@ -573,7 +573,7 @@ $row=mysql_fetch_array($rs);
 </form>
 <?php
 }
-//mysql_close($conn);
+//
 }
 
 function modifysmallclass(){
@@ -590,7 +590,7 @@ $classid="";
 $FoundErr=0;
 $ErrMsg="";
 if ($classid==""){
-mysql_close($conn);
+
 echo "<script>location.href='?'</script>";
 }
 
@@ -627,8 +627,8 @@ if ($discription==""){
 $discription=$classname;
 }
 	$sql="Select * from zzcms_specialclass where classid=" .$classid."";
-	$rs=mysql_query($sql);
-	$row=mysql_num_rows($rs);
+	$rs=query($sql);
+	$row=num_rows($rs);
 	if (!$row){
 	$FoundErr=1;
 	$ErrMsg=$ErrMsg . "<li>此小类不存在！</li>";
@@ -636,8 +636,8 @@ $discription=$classname;
 	
 	if ($classname<>$oldclassname || $bigclassid<>$oldbigclassid) {
 	$sqln="Select * from zzcms_specialclass where parentid=".$bigclassid." and classname='".$classname."'";
-	$rsn=mysql_query($sqln);
-	$rown=mysql_num_rows($rsn);
+	$rsn=query($sqln);
+	$rown=num_rows($rsn);
 	if ($rown){
 		$FoundErr=1;
 		$ErrMsg=$ErrMsg . "<li>此小类名称已存在！</li>";
@@ -645,15 +645,15 @@ $discription=$classname;
 	}
 	
 	if ($FoundErr==0) {
-	mysql_query("update zzcms_specialclass set parentid='$bigclassid',classname='$classname',isshowforuser='$isshowforuser',isshowininfo='$isshowininfo',title='$title',keyword='$keyword',discription='$discription' where classid=" .$classid."");
+	query("update zzcms_specialclass set parentid='$bigclassid',classname='$classname',isshowforuser='$isshowforuser',isshowininfo='$isshowininfo',title='$title',keyword='$keyword',discription='$discription' where classid=" .$classid."");
 			if ($bigclassid<>$oldbigclassid) {//小类别改变所属大类情况下
-				mysql_query("Update zzcms_special set bigclassid=" . $bigclassid . " where bigclassid=" . $oldbigclassid . " and smallclassid=" . $classid . " ");
-				mysql_query("Update zzcms_special set bigclassname=(select classname from zzcms_specialclass where classid=".$bigclassid.") where bigclassid=" . $bigclassid . " and smallclassid=" . $classid . " ");	
+				query("Update zzcms_special set bigclassid=" . $bigclassid . " where bigclassid=" . $oldbigclassid . " and smallclassid=" . $classid . " ");
+				query("Update zzcms_special set bigclassname=(select classname from zzcms_specialclass where classid=".$bigclassid.") where bigclassid=" . $bigclassid . " and smallclassid=" . $classid . " ");	
 			}
 			if ($classname<>$oldclassname) {//小类名改变的情况下
-				mysql_query("Update zzcms_special set smallclassname='" . $classname . "'  where bigclassid=" . $bigclassid . " and smallclassid=" . $classid . " ");
+				query("Update zzcms_special set smallclassname='" . $classname . "'  where bigclassid=" . $bigclassid . " and smallclassid=" . $classid . " ");
 			}
-			//mysql_close($conn);
+			//
 			echo "<script>location.href='?#S".$classid."'</script>";
 	}
 }
@@ -662,8 +662,8 @@ if ($FoundErr==1){
 WriteErrMsg($ErrMsg);
 }else{
 $sql="Select * from zzcms_specialclass where classid=".$classid."";
-$rs=mysql_query($sql);
-$row=mysql_fetch_array($rs);
+$rs=query($sql);
+$row=fetch_array($rs);
 ?>
 <div class="admintitle">修改小类</div>
 <form name="form1" method="post" action="?dowhat=modifysmallclass" onSubmit="return CheckForm();">
@@ -673,8 +673,8 @@ $row=mysql_fetch_array($rs);
       <td class="border"> 
 	    <?php
 		$sqlb = "Select * From zzcms_specialclass where parentid=0";
-	    $rsb=mysql_query($sqlb);
-        $rowb=mysql_num_rows($rsb);
+	    $rsb=query($sqlb);
+        $rowb=num_rows($rsb);
 		if (!$rowb){
 			echo "请先添加大类。";
 		}else{
@@ -682,7 +682,7 @@ $row=mysql_fetch_array($rs);
 		<select name="bigclassid" id="bigclassid">
                 <option value="" selected="selected">请选择类别</option>
                 <?php
-		while($rowb= mysql_fetch_array($rsb)){
+		while($rowb= fetch_array($rsb)){
 			?>
                 <option value="<?php echo $rowb["classid"]?>" <?php if ($rowb["classid"]==$row["parentid"]) { echo "selected";}?>><?php echo $rowb["classname"]?></option>
                 <?php
@@ -737,7 +737,7 @@ $row=mysql_fetch_array($rs);
 </form>
 <?php
 }
-//mysql_close($conn);
+//
 }
 ?>
 </body>

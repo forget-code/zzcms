@@ -17,8 +17,8 @@ $sql=$sql." and smallclassid='".$s."' ";
 
 
 $sql=$sql." order by elite desc,id desc limit $last,$amount";
-$rs = mysql_query($sql); 
-while($row= mysql_fetch_array($rs)){
+$rs = query($sql); 
+while($row= fetch_array($rs)){
 
 if ($row["link"]<>""){
 $link=$row["link"];

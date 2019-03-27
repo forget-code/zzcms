@@ -14,7 +14,7 @@ $action="";
 }
 if ($action=="add") {
 checkadminisdo("label");
-$title=trim($_POST["title"]);
+$title=nostr(trim($_POST["title"]));
 $title_old=trim($_POST["title_old"]);
 $bigclassid=trim($_POST["bigclassid"]);
 
@@ -43,7 +43,7 @@ echo "<script>alert('".$msg."');location.href='?labelname=".$title.".txt'</scrip
 
 if ($action=="del") {
 checkadminisdo("label");
-$f="../template/".siteskin."/label/zhshow/".trim($_POST["title"]).".txt";
+$f="../template/".siteskin."/label/zhshow/".nostr(trim($_POST["title"])).".txt";
 	if (file_exists($f)){
 	unlink($f);
 	}else{
@@ -187,8 +187,8 @@ $ends="";
           <option value="empty" selected>不指定大类</option>
           <?php
        $sql = "select * from zzcms_zhclass order by xuhao asc";
-       $rs=mysql_query($sql);
-		   while($r=mysql_fetch_array($rs)){
+       $rs=query($sql);
+		   while($r=fetch_array($rs)){
 			?>
           <option value="<?php echo $r["bigclassid"]?>" <?php if ($r["bigclassid"]==$bigclassid) { echo "selected";}?>> 
          <?php echo trim($r["bigclassname"])?></option>
@@ -244,8 +244,6 @@ $ends="";
     </tr>
   </table>
       </form>
-<?php
-mysql_close($conn);
-?>		  
+		  
 </body>
 </html>

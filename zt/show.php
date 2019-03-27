@@ -29,12 +29,12 @@ if ($showad_inzt=="yes") {
 }
 $linkliuyan=siteurl."/zt/show.php?id=".$id."#dl_liuyan";//转为PHP页，解决二级域名无法直接留言，验证码无法跨域
 $zslist=strbetween($strout,"{zsloop}","{/zsloop}");
-$rs=mysql_query("select * from zzcms_main where editor='$editor' and passed=1 order by xuhao desc limit 0,12");
-$row=mysql_num_rows($rs);
+$rs=query("select * from zzcms_main where editor='$editor' and passed=1 order by xuhao desc limit 0,12");
+$row=num_rows($rs);
 if ($row){
 $n=0;
 $zslist2='';
-while($row=mysql_fetch_array($rs)){
+while($row=fetch_array($rs)){
 if (sdomain=="Yes"){
 	if (whtml=="Yes"){ 
 	$link="/sell/zsshow-".$row["id"].".htm";
@@ -80,12 +80,12 @@ $strout=str_replace("{zsloop}".$zslist."{/zsloop}","暂无信息",$strout) ;
 
 $licence=strbetween($strout,"{licence}","{/licence}");
 
-$rs=mysql_query("select img,title,passed,editor from zzcms_licence where editor='" .$editor. "' and passed=1");
-$row=mysql_num_rows($rs);
+$rs=query("select img,title,passed,editor from zzcms_licence where editor='" .$editor. "' and passed=1");
+$row=num_rows($rs);
 if ($row){
 $n=0;
 $licence2='';
-while ($row=mysql_fetch_array($rs)){
+while ($row=fetch_array($rs)){
 $licence2 = $licence2. str_replace("{#img}",getsmallimg($row['img']),$licence) ;
 $licence2 =str_replace("{#imgbig}",siteurl.$row['img'],$licence2) ;
 $licence2 =str_replace("{#link}",siteurl.$row['img'],$licence2) ;
@@ -102,11 +102,11 @@ $strout=str_replace("{licence}".$licence."{/licence}","暂无信息",$strout) ;
 
 function dlxx($editor){
 $sql="select count(*) as total from zzcms_dl where saver='".$editor."' and del=0";
-$rs = mysql_query($sql); 
-$row = mysql_fetch_array($rs);
+$rs = query($sql); 
+$row = fetch_array($rs);
 $totlenum = $row['total'];
 if ($totlenum){
-$rs=mysql_query("select cp,id,cpid,dlsname,sendtime,city,looked from zzcms_dl where saver='".$editor."' and del=0 order by id desc limit 0,10");
+$rs=query("select cp,id,cpid,dlsname,sendtime,city,looked from zzcms_dl where saver='".$editor."' and del=0 order by id desc limit 0,10");
 $str="<div style='font-size:9pt'>产品留言</div><table width='100%' border='0' cellpadding='5' cellspacing='1' class='bgcolor3'>";
 $str=$str. "<tr class='bgcolor2'> ";
 $str=$str. "<td width='25%'>产品名称</td>";
@@ -115,7 +115,7 @@ $str=$str. "<td width='13%'>联系人</td>";
 $str=$str. "<td width='17%'>联系方式</td>";
 $str=$str. "<td width='20%'>留言时间</td>";
 $str=$str. "</tr>";
-while ($row=mysql_fetch_array($rs)){
+while ($row=fetch_array($rs)){
 $str=$str. "<tr class='bgcolor1'> ";
 $str=$str. "<td>";
 
@@ -157,11 +157,11 @@ return $str;
 //guestbook
 $guestbook=strbetween($strout,"{guestbook}","{/guestbook}");
 $list=strbetween($guestbook,"{loop}","{/loop}");
-$rs=mysql_query("select title,content,linkmen,phone,email,looked,sendtime from zzcms_guestbook where saver='".$editor."'and passed=1 order by id desc limit 0,10");
-$row=mysql_num_rows($rs);
+$rs=query("select title,content,linkmen,phone,email,looked,sendtime from zzcms_guestbook where saver='".$editor."'and passed=1 order by id desc limit 0,10");
+$row=num_rows($rs);
 if ($row){
 $list2='';
-while ($row=mysql_fetch_array($rs)){
+while ($row=fetch_array($rs)){
 $list2 = $list2. str_replace("{#content}",cutstr($row["content"],8),$list) ;
 	if ($row["looked"]==0){ 
 	$list2 =str_replace("{#looked}","(尚未被查看)",$list2) ;
@@ -269,8 +269,8 @@ $lxfs=$lxfs."</div>";
 
 //dlform
 if (isset($_COOKIE["UserName"])) {
-$rsn=mysql_query("select * from zzcms_user where username='".trim($_COOKIE["UserName"])."'");
-$rown=mysql_fetch_array($rsn);
+$rsn=query("select * from zzcms_user where username='".trim($_COOKIE["UserName"])."'");
+$rown=fetch_array($rsn);
 $companyname=$rown["comane"];
 $somane=$rown["somane"];
 $phone=$rown["phone"];
@@ -334,6 +334,6 @@ $strout=str_replace("{#sitebottom}",$sitebottom,$strout);
 $strout=str_replace("{#sitetop}",$sitetop,$strout);
 $strout=showlabel($strout);
 echo  $strout;
-mysql_close($conn);	
+	
 session_write_close();	  
 ?>

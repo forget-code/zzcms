@@ -7,13 +7,13 @@ checkid($cpid);
 $cpid=0;
 }
 
-$rs=mysql_query("select * from zzcms_pp where id='$cpid'");
-$row=mysql_num_rows($rs);
+$rs=query("select * from zzcms_pp where id='$cpid'");
+$row=num_rows($rs);
 if(!$row){
 showmsg('无记录');
 }else{
-mysql_query("update zzcms_pp set hit=hit+1 where id='$cpid'");
-$row=mysql_fetch_array($rs);
+query("update zzcms_pp set hit=hit+1 where id='$cpid'");
+$row=fetch_array($rs);
 $editorinzsshow=$row["editor"];//供传值到top.php
 $editor=$row["editor"];
 $ppname=$row['ppname'];
@@ -25,12 +25,12 @@ $hit=$row["hit"];
 $sm=$row["sm"];
 
 $smallclassname='';
-$rsn=mysql_query("select classname from zzcms_zsclass where classzm='".$bigclasszm."'");
-$rown=mysql_fetch_array($rsn);
+$rsn=query("select classname from zzcms_zsclass where classzm='".$bigclasszm."'");
+$rown=fetch_array($rsn);
 $bigclassname=$rown["classname"];
 if ($smallclasszm<>""){
-$rsn=mysql_query("select classname from zzcms_zsclass where classzm='".$smallclasszm."'");
-$rown=mysql_fetch_array($rsn);
+$rsn=query("select classname from zzcms_zsclass where classzm='".$smallclasszm."'");
+$rown=fetch_array($rsn);
 $smallclassname=$rown["classname"];
 }
 
@@ -80,8 +80,8 @@ $strout=str_replace("{#sm}",nl2br($sm),$strout) ;
 
 //dlform
 if (isset($_COOKIE["UserName"])) {
-$rsn=mysql_query("select * from zzcms_user where username='".trim($_COOKIE["UserName"])."'");
-$rown=mysql_fetch_array($rsn);
+$rsn=query("select * from zzcms_user where username='".trim($_COOKIE["UserName"])."'");
+$rown=fetch_array($rsn);
 $companyname=$rown["comane"];
 $somane=$rown["somane"];
 $phone=$rown["phone"];

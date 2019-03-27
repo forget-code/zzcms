@@ -16,7 +16,7 @@ if ($sitename==''||$url==''||$logo==''||$content==''){
 	showmsg('请完整填写您的信息');
 }
 
-mysql_query("insert into zzcms_link (sitename,url,logo,content,sendtime)values('$sitename','$url','$logo','$content','".date('Y-m-d H:i:s')."')");
+query("insert into zzcms_link (sitename,url,logo,content,sendtime)values('$sitename','$url','$logo','$content','".date('Y-m-d H:i:s')."')");
 showmsg('操作成功！提示：提交申请后，请做好本站链接——如果没有增加本站的链接，那么你的申请是不会被通过的。','link.php') ;
 }
 
@@ -35,6 +35,6 @@ $strout=str_replace("{#logourl}",logourl,$strout) ;
 $strout=str_replace("{#sitebottom}",sitebottom(),$strout);
 $strout=str_replace("{#sitetop}",sitetop(),$strout);
 $strout=showlabel($strout);
-mysql_close($conn);
+
 echo  $strout;
 ?>

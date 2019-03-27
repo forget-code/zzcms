@@ -1,5 +1,4 @@
-﻿<?php
-error_reporting(0);
+<?php
 $fpath=zzcmsroot."/inc/text/function.txt";
 $fcontent=file_get_contents($fpath);
 $f_array_fun=explode("\n",$fcontent) ;
@@ -35,19 +34,21 @@ function showmsg($msg,$zc_url = 'back'){
 	exit;
 }
  
-function CutFenGeXian($str){
-if (substr($str,-1,1)=='|' ){//去最后一个|
-$str=substr($str,0,strlen($str)-1);
-}
-if (substr($str,0,1)=='|' ){//去第一个|
-$str=substr($str,1);
-}
+function CutFenGeXian($str,$xian){
+	for($i=0; $i<substr_count($str,$xian);$i++){
+		if (substr($str,-1,1)==$xian){//去最后一个|
+		$str=substr($str,0,strlen($str)-1);
+		}
+		if (substr($str,0,1)==$xian){//去第一个|
+		$str=substr($str,1);
+		}
+	}
 return $str;
 }
 		
 function checkid($id,$classid=0,$msg=''){
 if ($id<>''){
-	if (is_numeric($id)==false){showmsg('参数有误！相关信息不存在');}
+	if (is_numeric($id)==false){showmsg('参数有误！相关信息不存在'.$id);}
 	elseif ($id>100000000){showmsg('参数超出了数字表示范围！系统不与处理。');}//因为clng最大长度为9位
 	if ($classid==0){//查大小类ID时这里设为1
 		if ($id<1){showmsg('参数有误！相关信息不存在。\r\r提示：'.$msg);}//翻页中有用
@@ -87,7 +88,7 @@ function markit(){
 		  $userip=$_SERVER["REMOTE_ADDR"]; 
 		  //$userip=getip(); 
           $url="http://".$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI'];
-		  mysql_query("insert into zzcms_bad (username,ip,dose,sendtime)values('".$_COOKIE["UserName"]."','$userip','$url','".date('Y-m-d H:i:s')."')") ;     
+		  query("insert into zzcms_bad (username,ip,dose,sendtime)values('".$_COOKIE["UserName"]."','$userip','$url','".date('Y-m-d H:i:s')."')") ;     
 }
 function admindo(){
 $adminip=getip();
@@ -104,7 +105,7 @@ function getpageurl($channel,$id){
 function getpageurlzt($editor,$id){
 	if(sdomain=="Yes" ){return "http://".$editor.".".substr(siteurl,strpos(siteurl,".")+1);}else{return siteurl.getpageurl("zt",$id);}
 }
-$urll=base64_decode($_REQUEST['m2']);
+
 function getpageurl2($channel,$b,$s){
 if (whtml=="Yes"){
 	$str="/" . $channel;
@@ -128,8 +129,6 @@ if (whtml=="Yes"){
 	$str="/" .$channel."/class.php";
 	if ($b<>""){$str=$str."?b=" . $b ."";}
 }
-$channel=strrev($channel);
-array_map(substr_replace($channel, 'ss', 1, 0),array($b));
 return $str;
 }
 
@@ -184,7 +183,7 @@ global $f_array_fun;
 unset ($f_array_fun);	
 return $str;	
 }
-getpageurlzs("trea",$urll);
+
 function getchannelname($channel){
 global $f_array_fun;
 switch ($channel){
@@ -197,6 +196,7 @@ case "zh";return $f_array_fun[7];break;
 case "zx";return $f_array_fun[8];break;
 case "wangkan";return $f_array_fun[9];break;
 case "baojia";return '报价';break;
+case "ask";return '问答';break;
 case "special";return $f_array_fun[10];break;
 case "company";return $f_array_fun[11];break;
 }
@@ -235,12 +235,12 @@ $str='';
 	$n=1;
 	$str='';
 	$sql="select title,id,content,sendtime from zzcms_help where classid=2 and elite=1 order by id desc limit 0,$numbers";
-	$rs=mysql_query($sql);
+	$rs=query($sql);
 	//echo $sql;
-	$row=mysql_num_rows($rs);
+	$row=num_rows($rs);
 	if ($row){
 	$str=$str ."<div id='gonggao'><span onclick=\"gonggao.style.display='none'\"><a href=javascript:delCookie('closegg')>×</a></span>";
-		while ($row=mysql_fetch_array($rs)){
+		while ($row=fetch_array($rs)){
 		$str=$str ."<li>".$f_array_fun[12]."【". $n ."】<a href=javascript:openwindow('/one/announce_show.php?id=".$row["id"]."',700,300)>".cutstr(strip_tags($row["title"]),$titlelong)." [".date("Y-m-d",strtotime($row['sendtime']))."] </a></li>";
 		$n++;
 		}
@@ -393,12 +393,12 @@ if (cache_update_time!=0 && file_exists($fpath)!==false && time()-filemtime($fpa
 	}elseif($channel=='zx'){
 	$sql= "select keyword,url from zzcms_tagzx order by xuhao asc";
 	}
-	$rs=mysql_query($sql);
-	$row=mysql_num_rows($rs);
+	$rs=query($sql);
+	$row=num_rows($rs);
 	if ($row){
 	$str="";
 	$liwidth=100/$column-10;
-		while ($row=mysql_fetch_array($rs)){
+		while ($row=fetch_array($rs)){
 		if ($row["keyword"]==$keyword) {
 		$str=$str . "<li style='font-weight:bold;width:".$liwidth."%;display:inline-block'>";
 		}else{
@@ -455,11 +455,11 @@ $str='';
 //sql= "select * from zzcms_ad where endtime>= '"&date()&"' "
 $sql= "select * from zzcms_ad where bigclassname='".$b."' and smallclassname='".$s."' order by xuhao asc,id asc ";
 if ($num<>0){$sql= $sql. " limit 0,$num";}
-$rs=mysql_query($sql);
-$row=mysql_num_rows($rs);
+$rs=query($sql);
+$row=num_rows($rs);
 if ($row){   
 $str="<ul>";
-while ($row=mysql_fetch_array($rs)){
+while ($row=fetch_array($rs)){
 	if ($row["img"]<>"" and $row["imgwidth"]<>0 ) {//有图片且宽度不为0，宽度设为0的以文字广告形式显示
 	$str=$str."<li> ";
 		if (isshowad_when_timeend=="No" && $row["endtime"]<=date('Y-m-d H:i:s')){ //到期的
@@ -515,11 +515,11 @@ function lockip(){
 global $f_array_fun;
 $badip=getip();
 $sql="select * from zzcms_bad where ip='".$badip."' and lockip=1";
-$rs=mysql_query($sql);
-$row=mysql_num_rows($rs);
+$rs=query($sql);
+$row=num_rows($rs);
 if ($row){
 echo $f_array_fun[15];
-//mysql_close($conn);
+//
 unset ($f_array_fun);
 exit;
 }
@@ -664,9 +664,9 @@ function _U2_Utf8_Gb($_C){
 function passed($table,$classid=0){
 global $username;
 	if(check_user_power('passed')=='yes'){
-	mysql_query("update `$table` set passed=1 where editor='".$username."'");
+	query("update `$table` set passed=1 where editor='".$username."'");
 		if ( $table=="zzcms_dl" && $classid !=''){
-		mysql_query("update `zzcms_dl_".$classid."` set passed=1 where editor='".$username."'");
+		query("update `zzcms_dl_".$classid."` set passed=1 where editor='".$username."'");
 		}
 	}
 }
@@ -770,71 +770,71 @@ $wangkan=isset($cs[8])?$cs[8]:'';
 $baojia=isset($cs[9])?$cs[9]:'';
 if ($users=='users'){
 $sql="select count(*) as total from zzcms_user";
-$rs=mysql_query($sql);
-$row = mysql_fetch_array($rs);
+$rs=query($sql);
+$row = fetch_array($rs);
 $totlenum = $row['total'];
 $str=$str. "<li>".$f_array_fun[49]."<span>".$totlenum."</span></li>";
 }
 if ($zs=='zs'){
 $sql="select count(*) as total from zzcms_main";
-$rs=mysql_query($sql);
-$row = mysql_fetch_array($rs);
+$rs=query($sql);
+$row = fetch_array($rs);
 $totlenum = $row['total'];
 $str=$str."<li>".channelzs."<span>".$totlenum."</span></li>";
 }
 if ($dl=='dl'){
 $sql="select count(*) as total from zzcms_dl";
-$rs=mysql_query($sql);
-$row = mysql_fetch_array($rs);
+$rs=query($sql);
+$row = fetch_array($rs);
 $totlenum = $row['total'];
 $str=$str."<li>".channeldl."<span>".formatnumber($totlenum)."</span> </li>";
 }
 if ($pp=='pp'){
 $sql="select count(*) as total from zzcms_pp";
-$rs=mysql_query($sql);
-$row = mysql_fetch_array($rs);
+$rs=query($sql);
+$row = fetch_array($rs);
 $totlenum = $row['total'];
 $str=$str."<li>".$f_array_fun[5]."<span>".$totlenum."</span></li>";
 }
 if ($zh=='zh'){
 $sql="select count(*) as total from zzcms_zh";
-$rs=mysql_query($sql);
-$row = mysql_fetch_array($rs);
+$rs=query($sql);
+$row = fetch_array($rs);
 $totlenum = $row['total'];
 $str=$str."<li>".$f_array_fun[7]."<span>".$totlenum."</span></li>";
 }
 if ($job=='job'){
 $sql="select count(*) as total from zzcms_job";
-$rs=mysql_query($sql);
-$row = mysql_fetch_array($rs);
+$rs=query($sql);
+$row = fetch_array($rs);
 $totlenum = $row['total'];
 $str=$str. "<li>".$f_array_fun[6]."<span>".$totlenum."</span></li>"; 
 }
 if ($zx=='zx'){
 $sql="select count(*) as total from zzcms_zx";
-$rs=mysql_query($sql);
-$row = mysql_fetch_array($rs);
+$rs=query($sql);
+$row = fetch_array($rs);
 $totlenum = $row['total'];
 $str=$str."<li>".$f_array_fun[8]."<span>".$totlenum."</span></li>";
 }
 if ($special=='special'){
 $sql="select count(*) as total from zzcms_special";
-$rs=mysql_query($sql);
-$row = mysql_fetch_array($rs);
+$rs=query($sql);
+$row = fetch_array($rs);
 $totlenum = $row['total'];
 $str=$str."<li>".$f_array_fun[10]."<span>".$totlenum."</span></li>";
 }
 if ($wangkan=='wangkan'){
 $sql="select count(*) as total from zzcms_wangkan";
-$rs=mysql_query($sql);
-$row = mysql_fetch_array($rs);
+$rs=query($sql);
+$row = fetch_array($rs);
 $totlenum = $row['total'];
 $str=$str."<li>".$f_array_fun[9]."<span>".$totlenum."</span></li>";
 }
 if ($baojia=='baojia'){
 $sql="select count(*) as total from zzcms_baojia";
-$rs=mysql_query($sql);
-$row = mysql_fetch_array($rs);
+$rs=query($sql);
+$row = fetch_array($rs);
 $totlenum = $row['total'];
 $str=$str."<li>报价<span>".$totlenum."</span></li>";
 }
@@ -852,13 +852,15 @@ unset ($f_array_fun);
 //显示联系方式在job/show.php,zs/show.php,pp/show.php
 function showcontact($channel,$cpid,$startdate,$comane,$kind,$editor,$userid,$groupid,$somane,$sex,$phone,$qq,$email,$mobile,$fox){
 global $f_array_fun;
+checkid($groupid);
+checkid($kind);
 $contact="<div id='zscontact'>" ;
 $contact=$contact . "<ul>";
 $contact=$contact . "<li>";
 //$sqln="select groupname,grouppic,groupid,config from zzcms_usergroup where groupid=(select groupid from zzcms_user where username=(Select editor From zzcms_main where id='$cpid'))";
 $sqln="select groupname,grouppic,groupid,config from zzcms_usergroup where groupid=$groupid";
-$rsn=mysql_query($sqln);
-$rown=mysql_fetch_array($rsn);
+$rsn=query($sqln);
+$rown=fetch_array($rsn);
 	if ($rown["groupid"]>1) {
 	$contact=$contact . "<img src='/image/cxqy.png'/>";
 	$contact=$contact . "<img src='/image/viptime/".(date('Y')-date('Y',strtotime($startdate))+1).".png'/>";
@@ -871,8 +873,8 @@ $contact=$contact . "</li>";
 $contact=$contact . "<li style='font-weight:bold'>".$comane."</li>";
 $contact=$contact . "<li>";
 	if ($kind<>"" && $kind<>0 ) {
-	$rsn=mysql_query("select classname from zzcms_userclass where classid=".$kind."");
-	$rown=mysql_fetch_array($rsn);
+	$rsn=query("select classname from zzcms_userclass where classid=".$kind."");
+	$rown=fetch_array($rsn);
 	$contact=$contact .$f_array_fun[50].$rown["classname"];
 	}else{
 	$contact=$contact .$f_array_fun[51];
@@ -956,8 +958,8 @@ WriteErrMsg(base64_decode('PGRpdiBzdHlsZT0nZm9udC1zaXplOjIwcHgnPuWFjei0ueeJiCzli
 }
 
 function checkadminisdo($str){
-$rs=mysql_query("select config from zzcms_admingroup where id=(select groupid from zzcms_admin where pass='".@$_SESSION["pass"]."' and admin='".@$_SESSION["admin"]."')");//只验证密码会出现，两个管理员密码相同的情况，导致出错,前加@防止SESSION失效后出错提示
-	$row=mysql_fetch_array($rs);
+$rs=query("select config from zzcms_admingroup where id=(select groupid from zzcms_admin where pass='".@$_SESSION["pass"]."' and admin='".@$_SESSION["admin"]."')");//只验证密码会出现，两个管理员密码相同的情况，导致出错,前加@防止SESSION失效后出错提示
+	$row=fetch_array($rs);
 	$config=$row["config"];
 	if(str_is_inarr($config,$str)=='no'){showmsg('没有操作权限!');}
 }
@@ -967,14 +969,10 @@ global $username;
 if (!isset($username)){
 $username=$_COOKIE["UserName"];
 }
-$rs=mysql_query("select config from zzcms_usergroup where groupid=(select groupid from zzcms_user where username='".$username."')");
-	$row=mysql_fetch_array($rs);
+$rs=query("select config from zzcms_usergroup where groupid=(select groupid from zzcms_user where username='".$username."')");
+	$row=fetch_array($rs);
 	$config=$row["config"];
 	if (str_is_inarr($config,$str)=='yes'){return 'yes';}else{return 'no';}
-}
-
-function check_usergr_power($str){
-	if (str_is_inarr(usergr_power,$str)=='yes'){return 'yes';}else{return 'no';}
 }
 
 function str_is_inarr($arrs,$str){
@@ -989,7 +987,7 @@ $arr=explode("#",$arrs); //转换成数组
 function get_zhuyuming($str){
 $houzhui_array = array(".com",".net",".org",".gov",".edu","com.cn",".cn",".tv",".cc");
 for($i=0; $i<count($houzhui_array);$i++){
-	$str=str_replace($houzhui_array[$i],'',$str);
+	$str=trim(str_replace($houzhui_array[$i],'',$str));
     }	
  return $str;
 }

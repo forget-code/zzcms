@@ -36,18 +36,18 @@ if ($action=="modify"){
 	}
 	$enddate=date('Y-m-d',time()+60*60*24*365);
 		
-    $rs=mysql_query("Select RMB from zzcms_usergroup where groupid='$groupid'");
-	$row=mysql_fetch_array($rs);
+    $rs=query("Select RMB from zzcms_usergroup where groupid='$groupid'");
+	$row=fetch_array($rs);
 	$totleRMB=$sj*$row["RMB"];
 	
-	$rs=mysql_query("select * from zzcms_user where username='" . $username ."'");
-	$row=mysql_num_rows($rs);
+	$rs=query("select * from zzcms_user where username='" . $username ."'");
+	$row=num_rows($rs);
 	if (!$row){
 		$FoundErr=1;
 		$ErrMsg=$ErrMsg. $f_array[0];
 		WriteErrMsg($ErrMsg);
 	}else{
-	$row=mysql_fetch_array($rs);
+	$row=fetch_array($rs);
 		if ($row["groupid"]>=$groupid){
 			$FoundErr=1;
 			$ErrMsg=$ErrMsg . $f_array[1];
@@ -58,9 +58,9 @@ if ($action=="modify"){
 			$ErrMsg=$ErrMsg . $f_array[2];
 			WriteErrMsg($ErrMsg);
 			}else{
-			mysql_query("update zzcms_user set groupid='$groupid',startdate='$startdate',enddate='$enddate',totleRMB=totleRMB-".$totleRMB." where username='" . $username ."'");			
-			mysql_query("Update zzcms_main set groupid=" . $groupid . " where editor='" . $username . "'");
-			mysql_query("insert into zzcms_pay (username,dowhat,RMB,mark,sendtime)values('$username','". $f_array[3]."','$totleRMB','".$f_array[4].$startdate."-".$enddate."','".date('Y-m-d H:i:s')."')");
+			query("update zzcms_user set groupid='$groupid',startdate='$startdate',enddate='$enddate',totleRMB=totleRMB-".$totleRMB." where username='" . $username ."'");			
+			query("Update zzcms_main set groupid=" . $groupid . " where editor='" . $username . "'");
+			query("insert into zzcms_pay (username,dowhat,RMB,mark,sendtime)values('$username','". $f_array[3]."','$totleRMB','".$f_array[4].$startdate."-".$enddate."','".date('Y-m-d H:i:s')."')");
 			echo $f_array[5];
 			}
 		}
@@ -93,8 +93,8 @@ include("left.php");
               <td align="right" class="border2"><?php echo $f_array[8]?></td>
                     <td class="border2"> 
                       <?php
-$rs=mysql_query("Select groupname from zzcms_usergroup where groupid=(select groupid from zzcms_user where username='".$username."')");
-$row=mysql_fetch_array($rs);
+$rs=query("Select groupname from zzcms_usergroup where groupid=(select groupid from zzcms_user where username='".$username."')");
+$row=fetch_array($rs);
 echo $row["groupname"];
 ?>
                       <a href="/one/vipuser.php" target="_blank"><strong><?php echo $f_array[9]?>
@@ -105,10 +105,10 @@ echo $row["groupname"];
               <td width="85%" class="border2"> <select name="canshu">
                   <?php
 				
-     $rs=mysql_query("Select * from zzcms_usergroup ");
-	 $row=mysql_num_rows($rs);
+     $rs=query("Select * from zzcms_usergroup ");
+	 $row=num_rows($rs);
      if ($row){
-	 while($row=mysql_fetch_array($rs)){
+	 while($row=fetch_array($rs)){
 	 ?>
       <option value="<?php echo $row["groupid"]?>" <?php if ($row["groupid"]==$groupid){ echo "selected";}?>><?php echo $row["groupname"]?>(<?php echo $row["RMB"].$f_array[11]?>)</option>
     <?php
@@ -139,6 +139,6 @@ echo $row["groupname"];
 </html>
 <?php
 }
-mysql_close($conn);
+
 unset ($f_array);
 ?>

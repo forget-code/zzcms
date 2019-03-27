@@ -35,8 +35,8 @@ $b="";
 if ($b<>""){
 checkid($b);
 $sql="select * from zzcms_wangkanclass where bigclassid=".$b." ";
-$rs=mysql_query($sql);
-$row=mysql_fetch_array($rs);
+$rs=query($sql);
+$row=fetch_array($rs);
 if ($row){
 $bigclassname=$row["bigclassname"];
 }
@@ -50,13 +50,13 @@ $pagedescription=sitename;
 
 function formbigclass($b){
 $sql = "select * from zzcms_wangkanclass  ";
-$rs=mysql_query($sql);
-$row=mysql_num_rows($rs);
+$rs=query($sql);
+$row=num_rows($rs);
 if (!$row){
 $str= "请先添加类别名称。";
 }else{
 $str="<option value=''>不限类别</option>";
-	while($row=mysql_fetch_array($rs)){
+	while($row=fetch_array($rs)){
 		if ($row["bigclassid"]==$b){
 		$str=$str."<option value='".$row["bigclassid"]."' selected>".$row["bigclassname"]."</option>";
 		}else{
@@ -85,8 +85,8 @@ if( isset($_GET["page"]) && $_GET["page"]!="") {
 }
 $list=strbetween($strout,"{loop}","{/loop}");
 
-$rs = mysql_query($sql.$sql2); 
-$row = mysql_fetch_array($rs);
+$rs = query($sql.$sql2); 
+$row = fetch_array($rs);
 $totlenum = $row['total'];
 $offset=($page-1)*$page_size;//$page_size在上面被设为COOKIESS
 $totlepage=ceil($totlenum/$page_size);
@@ -94,7 +94,7 @@ $totlepage=ceil($totlenum/$page_size);
 $sql="select id,title,img,sendtime,elite from zzcms_wangkan where passed=1 ";
 $sql=$sql.$sql2;
 $sql=$sql." order by id desc limit $offset,$page_size";
-$rs = mysql_query($sql); 
+$rs = query($sql); 
 
 if(!$totlenum){
 	$strout=str_replace("{loop}".$list."{/loop}","暂无信息",$strout) ;
@@ -102,7 +102,7 @@ if(!$totlenum){
 }else{
 $i=0;
 $list2="";
-while($row= mysql_fetch_array($rs)){
+while($row= fetch_array($rs)){
 $list2 = $list2. str_replace("{#link}" ,getpageurl("wangkan",$row["id"]),$list) ;
 $list2 =str_replace("{#title}",$row["title"],$list2) ;
 $list2 =str_replace("{#imgbig}",$row["img"],$list2) ;

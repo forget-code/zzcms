@@ -43,15 +43,15 @@ $sql2='';
 if ($cpmc<>''){
 $sql2=$sql2 . " and cp like '%".$cpmc."%' ";
 }
-$rs = mysql_query($sql.$sql2); 
-$row = mysql_fetch_array($rs);
+$rs = query($sql.$sql2); 
+$row = fetch_array($rs);
 $totlenum = $row['total'];
 $totlepage=ceil($totlenum/$page_size);
 
 $sql="select id,cp,price,danwei,province,city,xiancheng,passed,sendtime from zzcms_baojia where editor='".$username."' ";
 $sql=$sql.$sql2;
 $sql=$sql . " order by id desc limit $offset,$page_size";
-$rs = mysql_query($sql); 
+$rs = query($sql); 
 if(!$totlenum){
 echo '暂无信息';
 }else{
@@ -65,7 +65,7 @@ echo '暂无信息';
             <td width="5%" align="center" class="border">更新时间</td><td width="5%" align="center" class="border">信息状态</td><td width="5%" align="center" class="border">操作</td><td width="5%" align="center" class="border">删除</td>
           </tr>
           <?php
-while($row = mysql_fetch_array($rs)){
+while($row = fetch_array($rs)){
 ?>
           <tr class="bgcolor1" onMouseOver="fSetBg(this)" onMouseOut="fReBg(this)"> 
             <td><a href="<?php echo getpageurl("baojia",$row["id"])?>" target="_blank"><?php echo $row["cp"]?></a></td>
@@ -98,7 +98,7 @@ while($row = mysql_fetch_array($rs)){
   </form>
 <?php
 }
-mysql_close($conn);
+
 ?>
 </div>
 </div>

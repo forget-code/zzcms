@@ -20,11 +20,11 @@ checkadminisdo("bottomlink");
 	$content=stripfxg(rtrim($_POST["info_content"]));
 	$link=trim($_POST["link"]);
 	if ($saveas=="add"){
-	mysql_query("insert into zzcms_about (title,content)VALUES('$title','$content') ");
+	query("insert into zzcms_about (title,content)VALUES('$title','$content') ");
 	$go=1;
 	//echo "<script>location.href='about_manage.php'<//script>";	
 	}elseif ($saveas=="modify"){
-	mysql_query("update zzcms_about set title='$title',content='$content',link='$link' where id=". $_POST['id']." ");
+	query("update zzcms_about set title='$title',content='$content',link='$link' where id=". $_POST['id']." ");
 	$go=1;
 	//echo "<script>location.href='about_manage.php'<//script>";
 	}
@@ -70,8 +70,8 @@ if ($action=="add") {
 }
 if ($action=="modify") {
 $sql="select * from zzcms_about where id=".$_REQUEST["id"]."";
-$rs=mysql_query($sql);
-$row=mysql_fetch_array($rs);
+$rs=query($sql);
+$row=fetch_array($rs);
 ?>
 <div class="admintitle">修改公司信息</div>  
 <form action="?action=savedata&saveas=modify" method="POST" name="myform" id="myform" onSubmit="return CheckForm();">

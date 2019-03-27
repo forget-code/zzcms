@@ -15,12 +15,13 @@ $cpid=$_COOKIE["zzcmscpid"];
 		$cpid=str_replace("deleted","",$cpid);//cookie会出现deleted的情况
 		$sql="select id,proname,img from zzcms_main where id in (".$cpid.")";
 	}else{
-		$sql="select id,proname,img from zzcms_main where id='$cpid' ";
+	checkid($cpid);
+	$sql="select id,proname,img from zzcms_main where id='$cpid' ";
 	}
 $n=1;
 $str="<table width=100% border=0 cellspacing=0 cellpadding=5><tr>";	
-$rs=mysql_query($sql);
-while($row=mysql_fetch_array($rs)){
+$rs=query($sql);
+while($row=fetch_array($rs)){
 $str=$str. "<td align='center'>";
 $str=$str. "<table  border='0' cellspacing='1' cellpadding='1' class='bgcolor2'>";
 $str=$str. "<tr><td bgcolor='#FFFFFF' align='center' width='$imgwidth' height='$imgheight'>"  ;
@@ -47,12 +48,12 @@ function bigclass($b,$url=1){
 $str="";
 $n=1;
 $sql="select classname,classid,classzm from zzcms_zsclass where parentid='A' order by xuhao";
-$rs=mysql_query($sql);
-$row=mysql_num_rows($rs);
+$rs=query($sql);
+$row=num_rows($rs);
 if (!$row){
 $str="暂无分类";
 }else{
-	while ($row=mysql_fetch_array($rs)){
+	while ($row=fetch_array($rs)){
 	if($row['classzm']==$b){$str=$str."<li class='current'>";}else{$str=$str."<li>";}
 	if ($url==2){
 	$str=$str."<a href='".getpageurl2("zs",$row["classzm"],"")."'>".$row["classname"]."</a>";
@@ -69,12 +70,12 @@ return $str;
 function showsx($sxid){
 $str="";
 $n=1;
-$rs = mysql_query("select * from zzcms_zsclass_shuxing order by xuhao asc"); 
-$row= mysql_num_rows($rs);
+$rs = query("select * from zzcms_zsclass_shuxing order by xuhao asc"); 
+$row= num_rows($rs);
 if (!$row){
 $str="";//为空时不要输出内容
 }else{
-	while ($row=mysql_fetch_array($rs)){
+	while ($row=fetch_array($rs)){
 	if($row['bigclassid']==$sxid){$str=$str."<li class='current'>";}else{$str=$str."<li>";}
 	
 	if (whtml=="Yes") {
@@ -99,12 +100,12 @@ $sql="select classname,classid,classzm from zzcms_zsclass where parentid='". $b 
 }else{
 $sql="select classname,classid,classzm from zzcms_zsclass where parentid='". $b ."' order by xuhao";
 }
-$rs=mysql_query($sql);
-$row=mysql_num_rows($rs);
+$rs=query($sql);
+$row=num_rows($rs);
 if (!$row){
 $str="暂无分类";
 }else{
-while ($row=mysql_fetch_array($rs)){
+while ($row=fetch_array($rs)){
 	$str=$str."<li>";
 	if($row['classzm']==$s){
 	$str=$str. "<a href='".getpageurl2("zs",$b,$row["classzm"])."' class='current'>";	
@@ -145,11 +146,11 @@ $str="";
 	}
 	$sql=$sql." limit 0,$num";
 
-$rs=mysql_query($sql);
-$row=mysql_num_rows($rs);
+$rs=query($sql);
+$row=num_rows($rs);
 if ($row){				 	 
 $str="<ul>";
-while ($row=mysql_fetch_array($rs)){
+while ($row=fetch_array($rs)){
 $str=$str."<li onMouseOver=\"showfilter2(zsLayer$n)\" onMouseOut=\"showfilter2(zsLayer$n)\">";
 if ($showtime==true) {
 $str=$str."<span title=更新时间>".date("Y-m-d",strtotime($row["sendtime"]))."</span>";
@@ -181,6 +182,7 @@ $sql=$sql. " and classzm='$classid' ";
 }
 
 if ($sj<>"") {
+checkid($sj);
 $sql=$sql. " and unix_timestamp()-unix_timestamp(sendtime) <".$sj." ";
 }
 
@@ -190,21 +192,21 @@ $sql=$sql. "and cp like '%".$keyword."%' ";
 
 $sql=$sql. "group by cpid order by count(*) desc";
 $sql=$sql." limit 0,$num";
-$rs=mysql_query($sql);
-$row=mysql_num_rows($rs);
+$rs=query($sql);
+$row=num_rows($rs);
 if (!$row){
 $str= "暂无信息";
 }else{
-while ($row=mysql_fetch_array($rs)){
+while ($row=fetch_array($rs)){
 //if( $n<>1) {
 //$str=$str. "<div class='boxxian'></div>"
 //}
 $str=$str. "<div>";
 	$sqln="select proname,id,img,prouse from zzcms_main where id=".$row["cpid"]." ";
-	$rsn=mysql_query($sqln);
-	$r=mysql_num_rows($rsn);
+	$rsn=query($sqln);
+	$r=num_rows($rsn);
 	if ($r){
-	$r=mysql_fetch_array($rsn);
+	$r=fetch_array($rsn);
 	$str=$str. "<ul>";
 	$str=$str. "<li onMouseOver=\"showfilter2(zs2Layer$n)\" onMouseOut=\"showfilter2(zs2Layer$n)\">";
 	if ($n<=3 ){
@@ -244,7 +246,7 @@ $s=isset($cs[7])?$cs[7]:'no';
 $editor=isset($cs[8])?$cs[8]:'no';
 $keyword=isset($cs[9])?$cs[9]:'no';
 $cpid=isset($cs[10])?$cs[10]:'no';
-
+//checkid($cpid);//非用户输入值，可以用不判断
 	$sql="select id,proname,img,sendtime,passed,elite,hit,city,comane,userid from zzcms_main where passed=1 ";
 	if ($b!='no') {$sql=$sql. "and bigclasszm='$b' ";}
 	if ($s!='no') {$sql=$sql. "and bigclasszm='$s' ";}
@@ -264,11 +266,11 @@ $cpid=isset($cs[10])?$cs[10]:'no';
 	}
 	$sql=$sql." limit 0,$num";
 //echo $sql."<br>";
-$rs=mysql_query($sql);
-$row=mysql_num_rows($rs);
+$rs=query($sql);
+$row=num_rows($rs);
 if ($row){				 	 
 $str="<ul>";
-while ($row=mysql_fetch_array($rs)){
+while ($row=fetch_array($rs)){
 $str=$str."<li>";
 if ($time=='yes') {
 $str=$str."<span style='float:right' title=更新时间>".date("Y-m-d",strtotime($row["sendtime"]))."</span>";

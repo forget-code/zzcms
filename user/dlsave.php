@@ -48,14 +48,14 @@ checkyzm($_POST["yzm"]);
 
 if ($_POST["action"]=="add"){
 if ($cp<>'' && $truename<>'' && $tel<>''){
-mysql_query("Insert into zzcms_dl(classzm,cpid,cp,province,city,content,company,companyname,dlsname,tel,address,email,sendtime,editor) values('$classid',0,'$cp','$province','$city','$content','$dlsf','$companyname','$truename','$tel','$address','$email','".date('Y-m-d H:i:s')."','$username')") ;  
-$id=mysql_insert_id();	
-mysql_query("Insert into `zzcms_dl_".$classid."`(dlid,cpid,cp,province,city,content,company,companyname,dlsname,tel,address,email,sendtime,editor) values('$id',0,'$cp','$province','$city','$content','$dlsf','$companyname','$truename','$tel','$address','$email','".date('Y-m-d H:i:s')."','$username')") ; 
+query("Insert into zzcms_dl(classzm,cpid,cp,province,city,content,company,companyname,dlsname,tel,address,email,sendtime,editor) values('$classid',0,'$cp','$province','$city','$content','$dlsf','$companyname','$truename','$tel','$address','$email','".date('Y-m-d H:i:s')."','$username')") ;  
+$id=insert_id();	
+query("Insert into `zzcms_dl_".$classid."`(dlid,cpid,cp,province,city,content,company,companyname,dlsname,tel,address,email,sendtime,editor) values('$id',0,'$cp','$province','$city','$content','$dlsf','$companyname','$truename','$tel','$address','$email','".date('Y-m-d H:i:s')."','$username')") ; 
 }	
 }elseif ($_POST["action"]=="modify"){
-mysql_query("update zzcms_dl set classzm='$classid',cp='$cp',province='$province',city='$city',content='$content',company='$dlsf',companyname='$companyname',dlsname='$truename',tel='$tel',address='$address',email='$email',sendtime='".date('Y-m-d H:i:s')."' where id='$id'");
+query("update zzcms_dl set classzm='$classid',cp='$cp',province='$province',city='$city',content='$content',company='$dlsf',companyname='$companyname',dlsname='$truename',tel='$tel',address='$address',email='$email',sendtime='".date('Y-m-d H:i:s')."' where id='$id'");
 
-mysql_query("update `zzcms_dl_".$classid."` set cp='$cp',province='$province',city='$city',content='$content',company='$dlsf',companyname='$companyname',dlsname='$truename',tel='$tel',address='$address',email='$email',sendtime='".date('Y-m-d H:i:s')."' where dlid='$id'");
+query("update `zzcms_dl_".$classid."` set cp='$cp',province='$province',city='$city',content='$content',company='$dlsf',companyname='$companyname',dlsname='$truename',tel='$tel',address='$address',email='$email',sendtime='".date('Y-m-d H:i:s')."' where dlid='$id'");
 
 }
 $_SESSION['content']=$content;
@@ -107,7 +107,7 @@ include("left.php");
   </tr>
 </table>
 <?php
-mysql_close($conn);
+
 session_write_close();
 ?>
 </div>

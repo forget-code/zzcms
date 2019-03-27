@@ -30,8 +30,8 @@ if (document.myform.title.value==""){
 <div class="admintitle">修改<?php if ($b==1) { echo "帮助"; }else { echo "公告";}?>信息</div>
 <?php
 $sql="select * from zzcms_help where id='$id'";
-$rs=mysql_query($sql);
-$row=mysql_fetch_array($rs);
+$rs=query($sql);
+$row=fetch_array($rs);
 ?>
 <form action="help_save.php?action=modify" method="post" name="myform" id="myform" onSubmit="return CheckForm();">  
   <table width="100%" border="0" cellspacing="0" cellpadding="5">
@@ -60,8 +60,6 @@ $row=mysql_fetch_array($rs);
     </tr>
   </table>
       </form>
-<?php
-mysql_close($conn);
-?>	  
+	  
 </body>
 </html>

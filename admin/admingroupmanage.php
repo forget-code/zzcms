@@ -31,14 +31,14 @@ $groupname=trim($_GET["groupname"]);
 $id=trim($_GET["id"]);
 if  ($groupname<>""){
 	$sql="delete from zzcms_admingroup where groupname='" . $groupname . "'";
-	mysql_query($sql,$conn);
+	query($sql,$conn);
 }
-mysql_close($conn); 
+ 
 echo  "<script>location.href='admingroupmanage.php'</script>";
 }
 
 $sql="Select * From zzcms_admingroup";
-$rs = mysql_query($sql,$conn); 
+$rs = query($sql,$conn); 
 ?>
 <table width="100%" border="0" cellpadding="5" cellspacing="1" >
   <tr> 
@@ -48,7 +48,7 @@ $rs = mysql_query($sql,$conn);
     <td width="10%" align="center" class="border"><strong>操作选项</strong></td>
   </tr>
   <?php
-	while($row= mysql_fetch_array($rs)){
+	while($row= fetch_array($rs)){
 ?>
    <tr class="bgcolor1" onMouseOver="fSetBg(this)" onMouseOut="fReBg(this)"> 
     <td width="10%" align="center"><?php echo $row["id"] ?></td>
@@ -61,7 +61,7 @@ $rs = mysql_query($sql,$conn);
   </tr>
   <?php 
   }
-   mysql_close($conn); 
+    
    ?>
 </table>
 

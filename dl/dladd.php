@@ -47,23 +47,6 @@ function time(o) {
 		}
 	}
 
-function isNumber(String){ 
-var Letters = "1234567890-";   //可以自己增加可输入值
-var i;
-var c;
-if(String.charAt(0)=='-')
-return   false;
-if( String.charAt(String.length - 1) == '-' )
-return   false;
-for( i = 0; i<String.length;i ++ )
-{ 
-c=String.charAt( i );
-if(Letters.indexOf( c )< 0)
-return  false;
-}
-return  true;
-}
-
 function check_truename(){
 if (document.myform.truename.value !=""){
 	 //创建正则表达式
@@ -79,13 +62,13 @@ if (document.myform.truename.value !=""){
 }
 
 function check_tel(){
-if (document.myform.tel.value !=""){
-if(! isNumber(document.myform.tel.value))   { 
-alert("您的电话号码不正确！");
-document.myform.tel.value="";
-document.myform.tel.focus();
-}
-}
+if (document.myform.tel.value !=""){	
+	var phone = /^1([38]\d|4[57]|5[0-35-9]|7[06-8]|8[89])\d{8}$/;
+	if(!phone.test(document.myform.tel.value)){
+	alert("您的电话号码不正确！");
+	document.myform.tel.focus();
+	}
+} 
 }
 
 function CheckForm(){
@@ -175,8 +158,8 @@ echo sitetop();
           <option value="" selected>请选择类别</option>
           <?php
 		$sql="select * from zzcms_zsclass where parentid='A'";
-		$rs=mysql_query($sql);
-		while($row= mysql_fetch_array($rs)){
+		$rs=query($sql);
+		while($row= fetch_array($rs)){
 			?>
           <option value="<?php echo $row["classzm"]?>"<?php if (@$_SESSION['bigclassid']==$row["classzm"]){echo 'selected';}?>><?php echo $row["classname"]?></option>
           <?php
@@ -260,8 +243,8 @@ new PCAS('province', 'city', 'xiancheng', '<?php echo @$_SESSION['province']?>',
 	<?php
 	if (isset($_COOKIE["UserName"])){
 	$sql="select * from zzcms_user where username='".$_COOKIE["UserName"]."'";
-	$rs=mysql_query($sql);
-	$row= mysql_fetch_array($rs);
+	$rs=query($sql);
+	$row= fetch_array($rs);
 	?>
     <tr> 
       <td align="right" class="border"><?php echo channeldl?>身份：</td>
@@ -390,7 +373,7 @@ showmsg('电话号码不正确','back');
 }
 
 if ($cp<>'' && $truename<>'' && $tel<>''){
-$isok=mysql_query("Insert into zzcms_dl(classzm,cpid,cp,province,city,content,company,companyname,dlsname,tel,address,email,sendtime,editor) values('$classid',0,'$cp','$province','$city','$content','$dlsf','$companyname','$truename','$tel','$address','$email','".date('Y-m-d H:i:s')."','".@$_COOKIE["UserName"]."')") ;
+$isok=query("Insert into zzcms_dl(classzm,cpid,cp,province,city,content,company,companyname,dlsname,tel,address,email,sendtime,editor) values('$classid',0,'$cp','$province','$city','$content','$dlsf','$companyname','$truename','$tel','$address','$email','".date('Y-m-d H:i:s')."','".@$_COOKIE["UserName"]."')") ;
 }  
 if ($isok){
 echo showmsg('发布成功，审核后显示。');

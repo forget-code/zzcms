@@ -2,9 +2,6 @@
 include("../inc/conn.php");
 include("../inc/fy.php");
 include("check.php");
-$fpath="";
-$fcontent=file_get_contents($fpath);
-$f_array=explode("\n",$fcontent) ;
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="zh-CN">
@@ -39,7 +36,7 @@ $id="";
 
 if ($action=="quxiao"){
 	if ($username<>"" ){
-	mysql_query("update zzcms_userdomain set del=1 where username='$username'");
+	query("update zzcms_userdomain set del=1 where username='$username'");
 	}
 echo "<script>location.href='domain_manage.php'</script>";	
 }
@@ -47,18 +44,18 @@ echo "<script>location.href='domain_manage.php'</script>";
 //不开放删除操作，当用户删除后，管理后台仍可看到被删除的域名以解除绑定用。
 if ($action=="del"){
 	//if ($username<>"" ){
-	//mysql_query("delete from zzcms_userdomain where username='$username'") ;
+	//query("delete from zzcms_userdomain where username='$username'") ;
 	//}
 	echo "<script>location.href='domain_manage.php'</script>";
 }
 ?>
 <script language="JavaScript" src="/js/gg.js"></script>
 <div class="content">
-<div class="admintitle">绑定域名<a href='domain.php?action=add' class='buttons'>添加域名</a></div>
+<div class="admintitle">绑定域名</div>
 <?php
 $sql="select * from zzcms_userdomain where username='$username' and del=0";
-$rs=mysql_query($sql);
-$row=mysql_num_rows($rs);
+$rs=query($sql);
+$row=num_rows($rs);
 if (!$row){
 echo "<div class='box'><a href='domain.php?action=add' class='buttons'>添加域名</a></div>";
 }else{
@@ -71,7 +68,7 @@ echo "<div class='box'><a href='domain.php?action=add' class='buttons'>添加域
  <td width="20%" height="20" align="center" class="border">操作</td>
   </tr>
   <?php
-while($row = mysql_fetch_array($rs)){
+while($row = fetch_array($rs)){
 ?>
  <tr class="bgcolor1" onMouseOver="fSetBg(this)" onMouseOut="fReBg(this)">  
     <td height="22" align="center" ><?php echo $row["id"]?></td>
@@ -91,7 +88,6 @@ while($row = mysql_fetch_array($rs)){
 </table>
 <?php
 }
-unset ($f_array);
 ?>
 </div>
 </div>

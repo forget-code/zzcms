@@ -13,7 +13,7 @@ $f_array=explode("|||",$fcontent) ;
 <title></title>
 <link href="style/<?php echo siteskin_usercenter?>/style.css" rel="stylesheet" type="text/css">
 <?php
-if (check_usergr_power("wangkan")=="no" && $usersf=='个人'){
+if (str_is_inarr(usergr_power,'wangkan')=="no" && $usersf=='个人'){
 echo $f_array[0];
 exit;
 }
@@ -29,12 +29,12 @@ $content=str_replace("'","",stripfxg(trim($_POST["content"])));
 $img=getimgincontent($content);
 $editor=trim($_POST["editor"]);
 if ($_POST["action"]=="add" && $editor<>''){//$editor<>''防垃圾信息
-mysql_query("Insert into zzcms_wangkan(bigclassid,title,content,img,editor,sendtime) values('$bigclassid','$title','$content','$img','$editor','".date('Y-m-d H:i:s')."')") ;  
-$id=mysql_insert_id();
+query("Insert into zzcms_wangkan(bigclassid,title,content,img,editor,sendtime) values('$bigclassid','$title','$content','$img','$editor','".date('Y-m-d H:i:s')."')") ;  
+$id=insert_id();
 		
 }elseif ($_POST["action"]=="modify"){
 $id=$_POST["id"];
-mysql_query("update zzcms_wangkan set bigclassid='$bigclassid',title='$title',content='$content',img='$img',
+query("update zzcms_wangkan set bigclassid='$bigclassid',title='$title',content='$content',img='$img',
 editor='$editor',sendtime='".date('Y-m-d H:i:s')."' where id='$id'");
 }		
 passed("zzcms_wangkan");
@@ -82,9 +82,7 @@ include("left.php");
       </table></td>
   </tr>
 </table>
-<?php
-mysql_close($conn);
-?>
+
 </div>
 </div>
 </div>

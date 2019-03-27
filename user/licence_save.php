@@ -17,7 +17,7 @@ if( isset($_GET["page"]) && $_GET["page"]!="") {$page=$_GET['page'];}else{$page=
 $title=trim($_POST["title"]);	
 $img=trim($_POST["img"]);
 if ($_GET["action"]=="add"){
-mysql_query("Insert into zzcms_licence(title,img,editor,sendtime) values('$title','$img','$username','".date('Y-m-d H:i:s')."')") ; 
+query("Insert into zzcms_licence(title,img,editor,sendtime) values('$title','$img','$username','".date('Y-m-d H:i:s')."')") ; 
 }elseif ($_GET["action"]=="modify"){
 $oldimg=trim($_POST["oldimg"]);
 	$id=$_POST["id"];
@@ -26,7 +26,7 @@ $oldimg=trim($_POST["oldimg"]);
 		$ErrMsg="<li>". $f_array[0]."</li>";
 		WriteErrMsg($ErrMsg);
 	}else{
-	mysql_query("update zzcms_licence set title='$title',img='$img',sendtime='".date('Y-m-d H:i:s')."' where id='$id'");
+	query("update zzcms_licence set title='$title',img='$img',sendtime='".date('Y-m-d H:i:s')."',passed=0 where id='$id'");
 		if ($oldimg<>$img && $oldimg<>"/image/nopic.gif"){
 			$f="../".$oldimg;
 			if (file_exists($f)){
@@ -83,6 +83,6 @@ include("left.php");
 </body>
 </html>
 <?php
-mysql_close($conn);
+
 unset ($f_array);
 ?>

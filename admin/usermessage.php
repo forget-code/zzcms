@@ -118,7 +118,7 @@ $action="";
 if ($action=="reply"){
 $id=$_REQUEST["message_id"];
 $reply=$_POST["reply"];
-mysql_query("update zzcms_usermessage set reply='$reply',replytime='".date('Y-m-d H:i:s')."' where id='$id'");
+query("update zzcms_usermessage set reply='$reply',replytime='".date('Y-m-d H:i:s')."' where id='$id'");
 //echo "<script>location.href='?'<//script>" ;
 }
 
@@ -142,11 +142,11 @@ $sql="select * from zzcms_usermessage ";
 if ($reply=='no'){
 $sql=$sql."where reply is null ";
 }
-$rs = mysql_query($sql,$conn); 
-$totlenum= mysql_num_rows($rs);  
+$rs = query($sql,$conn); 
+$totlenum= num_rows($rs);  
 $totlepage=ceil($totlenum/$page_size);		
 $sql=$sql . " order by id desc limit $offset,$page_size";
-$rs = mysql_query($sql,$conn); 
+$rs = query($sql,$conn); 
 if(!$totlenum){
 echo "暂无信息";
 }else{
@@ -158,7 +158,7 @@ echo "暂无信息";
       <td width="5%" align="center" class="border">删除</td>
     </tr>
 <?php
-while($row = mysql_fetch_array($rs)){
+while($row = fetch_array($rs)){
 ?>
     <tr class="bgcolor1" onMouseOver="fSetBg(this)" onMouseOut="fReBg(this)"> 
       <td>

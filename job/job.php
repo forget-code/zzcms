@@ -39,8 +39,8 @@ $s="";
 $bigclassname='';
 if ($b<>""){
 $sql="select classname from zzcms_jobclass where classid='".$b."'";
-$rs=mysql_query($sql);
-$row=mysql_fetch_array($rs);
+$rs=query($sql);
+$row=fetch_array($rs);
 if ($row){
 $bigclassname=$row["classname"];
 }
@@ -49,8 +49,8 @@ $bigclassname=$row["classname"];
 $smallclassname='';
 if ($s<>"") {
 $sql="select classname from zzcms_jobclass where classid='".$s."'";
-$rs=mysql_query($sql);
-$row=mysql_fetch_array($rs);
+$rs=query($sql);
+$row=fetch_array($rs);
 if ($row){
 	$smallclassname=$row["classname"];
 	}
@@ -85,8 +85,8 @@ $sql2=$sql2. "and bigclassid='".$b."' ";
 if ($s<>"") {
 $sql2=$sql2." and smallclassid ='".$s."'  ";
 }
-$rs = mysql_query($sql.$sql2); 
-$row = mysql_fetch_array($rs);
+$rs = query($sql.$sql2); 
+$row = fetch_array($rs);
 $totlenum = $row['total'];
 $offset=($page-1)*$page_size;//$page_size在上面被设为COOKIESS
 $totlepage=ceil($totlenum/$page_size);
@@ -94,7 +94,7 @@ $totlepage=ceil($totlenum/$page_size);
 $sql="select * from zzcms_job where passed<>0 ";	
 $sql=$sql.$sql2;
 $sql=$sql." order by id desc limit $offset,$page_size";
-$rs = mysql_query($sql); 
+$rs = query($sql); 
 if(!$totlenum){
 $strout=str_replace("{#fenyei}","",$strout) ;
 $strout=str_replace("{loop}".$list."{/loop}","暂无信息",$strout) ;
@@ -102,7 +102,7 @@ $strout=str_replace("{loop}".$list."{/loop}","暂无信息",$strout) ;
 
 $list2='';
 $i=0;
-while($row= mysql_fetch_array($rs)){
+while($row= fetch_array($rs)){
 
 $list2 = $list2. str_replace("{#province}",$row['province'],$list) ;
 $list2 =str_replace("{#city}",cutstr($row["city"],8),$list2) ;
@@ -127,6 +127,6 @@ $strout=str_replace("{#pagedescription}",$pagedescription,$strout);
 $strout=str_replace("{#sitebottom}",sitebottom(),$strout);
 $strout=str_replace("{#sitetop}",sitetop(),$strout);
 $strout=showlabel($strout);
-mysql_close($conn);
+
 echo  $strout;
 ?>

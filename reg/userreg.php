@@ -3,9 +3,9 @@ include("../inc/conn.php");
 include("../inc/top2.php");
 include("../inc/bottom.php");
 $sql = "select * from zzcms_usergroup";
-$rs = mysql_query($sql,$conn); 
-//$row= mysql_fetch_array($rs);
-$row= mysql_num_rows($rs);//返回记录数
+$rs = query($sql,$conn); 
+//$row= fetch_array($rs);
+$row= num_rows($rs);//返回记录数
 if(!$row){
 showmsg ("尚未设置用户组，设好用户组后才能注册用户"); 
 }

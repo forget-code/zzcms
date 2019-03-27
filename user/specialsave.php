@@ -14,7 +14,7 @@ $f_array=explode("|||",$fcontent) ;
 <title></title>
 <link href="style/<?php echo siteskin_usercenter?>/style.css" rel="stylesheet" type="text/css">
 <?php
-if (check_usergr_power("special")=="no" && $usersf=='个人'){
+if (str_is_inarr(usergr_power,'special')=="no" && $usersf=='个人'){
 echo $f_array[0];
 exit;
 }
@@ -31,8 +31,8 @@ $bigclassid=0;
 $bigclassname="";
 if ($bigclassid!=0){
 $bigclassid=trim($_POST["bigclassid"]);
-$rs = mysql_query("select * from zzcms_specialclass where classid='$bigclassid'"); 
-$row= mysql_fetch_array($rs);
+$rs = query("select * from zzcms_specialclass where classid='$bigclassid'"); 
+$row= fetch_array($rs);
 $bigclassname=$row["classname"];
 }
 
@@ -43,8 +43,8 @@ $smallclassid=0;
 }
 $smallclassname="";
 if ($smallclassid!=0){
-$rs = mysql_query("select * from zzcms_specialclass where classid='$smallclassid'"); 
-$row= mysql_fetch_array($rs);
+$rs = query("select * from zzcms_specialclass where classid='$smallclassid'"); 
+$row= fetch_array($rs);
 $smallclassname=$row["classname"];
 }
 
@@ -64,18 +64,18 @@ $jifen=trim($_POST["jifen"]);
 if ($_POST["action"]=="add"){
 //判断是不是重复信息,为了修改信息时不提示这段代码要放到添加信息的地方
 $sql="select title,editor from zzcms_special where title='".$title."'";
-$rs = mysql_query($sql); 
-$row= mysql_num_rows($rs); 
+$rs = query($sql); 
+$row= num_rows($rs); 
 if ($row){
-mysql_close($conn);
+
 echo $f_array[1];
 }
 
-mysql_query("Insert into zzcms_special(bigclassid,bigclassname,smallclassid,smallclassname,title,link,laiyuan,keywords,description,groupid,jifen,content,img,editor,sendtime) values('$bigclassid','$bigclassname','$smallclassid','$smallclassname','$title','$link','$laiyuan','$keywords','$description','$groupid','$jifen','$content','$img','$editor','".date('Y-m-d H:i:s')."')");  
-$id=mysql_insert_id();		
+query("Insert into zzcms_special(bigclassid,bigclassname,smallclassid,smallclassname,title,link,laiyuan,keywords,description,groupid,jifen,content,img,editor,sendtime) values('$bigclassid','$bigclassname','$smallclassid','$smallclassname','$title','$link','$laiyuan','$keywords','$description','$groupid','$jifen','$content','$img','$editor','".date('Y-m-d H:i:s')."')");  
+$id=insert_id();		
 }elseif ($_POST["action"]=="modify"){
 $id=$_POST["id"];
-mysql_query("update zzcms_special set bigclassid='$bigclassid',bigclassname='$bigclassname',smallclassid='$smallclassid',smallclassname='$smallclassname',title='$title',link='$link',laiyuan='$laiyuan',
+query("update zzcms_special set bigclassid='$bigclassid',bigclassname='$bigclassname',smallclassid='$smallclassid',smallclassname='$smallclassname',title='$title',link='$link',laiyuan='$laiyuan',
 keywords='$keywords',description='$description',groupid='$groupid',jifen='$jifen',content='$content',img='$img',editor='$editor',
 sendtime='".date('Y-m-d H:i:s')."',passed=0 where id='$id'");	
 }
@@ -128,7 +128,7 @@ include("left.php");
   </tr>
 </table>
 <?php
-mysql_close($conn);
+
 session_write_close();
 unset ($f_array);
 ?>

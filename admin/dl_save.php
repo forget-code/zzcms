@@ -37,10 +37,10 @@ $passed=0;
 }
 if ($_POST["action"]=="add"){
 if ($cp<>'' && $truename<>'' && $tel<>''){
-$addok=mysql_query("Insert into zzcms_dl(classzm,cpid,cp,province,city,content,company,companyname,dlsname,tel,address,email,sendtime) values('$classid',0,'$cp','$province','$city','$content','$dlsf','$companyname','$truename','$tel','$address','$email','".date('Y-m-d H:i:s')."')") ; 
+$addok=query("Insert into zzcms_dl(classzm,cpid,cp,province,city,content,company,companyname,dlsname,tel,address,email,sendtime) values('$classid',0,'$cp','$province','$city','$content','$dlsf','$companyname','$truename','$tel','$address','$email','".date('Y-m-d H:i:s')."')") ; 
 $dlid=mysql_insert_id();
 
-mysql_query("Insert into zzcms_dl_".$classid."(dlid,cpid,cp,province,city,content,company,companyname,dlsname,tel,address,email,sendtime) values('$dlid',0,'$cp','$province','$city','$content','$dlsf','$companyname','$truename','$tel','$address','$email','".date('Y-m-d H:i:s')."')") ;   
+query("Insert into zzcms_dl_".$classid."(dlid,cpid,cp,province,city,content,company,companyname,dlsname,tel,address,email,sendtime) values('$dlid',0,'$cp','$province','$city','$content','$dlsf','$companyname','$truename','$tel','$address','$email','".date('Y-m-d H:i:s')."')") ;   
 }
 }elseif ($_POST["action"]=="modify"){
 
@@ -48,9 +48,9 @@ $oldprovince=trim($_POST["oldprovince"]);
 if ($province=='请选择省份'){
 $province=$oldprovince;
 }
-$addok=mysql_query("update zzcms_dl set classzm='$classid',cp='$cp',province='$province',city='$city',content='$content',company='$dlsf',companyname='$companyname',dlsname='$truename',tel='$tel',address='$address',email='$email',sendtime='".date('Y-m-d H:i:s')."',passed='$passed' where id='$id'");
+$addok=query("update zzcms_dl set classzm='$classid',cp='$cp',province='$province',city='$city',content='$content',company='$dlsf',companyname='$companyname',dlsname='$truename',tel='$tel',address='$address',email='$email',sendtime='".date('Y-m-d H:i:s')."',passed='$passed' where id='$id'");
 
-mysql_query("update `zzcms_dl_".$classid."` set cp='$cp',province='$province',city='$city',content='$content',company='$dlsf',companyname='$companyname',dlsname='$truename',tel='$tel',address='$address',email='$email',sendtime='".date('Y-m-d H:i:s')."',passed='$passed' where dlid='$id'");
+query("update `zzcms_dl_".$classid."` set cp='$cp',province='$province',city='$city',content='$content',company='$dlsf',companyname='$companyname',dlsname='$truename',tel='$tel',address='$address',email='$email',sendtime='".date('Y-m-d H:i:s')."',passed='$passed' where dlid='$id'");
 
 }
 if ($addok){

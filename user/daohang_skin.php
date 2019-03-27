@@ -15,7 +15,7 @@ $f_array=explode("|||",$fcontent) ;
 if (@$_REQUEST["action"]=="modify") { //这里action的值并没有通过常用的表单传。整个过程也没有用表单。
 
 $skin=$_GET['skin'];
-mysql_query("update zzcms_usersetting set skin='$skin' where username='".$username."'");	
+query("update zzcms_usersetting set skin='$skin' where username='".$username."'");	
 echo $f_array[0];
 }
 ?>
@@ -39,7 +39,7 @@ include("left.php");
         <table width="100%" border="0" cellpadding="5" cellspacing="0">
           <tr> 
                     <?php 					
-$dir = opendir("../skin");
+$dir = opendir(zzcmsroot."skin");
 $i=0;
 while(($file = readdir($dir))!=false){
   if ($file!="." && $file!=".." && strpos($file,".zip")==false && strpos($file,".rar")==false && strpos($file,".txt")==false && $file!='mobile') { //不读取. ..

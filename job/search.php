@@ -31,11 +31,20 @@ $yiju="Pname";
 
 if (isset($_GET['keyword'])){
 $keywordNew=nostr(trim($_GET['keyword']));
-setcookie("jobkeyword",$keywordNew,time()+3600*24);
+setcookie("keyword",$keywordNew,time()+3600*24);
+setcookie("b","xxx",1);
+setcookie("s","xxx",1);
+setcookie("province","xxx",1);
+setcookie("city","xxx",1);
+setcookie("xiancheng","xxx",1);
+setcookie("p_id","xxx",1);
+setcookie("c_id","xxx",1);
+setcookie("sj","xxx",1);
+echo "<script>location.href='search.php'</script>";
 $keyword=$keywordNew;
 }else{
-	if (isset($_COOKIE['jobkeyword'])){
-	$keyword=trim($_COOKIE['jobkeyword']);
+	if (isset($_COOKIE['keyword'])){
+	$keyword=trim($_COOKIE['keyword']);
 	}else{
 	$keyword="";
 	}
@@ -43,11 +52,13 @@ $keyword=$keywordNew;
 
 if (isset($_GET['b'])){
 $bNew=$_GET['b'];
-setcookie("jobb",$bNew,time()+3600*24);
+setcookie("b",$bNew,time()+3600*24);
+setcookie("s","xxx",1);
+echo "<script>location.href='search.php'</script>";
 $b=$bNew;
 }else{
-	if (isset($_COOKIE['jobb'])){
-	$b=$_COOKIE['jobb'];
+	if (isset($_COOKIE['b'])){
+	$b=$_COOKIE['b'];
 	}else{
 	$b="";
 	}
@@ -55,22 +66,22 @@ $b=$bNew;
 
 if (isset($_GET['s'])){
 $sNew=$_GET['s'];
-setcookie("jobs",$sNew,time()+3600*24);
+setcookie("s",$sNew,time()+3600*24);
 $s=$sNew;
 }else{
-	if (isset($_COOKIE['jobs'])){
-	$s=$_COOKIE['jobs'];
+	if (isset($_COOKIE['s'])){
+	$s=$_COOKIE['s'];
 	}else{
 	$s="";
 	}
 }
 if (isset($_GET['province'])){
 $provinceNew=$_GET['province'];
-setcookie("jobprovince",$provinceNew,time()+3600*24);
+setcookie("province",$provinceNew,time()+3600*24);
 $province=$provinceNew;
 }else{
-	if (isset($_COOKIE['jobprovince'])){
-	$province=$_COOKIE['jobprovince'];
+	if (isset($_COOKIE['province'])){
+	$province=$_COOKIE['province'];
 	}else{
 	$province="";
 	}
@@ -78,11 +89,11 @@ $province=$provinceNew;
 
 if (isset($_GET['p_id'])){
 $p_idNew=$_GET['p_id'];
-setcookie("jobp_id",$p_idNew,time()+3600*24);
+setcookie("p_id",$p_idNew,time()+3600*24);
 $p_id=$p_idNew;
 }else{
-	if (isset($_COOKIE['jobp_id'])){
-	$p_id=$_COOKIE['jobp_id'];
+	if (isset($_COOKIE['p_id'])){
+	$p_id=$_COOKIE['p_id'];
 	}else{
 	$p_id="";
 	}
@@ -90,11 +101,11 @@ $p_id=$p_idNew;
 
 if (isset($_GET['city'])){
 $cityNew=$_GET['city'];
-setcookie("jobcity",$cityNew,time()+3600*24);
+setcookie("city",$cityNew,time()+3600*24);
 $city=$cityNew;
 }else{
-	if (isset($_COOKIE['jobcity'])){
-	$city=$_COOKIE['jobcity'];
+	if (isset($_COOKIE['city'])){
+	$city=$_COOKIE['city'];
 	}else{
 	$city="";
 	}
@@ -102,11 +113,11 @@ $city=$cityNew;
 
 if (isset($_GET['c_id'])){
 $c_idNew=$_GET['c_id'];
-setcookie("jobc_id",$c_idNew,time()+3600*24);
+setcookie("c_id",$c_idNew,time()+3600*24);
 $c_id=$c_idNew;
 }else{
-	if (isset($_COOKIE['jobc_id'])){
-	$c_id=$_COOKIE['jobc_id'];
+	if (isset($_COOKIE['c_id'])){
+	$c_id=$_COOKIE['c_id'];
 	}else{
 	$c_id="";
 	}
@@ -114,11 +125,11 @@ $c_id=$c_idNew;
 
 if (isset($_GET['xiancheng'])){
 $xianchengNew=$_GET['xiancheng'];
-setcookie("jobxiancheng",$xianchengNew,time()+3600*24);
+setcookie("xiancheng",$xianchengNew,time()+3600*24);
 $xiancheng=$xianchengNew;
 }else{
-	if (isset($_COOKIE['jobxiancheng'])){
-	$xiancheng=$_COOKIE['jobxiancheng'];
+	if (isset($_COOKIE['xiancheng'])){
+	$xiancheng=$_COOKIE['xiancheng'];
 	}else{
 	$xiancheng="";
 	}
@@ -126,11 +137,11 @@ $xiancheng=$xianchengNew;
 
 if (isset($_GET['sj'])){
 $sjNew=$_GET['sj'];
-setcookie("jobsj",$sjNew,time()+3600*24);
+setcookie("sj",$sjNew,time()+3600*24);
 $sj=$sjNew;
 }else{
-	if (isset($_COOKIE['jobsj'])){
-	$sj=$_COOKIE['jobsj'];
+	if (isset($_COOKIE['sj'])){
+	$sj=$_COOKIE['sj'];
 	}else{
 	$sj="";
 	}
@@ -141,32 +152,32 @@ checkid($sj);
 }
 
 if (isset($_GET['delb'])){
-setcookie("jobb","xxx",1);
+setcookie("b","xxx",1);
 echo "<script>location.href='search.php'</script>";
 }
 if (isset($_GET['dels'])){
-setcookie("jobs","xxx",1);
+setcookie("s","xxx",1);
 echo "<script>location.href='search.php'</script>";
 }
 if (isset($_GET['delprovince'])){
-setcookie("jobprovince","xxx",1);
-setcookie("jobcity","xxx",1);
-setcookie("jobp_id","xxx",1);
-setcookie("jobc_id","xxx",1);
-setcookie("jobxiancheng","xxx",1);
+setcookie("province","xxx",1);
+setcookie("city","xxx",1);
+setcookie("p_id","xxx",1);
+setcookie("c_id","xxx",1);
+setcookie("xiancheng","xxx",1);
 echo "<script>location.href='search.php'</script>";
 }
 if (isset($_GET['delcity'])){
-setcookie("jobcity","xxx",1);
-setcookie("jobxiancheng","xxx",1);
+setcookie("city","xxx",1);
+setcookie("xiancheng","xxx",1);
 echo "<script>location.href='search.php'</script>";
 }
 if (isset($_GET['delxiancheng'])){
-setcookie("jobxiancheng","xxx",1);
+setcookie("xiancheng","xxx",1);
 echo "<script>location.href='search.php'</script>";
 }
 if (isset($_GET['delsj'])){
-setcookie("jobsj","xxx",1);
+setcookie("sj","xxx",1);
 echo "<script>location.href='search.php'</script>";
 }
 
@@ -174,8 +185,8 @@ echo "<script>location.href='search.php'</script>";
 $bigclassname='';
 if ($b<>""){
 $sql="select classname from zzcms_jobclass where classid='".$b."'";
-$rs=mysql_query($sql);
-$row=mysql_fetch_array($rs);
+$rs=query($sql);
+$row=fetch_array($rs);
 if ($row){
 $bigclassname=$row["classname"];
 }
@@ -184,8 +195,8 @@ $bigclassname=$row["classname"];
 $smallclassname='';
 if ($s<>"") {
 $sql="select classname from zzcms_jobclass where classid='".$s."'";
-$rs=mysql_query($sql);
-$row=mysql_fetch_array($rs);
+$rs=query($sql);
+$row=fetch_array($rs);
 if ($row){
 	$smallclassname=$row["classname"];
 	}
@@ -210,12 +221,12 @@ if( isset($_GET["page"]) && $_GET["page"]!="")
 		{
 		$str="";
         $sql = "select * from zzcms_jobclass where parentid='0'";
-        $rs=mysql_query($sql);
-		$row=mysql_num_rows($rs);
+        $rs=query($sql);
+		$row=num_rows($rs);
 		if (!$row){
 		$str= "请先添加类别名称。";
 		}else{
-			while($row=mysql_fetch_array($rs)){
+			while($row=fetch_array($rs)){
 			$str=$str. "<a href=?b=".$row["classid"].">".$row["classname"]."</a>&nbsp;&nbsp;";
 			}
 		}
@@ -225,10 +236,10 @@ if( isset($_GET["page"]) && $_GET["page"]!="")
 		function formsmallclass($b){
 		$str="";
         $sql="select * from zzcms_jobclass where parentid='" .$b. "' order by xuhao asc";
-        $rs=mysql_query($sql);
-		$row=mysql_num_rows($rs);
+        $rs=query($sql);
+		$row=num_rows($rs);
 		if ($row){
-			while($row=mysql_fetch_array($rs)){
+			while($row=fetch_array($rs)){
 			$str=$str. "<a href=?s=".$row["classid"].">".$row["classname"]."</a>&nbsp;&nbsp;";
 			}
 		}	
@@ -345,8 +356,8 @@ $sql2=$sql2."and province like '%".$province."%' ";
 if ($sj<>""){
 $sql2=$sql2." and  timestampdiff(day,sendtime,now()) < ". $sj ." " ;
 }
-$rs = mysql_query($sql.$sql2); 
-$row = mysql_fetch_array($rs);
+$rs = query($sql.$sql2); 
+$row = fetch_array($rs);
 $totlenum = $row['total'];
 $offset=($page-1)*$page_size;//$page_size在上面被设为COOKIESS
 $totlepage=ceil($totlenum/$page_size);
@@ -354,7 +365,7 @@ $totlepage=ceil($totlenum/$page_size);
 $sql="select * from zzcms_job where passed=1 ";	
 $sql=$sql.$sql2;
 $sql=$sql." order by id desc limit $offset,$page_size";
-$rs = mysql_query($sql); 
+$rs = query($sql); 
 if(!$totlenum){
 $strout=str_replace("{#fenyei}","",$strout) ;
 $strout=str_replace("{loop}".$list."{/loop}","暂无信息",$strout) ;
@@ -362,7 +373,7 @@ $strout=str_replace("{loop}".$list."{/loop}","暂无信息",$strout) ;
 
 $list2='';
 $i=0;
-while($row= mysql_fetch_array($rs)){
+while($row= fetch_array($rs)){
 
 $list2 = $list2. str_replace("{#province}",$row['province'],$list) ;
 $list2 =str_replace("{#city}",cutstr($row["city"],8),$list2) ;
@@ -418,6 +429,6 @@ $strout=str_replace("{#sitebottom}",sitebottom(),$strout);
 $strout=str_replace("{#sitetop}",sitetop(),$strout);
 
 $strout=showlabel($strout);
-mysql_close($conn);
+
 echo  $strout;
 ?>

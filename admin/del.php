@@ -23,7 +23,7 @@ if(!empty($_POST['id'])){
 
 if ($id==""){
 echo "<script>alert('操作失败！至少要选中一条信息。');history.back(-1)</script>";
-mysql_close($conn);
+
 }
 
 switch ($tablename){
@@ -33,8 +33,8 @@ $sql="select img,flv,id from zzcms_main where id in (". $id .")";
 }else{
 $sql="select img,flv,id from zzcms_main where id='$id'";
 }
-$rs=mysql_query($sql);
-while($row=mysql_fetch_array($rs)){
+$rs=query($sql);
+while($row=fetch_array($rs)){
 		if ($row["img"]<>"/image/nopic.gif") {
 		$f="../".substr($row["img"],1);//前面必须加../否则完法删
 		$fs="../".substr(str_replace(".","_small.",$row["img"]),1);
@@ -50,10 +50,10 @@ while($row=mysql_fetch_array($rs)){
 			unlink($f);
 			}
 		}
-		mysql_query("delete from zzcms_main where id=".$row['id']."");
-		mysql_query("update zzcms_dl set cpid=0 where cpid=".$row["id"]."");//把代理信息中的ID设为0
+		query("delete from zzcms_main where id=".$row['id']."");
+		query("update zzcms_dl set cpid=0 where cpid=".$row["id"]."");//把代理信息中的ID设为0
 }
-mysql_close($conn);
+
 echo "<script>location.href='".$pagename."'</script>"; 
 break;
 
@@ -63,8 +63,8 @@ $sql="select * from zzcms_licence where id in (". $id .")";
 }else{
 $sql="select * from zzcms_licence where id='$id'";
 }
-$rs=mysql_query($sql);
-while($row=mysql_fetch_array($rs)){
+$rs=query($sql);
+while($row=fetch_array($rs)){
 		if ($row["img"]<>"/image/nopic.gif") {
 		$f="../".substr($row["img"],1)."";
 		$fs="../".substr(str_replace(".","_small.",$row["img"]),1)."";
@@ -73,9 +73,9 @@ while($row=mysql_fetch_array($rs)){
 			unlink($fs);		
 			}
 		}
-		mysql_query("delete from zzcms_licence where id=".$row['id']."");
+		query("delete from zzcms_licence where id=".$row['id']."");
 }
-mysql_close($conn);
+
 echo "<script>location.href='".$pagename."'</script>"; 
 break;
 
@@ -85,8 +85,8 @@ $sql="select * from zzcms_ad where id in (". $id .")";
 }else{
 $sql="select * from zzcms_ad where id='$id'";
 }
-$rs=mysql_query($sql);
-while($row=mysql_fetch_array($rs)){
+$rs=query($sql);
+while($row=fetch_array($rs)){
 		if ($row["img"]<>"") {
 		$f="../".substr($row["img"],1)."";
 		$fs="../".substr(str_replace(".","_small.",$row["img"]),1)."";
@@ -95,9 +95,9 @@ while($row=mysql_fetch_array($rs)){
 			unlink($fs);		
 			}
 		}
-		mysql_query("delete from zzcms_ad where id='".$row['id']."'");
+		query("delete from zzcms_ad where id='".$row['id']."'");
 }
-mysql_close($conn);
+
 echo "<script>location.href='".$pagename."'</script>"; 
 break;
 
@@ -107,8 +107,8 @@ for($i=0; $i<count($_POST['id']);$i++){
 	$ids=explode("|",$ids);
 	$id=$ids[0];
 	$classzm=$ids[1];
-	mysql_query("delete from zzcms_dl where id ='$id'");
-	mysql_query("delete from zzcms_dl_".$classzm." where dlid ='$id'");
+	query("delete from zzcms_dl where id ='$id'");
+	query("delete from zzcms_dl_".$classzm." where dlid ='$id'");
 }
 echo "<script>location.href='".$pagename."'</script>"; 
 break;
@@ -119,8 +119,8 @@ $sql="delete from ".$tablename." where id in (". $id .")";
 }else{
 $sql="delete from ".$tablename." where id='$id'";
 }
-mysql_query($sql);
-mysql_close($conn);
+query($sql);
+
 echo "<script>location.href=\"$pagename\"</script>"; 
 }
 ?>

@@ -46,15 +46,15 @@ $sql2='';
 if ($cpmc<>''){
 $sql2=$sql2 . " and cp like '%".$cpmc."%' ";
 }
-$rs = mysql_query($sql.$sql2); 
-$row = mysql_fetch_array($rs);
+$rs = query($sql.$sql2); 
+$row = fetch_array($rs);
 $totlenum = $row['total'];
 $totlepage=ceil($totlenum/$page_size);
 
 $sql="select id,cp,dlsname,province,city,xiancheng,saver,passed,sendtime,looked from zzcms_dl where editor='".$username."' ";
 $sql=$sql.$sql2;
 $sql=$sql . " order by id desc limit $offset,$page_size";
-$rs = mysql_query($sql); 
+$rs = query($sql); 
 if(!$totlenum){
 echo $f_array[3];
 }else{
@@ -65,7 +65,7 @@ echo $f_array[3];
             <?php echo $f_array[4]?>
           </tr>
           <?php
-while($row = mysql_fetch_array($rs)){
+while($row = fetch_array($rs)){
 ?>
           <tr class="bgcolor1" onMouseOver="fSetBg(this)" onMouseOut="fReBg(this)"> 
             <td><a href="<?php echo getpageurl("dl",$row["id"])?>" target="_blank"><?php echo $row["cp"]?></a></td>
@@ -105,7 +105,7 @@ while($row = mysql_fetch_array($rs)){
   </form>
 <?php
 }
-mysql_close($conn);
+
 unset ($f_array);
 ?>
 </div>

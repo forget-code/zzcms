@@ -26,11 +26,11 @@ $img=trim($_POST["img"]);
 $editor=trim($_POST["editor"]);
 
 if ($_POST["action"]=="add"){
-$isok=mysql_query("Insert into zzcms_ztad(classname,title,link,img,editor,passed) values('$classname','$title','$link','$img','$editor',1)");  
-$id=mysql_insert_id();		
+$isok=query("Insert into zzcms_ztad(classname,title,link,img,editor,passed) values('$classname','$title','$link','$img','$editor',1)");  
+$id=insert_id();		
 }elseif ($_POST["action"]=="modify"){
 $id=$_POST["id"];
-$isok=mysql_query("update zzcms_ztad set classname='$classname',title='$title',link='$link',img='$img',editor='$editor',passed=1 where id='$id'");	
+$isok=query("update zzcms_ztad set classname='$classname',title='$title',link='$link',img='$img',editor='$editor',passed=1 where id='$id'");	
 }
 passed("zzcms_ztad");	
 ?>

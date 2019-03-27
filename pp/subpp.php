@@ -3,17 +3,17 @@ function bigclass($b){
 $str="";
 $n=1;
 $sql="select classname,classid,classzm from zzcms_zsclass where parentid='A' order by xuhao";
-$rs=mysql_query($sql);
-$row=mysql_num_rows($rs);
+$rs=query($sql);
+$row=num_rows($rs);
 if (!$row){
 $str="暂无分类";
 }else{
 
-while ($row=mysql_fetch_array($rs)){
+while ($row=fetch_array($rs)){
 if($row['classzm']==$b){$str=$str."<li class='current'>";}else{$str=$str."<li>";}
 	$str=$str."<a href='".getpageurl2("pp",$row["classzm"],"")."'>".$row["classname"]."</a>";
-	//$rsnumb=mysql_query("select id from zzcms_pp where bigclasszm='".$row["classzm"]."' ");//统计所属大类下的信息数
-	//$str=$str. " <span>(共" .mysql_num_rows($rsnumb). "条)</span>" ;
+	//$rsnumb=query("select id from zzcms_pp where bigclasszm='".$row["classzm"]."' ");//统计所属大类下的信息数
+	//$str=$str. " <span>(共" .num_rows($rsnumb). "条)</span>" ;
 	$str=$str."</li>";
 $n=$n+1;		
 }
@@ -29,12 +29,12 @@ $sql="select classname,classid,classzm from zzcms_zsclass where parentid='". $b 
 }else{
 $sql="select classname,classid,classzm from zzcms_zsclass where parentid='". $b ."' order by xuhao";
 }
-$rs=mysql_query($sql);
-$row=mysql_num_rows($rs);
+$rs=query($sql);
+$row=num_rows($rs);
 if (!$row){
 $str="暂无分类";
 }else{
-while ($row=mysql_fetch_array($rs)){
+while ($row=fetch_array($rs)){
 	$str=$str."<li>";
 	if($row['classzm']==$s){
 	$str=$str. "<a href='".getpageurl2("pp",$b,$row["classzm"])."' class='current'>".$row["classname"]."</a>";	
@@ -82,11 +82,11 @@ $cpid=isset($cs[10])?$cs[10]:'no';
 	}
 	$sql=$sql." limit 0,$num";
 //echo $sql;
-$rs=mysql_query($sql);
-$row=mysql_num_rows($rs);
+$rs=query($sql);
+$row=num_rows($rs);
 if ($row){				 	 
 $str="<ul>";
-while ($row=mysql_fetch_array($rs)){
+while ($row=fetch_array($rs)){
 $str=$str."<li>";
 if ($time=='yes') {
 $str=$str."<span style='float:right' title=更新时间>".date("Y-m-d",strtotime($row["sendtime"]))."</span>";

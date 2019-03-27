@@ -66,7 +66,7 @@ $strout=str_replace("{#shuxing}",showsx($sx),$strout);
 }else{
 $strout=str_replace("{#shuxing}","",$strout);
 }
-if (strpos("zs,dl,zh,company,zx,wangkan,baojia,special,pp,job",$channel)!==false) {
+if (strpos("zs,dl,zh,company,zx,wangkan,baojia,special,ask,pp,job",$channel)!==false) {
 $strout=str_replace("{#".$channel."_style}","class='current_search'",$strout);
 $strout=str_replace("{#".$channel."_style2} style='display:none'","",$strout);
 $strout=str_replace("{#nav".$channel."}","class='current'",$strout);//导航条换为当前样式

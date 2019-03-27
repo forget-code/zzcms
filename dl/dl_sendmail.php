@@ -1,6 +1,6 @@
 <?php
 if(!isset($_SESSION)){session_start();} 
-set_time_limit(1800);
+set_time_limit(1800); 
 include("../inc/conn.php");
 include("../inc/mail_class.php");
 ob_end_clean();//终止缓冲。这样就不用等到有4096bytes的缓冲之后才被发送出去了。
@@ -56,12 +56,12 @@ $size=5;//每轮群发个数
 $sleeps=1;//每个间隔时间
 
 $sql_n="select content from zzcms_msg where elite=1";
-$rs_n=mysql_query($sql_n);
-$row_n=mysql_num_rows($rs_n);
+$rs_n=query($sql_n);
+$row_n=num_rows($rs_n);
 if (!$row_n){
 showmsg('未设邮件内容，请先设邮件内容','/user/index.php?gotopage=msg_manage.php');
 }else{
-$row_n=mysql_fetch_array($rs_n);
+$row_n=fetch_array($rs_n);
 }
 $subject=$row_n['content'];
 $mailbody=$row_n['content'];
@@ -72,11 +72,11 @@ $n=$_GET['n'];
 $n=0;
 }
 $sql2=$sql." order by id asc limit $n,$size";
-	$rs=mysql_query($sql2); 
-	$row=mysql_num_rows($rs); 
+	$rs=query($sql2); 
+	$row=num_rows($rs); 
 	//echo $sql2;
 	if ($row){
-		while ($row=mysql_fetch_array($rs)){
+		while ($row=fetch_array($rs)){
 		$to=$row['email']; //收件人
 		$send=$smtp->sendmail($to,sender,$subject,$mailbody,"HTML");//邮件的类型可选值是 TXT 或 HTML 
 		if($send){echo "<li>".$n."发送到".$to."成功</li>";}else{echo "<li>".$n."发送到".$to."失败</li>";}

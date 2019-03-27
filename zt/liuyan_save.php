@@ -30,12 +30,12 @@ if(!preg_match("/1[3458]{1}\d{9}$/",$tel) && !preg_match('/^400(\d{3,4}){2}$/',$
 showmsg('电话号码不正确','back');
 }
 	
-$rs=mysql_query("select * from zzcms_guestbook where linkmen='$name' and phone='$tel' and saver='$saver'");
-$row=mysql_num_rows($rs);
+$rs=query("select * from zzcms_guestbook where linkmen='$name' and phone='$tel' and saver='$saver'");
+$row=num_rows($rs);
 if ($row){
 showmsg('您已留过言了！');
 }else{	
-$addok=mysql_query("insert into zzcms_guestbook (content,linkmen,phone,email,saver,sendtime)
+$addok=query("insert into zzcms_guestbook (content,linkmen,phone,email,saver,sendtime)
 values('$contents','$name','$tel','$email','$saver','".date('Y-m-d H:i:s')."')");
 $_SESSION["dlliuyan"]=$saver;//供留言后显示联系方式处用
 $_SESSION['cuestip']=getip();

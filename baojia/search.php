@@ -23,11 +23,19 @@ setcookie("page_size_baojia",$page_size,time()+3600*24*360);
 
 if (isset($_GET['keyword'])){
 $keywordNew=trim($_GET['keyword']);
-setcookie("baojiakeyword",$keywordNew,time()+3600*24);
+setcookie("keyword",$keywordNew,time()+3600*24);
+setcookie("b","xxx",1);
+setcookie("s","xxx",1);
+setcookie("province","xxx",1);
+setcookie("city","xxx",1);
+setcookie("xiancheng","xxx",1);
+setcookie("p_id","xxx",1);
+setcookie("c_id","xxx",1);
+echo "<script>location.href='search.php'</script>";
 $keyword=$keywordNew;
 }else{
-	if (isset($_COOKIE['baojiakeyword'])){
-	$keyword=trim($_COOKIE['baojiakeyword']);
+	if (isset($_COOKIE['keyword'])){
+	$keyword=trim($_COOKIE['keyword']);
 	}else{
 	$keyword="";
 	}
@@ -35,11 +43,13 @@ $keyword=$keywordNew;
 
 if (isset($_GET['b'])){
 $bNew=$_GET['b'];
-setcookie("baojiab",$bNew,time()+3600*24);
+setcookie("b",$bNew,time()+3600*24);
+setcookie("s","xxx",1);
+echo "<script>location.href='search.php'</script>";
 $b=$bNew;
 }else{
-	if (isset($_COOKIE['baojiab'])){
-	$b=$_COOKIE['baojiab'];
+	if (isset($_COOKIE['b'])){
+	$b=$_COOKIE['b'];
 	}else{
 	$b="";
 	}
@@ -47,17 +57,17 @@ $b=$bNew;
 
 if (isset($_GET['province'])){
 $provinceNew=$_GET['province'];
-setcookie("baojiaprovince",$provinceNew,time()+3600*24);
+setcookie("province",$provinceNew,time()+3600*24);
 $province=$provinceNew;
-	if  (@$_COOKIE['baojiacity']<>""){
-	setcookie("baojiacity","xxx",1);
-	setcookie("baojiac_id","xxx",1);
-	setcookie("baojiaxiancheng","xxx",1);
+	if  (@$_COOKIE['city']<>""){
+	setcookie("city","xxx",1);
+	setcookie("c_id","xxx",1);
+	setcookie("xiancheng","xxx",1);
 	echo "<script>location.href='search.php'</script>";
 	}
 }else{
-	if (isset($_COOKIE['baojiaprovince'])){
-	$province=$_COOKIE['baojiaprovince'];
+	if (isset($_COOKIE['province'])){
+	$province=$_COOKIE['province'];
 	}else{
 	$province="";
 	}
@@ -65,11 +75,11 @@ $province=$provinceNew;
 
 if (isset($_GET['p_id'])){
 $p_idNew=$_GET['p_id'];
-setcookie("baojiap_id",$p_idNew,time()+3600*24);
+setcookie("p_id",$p_idNew,time()+3600*24);
 $p_id=$p_idNew;
 }else{
-	if (isset($_COOKIE['baojiap_id'])){
-	$p_id=$_COOKIE['baojiap_id'];
+	if (isset($_COOKIE['p_id'])){
+	$p_id=$_COOKIE['p_id'];
 	}else{
 	$p_id="";
 	}
@@ -77,11 +87,11 @@ $p_id=$p_idNew;
 
 if (isset($_GET['city'])){
 $cityNew=$_GET['city'];
-setcookie("baojiacity",$cityNew,time()+3600*24);
+setcookie("city",$cityNew,time()+3600*24);
 $city=$cityNew;
 }else{
-	if (isset($_COOKIE['baojiacity'])){
-	$city=$_COOKIE['baojiacity'];
+	if (isset($_COOKIE['city'])){
+	$city=$_COOKIE['city'];
 	}else{
 	$city="";
 	}
@@ -89,11 +99,11 @@ $city=$cityNew;
 
 if (isset($_GET['c_id'])){
 $c_idNew=$_GET['c_id'];
-setcookie("baojiac_id",$c_idNew,time()+3600*24);
+setcookie("c_id",$c_idNew,time()+3600*24);
 $c_id=$c_idNew;
 }else{
-	if (isset($_COOKIE['baojiac_id'])){
-	$c_id=$_COOKIE['baojiac_id'];
+	if (isset($_COOKIE['c_id'])){
+	$c_id=$_COOKIE['c_id'];
 	}else{
 	$c_id="";
 	}
@@ -101,44 +111,44 @@ $c_id=$c_idNew;
 
 if (isset($_GET['xiancheng'])){
 $xianchengNew=$_GET['xiancheng'];
-setcookie("baojiaxiancheng",$xianchengNew,time()+3600*24);
+setcookie("xiancheng",$xianchengNew,time()+3600*24);
 $xiancheng=$xianchengNew;
 }else{
-	if (isset($_COOKIE['baojiaxiancheng'])){
-	$xiancheng=$_COOKIE['baojiaxiancheng'];
+	if (isset($_COOKIE['xiancheng'])){
+	$xiancheng=$_COOKIE['xiancheng'];
 	}else{
 	$xiancheng="";
 	}
 }
 
 if (isset($_GET['delb'])){
-setcookie("dlb","xxx",1);
+setcookie("b","xxx",1);
 echo "<script>location.href='search.php'</script>";
 }
 
 if (isset($_GET['delprovince'])){
-setcookie("baojiaprovince","xxx",1);
-setcookie("baojiap_id","xxx",1);
-setcookie("baojiacity","xxx",1);
-setcookie("baojiac_id","xxx",1);
-setcookie("baojiaxiancheng","xxx",1);
+setcookie("province","xxx",1);
+setcookie("p_id","xxx",1);
+setcookie("city","xxx",1);
+setcookie("c_id","xxx",1);
+setcookie("xiancheng","xxx",1);
 echo "<script>location.href='search.php'</script>";
 }
 if (isset($_GET['delcity'])){
-setcookie("baojiacity","xxx",1);
-setcookie("baojiac_id","xxx",1);
-setcookie("baojiaxiancheng","xxx",1);
+setcookie("city","xxx",1);
+setcookie("c_id","xxx",1);
+setcookie("xiancheng","xxx",1);
 echo "<script>location.href='search.php'</script>";
 }
 if (isset($_GET['delxiancheng'])){
-setcookie("baojiaxiancheng","xxx",1);
+setcookie("xiancheng","xxx",1);
 echo "<script>location.href='search.php'</script>";
 }
 
 if ($b<>""){
 $sql="select * from zzcms_zsclass where classzm='".$b."'";
-$rs=mysql_query($sql);
-$row=mysql_fetch_array($rs);
+$rs=query($sql);
+$row=fetch_array($rs);
 	if ($row){
 	$bigclassname=$row["classname"];
 	}
@@ -159,12 +169,12 @@ if( isset($_GET["page"]) && $_GET["page"]!="") {
 function formbigclass(){
 		$str="";
         $sql = "select * from zzcms_zsclass where parentid='A'";
-        $rs=mysql_query($sql);
-		$row=mysql_num_rows($rs);
+        $rs=query($sql);
+		$row=num_rows($rs);
 		if (!$row){
 		$str= "请先添加类别名称。";
 		}else{
-			while($row=mysql_fetch_array($rs)){
+			while($row=fetch_array($rs)){
 			$str=$str. "<a href=?b=".$row["classzm"].">".$row["classname"]."</a>&nbsp;&nbsp;";
 			}
 		}
@@ -280,8 +290,8 @@ $sql2=$sql2." and xiancheng like '".$xiancheng."%' ";
 $dl=strbetween($strout,"{baojia}","{/baojia}");
 $dllist=strbetween($strout,"{loop}","{/loop}");
 
-$rs = mysql_query($sql.$sql2); 
-$row = mysql_fetch_array($rs);
+$rs = query($sql.$sql2); 
+$row = fetch_array($rs);
 $totlenum = $row['total'];
 $offset=($page-1)*$page_size;//$page_size在上面被设为COOKIESS
 $totlepage=ceil($totlenum/$page_size);
@@ -291,13 +301,13 @@ $sql="select id,cp,truename,province,city,xiancheng,price,danwei,tel,sendtime fr
 $sql=$sql.$sql2;
 $sql=$sql." order by id desc limit $offset,$page_size";
 //echo $sql;
-$rs = mysql_query($sql); 
+$rs = query($sql); 
 if(!$totlenum){
 $strout=str_replace("{baojia}".$dl."{/baojia}","暂无信息",$strout) ;
 }else{
 $i=0;
 $dllist2='';
-while($row= mysql_fetch_array($rs)){
+while($row= fetch_array($rs)){
 
 $dllist2 = $dllist2. str_replace("{#id}" ,$row["id"],$dllist) ;
 
@@ -352,6 +362,6 @@ $strout=str_replace("{#dllist}",$dllist,$strout);
 $strout=str_replace("{#sitebottom}",sitebottom(),$strout);
 $strout=str_replace("{#sitetop}",sitetop(),$strout);
 $strout=showlabel($strout);
-mysql_close($conn);
+
 echo  $strout;
 ?>

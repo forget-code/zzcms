@@ -13,7 +13,7 @@ $f_array=explode("|||",$fcontent) ;
 <title></title>
 <link href="style/<?php echo siteskin_usercenter?>/style.css" rel="stylesheet" type="text/css">
 <?php
-if (check_usergr_power("special")=="no" && $usersf=='个人'){
+if (str_is_inarr(usergr_power,'special')=="no" && $usersf=='个人'){
 showmsg('个人用户没有此权限');
 }
 ?>
@@ -74,8 +74,8 @@ $id=$_REQUEST["id"];
 $id=0;
 }
 $sqlzx="select * from zzcms_special where id='$id'";
-$rszx = mysql_query($sqlzx); 
-$rowzx = mysql_fetch_array($rszx);
+$rszx = query($sqlzx); 
+$rowzx = fetch_array($rszx);
 if ($rowzx["editor"]<>$username) {
 markit();
 showmsg('非法操作！警告：你的操作已被记录！小心封你的用户及IP！');
@@ -89,14 +89,14 @@ showmsg('非法操作！警告：你的操作已被记录！小心封你的用�
               <?php
 
 $sql = "select * from zzcms_specialclass where parentid<>0 order by xuhao asc";
-$rs=mysql_query($sql);
+$rs=query($sql);
 ?>
 <script language = "JavaScript" type="text/JavaScript">
 var onecount;
 subcat = new Array();
         <?php 
         $count = 0;
-        while($row = mysql_fetch_array($rs)){
+        while($row = fetch_array($rs)){
         ?>
 subcat[<?php echo $count?>] = new Array("<?php echo trim($row["classname"])?>","<?php echo trim($row["parentid"])?>","<?php echo trim($row["classid"])?>");
         <?php
@@ -121,8 +121,8 @@ function changelocation(locationid)
                 <option value="" selected="selected"><?php echo $f_array[3]?></option>
                 <?php
 	$sql = "select * from zzcms_specialclass where isshowforuser=1 and parentid=0 order by xuhao asc";
-    $rs=mysql_query($sql);
-	while($row = mysql_fetch_array($rs)){
+    $rs=query($sql);
+	while($row = fetch_array($rs)){
 	?>
                 <option value="<?php echo trim($row["classid"])?>" <?php if ($row["classid"]==$rowzx["bigclassid"]) { echo "selected";}?>><?php echo trim($row["classname"])?></option>
                 <?php
@@ -133,8 +133,8 @@ function changelocation(locationid)
                 <?php
 
 $sql="select * from zzcms_specialclass where parentid=" .$rowzx["bigclassid"]." order by xuhao asc";
-$rs=mysql_query($sql);
-while($row = mysql_fetch_array($rs)){
+$rs=query($sql);
+while($row = fetch_array($rs)){
 ?>
                <option value="<?php echo $row["classid"]?>" <?php if ($row["classid"]==$rowzx["smallclassid"]) { echo "selected";}?>><?php echo $row["classname"]?></option>
 <?php
@@ -191,10 +191,10 @@ while($row = mysql_fetch_array($rs)){
       <td class="border" > <select name="groupid" class="biaodan">
           <option value="0"><?php echo $f_array[14]?></option>
           <?php
-		  $rs=mysql_query("Select * from zzcms_usergroup ");
-		  $row = mysql_num_rows($rs);
+		  $rs=query("Select * from zzcms_usergroup ");
+		  $row = num_rows($rs);
 		  if ($row){
-		  while($row = mysql_fetch_array($rs)){
+		  while($row = fetch_array($rs)){
 		  	if ($rowzx["groupid"]== $row["groupid"]) {
 		  	echo "<option value='".$row["groupid"]."' selected>".$row["groupname"]."</option>";
 			}else{
@@ -232,6 +232,6 @@ while($row = mysql_fetch_array($rs)){
 </body>
 </html>
 <?php
-mysql_close($conn);
+
 unset ($f_array);
 ?>

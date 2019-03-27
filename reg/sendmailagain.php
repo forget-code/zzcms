@@ -23,10 +23,10 @@ $email=trim($_POST["newemail"]);
 $emailsite="http://mail.".substr($email,strpos($email,"@")+1);
 
 	$sql="select * from zzcms_usernoreg where username='".$username."'";
-	$rs=mysql_query($sql);	
-	$row=mysql_num_rows($rs);
+	$rs=query($sql);	
+	$row=num_rows($rs);
 	if ($row){
-	$row=mysql_fetch_array($rs);	
+	$row=fetch_array($rs);	
 	$checkcode=$row["checkcode"];
 	$password=$row["password"];
 	$somane=$row["somane"];

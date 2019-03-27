@@ -20,14 +20,14 @@ body {
 <form name="myform" id="myform" method="get" action="/company/search.php" target="_parent">
 <?php
 $sql = "select * from zzcms_userclass where parentid<>'0' order by xuhao asc";
-$rs=mysql_query($sql);
+$rs=query($sql);
 ?>
 <script language = "JavaScript" type="text/JavaScript">
 var onecount;
 subcat = new Array();
 <?php 
 $count = 0;
-        while($row = mysql_fetch_array($rs)){
+        while($row = fetch_array($rs)){
         ?>
 subcat[<?php echo $count?>] = new Array("<?php echo trim($row["classname"])?>","<?php echo trim($row["parentid"])?>","<?php echo trim($row["classid"])?>");
        <?php
@@ -50,8 +50,8 @@ function changelocation(locationid){
         <option value="" selected="selected">请选择大类</option>
         <?php
 	$sql = "select * from zzcms_userclass where  parentid='0' order by xuhao asc";
-    $rs=mysql_query($sql);
-	while($row = mysql_fetch_array($rs)){
+    $rs=query($sql);
+	while($row = fetch_array($rs)){
 	?>
         <option value="<?php echo trim($row["classid"])?>" <?php if ($row["classid"]==@$_COOKIE['companyb']){ echo 'selected';}?>><?php echo trim($row["classname"])?></option>
         <?php
@@ -61,12 +61,15 @@ function changelocation(locationid){
 	  <select name="s" onchange="document.getElementById('myform').submit()">
       <option value="">请选择小类</option>
       <?php
-$sql="select * from zzcms_userclass where parentid=" .@$_COOKIE['companyb']."  order by xuhao asc";
-$rs=mysql_query($sql);
-while($row = mysql_fetch_array($rs)){
+if (isset($_COOKIE['companyb'])){
+checkid($_COOKIE['companyb']);
+$sql="select * from zzcms_userclass where parentid='" .$_COOKIE['companyb']."'  order by xuhao asc";
+$rs=query($sql);
+while($row = fetch_array($rs)){
 ?>
 <option value="<?php echo $row["classid"]?>" <?php if ($row["classid"]==@$_COOKIE['companys']){ echo 'selected';}?>><?php echo $row["classname"]?></option>
 <?php 	  
+}
 }
 ?>
 </select>

@@ -37,11 +37,11 @@ if( isset($_GET["page"]) && $_GET["page"]!="") {$page=$_GET['page'];}else{$page=
 $page_size=pagesize_ht;  //每页多少条数据
 $offset=($page-1)*$page_size;
 $sql="select * from zzcms_usermessage where editor='".$username."' ";
-$rs = mysql_query($sql,$conn); 
-$totlenum= mysql_num_rows($rs);  
+$rs = query($sql,$conn); 
+$totlenum= num_rows($rs);  
 $totlepage=ceil($totlenum/$page_size);		
 $sql=$sql . " order by id desc limit $offset,$page_size";
-$rs = mysql_query($sql,$conn); 
+$rs = query($sql,$conn); 
 if(!$totlenum){
 echo $f_array[2];
 }else{
@@ -53,7 +53,7 @@ echo $f_array[2];
       <td width="5%" align="center" class="border"><?php echo $f_array[4]?></td>
     </tr>
 <?php
-while($row = mysql_fetch_array($rs)){
+while($row = fetch_array($rs)){
 ?>
     <tr class="bgcolor1" onMouseOver="fSetBg(this)" onMouseOut="fReBg(this)"> 
       <td>
@@ -112,12 +112,12 @@ $content=trim($_POST["content"]);
 $editor=trim($_POST["editor"]);
 //判断是不是重复信息,为了修改信息时不提示这段代码要放到添加信息的地方
 $sql="select content,editor from zzcms_usermessage where content='".$content."'";
-$rs = mysql_query($sql); 
-$row= mysql_num_rows($rs); 
+$rs = query($sql); 
+$row= num_rows($rs); 
 if ($row){
 echo $f_array[13];
 }else{
-mysql_query("Insert into zzcms_usermessage(content,editor,sendtime) values('$content','$editor','".date('Y-m-d H:i:s')."')"); 
+query("Insert into zzcms_usermessage(content,editor,sendtime) values('$content','$editor','".date('Y-m-d H:i:s')."')"); 
 echo "<script lanage='javascript'>location.replace('message.php')</script>"; 
 }
 }

@@ -56,6 +56,7 @@ $offset=($page-1)*$page_size;
 $sql="select count(*) as total from zzcms_zx where editor='".$username."' ";
 $sql2='';
 if ($bigclassid!=""){
+checkid($bigclassid);
 $sql2=$sql2." and bigclassid='".$bigclassid."' ";
 }
 
@@ -63,15 +64,15 @@ if ($keyword!=""){
 $sql2=$sql2." and title like '%".$keyword."%' ";
 }
 $sql=$sql.$sql2;
-$rs = mysql_query($sql); 
-$row = mysql_fetch_array($rs);
+$rs = query($sql); 
+$row = fetch_array($rs);
 $totlenum = $row['total'];
 $totlepage=ceil($totlenum/$page_size);
 
 $sql="select id,bigclassid,smallclassid,bigclassname,smallclassname,title,sendtime,passed,hit from zzcms_zx where editor='".$username."' ";	
 $sql=$sql.$sql2;
 $sql=$sql . " order by id desc limit $offset,$page_size";
-$rs = mysql_query($sql); 
+$rs = query($sql); 
 if(!$totlenum){
 echo $f_array[3];
 }else{
@@ -82,7 +83,7 @@ echo $f_array[3];
            <?php echo $f_array[4]?>
           </tr>
           <?php
-while($row = mysql_fetch_array($rs)){
+while($row = fetch_array($rs)){
 ?>
           <tr class="bgcolor1" onMouseOver="fSetBg(this)" onMouseOut="fReBg(this)"> 
             <td><a href="<?php echo getpageurl("zx",$row["id"])?>" target="_blank"><?php echo $row["title"]?></a></td>
@@ -116,7 +117,6 @@ while($row = mysql_fetch_array($rs)){
   </form>
 <?php
 }
-mysql_close($conn);
 unset ($f_array);
 ?>
 </div>

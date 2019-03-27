@@ -14,7 +14,7 @@ $f_array=explode("\n",$fcontent) ;
 <title><?php echo $f_array[1]?></title>
 <link href="style/<?php echo siteskin_usercenter?>/style.css" rel="stylesheet" type="text/css">
 <?php
-if (check_usergr_power("special")=="no" && $usersf=='个人'){
+if (str_is_inarr(usergr_power,'special')=="no" && $usersf=='个人'){
 echo $f_array[0];
 exit;
 }
@@ -63,21 +63,22 @@ $offset=($page-1)*$page_size;
 $sql="select count(*) as total from zzcms_special where editor='".$username."' ";
 $sql2='';
 if ($bigclassid!=""){
+checkid($bigclassid);
 $sql2=$sql2." and bigclassid='".$bigclassid."'  ";
 }
 if ($keyword!=""){
 $sql2=$sql2." and title like '%".$keyword."%' ";
 }
 
-$rs = mysql_query($sql.$sql2); 
-$row = mysql_fetch_array($rs);
+$rs = query($sql.$sql2); 
+$row = fetch_array($rs);
 $totlenum = $row['total'];  
 $totlepage=ceil($totlenum/$page_size);
 
 $sql="select * from zzcms_special where editor='".$username."' ";	
 $sql=$sql.$sql2;
 $sql=$sql . " order by id desc limit $offset,$page_size";
-$rs = mysql_query($sql); 
+$rs = query($sql); 
 if(!$totlenum){
 echo $f_array[4];
 }else{
@@ -88,7 +89,7 @@ echo $f_array[4];
             <?php echo $f_array[5]?>
           </tr>
           <?php
-while($row = mysql_fetch_array($rs)){
+while($row = fetch_array($rs)){
 ?>
           <tr class="bgcolor1" onMouseOver="fSetBg(this)" onMouseOut="fReBg(this)"> 
             <td><a href="<?php echo getpageurl("special",$row["id"])?>" target="_blank"><?php echo $row["title"]?></a>            </td>
@@ -122,7 +123,7 @@ while($row = mysql_fetch_array($rs)){
   </form>
 <?php
 }
-mysql_close($conn);
+
 unset ($f_array);
 ?>
 </div>

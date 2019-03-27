@@ -32,8 +32,8 @@ if ($action=="step1"){
 $username = isset($_POST['username'])?$_POST['username']:"";
 $_SESSION['username']=$username;
 checkyzm($_POST["yzm"]);
-$rs=mysql_query("select mobile,email from zzcms_user where username='" . $username . "' ");
-$row=mysql_fetch_array($rs);
+$rs=query("select mobile,email from zzcms_user where username='" . $username . "' ");
+$row=fetch_array($rs);
 $regmobile=$row['mobile'];
 $regmobile_show=str_replace(substr($regmobile,3,4),"****",$regmobile);
 $regemail=$row['email'];
@@ -74,7 +74,7 @@ $strout=str_replace("{step4}".$step4."{/step4}","",$strout) ;
 	
 $passwordtrue = isset($_POST['password'])?$_POST['password']:"";
 $password=md5(trim($passwordtrue));
-mysql_query("update zzcms_user set password='$password',passwordtrue='$passwordtrue' where username='".@$_SESSION['username']."'");
+query("update zzcms_user set password='$password',passwordtrue='$passwordtrue' where username='".@$_SESSION['username']."'");
 	
 $strout=str_replace("{step4}","",$strout) ;
 $strout=str_replace("{/step4}","",$strout) ;	

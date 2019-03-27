@@ -18,7 +18,7 @@ if ($action=="del"){
 checkadminisdo("siteconfig");
 $groupid=trim($_REQUEST["groupid"]);
 if  ($groupid<>"") {
-	mysql_query("delete from zzcms_usergroup where groupid='$groupid'");
+	query("delete from zzcms_usergroup where groupid='$groupid'");
 }
 echo "<script>location.href='usergroupmanage.php'</script>";      
 }
@@ -36,8 +36,8 @@ function ConfirmDelBig(){
 <div class="border center"><input name="submit3" type="submit" class="buttons" onClick="javascript:location.href='usergroupadd.php'" value="添加用户组"></div>
 <?php
 $sql="select * from zzcms_usergroup";
-$rs=mysql_query($sql);
-$row=mysql_num_rows($rs);
+$rs=query($sql);
+$row=num_rows($rs);
 if (!$row){
 echo "暂无信息";
 }else{
@@ -54,7 +54,7 @@ echo "暂无信息";
     <td width="241" height="25" align="center" class="border"><strong>操作选项</strong></td>
   </tr>
   <?php
-while($row=mysql_fetch_array($rs)){
+while($row=fetch_array($rs)){
 ?>
    <tr class="bgcolor1" onMouseOver="fSetBg(this)" onMouseOut="fReBg(this)">  
     <td width="126" height="22" align="center"><?php echo $row["groupname"]?></td>
@@ -111,10 +111,6 @@ while($row=mysql_fetch_array($rs)){
           <td><?php if (strpos($row["config"],'uploadflv')!==false){echo "<font color=green>√</font>"; }else{ echo"<font color=red>×</font>"; }?>          </td>
         </tr>
         <tr>
-          <td align="right">上传多个产品图：</td>
-          <td><?php if (strpos($row["config"],'uploadmoreimg')!==false){echo "<font color=green>√</font>"; }else{ echo"<font color=red>×</font>"; }?>          </td>
-        </tr>
-        <tr>
           <td align="right">seo：</td>
           <td><?php if (strpos($row["config"],'seo')!==false){echo "<font color=green>√</font>"; }else{ echo"<font color=red>×</font>"; }?>          </td>
         </tr>
@@ -140,8 +136,7 @@ while($row=mysql_fetch_array($rs)){
         </tr>
         <tr>
           <td align="right">每天查看<?php echo channeldl?>商信息数：</td>
-          <td><?php if ($row["looked_dls_number_oneday"]==999 ){echo  "不限制"; }else{ echo $row["looked_dls_number_oneday"];}?>
-          </td>
+          <td><?php if ($row["looked_dls_number_oneday"]==999 ){echo  "不限制"; }else{ echo $row["looked_dls_number_oneday"];}?>          </td>
         </tr>
         <tr> 
           <td align="right">选择招商展示页模板：</td>

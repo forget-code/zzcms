@@ -17,8 +17,8 @@ $bigclassname="";
 
 if ($b<>""){
 $sql="select * from zzcms_zsclass where classzm='".$b."'";
-$rs=mysql_query($sql);
-$row=mysql_fetch_array($rs);
+$rs=query($sql);
+$row=fetch_array($rs);
 if ($row){
 $descriptions=$row["discription"];
 $keywords=$row["keyword"];
@@ -50,7 +50,7 @@ $strout=str_replace("{#zssmallclass:".$zssmallclass_num."}",showzssmallclass($b,
 $strout=str_replace("{#sitebottom}",sitebottom(),$strout);
 $strout=str_replace("{#sitetop}",sitetop(),$strout);
 $strout=showlabel($strout);
-mysql_close($conn);
+
 echo  $strout;
 
 ?>

@@ -39,15 +39,15 @@ $id="";
 
 if ($action=="elite"){
 	if ($id<>"" ){
-	mysql_query("Update zzcms_msg set elite=0 ");//只有一条为1的
-	mysql_query("update zzcms_msg set elite=1 where id='$id'");
+	query("Update zzcms_msg set elite=0 ");//只有一条为1的
+	query("update zzcms_msg set elite=1 where id='$id'");
 }
 echo "<script>location.href='msg_manage.php'</script>";	
 }
 
 if ($action=="del"){
 	if ($id<>"" ){
-	mysql_query("delete from zzcms_msg where id='$id'") ;
+	query("delete from zzcms_msg where id='$id'") ;
 	}
 	echo "<script>location.href='msg_manage.php'</script>";
 }
@@ -57,8 +57,8 @@ if ($action=="del"){
 <div class="admintitle"><span><a href="msg.php?action=add" class="buttons"><?php echo $f_array[1]?></a></span><?php echo $f_array[0]?></div>
 <?php
 $sql="select * from zzcms_msg";
-$rs=mysql_query($sql);
-$row=mysql_num_rows($rs);
+$rs=query($sql);
+$row=num_rows($rs);
 if (!$row){
 echo $f_array[2];
 }else{
@@ -68,7 +68,7 @@ echo $f_array[2];
     <?php echo $f_array[3]?>
   </tr>
   <?php
-while($row = mysql_fetch_array($rs)){
+while($row = fetch_array($rs)){
 ?>
  <tr class="bgcolor1" onMouseOver="fSetBg(this)" onMouseOut="fReBg(this)">  
     <td height="22" align="center" ><?php echo $row["id"]?></td>

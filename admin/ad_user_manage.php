@@ -21,28 +21,28 @@ if(!empty($_POST['id'])){
 for($i=0; $i<count($_POST['id']);$i++){
 $id=$_POST['id'][$i];
 $sql="select * from zzcms_textadv where id='$id'";
-$rs=mysql_query($sql);
-$row=mysql_fetch_array($rs);
+$rs=query($sql);
+$row=fetch_array($rs);
 $newsid=$row["newsid"];
 $username=$row["username"];
 	if ($newsid<>0) {//当用户抢占了广告位时执行下面的操作
 	$sql="select * from zzcms_ad where id='$newsid'";
-	$rs=mysql_query($sql);
-	$row=mysql_num_rows($rs);
+	$rs=query($sql);
+	$row=num_rows($rs);
 		if ($row){
-		$row=mysql_fetch_array($rs);
-		mysql_query("update zzcms_ad set nextuser='' where id='$newsid' ");//如果此处有值，此用户将不能参与下一次的抢占
+		$row=fetch_array($rs);
+		query("update zzcms_ad set nextuser='' where id='$newsid' ");//如果此处有值，此用户将不能参与下一次的抢占
     		if ($row["username"]==$username){//当用户抢得了广告位后并被审核通过后，这时username的值(即广告主)就是此用户
-    		mysql_query("update zzcms_ad set username='',title='此位空出>>>点击抢占此位置',link='user/index.php?gotopage=adv2.php',sendtime='".date('Y-m-d H:i:s',time()+60*60*24*showadvdate)."' where id='$newsid' ");	//被审核通过后的用户修改了广告词,又要被审，这时若删时要清除username的值	
+    		query("update zzcms_ad set username='',title='此位空出>>>点击抢占此位置',link='user/index.php?gotopage=adv2.php',sendtime='".date('Y-m-d H:i:s',time()+60*60*24*showadvdate)."' where id='$newsid' ");	//被审核通过后的用户修改了广告词,又要被审，这时若删时要清除username的值	
 			}
 		}
 	}
-mysql_query("delete from zzcms_textadv where id='$id'");
+query("delete from zzcms_textadv where id='$id'");
 }
 }else{
 echo "<script>alert('操作失败！至少要选中一条信息。');history.back()</script>";
 }
-echo "<script>location.href='adv_manage.php?page=".$page."'</script>";
+echo "<script>location.href='ad_user_manage.php?page=".$page."'</script>";
 }
 
 if ($action=="pass") {
@@ -50,9 +50,9 @@ if(!empty($_POST['id'])){
 for($i=0; $i<count($_POST['id']);$i++){
 $id=$_POST['id'][$i];
 $sql="select * from zzcms_textadv where id='$id'";
-$rs=mysql_query($sql);
-$row=mysql_fetch_array($rs);
-mysql_query("update zzcms_textadv set passed=1 where id='$id'");
+$rs=query($sql);
+$row=fetch_array($rs);
+query("update zzcms_textadv set passed=1 where id='$id'");
 $newsid=$row["newsid"];
 $title=$row["adv"];
 $company=$row["company"];
@@ -62,21 +62,21 @@ $username=$row["username"];
 $sendtime=$row["gxsj"];
 	if ($newsid<>0) {//当用户设置了广告词并抢占了广告位时执行下面的复制操作
 	$sql="select * from zzcms_ad where id='$newsid'";
-	$rs=mysql_query($sql);
-	$row=mysql_fetch_array($rs);
+	$rs=query($sql);
+	$row=fetch_array($rs);
 		if ($row["bigclassname"]=="B") {//如是B区的广告标题上加公司名称
-		mysql_query("update zzcms_ad set title='<b>".cutstr($company,11)."</b><br>".$title."' where id='$newsid'");
+		query("update zzcms_ad set title='<b>".cutstr($company,11)."</b><br>".$title."' where id='$newsid'");
 		}else{
-		mysql_query("update zzcms_ad set title='".$title."' where id='$newsid'");
+		query("update zzcms_ad set title='".$title."' where id='$newsid'");
 		}
-	mysql_query("update zzcms_ad set link='".$link."',img='".$img."',imgwidth=0,username='".$username."',sendtime='".$sendtime."',nextuser='' where id='$newsid'");
+	query("update zzcms_ad set link='".$link."',img='".$img."',imgwidth=0,username='".$username."',sendtime='".$sendtime."',nextuser='' where id='$newsid'");
 	//写入用户抢占时的时间sendtime，为了防止一个用户通过修改广告词功能长期霸占一个位置。设nextuser为空,如果此处有值，此用户不将能参与下一次的抢占
 	}
 }
 }else{
 echo "<script>alert('操作失败！至少要选中一条信息。');history.back()</script>";
 }
-echo "<script>location.href='adv_manage.php?shenhe=no&page=".$page."'</script>";
+echo "<script>location.href='ad_user_manage.php?shenhe=no&page=".$page."'</script>";
 }
 ?>
 </head>
@@ -115,12 +115,12 @@ if ($keyword<>"") {
 	$sql=$sql. " and adv like '%".$keyword."%'";
 	}
 }
-$rs = mysql_query($sql,$conn); 
-$totlenum= mysql_num_rows($rs);  
+$rs = query($sql,$conn); 
+$totlenum= num_rows($rs);  
 $totlepage=ceil($totlenum/$page_size);
 
 $sql=$sql . " order by id desc limit $offset,$page_size";
-$rs = mysql_query($sql,$conn); 
+$rs = query($sql,$conn); 
 if(!$totlenum){
 echo "暂无信息";
 }else{ 
@@ -129,7 +129,10 @@ echo "暂无信息";
   <table width="100%" border="0" cellpadding="5" cellspacing="0" class="border">
     <tr>
       <td><input name="submit" type="submit"  onClick="myform.action='?action=pass';myform.target='_self'" value="审核选中的信息">
-      <input name="submit" type="submit" onClick="myform.action='?action=del';myform.target='_self';return ConfirmDel()" value="删除选中的信息"></td>
+      <input name="submit" type="submit" onClick="myform.action='?action=del';myform.target='_self';return ConfirmDel()" value="删除选中的信息">
+	  <input name="pagename" type="hidden"  value="ad_user_manage.php?shenhe=<?php echo $shenhe?>&page=<?php echo $page ?>"> 
+        <input name="tablename" type="hidden"  value="zzcms_textadv">
+	  </td>
     </tr>
   </table>
 <table width="100%" border="0" cellspacing="1" cellpadding="5">
@@ -143,7 +146,7 @@ echo "暂无信息";
     <td width="5%" align="center" class="border">操作</td>
   </tr>
   <?php
-while($row = mysql_fetch_array($rs)){
+while($row = fetch_array($rs)){
 ?>
   <tr bgcolor="#FFFFFF" onMouseOver="fSetBg(this)" onMouseOut="fReBg(this)"> 
     <td align="center">

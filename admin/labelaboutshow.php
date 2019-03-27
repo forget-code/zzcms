@@ -38,7 +38,7 @@ echo "<script>alert('".$msg."');location.href='?labelname=".$title.".txt'</scrip
 
 if ($action=="del") {
 checkadminisdo("label");
-$f="../template/".siteskin."/label/aboutshow/".trim($_POST["title"]).".txt";
+$f="../template/".siteskin."/label/aboutshow/".nostr(trim($_POST["title"])).".txt";
 	if (file_exists($f)){
 	unlink($f);
 	}else{
@@ -166,8 +166,8 @@ $ends="";
           <option value="0" selected>调用全部</option>
           <?php
        $sql = "select * from zzcms_about order by id desc";
-       $rs=mysql_query($sql);
-		   while($r=mysql_fetch_array($rs)){
+       $rs=query($sql);
+		   while($r=fetch_array($rs)){
 			?>
           <option value="<?php echo $r["id"]?>" <?php if ($r["id"]==$id) { echo "selected";}?>> 
           <?php echo trim($r["title"])?></option>
@@ -209,8 +209,6 @@ $ends="";
     </tr>
   </table>
 </form>
-<?php
-mysql_close($conn);
-?>		  
+		  
 </body>
 </html>

@@ -20,8 +20,8 @@ $action=$_REQUEST["action"];
 }else{
 $action="";
 }
-$rs=mysql_query("Select * from zzcms_usergroup where groupid=(select groupid from zzcms_user where username='".$username."')");
-$row=mysql_fetch_array($rs);
+$rs=query("Select * from zzcms_usergroup where groupid=(select groupid from zzcms_user where username='".$username."')");
+$row=fetch_array($rs);
 $groupname=$row["groupname"];
 $RMB_xufei=$row["RMB"];
 
@@ -31,14 +31,14 @@ if( $action=="modify"){
 	checkid($sj);
 	}
 
-	$rs=mysql_query("select * from zzcms_user where username='" . $username ."'");
-	$row=mysql_num_rows($rs);
+	$rs=query("select * from zzcms_user where username='" . $username ."'");
+	$row=num_rows($rs);
 	if (!$row){
 		$FoundErr=1;
 		$ErrMsg=$ErrMsg. $f_array[0];
 		WriteErrMsg($ErrMsg);
 	}else{
-	$row=mysql_fetch_array($rs);
+	$row=fetch_array($rs);
 	$enddate=$row['enddate'];
 		if ($row["groupid"]==1){
 		$FoundErr=1;
@@ -50,16 +50,16 @@ if( $action=="modify"){
 			$ErrMsg=$ErrMsg .$f_array[2];
 			WriteErrMsg($ErrMsg);
 			}else{			
-			mysql_query("update zzcms_user set enddate='".date('Y-m-d',strtotime($enddate)+3600*24*365*$sj)."',totleRMB=totleRMB-".$sj*$RMB_xufei." where username='" . $username ."'");
-			mysql_query("insert into zzcms_pay (username,dowhat,RMB,mark,sendtime)values('$username','".$f_array[3]."','".$sj*$RMB_xufei."','".$f_array[4].$sj.$f_array[5]."','".date('Y-m-d H:i:s')."')");
+			query("update zzcms_user set enddate='".date('Y-m-d',strtotime($enddate)+3600*24*365*$sj)."',totleRMB=totleRMB-".$sj*$RMB_xufei." where username='" . $username ."'");
+			query("insert into zzcms_pay (username,dowhat,RMB,mark,sendtime)values('$username','".$f_array[3]."','".$sj*$RMB_xufei."','".$f_array[4].$sj.$f_array[5]."','".date('Y-m-d H:i:s')."')");
 		
 			echo $f_array[6];
 			}
 		}
 	}	
 }else{
-$rs=mysql_query("select * from zzcms_user where username='" . $username ."'");
-$row=mysql_fetch_array($rs);		
+$rs=query("select * from zzcms_user where username='" . $username ."'");
+$row=fetch_array($rs);		
 ?>
 </head>
 <body>
@@ -121,6 +121,6 @@ include("left.php");
 </html>
 <?php
 }
-mysql_close($conn);
+
 unset ($f_array);
 ?>

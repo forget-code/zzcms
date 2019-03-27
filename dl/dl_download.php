@@ -31,11 +31,11 @@ $founderr=1;
 $ErrMsg=$ErrMsg."<li>您所在的用户组没有下载".channeldl."信息的权限！<br><input  type=button value=升级成VIP会员 onclick=\"location.href='/one/vipuser.php'\"/></li>";
 }
 //判断查看代理条数
-$rslookedlsnumber=mysql_query( "select looked_dls_number_oneday from zzcms_usergroup where groupid=(select groupid from zzcms_user where username='".$username."')");
-$rown=mysql_fetch_array($rslookedlsnumber);
+$rslookedlsnumber=query( "select looked_dls_number_oneday from zzcms_usergroup where groupid=(select groupid from zzcms_user where username='".$username."')");
+$rown=fetch_array($rslookedlsnumber);
 $lookedlsnumber=$rown["looked_dls_number_oneday"];
-$rslookedlsnumbers=mysql_query("select looked_dls_number_oneday from zzcms_looked_dls_number_oneday where username='".$username."' and  timestampdiff(day,sendtime,now()) < 3600*24 ");
-$rown=mysql_num_rows($rslookedlsnumbers);
+$rslookedlsnumbers=query("select looked_dls_number_oneday from zzcms_looked_dls_number_oneday where username='".$username."' and  timestampdiff(day,sendtime,now()) < 3600*24 ");
+$rown=num_rows($rslookedlsnumbers);
 if ($rown){
 	if ($rown["looked_dls_number_oneday"]+$i>$lookedlsnumber){
 	$founderr=1;
@@ -45,15 +45,15 @@ if ($rown){
 if ($founderr==1){
 WriteErrMsg($ErrMsg);
 }else{
-$rslooked=mysql_query("select * from zzcms_looked_dls_number_oneday where username='".$username."'");
-	$rown=mysql_num_rows($rslooked);
+$rslooked=query("select * from zzcms_looked_dls_number_oneday where username='".$username."'");
+	$rown=num_rows($rslooked);
 	if (!$rown){
-	mysql_query("insert into zzcms_looked_dls_number_oneday (looked_dls_number_oneday,username,sendtime)values(1,'".$username."','".date('Y-m-d H:i:s')."') ");
+	query("insert into zzcms_looked_dls_number_oneday (looked_dls_number_oneday,username,sendtime)values(1,'".$username."','".date('Y-m-d H:i:s')."') ");
 	}else{
 		if (time()-strtotime($rown["sendtime"])<3600*24){
-		mysql_query("update zzcms_looked_dls_number_oneday set looked_dls_number_oneday=looked_dls_number_oneday+".$i." where username='".$username."'");
+		query("update zzcms_looked_dls_number_oneday set looked_dls_number_oneday=looked_dls_number_oneday+".$i." where username='".$username."'");
 		}else{
-		mysql_query("update zzcms_looked_dls_number_oneday set looked_dls_number_oneday=".$i.",sendtime='".date('Y-m-d H:i:s')."' where username='".$username."'");
+		query("update zzcms_looked_dls_number_oneday set looked_dls_number_oneday=".$i.",sendtime='".date('Y-m-d H:i:s')."' where username='".$username."'");
 		}
 	}
 //echo "<script>location.href='dl_download2.php?file_ext=$FileExt&id=$id'<//script>";
@@ -71,7 +71,7 @@ $sql="select * from zzcms_dl where passed=1 and id in (". $id .") order by id de
 $sql="select * from zzcms_dl where passed=1  and id='$id'";
 }	
 
-$rs=mysql_query($sql,$conn);
+$rs=query($sql,$conn);
 $table="<table width=100% cellspacing=0 cellpadding=0 border=1>";
 $table=$table."<tr>";
 $table=$table."<td align=center  bgcolor=#dddddd><b>ID</b></td>";
@@ -83,7 +83,7 @@ $table=$table."<td align=center  bgcolor=#dddddd><b>".channeldl."区域</b></td>
 $table=$table."<td align=center  bgcolor=#dddddd><b>".channeldl."商介绍</b></td>";
 $table=$table."<td align=center  bgcolor=#dddddd><b>发布时间</b></td>";
 $table=$table."</tr>";
-while ($row=mysql_fetch_array($rs)){
+while ($row=fetch_array($rs)){
 $table=$table."<tr>";
 $table=$table."<td>".$row['id']."</td>";
 $table=$table."<td>".$row['dlsname']."</td>";

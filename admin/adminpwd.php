@@ -18,8 +18,8 @@ $ErrMsg="";
 $admins=trim($_REQUEST["admins"]);
 if ($action=="modify"){
 	$sql="select * from zzcms_admin where admin='" . $admins . "'";
-	$rs = mysql_query($sql);
-	$row= mysql_fetch_array($rs);
+	$rs = query($sql);
+	$row= fetch_array($rs);
 	$oldpassword=md5(trim($_POST["oldpassword"]));
 	$password=md5(trim($_POST["password"]));
 	$pwdconfirm=trim($_POST["pwdconfirm"]);
@@ -30,7 +30,7 @@ if ($action=="modify"){
 	if ($FoundErr==1){
 	WriteErrMsg($ErrMsg);
 	}else{
-	mysql_query("update zzcms_admin set pass='$password' where admin='".$admins."'");
+	query("update zzcms_admin set pass='$password' where admin='".$admins."'");
 	echo "<SCRIPT language=JavaScript>alert('修改成功！');history.go(-1)</SCRIPT>";
 	}
 }else{
@@ -94,5 +94,5 @@ if (document.form1.password.value !="" && document.form1.pwdconfirm.value !=""){
 </html>
 <?php
 }
-mysql_close($conn);
+
 ?>

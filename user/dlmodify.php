@@ -73,11 +73,11 @@ $page=1;
 }
 
 $sql="select * from zzcms_dl where id='$id'";
-$rs = mysql_query($sql); 
-$row = mysql_fetch_array($rs);
+$rs = query($sql); 
+$row = fetch_array($rs);
 if ($row["editor"]<>$username) {
 markit();
-mysql_close($conn);
+
 showmsg('非法操作！警告：你的操作已被记录！小心封你的用户及IP！');
 exit;
 }
@@ -97,8 +97,8 @@ exit;
                 <option value="" selected="selected"><?php echo $f_array[4]?></option>
                 <?php
 		$sqln="select * from zzcms_zsclass where parentid='A'";
-		$rsn=mysql_query($sqln);
-		while($rown= mysql_fetch_array($rsn)){
+		$rsn=query($sqln);
+		while($rown= fetch_array($rsn)){
 		if ($rown["classzm"]==$row["classzm"]){
 			echo "<option value='".$rown['classzm']."' selected>".$rown["classname"]."</option>";
 			}else{
@@ -228,7 +228,7 @@ new PCAS('province', 'city', 'xiancheng', '<?php echo $row['province']?>', '<?ph
 </div>
 </div>
 <?php
-mysql_close($conn);
+
 unset ($f_array);
 ?>
 </div>

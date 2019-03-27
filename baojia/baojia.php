@@ -38,8 +38,8 @@ $page_size=pagesize_qt;
 $bigclassname="";
 if ($b<>""){
 $sql="select * from zzcms_zsclass where classzm='".$b."'";
-$rs=mysql_query($sql);
-$row=mysql_fetch_array($rs);
+$rs=query($sql);
+$row=fetch_array($rs);
 if ($row){
 $bigclassname=$row["classname"];
 }
@@ -55,8 +55,12 @@ if ($province<>""){
 $sql2=$sql2." and province ='".$province."' ";
 }
 
-$rs = mysql_query($sql.$sql2); 
-$row = mysql_fetch_array($rs);
+if ($b<>""){
+$sql2=$sql2." and classzm ='".$b."' ";
+}
+
+$rs = query($sql.$sql2); 
+$row = fetch_array($rs);
 $totlenum = $row['total'];
 $offset=($page-1)*$page_size;
 $totlepage=ceil($totlenum/$page_size);
@@ -65,7 +69,7 @@ $sql="select id,cp,truename,province,city,xiancheng,price,danwei,tel,sendtime fr
 
 $sql=$sql.$sql2;
 $sql=$sql." order by id desc limit $offset,$page_size";
-$rs = mysql_query($sql); 
+$rs = query($sql); 
 //echo $sql;
 $baojia=strbetween($strout,"{baojia}","{/baojia}");
 $baojialist=strbetween($strout,"{loop}","{/loop}");
@@ -75,7 +79,7 @@ $strout=str_replace("{baojia}".$baojia."{/baojia}","暂无信息",$strout) ;
 }else{
 $i=0;
 $baojialist2='';
-while($row= mysql_fetch_array($rs)){
+while($row= fetch_array($rs)){
 
 $baojialist2 = $baojialist2. str_replace("{#id}" ,$row["id"],$baojialist) ;
 

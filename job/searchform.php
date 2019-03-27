@@ -24,14 +24,14 @@ body {
   <tr>
     <td><?php
 $sql = "select * from zzcms_jobclass where parentid<>'0' order by xuhao asc";
-$rs=mysql_query($sql);
+$rs=query($sql);
 ?>
       <script language = "JavaScript" type="text/JavaScript">
 var onecount;
 subcat = new Array();
         <?php 
         $count = 0;
-        while($row = mysql_fetch_array($rs)){
+        while($row = fetch_array($rs)){
         ?>
 subcat[<?php echo $count?>] = new Array("<?php echo trim($row["classname"])?>","<?php echo trim($row["parentid"])?>","<?php echo trim($row["classid"])?>");
         <?php
@@ -53,12 +53,12 @@ function changelocation(locationid)
             }        
         }
     }</script>
-      <select name="b"  id="b" onchange="changelocation(document.myform.b.options[document.myform.b.selectedIndex].value)" style="width:180px" class="biaodan">
+      <select name="b"  id="b" onchange="changelocation(document.myform.b.options[document.myform.b.selectedIndex].value)" style="width:210px" class="biaodan">
         <option value="" selected="selected">请选择职位大类</option>
         <?php
 	$sql = "select * from zzcms_jobclass where  parentid='0' order by xuhao asc";
-    $rs=mysql_query($sql);
-	while($row = mysql_fetch_array($rs)){
+    $rs=query($sql);
+	while($row = fetch_array($rs)){
 	?>
         <option value="<?php echo trim($row["classid"])?>" ><?php echo trim($row["classname"])?></option>
         <?php
@@ -67,12 +67,12 @@ function changelocation(locationid)
       </select></td>
   </tr>
   <tr>
-    <td><select name="s" style="width:180px" class="biaodan">
+    <td><select name="s" style="width:210px" class="biaodan">
       <option value="">请选择职位小类</option>
       <?php
 $sql="select * from zzcms_jobclass  order by xuhao asc";
-$rs=mysql_query($sql);
-while($row = mysql_fetch_array($rs)){
+$rs=query($sql);
+while($row = fetch_array($rs)){
 ?>
 <option value="<?php echo $row["classid"]?>" ><?php echo $row["classname"]?></option>
 <?php 	  
@@ -82,31 +82,24 @@ while($row = mysql_fetch_array($rs)){
   </tr>
   <tr>
     <td>
-<select name="province" id="province" style="width:180px" class="biaodan"></select>
-</td>
+<select name="province" id="province" style="width:210px" class="biaodan"></select></td>
   </tr>
   <tr>
     <td>
-	<select name="city" id="city" style="width:180px" class="biaodan"></select>
-	  </td>
+	<select name="city" id="city" style="width:210px" class="biaodan"></select>	  </td>
   </tr>
   <tr>
-    <td><select name="xiancheng" id="xiancheng" style="width:180px" class="biaodan"></select>
+    <td><select name="xiancheng" id="xiancheng" style="width:210px" class="biaodan"></select>
 	<script src="/js/area.js"></script>
 <script type="text/javascript">
 new PCAS('province', 'city', 'xiancheng', '', '', '');
-</script>
-	</td>
+</script>	</td>
   </tr>
   <tr>
-    <td><input name="keyword" type="text"  id="keyword" value="" size="25" maxlength="255" class="biaodan" style="width:180px"/></td>
-  </tr>
-  <tr>
-    <td><input type="radio" name="yiju" value="Pname" />
-按职位
-  <input name="yiju" type="radio" value="Pcompany" />
-按企业
-<input name="Submit3" type="submit"  value="搜索" class="buttons"/></td>
+    <td><input name="keyword" type="text"  id="keyword" value="" size="25" maxlength="255" class="biaodan" style="width:60px"/>
+      <label><input type="radio" name="yiju" value="Pname" />职位</label>
+      <label><input name="yiju" type="radio" value="Pcompany" />企业</label>
+      <input name="Submit3" type="submit"  value="搜索" class="buttons"/></td>
   </tr>
 </table>
 </form>

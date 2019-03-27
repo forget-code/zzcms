@@ -47,13 +47,13 @@ $sql=$sql." and looked=0 ";
 }
 
 $offset=($page-1)*$page_size;
-$rs = mysql_query($sql,$conn); 
-$totlenum= mysql_num_rows($rs);  
+$rs = query($sql,$conn); 
+$totlenum= num_rows($rs);  
 $totlepage=ceil($totlenum/$page_size);
 
 $sql=$sql." order by id desc limit $offset,$page_size";
-$rs = mysql_query($sql,$conn); 
-$row= mysql_num_rows($rs);//返回记录数
+$rs = query($sql,$conn); 
+$row= num_rows($rs);//返回记录数
 if(!$row){
 echo $f_array[1];
 }else{
@@ -64,7 +64,7 @@ echo $f_array[1];
      <?php echo $f_array[2]?>
     </tr>
           <?php
-while($row = mysql_fetch_array($rs)){
+while($row = fetch_array($rs)){
 ?>
     <tr class="bgcolor1" onMouseOver="fSetBg(this)" onMouseOut="fReBg(this)"> 
       <td><a href="ztliuyan_show.php?id=<?php echo $row["id"]?>" target="_blank"><?php echo cutstr($row["content"],10)?></a></td>
@@ -89,7 +89,7 @@ while($row = mysql_fetch_array($rs)){
 </form>
 <?php
 }
-mysql_close($conn);
+
 unset ($f_array);
 ?>
 </div>

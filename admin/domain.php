@@ -27,10 +27,10 @@ if ($action=="savedata" ){
 	$saveas=trim($_REQUEST["saveas"]);
 	$domain=trim($_POST["domain"]);
 	if ($saveas=="add"){
-	mysql_query("insert into zzcms_userdomain (username,domain)VALUES('$username','$domain') ");
+	query("insert into zzcms_userdomain (username,domain)VALUES('$username','$domain') ");
 	$go=1;
 	}elseif ($saveas=="modify"){
-	mysql_query("update zzcms_userdomain set domain='$domain' where id=". $_POST['id']." ");
+	query("update zzcms_userdomain set domain='$domain' where id=". $_POST['id']." ");
 	$go=1;
 	}
 }
@@ -55,8 +55,8 @@ if ($action=="add") {
 }
 if ($action=="modify") {
 $sql="select * from zzcms_userdomain where id=".$_REQUEST["id"]."";
-$rs=mysql_query($sql);
-$row=mysql_fetch_array($rs);
+$rs=query($sql);
+$row=fetch_array($rs);
 ?>
 <div class="admintitle">修改域名</div>  
 <form action="?action=savedata&saveas=modify" method="POST" name="myform" id="myform">

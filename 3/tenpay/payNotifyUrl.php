@@ -58,16 +58,16 @@ require_once ("./tenpay_config.php");
 				//注意交易单不要重复处理
 				//注意判断返回金额
 				$sql="select * from zzcms_pay where mark='".$transaction_id."' and username='".@$_COOKIE['UserName']."'";
-				$rs=mysql_query($sql);	
-				$row=mysql_num_rows($rs);
+				$rs=query($sql);	
+				$row=num_rows($rs);
 				if (!$row){//如果没有记录刚写入
 				$total_fee_yuan=$total_fee/100;
 				$jifen=$total_fee_yuan*jifen_bilu;
-				mysql_query("update zzcms_user set totleRMB=totleRMB+".$jifen." where username='".@$_COOKIE['UserName']."'");//写入冲值金额到用户表
-				mysql_query("insert into zzcms_pay (username,dowhat,RMB,mark,sendtime) values('".@$_COOKIE['UserName']."','财富通在线充值','$total_fee_yuan','$transaction_id','".date('Y-m-d H:i:s')."')");//写入冲值记录
+				query("update zzcms_user set totleRMB=totleRMB+".$jifen." where username='".@$_COOKIE['UserName']."'");//写入冲值金额到用户表
+				query("insert into zzcms_pay (username,dowhat,RMB,mark,sendtime) values('".@$_COOKIE['UserName']."','财富通在线充值','$total_fee_yuan','$transaction_id','".date('Y-m-d H:i:s')."')");//写入冲值记录
 					echo "充值成功";
 				}
-				mysql_close($conn);
+				
 				//------------------------------
 				//处理业务完毕
 				//------------------------------

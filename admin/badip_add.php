@@ -5,8 +5,8 @@ checkadminisdo("badusermessage");
 if (isset($_REQUEST['action'])){
 $ip=trim($_REQUEST["ip"]);
 $dose=trim($_REQUEST["dose"]);
-mysql_query("insert into zzcms_bad (ip,dose,sendtime,lockip)values('$ip','$dose','".date('Y-m-d H:i:s')."','1')");
-mysql_close($conn);
+query("insert into zzcms_bad (ip,dose,sendtime,lockip)values('$ip','$dose','".date('Y-m-d H:i:s')."','1')");
+
 echo "<script>location.href='showbad.php'</script>";
 }else{
 ?>

@@ -15,10 +15,10 @@ $id=0;
 
 $editor=substr($_SERVER['HTTP_HOST'],0,strpos($_SERVER['HTTP_HOST'],'.'));//从二级域名中获取用户名
 $sql="select * from zzcms_userdomain where domain='".$_SERVER['HTTP_HOST']."' and passed=1 and del=0";//从顶级级域名中获取用户名
-$rs=mysql_query($sql);
-$row=mysql_num_rows($rs);
+$rs=query($sql);
+$row=num_rows($rs);
 if (!$row){
-	$row=mysql_fetch_array($rs);
+	$row=fetch_array($rs);
 	$editor=$row["username"];
 }
 
@@ -33,12 +33,12 @@ $sql="select * from zzcms_user where username='".$editorinzsshow."'";	//当两�
 }else{
 showmsg ("参数不足!");
 }
-$rs=mysql_query($sql);
-$row=mysql_num_rows($rs);
+$rs=query($sql);
+$row=num_rows($rs);
 if (!$row){
 	showmsg ("不存在该用户信息!",siteurl);
 }else{
-	$row=mysql_fetch_array($rs);
+	$row=fetch_array($rs);
 	if ($row["lockuser"]==1){
 	showmsg ("用户被锁定!展厅不于显示",siteurl);
 	}
@@ -60,10 +60,10 @@ if (!$row){
 	$content=$row["content"];
 	$groupid=$row["groupid"];
 }	
-$rs=mysql_query("select skin,skin_mobile,tongji,baidu_map from zzcms_usersetting where username='".$editor."'");
-$row=mysql_num_rows($rs);
+$rs=query("select skin,skin_mobile,tongji,baidu_map from zzcms_usersetting where username='".$editor."'");
+$row=num_rows($rs);
 if ($row){
-$row=mysql_fetch_array($rs);
+$row=fetch_array($rs);
 $skin=$row["skin"];
 $skin_mobile=$row["skin_mobile"];
 $tongji=$row["tongji"];
@@ -82,15 +82,15 @@ $skin="mobile/".$skin_mobile;
 
 if (isset($_REQUEST["skin"])){$skin=$_REQUEST["skin"];}//演示模板用
 //showusergroup
-$rs=mysql_query("select groupname,grouppic,groupid,config from zzcms_usergroup where groupid=$groupid");
-$row=mysql_fetch_array($rs);
+$rs=query("select groupname,grouppic,groupid,config from zzcms_usergroup where groupid=$groupid");
+$row=fetch_array($rs);
 $showcontact=str_is_inarr($row["config"],'showcontact');
 $showad_inzt=str_is_inarr($row["config"],'showad_inzt');//用于判断是否在展厅内显广告
 
 	if($row["groupid"]>1 ){
 	$showusergroup="<img src='".siteurl."/image/cxqy.png'/>";
-	$rsviptime=mysql_query("select startdate from zzcms_user where username='".$editor."'");
-	$rown=mysql_fetch_array($rsviptime);
+	$rsviptime=query("select startdate from zzcms_user where username='".$editor."'");
+	$rown=fetch_array($rsviptime);
 	$startdate=$rown['startdate'];
 	$showusergroup=$showusergroup . "<img src='".siteurl."/image/viptime/".(date('Y')-date('Y',strtotime($startdate))+1).".png'/>";
 	}else{
@@ -103,13 +103,13 @@ $showad_inzt=str_is_inarr($row["config"],'showad_inzt');//用于判断是否在�
 
 
 //showbanner
-$rs=mysql_query("select * from zzcms_usersetting where username='".$editor."'");
-$row=mysql_num_rows($rs);
+$rs=query("select * from zzcms_usersetting where username='".$editor."'");
+$row=num_rows($rs);
 if(!$row){
-mysql_query("INSERT INTO zzcms_usersetting (username,skin,swf,daohang)VALUES('".$editor."','red2','6.swf','网站首页, 招商信息, 公司简介, 资质证书, 联系方式, 在线留言')");
+query("INSERT INTO zzcms_usersetting (username,skin,swf,daohang)VALUES('".$editor."','red2','6.swf','网站首页, 招商信息, 公司简介, 资质证书, 联系方式, 在线留言')");
 $showbanner="用户配置表中无此用户信息，已自动修复，刷新本页后，可正常显示";
 }else{
-$row=mysql_fetch_array($rs);
+$row=fetch_array($rs);
 if($row["bannerbg"]<>"" ){
 $showbanner="<div id='Layer1' style='position:absolute; width:100%; height:".$row["bannerheight"]."px; z-index:1'>";
 	if (substr($skin,0,6)!="mobile"){
@@ -157,12 +157,12 @@ if(whtml=="Yes" ){
 return $str;
 }
 
-$rs=mysql_query("select * from zzcms_usersetting where username='".$editor."'");
-$row=mysql_num_rows($rs);
+$rs=query("select * from zzcms_usersetting where username='".$editor."'");
+$row=num_rows($rs);
 if(!$row ){
 $showdaohang="用户配置表中无此用户信息";
 }else{
-$row=mysql_fetch_array($rs);
+$row=fetch_array($rs);
 $showdaohang="<ul>";
 if(strpos($row["daohang"],"网站首页")!==false ){
 if(strpos($channel,"zt/show")!==false){$showdaohang=$showdaohang."<li class='current'>";}else{$showdaohang=$showdaohang."<li>";}

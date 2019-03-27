@@ -17,11 +17,11 @@ $action="";
 
 if ($action=="del" ){
 checkadminisdo("adminmanage");
-mysql_query("delete from zzcms_admin where id='".$_GET["id"]."'");
+query("delete from zzcms_admin where id='".$_GET["id"]."'");
 echo  "<script>alert('删除成功');location.href='?'</script>";
 }
 $sql="select * from zzcms_admin order by id desc";
-$rs = mysql_query($sql); 
+$rs = query($sql); 
 ?>
 <script language="JavaScript" src="/js/gg.js"></script>
 </head>
@@ -39,7 +39,7 @@ $rs = mysql_query($sql);
     <td width="10%" align="center" class="border">操 作</td>
   </tr>
  <?php
-	while($row= mysql_fetch_array($rs)){
+	while($row= fetch_array($rs)){
 ?>
   <tr onMouseOver="this.bgColor='#E8E8E8'" onMouseOut="this.bgColor='#FFFFFF'" bgcolor="#FFFFFF">
     <td align="center"><?php echo $row["id"]?></td>
@@ -47,10 +47,10 @@ $rs = mysql_query($sql);
     <td>
 	
 	<?php 
-			$rsn=mysql_query("select groupname from zzcms_admingroup where id='".$row['groupid']."'");
-			$r=mysql_num_rows($rsn);
+			$rsn=query("select groupname from zzcms_admingroup where id='".$row['groupid']."'");
+			$r=num_rows($rsn);
 			if ($r){
-			$r=mysql_fetch_array($rsn);
+			$r=fetch_array($rsn);
 			echo $r["groupname"];
 			}
 			 ?><br>
@@ -61,11 +61,11 @@ $rs = mysql_query($sql);
     <td align="center"><a href="adminmodify.php?admins=<?php echo $row["admin"]?>">修改权限</a> 
 	 | <a href="adminpwd.php?admins=<?php echo $row["admin"]?>">修改密码</a> |   
 	 <?php
-$rsn2=mysql_query("select id from zzcms_admin where groupid=(select id from zzcms_admingroup where groupname='超级管理员')");
-$rown2=mysql_num_rows($rsn2);//超级管理员数	 
+$rsn2=query("select id from zzcms_admin where groupid=(select id from zzcms_admingroup where groupname='超级管理员')");
+$rown2=num_rows($rsn2);//超级管理员数	 
 	 
-$rsn=mysql_query("select groupname from zzcms_admingroup where id=(select groupid from zzcms_admin where id=".$row["id"].")");
-$rown=mysql_fetch_array($rsn);
+$rsn=query("select groupname from zzcms_admingroup where id=(select groupid from zzcms_admin where id=".$row["id"].")");
+$rown=fetch_array($rsn);
 if ($rown["groupname"]=='超级管理员' && $rown2 < 2){
 echo "<span style='color:#666666' title='至少要保留1个“超级管理员”，添加新“超级管理员”后，才能删除老的'>删除</span>";
 }else{
@@ -78,7 +78,7 @@ echo "<span style='color:#666666' title='至少要保留1个“超级管理员�
   </tr>
   <?php 
   }
-   mysql_close($conn); 
+    
    ?>
 </table>
 </body>

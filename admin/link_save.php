@@ -36,13 +36,13 @@ $elite=0;
 }
 
 if ($_REQUEST["action"]=="add"){
-mysql_query("INSERT INTO zzcms_link (bigclassid,sitename,url,logo,content,passed,elite,sendtime)VALUES('$classid','$FriendSiteName','$url','$logo','$content','$passed','$elite','".date('Y-m-d H:i:s')."')");
+query("INSERT INTO zzcms_link (bigclassid,sitename,url,logo,content,passed,elite,sendtime)VALUES('$classid','$FriendSiteName','$url','$logo','$content','$passed','$elite','".date('Y-m-d H:i:s')."')");
 }elseif ($_REQUEST["action"]=="modify") {
 $id=$_POST["id"];
-mysql_query("update zzcms_link set bigclassid='$classid',sitename='$FriendSiteName',url='$url',logo='$logo',content='$content',passed='$passed',elite='$elite',sendtime='".date('Y-m-d H:i:s')."' where id='$id'");	
+query("update zzcms_link set bigclassid='$classid',sitename='$FriendSiteName',url='$url',logo='$logo',content='$content',passed='$passed',elite='$elite',sendtime='".date('Y-m-d H:i:s')."' where id='$id'");	
 }
 $_SESSION["bigclassid"]=$classid;
-mysql_close($conn);
+
 echo  "<script>location.href='linkmanage.php?b=".$classid."&page=".$page."'</script>";
 ?>
 </body>

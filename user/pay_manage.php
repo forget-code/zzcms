@@ -38,13 +38,13 @@ if( isset($_GET["page"]) && $_GET["page"]!="") {
 $page_size=pagesize_ht;  //每页多少条数据
 $offset=($page-1)*$page_size;
 $sql="select * from zzcms_pay where username='".$username."'";
-$rs = mysql_query($sql,$conn); 
-$totlenum= mysql_num_rows($rs);  
+$rs = query($sql,$conn); 
+$totlenum= num_rows($rs);  
 $totlepage=ceil($totlenum/$page_size);  
 
 $sql=$sql . " order by id desc limit $offset,$page_size";
-$rs = mysql_query($sql,$conn); 
-$row= mysql_num_rows($rs);//返回记录数
+$rs = query($sql,$conn); 
+$row= num_rows($rs);//返回记录数
 if(!$row){
 echo $f_array[1];
 }else{
@@ -56,7 +56,7 @@ echo $f_array[1];
         </tr>
         <?php
 $i=1;
-while($row = mysql_fetch_array($rs)){
+while($row = fetch_array($rs)){
 ?>
          <tr class="bgcolor1" onMouseOver="fSetBg(this)" onMouseOut="fReBg(this)"> 
           <td align="center"><?php echo $i?></td>

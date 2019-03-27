@@ -27,8 +27,8 @@ $titles="";
 $bigclassname="";
 if ($b<>""){
 $sql="select * from zzcms_zsclass where classzm='".$b."'";
-$rs=mysql_query($sql);
-$row=mysql_fetch_array($rs);
+$rs=query($sql);
+$row=fetch_array($rs);
 if ($row){
 $descriptions=$row["discription"];
 $keywords=$row["keyword"];
@@ -47,7 +47,7 @@ $more="<a href='".getpageurl2("zs",$b,'')."'>更多...</a>";
 $sql="select * from zzcms_ad where  id<>0 ";
 		
 if ($b<>""){
-$sql=$sql . "and bigclassname='".$b."' ";
+$sql=$sql . "and bigclassname='".$b."' and smallclassname='列表页'";
 }
 
 if( isset($_GET["page"]) && $_GET["page"]!="") {
@@ -56,14 +56,14 @@ if( isset($_GET["page"]) && $_GET["page"]!="") {
 }else{
     $page=1;
 }
-$rs = mysql_query($sql); 
+$rs = query($sql); 
 $offset=($page-1)*$page_size;//$page_size在上面被设为COOKIESS
-$totlenum= mysql_num_rows($rs);  
+$totlenum= num_rows($rs);  
 $totlepage=ceil($totlenum/$page_size);
 
 $sql=$sql." order by id desc limit $offset,$page_size";
-$rs = mysql_query($sql); 
-$row= mysql_num_rows($rs);//返回记录数
+$rs = query($sql); 
+$row= num_rows($rs);//返回记录数
 if(!$row){
 $adlist="<div style='margin:50px 0'>暂无信息</div>";
 }else{
@@ -73,7 +73,7 @@ $showborder=true;
 $showtitle=true;
 $i=1;
 $adlist="<table border=0 cellpadding=0 cellspacing=0  style='color:#666666;'><tr>";
-while($row= mysql_fetch_array($rs)){
+while($row= fetch_array($rs)){
 
 if ($row["img"]<>"") {
 if (strpos("gif|jpg|png|bmp",substr($row["img"],-3))!==false) {
@@ -166,6 +166,6 @@ $strout=str_replace("{#adlist}",$adlist,$strout);
 $strout=str_replace("{#sitebottom}",sitebottom(),$strout);
 $strout=str_replace("{#sitetop}",sitetop(),$strout);
 $strout=showlabel($strout);
-mysql_close($conn);
+
 echo  $strout;
 ?>

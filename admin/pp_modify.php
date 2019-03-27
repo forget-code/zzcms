@@ -33,8 +33,8 @@ checkid($id);
 $id=0;
 }
 $sqlzs="select * from zzcms_pp where id='$id'";
-$rszs=mysql_query($sqlzs);
-$rowzs=mysql_fetch_array($rszs);
+$rszs=query($sqlzs);
+$rowzs=fetch_array($rszs);
 ?>
 <form action="pp_save.php" method="post" name="myform" id="myform" onSubmit="return CheckForm();">
   <table width="100%" border="0" cellpadding="5" cellspacing="0">
@@ -47,14 +47,14 @@ $rowzs=mysql_fetch_array($rszs);
       <td class="border"> 
         <?php
 $sql = "select * from zzcms_zsclass where parentid<>'A' order by xuhao asc";
-$rs=mysql_query($sql);
+$rs=query($sql);
 ?>
         <script language = "JavaScript" type="text/JavaScript">
 var onecount;
 subcat = new Array();
         <?php 
         $count = 0;
-        while($row = mysql_fetch_array($rs)){
+        while($row = fetch_array($rs)){
         ?>
 subcat[<?php echo $count?>] = new Array("<?php echo trim($row["classname"])?>","<?php echo trim($row["parentid"])?>","<?php echo trim($row["classzm"])?>");
         <?php
@@ -79,8 +79,8 @@ function changelocation(locationid)
           <option value="" selected="selected">请选择大类别</option>
           <?php
 	$sql = "select * from zzcms_zsclass where  parentid='A' order by xuhao asc";
-    $rs=mysql_query($sql);
-	while($row = mysql_fetch_array($rs)){
+    $rs=query($sql);
+	while($row = fetch_array($rs)){
 	?>
           <option value="<?php echo trim($row["classzm"])?>" <?php if ($row["classzm"]==$rowzs["bigclasszm"]) { echo "selected";}?>><?php echo trim($row["classname"])?></option>
           <?php
@@ -90,8 +90,8 @@ function changelocation(locationid)
           <option value="">不指定小类</option>
           <?php
 $sql="select * from zzcms_zsclass where parentid='" .$rowzs["bigclasszm"]."' order by xuhao asc";
-$rs=mysql_query($sql);
-while($row = mysql_fetch_array($rs)){
+$rs=query($sql);
+while($row = fetch_array($rs)){
 ?>
           <option value="<?php echo $row["classzm"]?>" <?php if ($row["classzm"]==$rowzs["smallclasszm"]) { echo "selected";}?>><?php echo $row["classname"]?></option>
           <?php 
@@ -141,8 +141,6 @@ while($row = mysql_fetch_array($rs)){
     </tr>
   </table>
 </form>
-<?php
-mysql_close($conn);
-?>
+
 </body>
 </html>

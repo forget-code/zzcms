@@ -58,16 +58,16 @@ $bigclassname="";
 $smallclassname="";
 if ($b<>0){
 $sql="select * from zzcms_zxclass where classid='$b'";
-$rs=mysql_query($sql);
-$row=mysql_fetch_array($rs);
+$rs=query($sql);
+$row=fetch_array($rs);
 if ($row){
 $bigclassname=$row["classname"];
 }
 }
 if ($s<>0) {
 $sql="select * from zzcms_zxclass where classid='$s'";
-$rs=mysql_query($sql);
-$row=mysql_fetch_array($rs);
+$rs=query($sql);
+$row=fetch_array($rs);
 if ($row){
 	$smallclassname=$row["classname"];
 	}	
@@ -80,19 +80,19 @@ if (isset($_GET['dels'])){
 setcookie("zxs","xxx",1);
 echo "<script>location.href='search.php'</script>";
 }
-$pagetitle=sitename."-资讯信息-".$bigclassname;
-$pagekeyword=sitename."-资讯信息-".$bigclassname;
-$pagedescription=sitename."-资讯信息-".$bigclassname;
+$pagetitle=sitename.zxlisttitle.$bigclassname;
+$pagekeyword=sitename.zxlisttitle.$bigclassname;
+$pagedescription=sitename.zxlisttitle.$bigclassname;
 
 function formbigclass(){
 		$str="";
         $sql = "select * from zzcms_zxclass where parentid=0";
-        $rs=mysql_query($sql);
-		$row=mysql_num_rows($rs);
+        $rs=query($sql);
+		$row=num_rows($rs);
 		if (!$row){
 		$str= "请先添加类别名称。";
 		}else{
-			while($row=mysql_fetch_array($rs)){
+			while($row=fetch_array($rs)){
 			$str=$str. "<a href=?b=".$row["classid"].">".$row["classname"]."</a>&nbsp;&nbsp;";
 			}
 		}
@@ -104,10 +104,10 @@ function formbigclass(){
 		if ($b<>0){
 		$str="";
         $sql="select * from zzcms_zxclass where parentid='".$b."' order by xuhao asc";
-        $rs=mysql_query($sql);
-		$row=mysql_num_rows($rs);
+        $rs=query($sql);
+		$row=num_rows($rs);
 		if ($row){
-			while($row=mysql_fetch_array($rs)){
+			while($row=fetch_array($rs)){
 			$str=$str. "<a href=?s=".$row["classid"].">".$row["classname"]."</a>&nbsp;&nbsp;";
 			}
 		}	
@@ -152,8 +152,8 @@ $sql2=$sql2." and smallclassid='".$s."' ";
 if ($keyword<>"") {
 $sql2=$sql2." and title like '%".$keyword."%' ";
 }
-$rs = mysql_query($sql.$sql2); 
-$row = mysql_fetch_array($rs);
+$rs = query($sql.$sql2); 
+$row = fetch_array($rs);
 $totlenum = $row['total'];
 $offset=($page-1)*$page_size;//$page_size在上面被设为COOKIESS 
 $totlepage=ceil($totlenum/$page_size);
@@ -161,7 +161,7 @@ $totlepage=ceil($totlenum/$page_size);
 $sql="select id,title,elite,sendtime,img,link,hit from zzcms_zx where passed=1";
 $sql=$sql.$sql2;
 $sql=$sql." order by id desc limit $offset,$page_size";
-$rs = mysql_query($sql); 
+$rs = query($sql); 
 
 if(!$totlenum){
 $strout=str_replace("{#fenyei}","",$strout) ;
@@ -170,7 +170,7 @@ $strout=str_replace("{loop}".$list."{/loop}","暂无信息",$strout) ;
 $list2='';
 $shuxing='';
 $i=0;
-while($row= mysql_fetch_array($rs)){
+while($row= fetch_array($rs)){
 if ($row["elite"]>0) {
 $listimg="<font color=red>[置顶]</font>&nbsp;";
 }elseif (time()-strtotime($row["sendtime"])<3600*24){
@@ -218,7 +218,7 @@ $strout=str_replace("{#selected}",$selected,$strout);
 $strout=str_replace("{#sitebottom}",sitebottom(),$strout);
 $strout=str_replace("{#sitetop}",sitetop(),$strout);
 $strout=showlabel($strout);
-mysql_close($conn);
+
 echo $strout;
 $t2 = microtime(true);
 echo '耗时'.round($t2-$t1,3).'秒';	

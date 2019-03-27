@@ -24,12 +24,12 @@ if(!empty($_POST['id'])){
     for($i=0; $i<count($_POST['id']);$i++){
     $id=$_POST['id'][$i];
 	$sql="select passed from zzcms_zx where id ='$id'";
-	$rs = mysql_query($sql); 
-	$row = mysql_fetch_array($rs);
+	$rs = query($sql); 
+	$row = fetch_array($rs);
 		if ($row['passed']=='0'){
-		mysql_query("update zzcms_zx set passed=1,sendtime='".date('Y-m-d H:i:s')."' where id ='$id'");
+		query("update zzcms_zx set passed=1,sendtime='".date('Y-m-d H:i:s')."' where id ='$id'");
 		}else{
-		mysql_query("update zzcms_zx set passed=0,sendtime='".date('Y-m-d H:i:s')."' where id ='$id'");
+		query("update zzcms_zx set passed=0,sendtime='".date('Y-m-d H:i:s')."' where id ='$id'");
 		}
 	}
 }else{
@@ -67,8 +67,8 @@ echo "<script>location.href='?b=".$b."&keyword=".$keyword."&page=".$page."'</scr
  
     <?php	
 $sql="select * from zzcms_zxclass where parentid=0 order by xuhao";
-$rs = mysql_query($sql); 
-while($row = mysql_fetch_array($rs)){
+$rs = query($sql); 
+while($row = fetch_array($rs)){
 echo "<a href=?b=".$row['classid'].">";  
 	if ($row["classid"]==$b) {
 	echo "<b>".$row["classname"]."</b>";
@@ -110,15 +110,15 @@ if ($keyword<>"") {
 	}
 }
 
-$rs = mysql_query($sql.$sql2,$conn); 
-$row = mysql_fetch_array($rs);
+$rs = query($sql.$sql2,$conn); 
+$row = fetch_array($rs);
 $totlenum = $row['total'];  
 $totlepage=ceil($totlenum/$page_size);
 
 $sql="select * from zzcms_zx where id<>0 ";
 $sql=$sql.$sql2;
 $sql=$sql . " order by id desc limit $offset,$page_size";
-$rs = mysql_query($sql,$conn); 
+$rs = query($sql,$conn); 
 if(!$totlenum){
 echo "暂无信息";
 }else{
@@ -147,7 +147,7 @@ echo "暂无信息";
       <td width="5%" align="center" class="border">操作</td>
     </tr>
 <?php
-while($row = mysql_fetch_array($rs)){
+while($row = fetch_array($rs)){
 ?>
     <tr class="bgcolor1" onMouseOver="fSetBg(this)" onMouseOut="fReBg(this)"> 
       <td align="center" class="docolor"> <input name="id[]" type="checkbox" id="id" value="<?php echo $row["id"]?>"></td>
@@ -179,7 +179,7 @@ while($row = mysql_fetch_array($rs)){
 <div class="border center"><?php echo showpage_admin()?></div>
 <?php
 }
-mysql_close($conn);
+
 ?>
 </body>
 </html>

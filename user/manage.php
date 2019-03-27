@@ -25,8 +25,8 @@ function CheckForm(){
 $founderr=0;
 $errmsg="";
 	$sql="select * from zzcms_user where username='" .$username. "'";
-	$rs=mysql_query($sql);
-	$row=mysql_fetch_array($rs);
+	$rs=query($sql);
+	$row=fetch_array($rs);
 	
 	if (isset($_REQUEST['action'])){
 	$action=$_REQUEST['action'];
@@ -85,8 +85,8 @@ if ($action=="modify") {
 			}
 			$phone=trim($_POST["phone"]);
 			if (allowrepeatreg=='no'){
-			$rsn=mysql_query("select * from zzcms_user where phone='" . $phone . "' and username!='$username'");
-			$r=mysql_num_rows($rsn);
+			$rsn=query("select * from zzcms_user where phone='" . $phone . "' and username!='$username'");
+			$r=num_rows($rsn);
 			if ($r){
 			$founderr=1;
 			$errmsg=$errmsg . $f_array[3];
@@ -96,7 +96,7 @@ if ($action=="modify") {
 			if ($founderr==1){
 			WriteErrMsg($errmsg);
 			}else{
-			mysql_query("update zzcms_user set bigclassid='$b',smallclassid='$s',content='$content',img='$img',flv='$flv',province='$province',city='$city',
+			query("update zzcms_user set bigclassid='$b',smallclassid='$s',content='$content',img='$img',flv='$flv',province='$province',city='$city',
 			xiancheng='$xiancheng',somane='$somane',sex='$sex',phone='$phone',mobile='$mobile',fox='$fox',address='$address',
 			email='$email',qq='$qq',qqid='$qqid',homepage='$homepage' where username='".$username."'");
 			if ($oldimg<>$img && $oldimg<>"/image/nopic.gif"){
@@ -116,7 +116,7 @@ if ($action=="modify") {
 				}
 			}
 				if ($qq<>$oldqq) {
-				mysql_query("Update zzcms_main set qq=" . $qq . " where editor='" . $username . "'");
+				query("Update zzcms_main set qq=" . $qq . " where editor='" . $username . "'");
 				}
 				echo $f_array[4];
 			}
@@ -198,14 +198,14 @@ include("left.php");
             <td align="right" class="border"><?php echo $f_array[19]?>：</td>
             <td class="border"><?php
 $sqln = "select * from zzcms_userclass where parentid<>'0' order by xuhao asc";
-$rsn=mysql_query($sqln);
+$rsn=query($sqln);
 ?>
               <script language = "JavaScript" type="text/javascript">
 var onecount;
 subcat = new Array();
 <?php 
 $count = 0;
-        while($rown = mysql_fetch_array($rsn)){
+        while($rown = fetch_array($rsn)){
         ?>
 subcat[<?php echo $count?>] = new Array("<?php echo trim($rown["classname"])?>","<?php echo trim($rown["parentid"])?>","<?php echo trim($rown["classid"])?>");
        <?php
@@ -228,8 +228,8 @@ function changelocation(locationid){
                 <option value="" selected="selected"><?php echo $f_array[20]?></option>
                 <?php
 	$sqln = "select * from zzcms_userclass where  parentid='0' order by xuhao asc";
-    $rsn=mysql_query($sqln);
-	while($rown = mysql_fetch_array($rsn)){
+    $rsn=query($sqln);
+	while($rown = fetch_array($rsn)){
 	?>
                 <option value="<?php echo trim($rown["classid"])?>" <?php if ($rown["classid"]==$row["bigclassid"]) { echo "selected";}?>><?php echo trim($rown["classname"])?></option>
                 <?php
@@ -240,14 +240,14 @@ function changelocation(locationid){
                 <option value="0"><?php echo $f_array[21]?></option>
                 <?php
 $sqln="select * from zzcms_userclass  where parentid='" .$row["bigclassid"]."' order by xuhao asc";
-$rsn=mysql_query($sqln);
-$rown= mysql_num_rows($rsn);//返回记录数
+$rsn=query($sqln);
+$rown= num_rows($rsn);//返回记录数
 if(!$rown){
 ?>
                 <option value="" ><?php echo $f_array[22]?></option>
                 <?php
 }else{
-while($rown = mysql_fetch_array($rsn)){
+while($rown = fetch_array($rsn)){
 ?>
                 <option value="<?php echo $rown["classid"]?>" <?php if ($rown["classid"]==$row["smallclassid"]) { echo "selected";}?>><?php echo $rown["classname"]?></option>
                 <?php 	  
@@ -381,7 +381,7 @@ if (check_user_power("uploadflv")=="yes"){
 </div>
 <?php
 }
-mysql_close($conn);
+
 unset ($f_array);
 ?>
 </body>

@@ -1,9 +1,6 @@
 <?php
 include("../inc/conn.php");
 include("check.php");
-$fpath="";
-$fcontent=file_get_contents($fpath);
-$f_array=explode("|||",$fcontent) ;
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="zh-CN">
@@ -32,37 +29,37 @@ if ($action=="savedata" ){
 	if ($saveas=="add"){
 	//验证域名是否被绑定
 	$sql="select id from zzcms_userdomain where domain='$domain'";
-	$rs = mysql_query($sql); 
-	$row=mysql_num_rows($rs);
+	$rs = query($sql); 
+	$row=num_rows($rs);
 	if ($row) {
 	showmsg('此域名已被绑定');
 	}
 	
 	//验证用户是否已添加过域名绑定
 	$sql="select id from zzcms_userdomain where username='$username' and del!=0";
-	$rs = mysql_query($sql); 
-	$row=mysql_num_rows($rs);
+	$rs = query($sql); 
+	$row=num_rows($rs);
 	if ($row) {
 	showmsg('您已添加过域名绑定','domain_manage.php');
 	}
-	mysql_query("insert into zzcms_userdomain (username,domain)VALUES('$username','$domain') ");
+	query("insert into zzcms_userdomain (username,domain)VALUES('$username','$domain') ");
 	$go=1;
 	}elseif ($saveas=="modify"){
 	//验证域名是否被绑定
 	$sql="select id from zzcms_userdomain where domain='$domain'";
-	$rs = mysql_query($sql); 
-	$row=mysql_num_rows($rs);
+	$rs = query($sql); 
+	$row=num_rows($rs);
 	if ($row) {
 	showmsg('此域名已被绑定');
 	}
 	$sql="select username from zzcms_userdomain where id='$id'";
-	$rs = mysql_query($sql); 
-	$row = mysql_fetch_array($rs);
+	$rs = query($sql); 
+	$row = fetch_array($rs);
 	if ($row["username"]<>$username) {
 	markit();
 	showmsg('非法操作！警告：你的操作已被记录！小心封你的用户及IP！');
 	}
-	mysql_query("update zzcms_userdomain set domain='$domain' where id=". $_POST['id']." ");
+	query("update zzcms_userdomain set domain='$domain' where id=". $_POST['id']." ");
 	$go=1;
 	}
 }
@@ -98,8 +95,8 @@ if ($action=="add") {
 }
 if ($action=="modify") {
 $sql="select * from zzcms_userdomain where id=".$_REQUEST["id"]."";
-$rs=mysql_query($sql);
-$row=mysql_fetch_array($rs);
+$rs=query($sql);
+$row=fetch_array($rs);
 ?>
 <div class="admintitle">修改域名</div>  
 <form action="?action=savedata&saveas=modify" method="POST" name="myform" id="myform">
@@ -115,9 +112,8 @@ $row=mysql_fetch_array($rs);
 <?php
 }
 if ($go==1){
-//echo "<script>location.href='domain_manage.php'</script>";
+echo "<script>location.href='domain_manage.php'</script>";
 }
-unset ($f_array);
 ?>
 </div>
 </div>

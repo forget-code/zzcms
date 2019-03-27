@@ -12,6 +12,7 @@ fclose($f);
 
 if (isset($_REQUEST["page_size"])){
 $page_size=$_REQUEST["page_size"];
+checkid($page_size);
 setcookie("page_size_wangkan",$page_size,time()+3600*24*360);
 }else{
 	if (isset($_COOKIE["page_size_wangkan"])){
@@ -30,8 +31,8 @@ checkid($b);
 $bigclassname="";
 if ($b<>""){
 $sql="select * from zzcms_wangkanclass where bigclassid='$b'";
-$rs=mysql_query($sql);
-$row=mysql_fetch_array($rs);
+$rs=query($sql);
+$row=fetch_array($rs);
 $bigclassname=$row["bigclassname"];
 }
 
@@ -50,8 +51,8 @@ $sql2='';
 if ($b<>""){
 $sql2=$sql2." and bigclassid='".$b."' ";
 }
-$rs = mysql_query($sql.$sql2); 
-$row = mysql_fetch_array($rs);
+$rs = query($sql.$sql2); 
+$row = fetch_array($rs);
 $totlenum = $row['total'];
 $offset=($page-1)*$page_size;//$page_size在上面被设为COOKIESS
 $totlepage=ceil($totlenum/$page_size);
@@ -59,7 +60,7 @@ $totlepage=ceil($totlenum/$page_size);
 $sql="select id,title,img,sendtime,elite from zzcms_wangkan where passed=1 ";
 $sql=$sql.$sql2;
 $sql=$sql." order by elite desc,id desc limit $offset,$page_size";
-$rs = mysql_query($sql); 
+$rs = query($sql); 
 
 if(!$totlenum){
 $strout=str_replace("{#fenyei}","",$strout) ;
@@ -67,7 +68,7 @@ $strout=str_replace("{loop}".$list."{/loop}","暂无信息",$strout) ;
 }else{
 $i=0;
 $list2='';
-while($row= mysql_fetch_array($rs)){
+while($row= fetch_array($rs)){
 $list2 = $list2. str_replace("{#link}" ,getpageurl("wangkan",$row["id"]),$list) ;
 if ($row["elite"]>0){
 $list2 =str_replace("{#title}" ,$row["title"]."<img alt='置顶' src='/image/ding.gif' border='0'>",$list2) ;
@@ -94,6 +95,6 @@ $strout=str_replace("{#numperpage}",showselectpage("wangkan",$page_size,$b,"",$p
 $strout=str_replace("{#sitebottom}",sitebottom(),$strout);
 $strout=str_replace("{#sitetop}",sitetop(),$strout);
 $strout=showlabel($strout);
-mysql_close($conn);
+
 echo  $strout;
 ?>

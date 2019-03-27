@@ -13,7 +13,7 @@ $f_array=explode("|||",$fcontent) ;
 <title><?php echo $f_array[2]?></title>
 <link href="style/<?php echo siteskin_usercenter?>/style.css" rel="stylesheet" type="text/css">
 <?php
-if (check_usergr_power("zh")=="no" && $usersf=='个人'){
+if (str_is_inarr(usergr_power,'zh')=="no" && $usersf=='个人'){
 echo $f_array[0];
 exit;
 }
@@ -53,8 +53,8 @@ include("checkaddinfo.php");
                 <option value="" selected="selected"><?php echo $f_array[4]?></option>
                 <?php  
 		$sql="select * from zzcms_zhclass";
-		$rs=mysql_query($sql);
-		while($row= mysql_fetch_array($rs)){
+		$rs=query($sql);
+		while($row= fetch_array($rs)){
 			?>
                 <option value="<?php echo $row["bigclassid"]?>" ><?php echo $row["bigclassname"]?></option>
                 <?php
@@ -98,7 +98,7 @@ include("checkaddinfo.php");
 </div>
 </div>
 <?php
-mysql_close($conn);
+
 unset ($f_array);
 ?>
 </body>

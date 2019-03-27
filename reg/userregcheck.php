@@ -37,16 +37,16 @@ $msg= "请输入用户名";
 	$msg= "用户名只能为字母和数字，字符介于4到15个。";
 	}else{
 	$sqlreg="select username from zzcms_usernoreg where username='".$id."'";
-	$rs = mysql_query($sqlreg);
-	$row= mysql_num_rows($rs);//返回记录数
+	$rs = query($sqlreg);
+	$row= num_rows($rs);//返回记录数
 		if($row){ 
 		$founderr=1;
 		$msg= "您填写的用户名已存在！请更换用户名！！！";
 		}
 
 	$sqlreg="select username from zzcms_user where username='".$id."'";
-	$rs = mysql_query($sqlreg);
-	$row= mysql_num_rows($rs);//返回记录数
+	$rs = query($sqlreg);
+	$row= num_rows($rs);//返回记录数
 		if($row){ 
 		$founderr=1;
 		$msg= "该用户名已存在！请更换一个！";
@@ -119,16 +119,16 @@ if ($id==''){
 }	
 	if (allowrepeatreg=="No"){
 	$sql="select comane from zzcms_user where comane='".$id."' ";
-	$rs = mysql_query($sql); 
-	$row= mysql_num_rows($rs);//返回记录数
+	$rs = query($sql); 
+	$row= num_rows($rs);//返回记录数
 	if($row){
 	 	$founderr=1;
 	 	$msg="此名称已存在，系统不允许重复注册用户！";
 	 }
 		
 	$sql="select comane from zzcms_usernoreg where comane='".$id."'";
-	$rs = mysql_query($sql); 
-	$row= mysql_num_rows($rs);//返回记录数
+	$rs = query($sql); 
+	$row= num_rows($rs);//返回记录数
 	if($row){
 	 		$founderr=1;
 			$msg="此名称已存在，系统不允许重复注册用户！";	
@@ -158,8 +158,8 @@ if ($id==''){
 	}
 	if (allowrepeatreg=="No"){
 	$sql="select phone from zzcms_user where phone='".$id."'";
-	$rs = mysql_query($sql); 
-	$row= mysql_num_rows($rs);//返回记录数
+	$rs = query($sql); 
+	$row= num_rows($rs);//返回记录数
 		if($row){
 	 	$founderr=1;
 		$msg="此电话号码已存在，系统不允许重复注册用户！";	
@@ -189,8 +189,8 @@ if ($id==''){
 
 	if (allowrepeatreg=="No"){
 	$sql="select email from zzcms_user where email='".$id."'";
-	$rs = mysql_query($sql); 
-	$row= mysql_num_rows($rs);//返回记录数
+	$rs = query($sql); 
+	$row= num_rows($rs);//返回记录数
 		if($row){
 	 	$founderr=1;
 		$msg="此Email已被使用，系统不允许重复注册用户！";	

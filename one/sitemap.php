@@ -25,12 +25,12 @@ switch ($channel){
 	break;
 	default:$sql="select classname,classid,classzm from zzcms_zsclass where parentid='A' order by xuhao";
 	}
-$rs=mysql_query($sql);
-$row=mysql_num_rows($rs);
+$rs=query($sql);
+$row=num_rows($rs);
 if (!$row){
 $str="暂无分类";
 }else{
-	while ($row=mysql_fetch_array($rs)){
+	while ($row=fetch_array($rs)){
 	$str=$str."<li>";
 	switch ($channel){
 	case "zs":$str=$str."<a href='".getpageurlzs("zsclass",$row["classzm"])."'>".$row["classname"]."</a>";

@@ -5,11 +5,11 @@ $sql= "select * from zzcms_ad where bigclassname='".$b."' and smallclassname='".
 if (isshowad_when_timeend=="No"){
 $sql=$sql. "and endtime>= '".date('Y-m-d H:i:s')."' ";
 }
-$rs=mysql_query($sql);
-$row=mysql_num_rows($rs);
+$rs=query($sql);
+$row=num_rows($rs);
 if ($row){
 $str="";
-while($row=mysql_fetch_array($rs)){
+while($row=fetch_array($rs)){
 $str=$str . "<div id='gg".$i."' style='position:absolute;z-index:2' title='".$row["title"]."'>";
 if (substr($row["img"],-3)=="swf"){
 $str=$str ."<embed src='" . siteurl.$row["img"] . "' quality='high' pluginspage='http://www.macromedia.com/go/getflashplayer' type='application/x-shockwave-flash' wmode='transparent' width='135' height='50'></embed>";
@@ -48,11 +48,11 @@ $sql=$sql. "and endtime>= '".date('Y-m-d H:i:s')."' ";
 }
 $sql=$sql. "order by xuhao asc";
 
-$rs=mysql_query($sql);
-$row=mysql_num_rows($rs);
+$rs=query($sql);
+$row=num_rows($rs);
 if ($row){
 $i=1;
-while($row=mysql_fetch_array($rs)){
+while($row=fetch_array($rs)){
 
 $str=$str . "<div id='left".$i."' class='itemFloat' title='".$row["title"]."'>";
 if (strpos("gif|jpg|png|bmp",substr($row["img"],-3))!==false){
@@ -76,11 +76,11 @@ $sql=$sql. "and endtime>= '".date('Y-m-d H:i:s')."' ";
 }
 $sql=$sql. "order by xuhao asc";
 
-$rs=mysql_query($sql);
-$row=mysql_num_rows($rs);
+$rs=query($sql);
+$row=num_rows($rs);
 if ($row){
 $i=1;
-while($row=mysql_fetch_array($rs)){
+while($row=fetch_array($rs)){
 $str=$str . "<div id='right".$i."' class='itemFloat' title='".$row["title"]."'>";
 if (strpos("gif|jpg|png|bmp",substr($row["img"],-3))!==false){
 $str=$str . "<a target=_blank href=".$row["link"]."><img border=0 src=".siteurl.$row["img"]." width=".$row["imgwidth"]." height=".$row["imgheight"]."></a>";

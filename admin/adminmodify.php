@@ -20,12 +20,12 @@ $ErrMsg="";
 $admins=trim($_REQUEST["admins"]);
 if ($action=="modify"){
 $groupid=$_POST["groupid"];
-mysql_query("update zzcms_admin set groupid='$groupid' where admin='".$admins."'");
+query("update zzcms_admin set groupid='$groupid' where admin='".$admins."'");
 echo "<SCRIPT language=JavaScript>alert('修改成功！');history.go(-1)</SCRIPT>";	
 }else{
 $sql="select * from zzcms_admin where admin='" . $admins . "'";
-$rs = mysql_query($sql);
-$row= mysql_fetch_array($rs);
+$rs = query($sql);
+$row= fetch_array($rs);
 ?>
 <div class="admintitle">修改管理员信息</div>
 <FORM name="form1" action="?" method="post" onSubmit="return CheckForm()">
@@ -41,10 +41,10 @@ $row= mysql_fetch_array($rs);
       <td class="border"> <select name="groupid">
           <?php
 	$sqln="Select * from zzcms_admingroup order by id asc";
-	$rsn = mysql_query($sqln,$conn);
-	$rown= mysql_num_rows($rsn);
+	$rsn = query($sqln,$conn);
+	$rown= num_rows($rsn);
 	if ($rown){
-		while($rown=mysql_fetch_array($rsn)){
+		while($rown=fetch_array($rsn)){
 			if  ($rown["id"]==$row["groupid"]) {
 	 		echo "<option value='".$rown["id"]."' selected>".$rown["groupname"]."</option>";
 			}else{

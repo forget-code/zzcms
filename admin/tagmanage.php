@@ -64,8 +64,8 @@ $action="";
 
 if ($action=="px") {
 $sql="Select * From ".$_SESSION['tabletag']."";
-$rs=mysql_query($sql);
-while ($row=mysql_fetch_array($rs)){
+$rs=query($sql);
+while ($row=fetch_array($rs)){
 $xuhao=$_POST["xuhao".$row["id"].""];//表单名称是动态显示的，并于FORM里的名称相同。
 	   if (trim($xuhao) == "" || is_numeric($xuhao) == false) {
 	       $xuhao = 0;
@@ -74,7 +74,7 @@ $xuhao=$_POST["xuhao".$row["id"].""];//表单名称是动态显示的，并于FO
 	   }else{
 	       $xuhao = $xuhao;
 	   }
-mysql_query("update ".$_SESSION['tabletag']." set xuhao='$xuhao' where id=".$row['id']."");
+query("update ".$_SESSION['tabletag']." set xuhao='$xuhao' where id=".$row['id']."");
 }
 }
 
@@ -82,7 +82,7 @@ if ($action=="del"){
 if(!empty($_POST['id'])){
     for($i=0; $i<count($_POST['id']);$i++){
     $id=$_POST['id'][$i];
-	mysql_query("delete from ".$_SESSION['tabletag']." where id ='$id'");
+	query("delete from ".$_SESSION['tabletag']." where id ='$id'");
 	}
 }else{
 echo "<script>alert('操作失败！至少要选中一条信息。');history.back()</script>";
@@ -94,8 +94,8 @@ echo "<script>location.href='?'</script>";
 <div  class="border center"><input name="submit3" type="submit" class="buttons" onClick="javascript:location.href='?dowhat=addtag'" value="添加关键词"></div>
 	<?php
 	$sql="Select * From ".$_SESSION['tabletag']." order by xuhao asc";
-	$rs=mysql_query($sql);
-	$row=mysql_num_rows($rs);
+	$rs=query($sql);
+	$row=num_rows($rs);
 	if (!$row){
 	echo "暂无信息";
 	}else{
@@ -112,7 +112,7 @@ echo "<script>location.href='?'</script>";
       <td width="170" height="25" class="border">操作选项</td>
     </tr>
     <?php
-	while ($row=mysql_fetch_array($rs)){
+	while ($row=fetch_array($rs)){
 ?>
      <tr class="bgcolor1" onMouseOver="fSetBg(this)" onMouseOut="fReBg(this)">
        <td align="center" class="docolor"><input name="id[]" type="checkbox" id="id" value="<?php echo $row["id"]?>"></td>  
@@ -148,10 +148,10 @@ for($i=0; $i<count($_POST['tag']);$i++){
 	$url=addhttp(str_replace("{","",trim($_POST['url'][$i])));
 	if ($tag!=''){
 	$sql="select * from ".$_SESSION['tabletag']." where keyword='" . $tag . "'";
-	$rs=mysql_query($sql);
-	$row=mysql_num_rows($rs);
+	$rs=query($sql);
+	$row=num_rows($rs);
 		if (!$row) {//重复的不入库
-		mysql_query("insert into ".$_SESSION['tabletag']." (keyword,url)VALUES('$tag','$url') ");
+		query("insert into ".$_SESSION['tabletag']." (keyword,url)VALUES('$tag','$url') ");
 		}
 	}
 }	
@@ -248,20 +248,20 @@ echo "<script>location.href='?'</script>";
 
 if ($action=="modify"){
 	$sql="Select * from ".$_SESSION['tabletag']." where id='$id'";
-	$rs=mysql_query($sql);
-	$row=mysql_num_rows($rs);
+	$rs=query($sql);
+	$row=num_rows($rs);
 	if (!$row){
 		$FoundErr==1;
 		$ErrMsg="<li>不存在！</li>";
 		WriteErrMsg($ErrMsg);
 	}else{
-	mysql_query("update ".$_SESSION['tabletag']." set keyword='$tag',url='$url' where id='$id'");
+	query("update ".$_SESSION['tabletag']." set keyword='$tag',url='$url' where id='$id'");
 	}	
 	echo "<script>location.href='?#B".$id."'</script>";
 }else{
 $sql="Select * from ".$_SESSION['tabletag']." where id='$id'";
-$rs=mysql_query($sql);
-$row=mysql_fetch_array($rs);
+$rs=query($sql);
+$row=fetch_array($rs);
 ?>
 <div class="admintitle">修改关键词</div>
 <form name="myform" method="post" action="?dowhat=modifytag" onSubmit="return CheckForm();">
@@ -290,6 +290,3 @@ $row=mysql_fetch_array($rs);
 ?>
 </body>
 </html>
-<?php
-mysql_close($conn);
-?>

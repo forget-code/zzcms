@@ -42,8 +42,8 @@ $classdiscription="";
 $smallclassname="";
 if ($b<>0){
 $sql="select * from zzcms_zxclass where classid='".$b."'";
-$rs=mysql_query($sql);
-$row=mysql_fetch_array($rs);
+$rs=query($sql);
+$row=fetch_array($rs);
 if ($row){
 
 $bigclassname=$row["classname"];
@@ -60,8 +60,8 @@ $skin='zx_list.htm';
 
 if ($s<>0){
 $sql="select * from zzcms_zxclass where classid='".$s."'";
-$rs=mysql_query($sql);
-$row=mysql_fetch_array($rs);
+$rs=query($sql);
+$row=fetch_array($rs);
 if ($row){
 $smallclassname=$row["classname"];
 }
@@ -76,6 +76,12 @@ if( isset($_GET["page"]) && $_GET["page"]!="") {
 	checkid($page);
 }else{
     $page=1;
+}
+
+if ($b=="") {
+$zxclass=zxbigclass($b,2);
+}else{
+$zxclass=zxsmallclass($b,$s);
 }
 
 $fp="../template/".$siteskin."/".$skin;
@@ -96,8 +102,8 @@ $sql2=$sql2." and bigclassid='".$b."' ";
 if ($s<>'') {
 $sql2=$sql2." and smallclassid='".$s."' ";
 }
-$rs = mysql_query($sql.$sql2); 
-$row = mysql_fetch_array($rs);
+$rs = query($sql.$sql2); 
+$row = fetch_array($rs);
 $totlenum = $row['total'];
 $offset=($page-1)*$page_size;//$page_size在上面被设为COOKIESS
 $totlepage=ceil($totlenum/$page_size);
@@ -105,7 +111,7 @@ $totlepage=ceil($totlenum/$page_size);
 $sql="select id,title,elite,sendtime,img,link,content,hit from zzcms_zx where passed=1"; 
 $sql=$sql.$sql2;
 $sql=$sql." order by elite desc,id desc limit $offset,$page_size";
-$rs = mysql_query($sql); 
+$rs = query($sql); 
 if(!$totlenum){
 $strout=str_replace("{#fenyei}","",$strout) ;
 $strout=str_replace("{loop}".$list."{/loop}","暂无信息",$strout) ;
@@ -114,7 +120,7 @@ $list2="";
 $shuxing="";
 $i=0;
 
-while($row= mysql_fetch_array($rs)){
+while($row= fetch_array($rs)){
 
 if ($row["elite"]>0) {
 $listimg="<font color=red>[置顶]</font>&nbsp;";
@@ -158,11 +164,10 @@ $strout=str_replace("{#pagekeywords}",$pagekeyword,$strout);
 $strout=str_replace("{#pagedescription}",$pagedescription,$strout);
 $strout=str_replace("{#station}",getstation($b,$bigclassname,$s,$smallclassname,"","","zx"),$strout) ;
 $strout=str_replace("{#showselectpage}",showselectpage("zx",$page_size,$b,"",$page),$strout);
-$strout=str_replace("{#bigclass}",zxbigclass($b,2),$strout);
-$strout=str_replace("{#smallclass}",zxsmallclass($b,$s),$strout);
+$strout=str_replace("{#zxclass}",$zxclass,$strout);
 $strout=str_replace("{#sitebottom}",sitebottom(),$strout);
 $strout=str_replace("{#sitetop}",sitetop(),$strout);
 $strout=showlabel($strout);
-mysql_close($conn);
+
 echo  $strout;
 ?>

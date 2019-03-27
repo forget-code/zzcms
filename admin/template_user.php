@@ -36,7 +36,7 @@ showmsg($msg,"?ml=".$ml."&title=".$title);
 if ($action=="del"){ 
 checkadminisdo("label");
 $ml=trim($_POST["ml"]);
-$f="../skin/".$ml."/".trim($_POST["title"]);
+$f="../skin/".$ml."/".nostr(trim($_POST["title"]));
 	if (file_exists($f)){
 	unlink($f)?showmsg('删除成功',"?ml=".$ml):showmsg('失败');
 	}else{

@@ -63,8 +63,8 @@ $action="";
 }
 if ($action=="px") {
 $sql="Select * From zzcms_jobclass where parentid=0";
-$rs=mysql_query($sql);
-while ($row=mysql_fetch_array($rs)){
+$rs=query($sql);
+while ($row=fetch_array($rs)){
 $xuhao=$_POST["xuhao".$row["classid"].""];//表单名称是动态显示的，并于FORM里的名称相同。
 	   if (trim($xuhao) == "" || is_numeric($xuhao) == false) {
 	       $xuhao = 0;
@@ -73,11 +73,11 @@ $xuhao=$_POST["xuhao".$row["classid"].""];//表单名称是动态显示的，并
 	   }else{
 	       $xuhao = $xuhao;
 	   }
-mysql_query("update zzcms_jobclass set xuhao='$xuhao' where classid='".$row['classid']."'");
+query("update zzcms_jobclass set xuhao='$xuhao' where classid='".$row['classid']."'");
 
 $sqln="Select * From zzcms_jobclass where parentid=".$row["classid"]."";
-$rsn=mysql_query($sqln);
-while ($rown=mysql_fetch_array($rsn)){
+$rsn=query($sqln);
+while ($rown=fetch_array($rsn)){
 $xuhaos=$_POST["xuhaos".$rown["classid"].""];//表单名称是动态显示的，并于FORM里的名称相同。
 	   if (trim($xuhaos) == "" || is_numeric($xuhaos) == false) {
 	       $xuhaos = 0;
@@ -86,7 +86,7 @@ $xuhaos=$_POST["xuhaos".$rown["classid"].""];//表单名称是动态显示的，
 	   }else{
 	       $xuhaos = $xuhaos;
 	   }
-mysql_query("update zzcms_jobclass set xuhao='$xuhaos' where classid='".$rown['classid']."'");
+query("update zzcms_jobclass set xuhao='$xuhaos' where classid='".$rown['classid']."'");
 }
 }
 }
@@ -95,10 +95,10 @@ if ($action=="delbig") {
 checkadminisdo("siteconfig");
 $bigclassid=trim($_GET["bigclassid"]);
 if ($bigclassid<>"") {
-	mysql_query("delete from zzcms_jobclass where parentid=" . $bigclassid. "");
-	mysql_query("delete from zzcms_jobclass where classid=" . $bigclassid. "");
+	query("delete from zzcms_jobclass where parentid=" . $bigclassid. "");
+	query("delete from zzcms_jobclass where classid=" . $bigclassid. "");
 }
-//mysql_close($conn);      
+//      
 echo "<script>location.href='?'</script>";
 }
 
@@ -106,9 +106,9 @@ if ($action=="delsmall") {
 checkadminisdo("siteconfig");
 $smallclassid=trim($_GET["smallclassid"]);
 if ($smallclassid<>"") {
-	mysql_query("delete from zzcms_jobclass where classid=" . $smallclassid. "");
+	query("delete from zzcms_jobclass where classid=" . $smallclassid. "");
 }
-//mysql_close($conn);      
+//      
 echo "<script>location.href='?#B".$_REQUEST["bigclassid"]."'</script>";
 }
 ?>
@@ -122,8 +122,8 @@ echo "<script>location.href='?#B".$_REQUEST["bigclassid"]."'</script>";
 </table>
 <?php
 $sql="Select * From zzcms_jobclass where parentid=0 order by xuhao";
-$rs=mysql_query($sql);
-$row=mysql_num_rows($rs);
+$rs=query($sql);
+$row=num_rows($rs);
 if (!$row){
 echo "暂无分类信息";
 }else{
@@ -135,7 +135,7 @@ echo "暂无分类信息";
       <td width="25%" class="border" ><strong>排序</strong></td>
       <td width="28%" class="border" ><strong>操作</strong></td>
     </tr>
-    <?php while ($row=mysql_fetch_array($rs)){?>
+    <?php while ($row=fetch_array($rs)){?>
     <tr bgcolor="#F1F1F1"> 
       <td style="font-weight:bold"><a name="B<?php echo $row["classid"]?>"></a><img src="image/icobig.gif" width="9" height="9"> 
         <?php echo $row["classname"]?></td>
@@ -150,10 +150,10 @@ echo "暂无分类信息";
 		
 	$n=0;
 	$sqln="Select * From zzcms_jobclass Where parentid=" . $row["classid"] . " order by xuhao";
-	$rsn=mysql_query($sqln);
-	$rown=mysql_num_rows($rsn);
+	$rsn=query($sqln);
+	$rown=num_rows($rsn);
 	if ($rown){
-	while ($rown=mysql_fetch_array($rsn)){
+	while ($rown=fetch_array($rsn)){
 	?>
     <tr class="bgcolor1" onMouseOver="fSetBg(this)" onMouseOut="fReBg(this)">  
       <td ><a name="S<?php echo $rown["classid"]?>"></a><img src="image/icosmall.gif" width="23" height="11"> 
@@ -174,7 +174,7 @@ echo "暂无分类信息";
 </form>
 <?php
 }
-//mysql_close($conn);	  
+//	  
 }
 
 function addbigclass(){
@@ -193,15 +193,15 @@ for($i=0; $i<count($_POST['classname']);$i++){
 
 	if ($classname!=''){
 	$sql="Select * From zzcms_jobclass Where classname='" . $classname . "'";
-	$rs=mysql_query($sql);
-	$row=mysql_num_rows($rs);
+	$rs=query($sql);
+	$row=num_rows($rs);
 		if (!$row) {
-		mysql_query("insert into zzcms_jobclass (classname,parentid)values('$classname',0)");	
+		query("insert into zzcms_jobclass (classname,parentid)values('$classname',0)");	
 		}
 	}
 }	
-$rsbcid=mysql_query("select classid from zzcms_jobclass where classname='".$classname."'");
-$rowbcid=mysql_fetch_array($rsbcid);
+$rsbcid=query("select classid from zzcms_jobclass where classname='".$classname."'");
+$rowbcid=fetch_array($rsbcid);
 $bcid=$rowbcid["classid"];
 echo "<script>location.href='?#B".$bcid."'</script>";	
 }
@@ -252,7 +252,7 @@ TemO.appendChild(newline);
 </form>
 <?php
 }
-//mysql_close($conn);
+//
 }
 
 function addsmallclass(){
@@ -270,10 +270,10 @@ if ($action=="add") {
     $classname=($_POST['classname'][$i]);
 		if ($classname!=''){
 		$sql="Select * From zzcms_jobclass Where parentid=" . $bigclassid . " AND classname='" . $classname . "'";
-		$rs=mysql_query($sql);
-		$row=mysql_num_rows($rs);
+		$rs=query($sql);
+		$row=num_rows($rs);
 			if (!$row) {
-			mysql_query("insert into zzcms_jobclass (parentid,classname)values('$bigclassid','$classname')");
+			query("insert into zzcms_jobclass (parentid,classname)values('$bigclassid','$classname')");
 			}
 		}
 	}	
@@ -296,8 +296,8 @@ WriteErrMsg($ErrMsg);
       <td width="74%" class="border"> 
         <?php
 		$sqlb = "Select * From zzcms_jobclass where parentid=0";
-	    $rsb=mysql_query($sqlb);
-        $rowb=mysql_num_rows($rsb);
+	    $rsb=query($sqlb);
+        $rowb=num_rows($rsb);
 		if (!$rowb){
 			echo "请先添加大类。";
 		}else{
@@ -305,7 +305,7 @@ WriteErrMsg($ErrMsg);
 		<select name="bigclassid" id="bigclassid">
                 <option value="" selected="selected">请选择类别</option>
                 <?php
-		while($rowb= mysql_fetch_array($rsb)){
+		while($rowb= fetch_array($rsb)){
 			?>
                 <option value="<?php echo $rowb["classid"]?>" <?php if ($rowb["classid"]==$bigclassid) { echo "selected";}?>><?php echo $rowb["classname"]?></option>
                 <?php
@@ -352,7 +352,7 @@ TemO.appendChild(newline);
 </form>
 <?php
 }
-//mysql_close($conn);
+//
 }
 
 function modifybigclass(){
@@ -369,7 +369,7 @@ $classid="";
 $FoundErr=0;
 $ErrMsg="";
 if ($classid==""){
-//mysql_close($conn);
+//
 echo "<script>location.href='?'</script>";
 }
 
@@ -378,8 +378,8 @@ $classname=trim($_POST["classname"]);
 $oldclassname=trim($_POST["oldclassname"]);
 
 	$sql="Select * from zzcms_jobclass where classid=" .$classid."";
-	$rs=mysql_query($sql);
-	$row=mysql_num_rows($rs);
+	$rs=query($sql);
+	$row=num_rows($rs);
 	if (!$row){
 	$FoundErr=1;
 	$ErrMsg=$ErrMsg . "<li>此大类不存在！</li>";
@@ -387,8 +387,8 @@ $oldclassname=trim($_POST["oldclassname"]);
 	
 	if ($classname<>$oldclassname) {
 	$sqln="Select * from zzcms_jobclass where parentid=0 and classname='".$classname."'";
-	$rsn=mysql_query($sqln);
-	$rown=mysql_num_rows($rsn);
+	$rsn=query($sqln);
+	$rown=num_rows($rsn);
 	if ($rown){
 	
 		$FoundErr=1;
@@ -397,12 +397,12 @@ $oldclassname=trim($_POST["oldclassname"]);
 	}
 		
 	if ($FoundErr==0){
-	mysql_query("update zzcms_jobclass set classname='$classname' where classid=" .$classid."");
+	query("update zzcms_jobclass set classname='$classname' where classid=" .$classid."");
 	
 		if ($classname<>$oldclassname) {//类名改变的情况下
-			mysql_query("Update zzcms_job set bigclassname='" . $classname . "'  where bigclassid=" . $classid . " ");	
+			query("Update zzcms_job set bigclassname='" . $classname . "'  where bigclassid=" . $classid . " ");	
 		}	
-		//mysql_close($conn);
+		//
 		echo "<script>location.href='?#B".$classid."'</script>";
 	}
 }
@@ -411,8 +411,8 @@ if ($FoundErr==1){
 WriteErrMsg($ErrMsg);
 }else{
 $sql="Select * from zzcms_jobclass where classid=" .$classid."";
-$rs=mysql_query($sql);
-$row=mysql_fetch_array($rs);
+$rs=query($sql);
+$row=fetch_array($rs);
 ?>
 
 <table width="100%" border="0" cellpadding="0" cellspacing="0">
@@ -440,7 +440,7 @@ $row=mysql_fetch_array($rs);
 </form>
 <?php
 }
-//mysql_close($conn);
+//
 }
 
 function modifysmallclass(){
@@ -457,7 +457,7 @@ $classid="";
 $FoundErr=0;
 $ErrMsg="";
 if ($classid==""){
-mysql_close($conn);
+
 echo "<script>location.href='?'</script>";
 }
 
@@ -469,8 +469,8 @@ $oldclassname=trim($_POST["oldclassname"]);
 
 
 	$sql="Select * from zzcms_jobclass where classid=" .$classid."";
-	$rs=mysql_query($sql);
-	$row=mysql_num_rows($rs);
+	$rs=query($sql);
+	$row=num_rows($rs);
 	if (!$row){
 	$FoundErr=1;
 	$ErrMsg=$ErrMsg . "<li>此小类不存在！</li>";
@@ -478,8 +478,8 @@ $oldclassname=trim($_POST["oldclassname"]);
 	
 	if ($classname<>$oldclassname || $bigclassid<>$oldbigclassid) {
 	$sqln="Select * from zzcms_jobclass where parentid=".$bigclassid." and classname='".$classname."'";
-	$rsn=mysql_query($sqln);
-	$rown=mysql_num_rows($rsn);
+	$rsn=query($sqln);
+	$rown=num_rows($rsn);
 	if ($rown){
 		$FoundErr=1;
 		$ErrMsg=$ErrMsg . "<li>此小类名称已存在！</li>";
@@ -487,15 +487,15 @@ $oldclassname=trim($_POST["oldclassname"]);
 	}
 	
 	if ($FoundErr==0) {
-	mysql_query("update zzcms_jobclass set parentid='$bigclassid',classname='$classname' where classid=" .$classid."");
+	query("update zzcms_jobclass set parentid='$bigclassid',classname='$classname' where classid=" .$classid."");
 			if ($bigclassid<>$oldbigclassid) {//小类别改变所属大类情况下
-				mysql_query("Update zzcms_job set bigclassid=" . $bigclassid . " where bigclassid=" . $oldbigclassid . " and smallclassid=" . $classid . " ");
-				mysql_query("Update zzcms_job set bigclassname=(select classname from zzcms_jobclass where classid=".$bigclassid.") where bigclassid=" . $bigclassid . " and smallclassid=" . $classid . " ");	
+				query("Update zzcms_job set bigclassid=" . $bigclassid . " where bigclassid=" . $oldbigclassid . " and smallclassid=" . $classid . " ");
+				query("Update zzcms_job set bigclassname=(select classname from zzcms_jobclass where classid=".$bigclassid.") where bigclassid=" . $bigclassid . " and smallclassid=" . $classid . " ");	
 			}
 			if ($classname<>$oldclassname) {//小类名改变的情况下
-				mysql_query("Update zzcms_job set smallclassname='" . $classname . "'  where bigclassid=" . $bigclassid . " and smallclassid=" . $classid . " ");
+				query("Update zzcms_job set smallclassname='" . $classname . "'  where bigclassid=" . $bigclassid . " and smallclassid=" . $classid . " ");
 			}
-			//mysql_close($conn);
+			//
 			echo "<script>location.href='?#S".$classid."'</script>";
 	}
 }
@@ -504,8 +504,8 @@ if ($FoundErr==1){
 WriteErrMsg($ErrMsg);
 }else{
 $sql="Select * from zzcms_jobclass where classid=".$classid."";
-$rs=mysql_query($sql);
-$row=mysql_fetch_array($rs);
+$rs=query($sql);
+$row=fetch_array($rs);
 ?>
 <table width="100%" border="0" cellpadding="0" cellspacing="0">
   <tr> 
@@ -519,8 +519,8 @@ $row=mysql_fetch_array($rs);
       <td class="border"> 
 	    <?php
 		$sqlb = "Select * From zzcms_jobclass where parentid=0";
-	    $rsb=mysql_query($sqlb);
-        $rowb=mysql_num_rows($rsb);
+	    $rsb=query($sqlb);
+        $rowb=num_rows($rsb);
 		if (!$rowb){
 			echo "请先添加大类。";
 		}else{
@@ -528,7 +528,7 @@ $row=mysql_fetch_array($rs);
 		<select name="bigclassid" id="bigclassid">
                 <option value="" selected="selected">请选择类别</option>
                 <?php
-		while($rowb= mysql_fetch_array($rsb)){
+		while($rowb= fetch_array($rsb)){
 			?>
                 <option value="<?php echo $rowb["classid"]?>" <?php if ($rowb["classid"]==$row["parentid"]) { echo "selected";}?>><?php echo $rowb["classname"]?></option>
                 <?php
@@ -556,7 +556,7 @@ $row=mysql_fetch_array($rs);
 </form>
 <?php
 }
-//mysql_close($conn);
+//
 }
 ?>
 </body>

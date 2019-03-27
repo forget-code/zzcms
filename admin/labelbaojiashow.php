@@ -163,8 +163,8 @@ $ends="";
           <option value="empty" selected>不指定大类</option>
           <?php
        $sql = "select * from zzcms_zsclass where parentid='A' order by xuhao asc";
-       $rs=mysql_query($sql);
-		   while($r=mysql_fetch_array($rs)){
+       $rs=query($sql);
+		   while($r=fetch_array($rs)){
 			?>
           <option value="<?php echo $r["classzm"]?>" <?php if ($r["classzm"]==$bigclassid) { echo "selected";}?>> 
          <?php echo trim($r["classname"])?></option>

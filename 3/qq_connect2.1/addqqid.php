@@ -53,8 +53,8 @@ if ($qqid==""){
 $errmsg=$errmsg . "参数不足";
 WriteErrMsg($errmsg);
 }else{
-	$rs=mysql_query("select qqid from zzcms_user where qqid='".$qqid."'");
-	$row=mysql_num_rows($rs);
+	$rs=query("select qqid from zzcms_user where qqid='".$qqid."'");
+	$row=num_rows($rs);
 	if (!$row){
 ?>
 	<div class="bordercccccc" style="height:300px">
@@ -63,25 +63,25 @@ WriteErrMsg($errmsg);
 		if ($_POST["isuser"]==1 && $_POST["action"]=="step2") {
 				//绑定已有会员帐号
 				$sql="select * from zzcms_user where lockuser=0 and username='". $username ."' and password='". md5($pwd) ."'";
-				$rs=mysql_query($sql);
-				$row=mysql_num_rows($rs);
+				$rs=query($sql);
+				$row=num_rows($rs);
 				if (!$row){
 				WriteErrMsg("用户名或密码不正确或者您的用户被锁定了。");
 				}else{
-				mysql_query("update zzcms_user set qqid='".$qqid."' where username='".$username."'");
+				query("update zzcms_user set qqid='".$qqid."' where username='".$username."'");
 				//登录
-				mysql_query("UPDATE zzcms_user SET showlogintime = lastlogintime where qqid='".$qqid."'");//更新上次登录时间
-				mysql_query("UPDATE zzcms_user SET showloginip = loginip where qqid='".$qqid."'");//更新上次登录IP
-				mysql_query("UPDATE zzcms_user SET logins = logins+1 where qqid='".$qqid."'");
-				mysql_query("UPDATE zzcms_user SET loginip = '".getip()."' where qqid='".$qqid."'");//更新最后登录IP
+				query("UPDATE zzcms_user SET showlogintime = lastlogintime where qqid='".$qqid."'");//更新上次登录时间
+				query("UPDATE zzcms_user SET showloginip = loginip where qqid='".$qqid."'");//更新上次登录IP
+				query("UPDATE zzcms_user SET logins = logins+1 where qqid='".$qqid."'");
+				query("UPDATE zzcms_user SET loginip = '".getip()."' where qqid='".$qqid."'");//更新最后登录IP
 					if (strtotime(date("Y-m-d H:i:s"))-strtotime($row['lastlogintime'])>86400){
-					mysql_query("UPDATE zzcms_user SET totleRMB = totleRMB+".jf_login." WHERE qqid='".$qqid."'");//登录时加积分
+					query("UPDATE zzcms_user SET totleRMB = totleRMB+".jf_login." WHERE qqid='".$qqid."'");//登录时加积分
 					}
-				mysql_query("UPDATE zzcms_user SET lastlogintime = '".date('Y-m-d H:i:s')."' WHERE qqid='".$qqid."'");//更新最后登录时间
+				query("UPDATE zzcms_user SET lastlogintime = '".date('Y-m-d H:i:s')."' WHERE qqid='".$qqid."'");//更新最后登录时间
 
 		
-				$rs=mysql_query("select username,password from zzcms_user where qqid='".$qqid."'");
-				$row=mysql_fetch_array($rs);
+				$rs=query("select username,password from zzcms_user where qqid='".$qqid."'");
+				$row=fetch_array($rs);
 				if ($CookieDate==1){
 				setcookie("UserName",$row['username'],time()+3600*24,"/");
 				setcookie("PassWord",$row['password'],time()+3600*24,"/");
@@ -180,17 +180,17 @@ WriteErrMsg($errmsg);
 		
 }else{
 //直接登录
-mysql_query("UPDATE zzcms_user SET showlogintime = lastlogintime where qqid='".$qqid."'");//更新上次登录时间
-mysql_query("UPDATE zzcms_user SET showloginip = loginip where qqid='".$qqid."'");//更新上次登录IP
-mysql_query("UPDATE zzcms_user SET logins = logins+1 where qqid='".$qqid."'");
-mysql_query("UPDATE zzcms_user SET loginip = '".getip()."' where qqid='".$qqid."'");//更新最后登录IP
+query("UPDATE zzcms_user SET showlogintime = lastlogintime where qqid='".$qqid."'");//更新上次登录时间
+query("UPDATE zzcms_user SET showloginip = loginip where qqid='".$qqid."'");//更新上次登录IP
+query("UPDATE zzcms_user SET logins = logins+1 where qqid='".$qqid."'");
+query("UPDATE zzcms_user SET loginip = '".getip()."' where qqid='".$qqid."'");//更新最后登录IP
 	if (strtotime(date("Y-m-d H:i:s"))-strtotime($row['lastlogintime'])>86400){
-	mysql_query("UPDATE zzcms_user SET totleRMB = totleRMB+".jf_login." WHERE qqid='".$qqid."'");//登录时加积分
+	query("UPDATE zzcms_user SET totleRMB = totleRMB+".jf_login." WHERE qqid='".$qqid."'");//登录时加积分
 	}
-mysql_query("UPDATE zzcms_user SET lastlogintime = '".date('Y-m-d H:i:s')."' WHERE qqid='".$qqid."'");//更新最后登录时间
+query("UPDATE zzcms_user SET lastlogintime = '".date('Y-m-d H:i:s')."' WHERE qqid='".$qqid."'");//更新最后登录时间
 	
-$rs=mysql_query("select username,password,passwordtrue from zzcms_user where qqid='".$qqid."'");
-$row=mysql_fetch_array($rs);
+$rs=query("select username,password,passwordtrue from zzcms_user where qqid='".$qqid."'");
+$row=fetch_array($rs);
 if ($CookieDate==1){
 setcookie("UserName",$row['username'],time()+3600*24,"/");
 setcookie("PassWord",$row['password'],time()+3600*24,"/");
@@ -228,7 +228,7 @@ echo "<script>parent.location.href='/index.php'</script>";
 </div>
 <?php
 include("../../inc/bottom_company.htm");
-mysql_close($conn);
+
 ?>
 </div>
 </body>

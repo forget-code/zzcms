@@ -66,8 +66,6 @@ closedir($dir);
 	?>
   </table>
       </form>
-<?php
-mysql_close($conn);
-?>		  				   	 
+		  				   	 
 </body>
 </html>

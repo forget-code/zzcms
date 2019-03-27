@@ -51,7 +51,7 @@ if(!empty($_POST['id'])){
 
 if (!isset($id) || $id==""){
 echo $f_array[2];
-mysql_close($conn);
+
 exit;
 }
  	if (strpos($id,",")>0){
@@ -61,8 +61,8 @@ exit;
 	$sql="select * from zzcms_dl where passed=1 and saver='".$username."' and id='$id' order by id desc";
 	}
 	
-$rs=mysql_query($sql);
-$row=mysql_num_rows($rs);
+$rs=query($sql);
+$row=num_rows($rs);
 if (!$row){
 echo $f_array[3];
 }else{
@@ -73,7 +73,7 @@ echo $f_array[3];
         </tr>
         <?php
 $i=1;		
-while ($row=mysql_fetch_array($rs)){
+while ($row=fetch_array($rs)){
 ?>
         <tr> 
           <td width="6%" height="30" align="center" class="x"><?php echo $i?> </td>
@@ -91,7 +91,7 @@ $i++;
       
       <?php
 }	
-mysql_close($conn);
+
  ?>
     </td>
   </tr>

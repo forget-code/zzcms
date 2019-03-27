@@ -48,12 +48,12 @@ $sql="select * from zzcms_dl where passed=1 and saver='".$username."' and id in 
 }else{
 $sql="select * from zzcms_dl where passed=1 and saver='".$username."' and id='$id' ";
 }	
-$rs=mysql_query($sql);
+$rs=query($sql);
 $table="<table width=100% cellspacing=0 cellpadding=0 border=1>";
 $table=$table."<tr>";
 $table=$table.$f_array[2];
 $table=$table."</tr>";
-while ($row=mysql_fetch_array($rs)){
+while ($row=fetch_array($rs)){
 $table=$table."<tr>";
 $table=$table."<td>".$row['tel']."</td>";
 $table=$table."<td>".$row['cp']."</td>";

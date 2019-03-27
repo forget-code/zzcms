@@ -12,7 +12,7 @@ $f_array=explode("|||",$fcontent) ;
 <meta http-equiv="X-UA-Compatible" content="IE=EmulateIE7" />
 <link href="style/<?php echo siteskin_usercenter?>/style.css" rel="stylesheet" type="text/css">
 <?php
-if (check_usergr_power("zs")=="no" && $usersf=='个人'){
+if (str_is_inarr(usergr_power,'zs')=="no" && $usersf=='个人'){
 echo $f_array[0];
 exit;
 }
@@ -107,8 +107,8 @@ $id=0;
 }
 
 $sql="select * from zzcms_main where id='$id'";
-$rs = mysql_query($sql); 
-$row = mysql_fetch_array($rs);
+$rs = query($sql); 
+$row = fetch_array($rs);
 if ($row["editor"]<>$username) {
 markit();
 showmsg('非法操作！警告：你的操作已被记录！小心封你的用户及IP！');
@@ -149,9 +149,9 @@ $(document).ready(function(){
                     <legend><?php echo $f_array[9]?></legend>
                     <?php
         $sqlB = "select * from zzcms_zsclass where parentid='A' order by xuhao asc";
-		$rsB = mysql_query($sqlB,$conn); 
+		$rsB = query($sqlB,$conn); 
 		$n=0;
-		while($rowB= mysql_fetch_array($rsB)){
+		while($rowB= fetch_array($rsB)){
 		$n ++;
 		if ($row['bigclasszm']==$rowB['classzm']){
 		echo "<input name='bigclassid' type='radio' id='E$n'  onclick='javascript:doClick_E(this);uncheckall()' value='".$rowB['classzm']."' checked/><label for='E$n'>".$rowB['classname']."</label>";
@@ -166,9 +166,9 @@ $(document).ready(function(){
                   <td> 
                     <?php
 $sqlB="select * from zzcms_zsclass where parentid='A' order by xuhao asc";
-$rsB = mysql_query($sqlB,$conn); 
+$rsB = query($sqlB,$conn); 
 $n=0;
-while($rowB= mysql_fetch_array($rsB)){
+while($rowB= fetch_array($rsB)){
 $n ++;
 if ($row["bigclasszm"]==$rowB["classzm"]) {  
 echo "<div id='E_con$n' style='display:block;'>";
@@ -177,9 +177,9 @@ echo "<div id='E_con$n' style='display:none;'>";
 }
 echo "<fieldset class='fieldsetstyle'><legend>".$f_array[10]."</legend>";
 $sqlS="select * from zzcms_zsclass where parentid='".$rowB['classzm']."' order by xuhao asc";
-$rsS = mysql_query($sqlS,$conn); 
+$rsS = query($sqlS,$conn); 
 $nn=0;
-while($rowS= mysql_fetch_array($rsS)){
+while($rowS= fetch_array($rsS)){
 if (zsclass_isradio=='Yes'){
 	if ($row['smallclasszm']==$rowS['classzm']){
 	echo "<input name='smallclassid[]' id='radio$nn$n' type='radio' value='".$rowS[classzm]."' checked/>";
@@ -206,8 +206,8 @@ echo "</div>";
               </table></td>
           </tr>
 		    <?php 
-		$rsn = mysql_query("select * from zzcms_zsclass_shuxing order by xuhao asc"); 
-		$rown= mysql_num_rows($rsn);
+		$rsn = query("select * from zzcms_zsclass_shuxing order by xuhao asc"); 
+		$rown= num_rows($rsn);
 		if ($rown){
 		  ?>
           <tr>
@@ -215,7 +215,7 @@ echo "</div>";
             <td class="border2" >
 			<?php
         $n=0;
-		while($rown= mysql_fetch_array($rsn)){
+		while($rown= fetch_array($rsn)){
 		$n ++;
 		if ($row['shuxing']==$rown['bigclassid']){
 		echo "<input name='shuxing' type='radio' id='shuxing$n' value='".$rown['bigclassid']."' checked/><label for='shuxing$n'>".$rown['bigclassname']."</label>";
@@ -323,13 +323,7 @@ new PCAS('province', 'city', 'xiancheng', '<?php echo $row["province"]?>', '<?ph
           </tr>
           <tr> 
             <td align="right" class="border" ><?php echo str_replace("{#maximgsize}",maximgsize,$f_array[19])?>
-<script type="text/javascript">
-function opendelimg(num){
-window.openwindow("delimg.php?id=<?php echo $row["id"]?>&action="+num+"",400,300);
-document.getElementById("img").value='/image/nopic.gif';//删后设表单值，否则保存后还是老地址。
-document.getElementById("showimg").innerHTML="<img src='/image/nopic.gif' width=120>";
-}
-</script> <input name="oldimg" type="hidden" id="oldimg" value="<?php echo $row["img"] ?>"> 
+ <input name="oldimg" type="hidden" id="oldimg" value="<?php echo $row["img"] ?>"> 
               <input name="img"type="hidden" id="img" value="<?php echo $row["img"] ?>"> 
                      </td>
             <td class="border" >
@@ -339,8 +333,8 @@ document.getElementById("showimg").innerHTML="<img src='/image/nopic.gif' width=
                     <?php
 				 if($row["img"]<>"/image/nopic.gif"){
 				 echo "<div style='padding:10px 0'><a href='".$row["img"]."' target='_blank'><img src='".$row["img"]."' border=0 width=120 /></a></div>";
-				echo "<div onClick=\"openwindow('/uploadimg_form.php',400,300)\" style='float:left;width:50px' class='buttons'>".$f_array[45]."</div>";
-				echo "<div onclick='opendelimg(1)' style='float:right;width:50px' class='buttons'>".$f_array[46]."</div>";
+				echo "<div onClick=\"openwindow('/uploadimg_form.php',400,300)\" style='width:50px' class='buttons'>".$f_array[45]."</div>";
+				
 				  }else{
 				  echo "<input name='Submit2' type='button'  value='".$f_array[21]."' onClick=\"openwindow('/uploadimg_form.php',400,300)\"/>";
 				  }

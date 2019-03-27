@@ -27,12 +27,12 @@ setcookie("zzcmscpid",$cpid,time()+3600*24*360);
 }
 
 $sql="select * from zzcms_main where id='$cpid'";
-$rs=mysql_query($sql);
-$row=mysql_fetch_array($rs);
+$rs=query($sql);
+$row=fetch_array($rs);
 if (!$row){
 echo showmsg("不存在相关信息！");
 }else{
-mysql_query("update zzcms_main set hit=hit+1 where id='$cpid'");
+query("update zzcms_main set hit=hit+1 where id='$cpid'");
 $editor=$row["editor"];
 $cpmc=$row["proname"];
 $imgbig=$row["img"];
@@ -67,8 +67,8 @@ $skin=$row["skin"];
 
 $shuxing_value = explode("|||",$row["shuxing_value"]);
 
-$rs=mysql_query("select classname from zzcms_zsclass where classzm='".$bigclasszm."'");
-$row=mysql_fetch_array($rs);
+$rs=query("select classname from zzcms_zsclass where classzm='".$bigclasszm."'");
+$row=fetch_array($rs);
 if ($row){
 $bigclassname=$row["classname"];
 }else{
@@ -77,8 +77,8 @@ $bigclassname="大类已删除";
 
 $smallclassname='';
 if ($smallclasszm<>""){
-$rs=mysql_query("select classname from zzcms_zsclass where classzm='".$smallclasszm."'");
-$row=mysql_fetch_array($rs);
+$rs=query("select classname from zzcms_zsclass where classzm='".$smallclasszm."'");
+$row=fetch_array($rs);
 if ($row){
 $smallclassname=$row["classname"];
 }else{
@@ -86,8 +86,8 @@ $smallclassname="小类已删除";
 }
 }
 $sql="select * from zzcms_user where username='".$editor."'";
-$rs=mysql_query($sql);
-$row=mysql_fetch_array($rs);
+$rs=query($sql);
+$row=fetch_array($rs);
 $startdate=$row["startdate"];
 $comane=$row["comane"];
 $gsjj=$row["content"];
@@ -109,8 +109,8 @@ $contact=showcontact("zs",$cpid,$startdate,$comane,$kind,$editor,$userid,$groupi
 
 function liuyannum($cpid){
 if (showdlinzs=="Yes") {
-$rsdl=mysql_query("select id from zzcms_dl where cpid=$cpid and passed=1");
-$rowdl=mysql_num_rows($rsdl);
+$rsdl=query("select id from zzcms_dl where cpid=$cpid and passed=1");
+$rowdl=num_rows($rsdl);
 return "<b>".$rowdl."</b> 条";
 }
 }
@@ -159,14 +159,14 @@ $liuyan=strbetween($strout,"{liuyan}","{/liuyan}");
 $list=strbetween($liuyan,"{loop}","{/loop}");
 
 if ($bigclasszm!=''){
-$rs=mysql_query("select * from zzcms_dl_".$bigclasszm." where cpid=$cpid and passed=1 order by id desc");
+$rs=query("select * from zzcms_dl_".$bigclasszm." where cpid=$cpid and passed=1 order by id desc");
 }else{
-$rs=mysql_query("select * from zzcms_dl where cpid=$cpid and passed=1 order by id desc");
+$rs=query("select * from zzcms_dl where cpid=$cpid and passed=1 order by id desc");
 }
-$row=mysql_num_rows($rs);
+$row=num_rows($rs);
 if ($row){
 $list2='';
-while ($row=mysql_fetch_array($rs)){
+while ($row=fetch_array($rs)){
 $list2 = $list2. str_replace("{#content}",cutstr($row["content"],8),$list) ;
 $list2 =str_replace("{#dlsname}",$row["dlsname"],$list2) ;
 $list2 =str_replace("{#tel}",str_replace(substr($row['tel'],3,4),"****",$row['tel']),$list2) ;
@@ -194,8 +194,8 @@ $phone=$rown="";
 $email=$rown="";
 if (isset($_COOKIE["UserName"])) {
 if (trim($_COOKIE["UserName"])!=$editor){//产品发布人登录时不显示自己的联系方式在表单
-$rsn=mysql_query("select comane,somane,phone,email from zzcms_user where username='".trim($_COOKIE["UserName"])."'");
-$rown=mysql_fetch_array($rsn);
+$rsn=query("select comane,somane,phone,email from zzcms_user where username='".trim($_COOKIE["UserName"])."'");
+$rown=fetch_array($rsn);
 $companyname=$rown["comane"];
 
 $somane=$rown["somane"];

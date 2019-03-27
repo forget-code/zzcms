@@ -634,6 +634,54 @@ replace into `zzcms_zxclass` values('2','大类二','0','0','1','1','','','','')
 replace into `zzcms_zxclass` values('3','大类三','0','0','1','1','','','','');
 replace into `zzcms_zxclass` values('4','大类四','0','0','1','1','','','','');
 
+DROP TABLE IF EXISTS `zzcms_ask`;
+CREATE TABLE `zzcms_ask` (
+  `id` int(11) NOT NULL auto_increment,
+  `bigclassid` int(11) default NULL,
+  `bigclassname` varchar(50) default NULL,
+  `smallclassid` int(11) default NULL,
+  `smallclassname` varchar(50) default NULL,
+  `title` varchar(255) default NULL,
+  `content` longtext,
+  `img` varchar(255) default NULL,
+  `jifen` int(11) default '0',
+  `editor` varchar(50) default NULL,
+  `sendtime` datetime default NULL,
+  `hit` int(11) default '0',
+  `elite` tinyint(4) default '0',
+  `typeid` int(11) default '0',
+  `passed` tinyint(4) default '0',
+  PRIMARY KEY  (`id`)
+) ENGINE=MyISAM AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
+
+DROP TABLE IF EXISTS `zzcms_asklass`;
+CREATE TABLE `zzcms_askclass` (
+  `classid` int(11) NOT NULL auto_increment,
+  `classname` varchar(50) default NULL,
+  `parentid` int(11) default '0',
+  `xuhao` int(11) default '0',
+  `isshowforuser` tinyint(4) default '1',
+  `isshowininfo` tinyint(4) default '1',
+  `title` varchar(255) default NULL,
+  `keyword` varchar(255) default NULL,
+  `discription` varchar(255) default NULL,
+  PRIMARY KEY  (`classid`)
+) ENGINE=MyISAM AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
+
+DROP TABLE IF EXISTS `zzcms_answer`;
+CREATE TABLE `zzcms_answer` (
+  `id` int(11) NOT NULL auto_increment,
+  `about` int(11) default '0',
+  `content` longtext,
+  `face` varchar(50) default NULL,
+  `editor` varchar(50) default NULL,
+  `ip` varchar(50) default NULL,
+  `sendtime` datetime default NULL,
+  `caina` tinyint(4) default '0',
+  `passed` tinyint(4) default '0',
+  PRIMARY KEY  (`id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+
 DROP TABLE IF EXISTS `zzcms_special`;
 CREATE TABLE `zzcms_special` (
   `id` int(11) NOT NULL auto_increment,

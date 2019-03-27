@@ -14,7 +14,7 @@ $f_array=explode("\n",$fcontent) ;
 <title><?php echo $f_array[3]?></title>
 <link href="style/<?php echo siteskin_usercenter?>/style.css" rel="stylesheet" type="text/css">
 <?php
-if (check_usergr_power("pp")=="no" && $usersf=='个人'){
+if (str_is_inarr(usergr_power,'pp')=="no" && $usersf=='个人'){
 echo $f_array[0];
 exit;
 }
@@ -74,15 +74,15 @@ $sql2=$sql2 . " and bigclasszm ='".$bigclass."'";
 if (isset($_GET["id"])){
 $sql2=$sql2 . " and id ='".$_GET["id"]."'"; 
 }
-$rs = mysql_query($sql.$sql2); 
-$row = mysql_fetch_array($rs);
+$rs = query($sql.$sql2); 
+$row = fetch_array($rs);
 $totlenum = $row['total']; 
 $totlepage=ceil($totlenum/$page_size);	
 
 $sql="select * from zzcms_pp where editor='".$username."' ";
 $sql=$sql .$sql2;	
 $sql=$sql . " order by id desc limit $offset,$page_size";
-$rs = mysql_query($sql); 
+$rs = query($sql); 
 if(!$totlenum){
 echo $f_array[4];
 }else{
@@ -93,19 +93,19 @@ echo $f_array[4];
      <?php echo $f_array[5]?>
     </tr>
 <?php
-while($row = mysql_fetch_array($rs)){
+while($row = fetch_array($rs)){
 ?>
     <tr class="bgcolor1" onMouseOver="fSetBg(this)" onMouseOut="fReBg(this)"> 
       <td><a href="<?php echo getpageurl("pp",$row["id"])?>" target="_blank"><?php echo $row["ppname"]?></a> </td>
       <td align="center">
 	  <?php
 	$sqln="select classname from zzcms_zsclass where classzm='".$row["bigclasszm"]."' ";
-	$rsn = mysql_query($sqln); 
-	$rown = mysql_fetch_array($rsn);
+	$rsn = query($sqln); 
+	$rown = fetch_array($rsn);
 	echo $rown["classname"];
 	$sqln="select classname from zzcms_zsclass where classzm='".$row["smallclasszm"]."' ";
-	$rsn = mysql_query($sqln); 
-	$rown = mysql_fetch_array($rsn);
+	$rsn = query($sqln); 
+	$rown = fetch_array($rsn);
 	echo "<br/>".$rown["classname"];
 	  ?>	  </td>
       <td align="center"><a href="<?php echo $row["img"] ?>" target='_blank'><img src="<?php echo $row["img"] ?>" width="60" height="60" border="0"></a></td>

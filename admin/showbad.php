@@ -33,7 +33,7 @@ if ($action=="del"){
 		$sql="delete from zzcms_bad where id='$id'";
 	}
 
-mysql_query($sql);
+query($sql);
 echo "<script>location.href='showbad.php'</script>";
 }
 if ($action=="lockip"){
@@ -42,7 +42,7 @@ if ($action=="lockip"){
 	}else{
 		$sql="update  zzcms_bad set lockip=1 where id='$id'";
 	}
-mysql_query($sql);
+query($sql);
 echo "<script>location.href='showbad.php'</script>";
 }
 ?>
@@ -58,8 +58,8 @@ echo "<script>location.href='showbad.php'</script>";
 </table>
 <?php
 $sql="select * from zzcms_bad order by id desc";
-$rs=mysql_query($sql);
-$row=mysql_num_rows($rs);	 
+$rs=query($sql);
+$row=num_rows($rs);	 
 if (!$row){
 echo "暂无信息";
 }else{
@@ -77,7 +77,7 @@ echo "暂无信息";
       <td width="5%" align="center"class="border">操作</td>
     </tr>
   <?php
-while($row = mysql_fetch_array($rs)){
+while($row = fetch_array($rs)){
 ?>
     <tr class="bgcolor1" onMouseOver="fSetBg(this)" onMouseOut="fReBg(this)"> 
       <td align="center" > 
@@ -108,7 +108,7 @@ while($row = mysql_fetch_array($rs)){
 </form>
 <?php
 }
-mysql_close($conn);
+
 ?>
 </body>
 </html>

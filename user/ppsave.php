@@ -14,7 +14,7 @@ $f_array=explode("|||",$fcontent) ;
 <title></title>
 <link href="style/<?php echo siteskin_usercenter?>/style.css" rel="stylesheet" type="text/css">
 <?php
-if (check_usergr_power("pp")=="no" && $usersf=='个人'){
+if (str_is_inarr(usergr_power,'pp')=="no" && $usersf=='个人'){
 echo $f_array[0];
 exit;
 }
@@ -30,8 +30,8 @@ $cp_name=$_POST["name"];
 $sm=$_POST["sm"];
 $img=$_POST["img"];
 
-$rs=mysql_query("select comane,id from zzcms_user where username='".$username."'");
-$row=mysql_fetch_array($rs);
+$rs=query("select comane,id from zzcms_user where username='".$username."'");
+$row=fetch_array($rs);
 $comane=$row["comane"];
 $userid=$row["id"];
 
@@ -40,8 +40,8 @@ $cpid=isset($_POST["ypid"])?$_POST["ypid"]:'0';
 //判断大小类是否一致，修改产品时有用
 if ($smallclassid<>""){ 
 $sql="select * from zzcms_zsclass where parentid='".$bigclassid."' and  classzm='".$smallclassid."'";
-$rs=mysql_query($sql);
-$row=mysql_fetch_array($rs);
+$rs=query($sql);
+$row=fetch_array($rs);
 if (!$row){
 echo $f_array[1];
 echo"<script>location.href='ppmodify.php?id=".$cpid."'</script>";
@@ -51,16 +51,16 @@ echo"<script>location.href='ppmodify.php?id=".$cpid."'</script>";
 //判断是不是重复信息
 if ($_REQUEST["action"]=="add" ){
 $sql="select * from zzcms_pp where ppname='".$cp_name."' and editor='".$username."' ";
-$rs=mysql_query($sql);
-$row=mysql_num_rows($rs);
+$rs=query($sql);
+$row=num_rows($rs);
 if ($row){
 echo $f_array[2];
 exit;
 }
 }elseif($_REQUEST["action"]=="modify"){
 $sql="select * from zzcms_pp where ppname='".$cp_name."' and editor='".$username."' and id<>".$cpid." ";
-$rs=mysql_query($sql);
-$row=mysql_num_rows($rs);
+$rs=query($sql);
+$row=num_rows($rs);
 if ($row){
 echo $f_array[2];
 exit;
@@ -69,12 +69,12 @@ exit;
 
 
 if ($_POST["action"]=="add"){
-$isok=mysql_query("Insert into zzcms_pp(ppname,bigclasszm,smallclasszm,sm,img,sendtime,editor,userid,comane) values('$cp_name','$bigclassid','$smallclassid','$sm','$img','".date('Y-m-d H:i:s')."','$username','$userid','$comane')") ;  
-$cpid=mysql_insert_id();		
+$isok=query("Insert into zzcms_pp(ppname,bigclasszm,smallclasszm,sm,img,sendtime,editor,userid,comane) values('$cp_name','$bigclassid','$smallclassid','$sm','$img','".date('Y-m-d H:i:s')."','$username','$userid','$comane')") ;  
+$cpid=insert_id();		
 }elseif ($_POST["action"]=="modify"){
 $oldimg=trim($_POST["oldimg"]);
 
-$isok=mysql_query("update zzcms_pp set ppname='$cp_name',bigclasszm='$bigclassid',smallclasszm='$smallclassid',sm='$sm',img='$img',sendtime='".date('Y-m-d H:i:s')."',editor='$username',userid='$userid',comane='$comane',passed=0 where id='$cpid'");
+$isok=query("update zzcms_pp set ppname='$cp_name',bigclasszm='$bigclassid',smallclasszm='$smallclassid',sm='$sm',img='$img',sendtime='".date('Y-m-d H:i:s')."',editor='$username',userid='$userid',comane='$comane',passed=0 where id='$cpid'");
 
 	if ($oldimg<>$img && $oldimg<>"image/nopic.gif") {
 	//deloldimg

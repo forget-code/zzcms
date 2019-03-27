@@ -13,14 +13,14 @@ $bigclassid=trim($_POST["bigclassid"]);
 $smallclassid = isset($_POST['smallclassid'])?$_POST['smallclassid']:'0';
 $smallclassname="未指定小类";
 if (isset($bigclassid)){
-$rs = mysql_query("select * from zzcms_jobclass where classid='$bigclassid'"); 
-$row= mysql_fetch_array($rs);
+$rs = query("select * from zzcms_jobclass where classid='$bigclassid'"); 
+$row= fetch_array($rs);
 $bigclassname=$row["classname"];
 }
 
 if ($smallclassid !=0){
-$rs = mysql_query("select * from zzcms_jobclass where classid='$smallclassid'"); 
-$row= mysql_fetch_array($rs);
+$rs = query("select * from zzcms_jobclass where classid='$smallclassid'"); 
+$row= fetch_array($rs);
 $smallclassname=$row["classname"];
 }
 
@@ -36,21 +36,21 @@ $passed=$_POST['passed'][0];
 $passed=0;
 }
 
-mysql_query("update zzcms_job set bigclassid='$bigclassid',bigclassname='$bigclassname',smallclassid='$smallclassid',smallclassname='$smallclassname',jobname='$jobname',sm='$sm',sendtime='$sendtime' where id='$cpid'");
+query("update zzcms_job set bigclassid='$bigclassid',bigclassname='$bigclassname',smallclassid='$smallclassid',smallclassname='$smallclassname',jobname='$jobname',sm='$sm',sendtime='$sendtime' where id='$cpid'");
 if ($editor<>$oldeditor) {
-$rs=mysql_query("select comane,id from zzcms_user where username='".$editor."'");
-$row = mysql_num_rows($rs);
+$rs=query("select comane,id from zzcms_user where username='".$editor."'");
+$row = num_rows($rs);
 if ($row){
-$row = mysql_fetch_array($rs);
+$row = fetch_array($rs);
 $userid=$row["id"];
 $comane=$row["comane"];
 }else{
 $userid=0;
 $comane="";
 }
-mysql_query("update zzcms_job set editor='$editor',userid='$userid',comane='$comane' where id='$cpid'");
+query("update zzcms_job set editor='$editor',userid='$userid',comane='$comane' where id='$cpid'");
 }
-mysql_query("update zzcms_job set passed='$passed' where id='$cpid'");
+query("update zzcms_job set passed='$passed' where id='$cpid'");
 echo "<script>location.href='job_manage.php?keyword=".$_POST["editor"]."&page=".$_REQUEST["page"]."'</script>";
 ?>
 </body>

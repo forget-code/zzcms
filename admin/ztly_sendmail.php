@@ -33,16 +33,16 @@ $sql="select * from zzcms_guestbook where saver is not null and  id in (". $id .
 }else{
 $sql="select * from zzcms_guestbook where saver is not null and id=".$id."";
 }
-$rs=mysql_query($sql);
-$row=mysql_num_rows($rs);
+$rs=query($sql);
+$row=num_rows($rs);
 if (!$row){		
 echo "暂无信息";
 }else{
-while($row=mysql_fetch_array($rs)){
-		$rsn=mysql_query("select username,sex,email,somane from zzcms_user where username='".$row["saver"]."'");
-		$rown=mysql_num_rows($rsn);
+while($row=fetch_array($rs)){
+		$rsn=query("select username,sex,email,somane from zzcms_user where username='".$row["saver"]."'");
+		$rown=num_rows($rsn);
 		if ($rown){
-		$rown=mysql_fetch_array($rsn);
+		$rown=fetch_array($rsn);
 			$fbr_email=$rown["email"];
 			$somane=$rown["somane"];
 			$sex=$rown["sex"];

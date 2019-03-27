@@ -33,8 +33,8 @@ checkid($id);
 $id=0;
 }
 $sql="select * from zzcms_message where id='$id'";
-$rs=mysql_query($sql);
-$row=mysql_fetch_array($rs);
+$rs=query($sql);
+$row=fetch_array($rs);
 ?>
 <form action="message_save.php?action=modify" method="post" name="myform" id="myform" onSubmit="return CheckForm();">
         <table width="100%" border="0" cellspacing="0" cellpadding="5">

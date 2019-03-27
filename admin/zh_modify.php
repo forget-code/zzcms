@@ -46,8 +46,8 @@ $id=0;
 <div class="admintitle">修改展会信息</div>
 <?php
 $sql="select * from zzcms_zh where id='$id'";
-$rs=mysql_query($sql);
-$row=mysql_fetch_array($rs);
+$rs=query($sql);
+$row=fetch_array($rs);
 ?>
 <form action="zh_save.php?action=modify" method="post" name="myform"  id="myform" onSubmit="return CheckForm();">
         
@@ -57,8 +57,8 @@ $row=mysql_fetch_array($rs);
       <td class="border"> 
 	   <?php
 		$sqln = "select * from zzcms_zhclass order by xuhao asc";
-	    $rsn=mysql_query($sqln);
-        $rown=mysql_num_rows($rsn);
+	    $rsn=query($sqln);
+        $rown=num_rows($rsn);
 		if (!$rown){
 			echo "请先添加栏目。";
 		}else{
@@ -66,7 +66,7 @@ $row=mysql_fetch_array($rs);
 		<select name="bigclassid" id="bigclassid">
                 <option value="" selected="selected">请选择类别</option>
                 <?php
-		while($rown= mysql_fetch_array($rsn)){
+		while($rown= fetch_array($rsn)){
 			?>
                 <option value="<?php echo $rown["bigclassid"]?>" <?php if ($rown["bigclassid"]==$row["bigclassid"]) { echo "selected";}?>><?php echo $rown["bigclassname"]?></option>
                 <?php
@@ -116,8 +116,6 @@ $row=mysql_fetch_array($rs);
     </tr>
   </table>
       </form>
-<?php
-mysql_close($conn);
-?>	  
+	  
 </body>
 </html>

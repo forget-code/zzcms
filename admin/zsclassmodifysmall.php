@@ -54,13 +54,13 @@ $discription=$classname;
 }
 
 if ($classid==""){
-	mysql_close($conn);
+	
 echo "<script>location.href='zsclassmanage.php'</script>";
 }
 		
 	if ($classname<>$oldclassname || $bigclassid<>$oldbigclassid ){
-		$rs=mysql_query("Select * from zzcms_zsclass where parentid='".$bigclassid."' and classname='".$classname."'");
-		$row= mysql_num_rows($rs);//返回记录数
+		$rs=query("Select * from zzcms_zsclass where parentid='".$bigclassid."' and classname='".$classname."'");
+		$row= num_rows($rs);//返回记录数
 		if ($row){
 		$FoundErr=1;
 		$ErrMsg="<li>此小类名称已存在！</li>";
@@ -69,8 +69,8 @@ echo "<script>location.href='zsclassmanage.php'</script>";
 	
 	if ($classzm<>$oldclasszm || $bigclassid<>$oldbigclassid ){
 		
-		$rs=mysql_query("Select * from zzcms_zsclass where parentid='".$bigclassid."' and classzm='".$classzm."'");
-		$row= mysql_num_rows($rs);//返回记录数
+		$rs=query("Select * from zzcms_zsclass where parentid='".$bigclassid."' and classzm='".$classzm."'");
+		$row= num_rows($rs);//返回记录数
 		if ($row){
 		$FoundErr=1;
 			$ErrMsg="<li>此小类名拼音已存在！</li>";
@@ -78,14 +78,14 @@ echo "<script>location.href='zsclassmanage.php'</script>";
 	}		
 		
 	if ($FoundErr==0) {
-		mysql_query("update zzcms_zsclass set parentid='$bigclassid',classname='$classname',classzm='$classzm',title='$title',keyword='$keyword',discription='$discription' where classid='$classid'");
+		query("update zzcms_zsclass set parentid='$bigclassid',classname='$classname',classzm='$classzm',title='$title',keyword='$keyword',discription='$discription' where classid='$classid'");
 			if ($bigclassid<>$oldbigclassid){
-				mysql_query("Update zzcms_main set bigclasszm='" . $bigclassid . "' where bigclasszm='" . $oldbigclassid . "' and smallclasszm='" . $classzm . "' ");	
+				query("Update zzcms_main set bigclasszm='" . $bigclassid . "' where bigclasszm='" . $oldbigclassid . "' and smallclasszm='" . $classzm . "' ");	
 			}
 			if ($classzm<>$oldclasszm ){
-			mysql_query("update zzcms_main set smallclasszm='".$classzm."' where smallclasszm='".$oldclasszm."' and bigclasszm='" . $bigclassid . "' " );
+			query("update zzcms_main set smallclasszm='".$classzm."' where smallclasszm='".$oldclasszm."' and bigclasszm='" . $bigclassid . "' " );
 			}
-			mysql_close($conn);
+			
 			echo "<script>location.href='zsclassmanage.php?#S".$classid."'</script>";
 	}
 }
@@ -93,8 +93,8 @@ echo "<script>location.href='zsclassmanage.php'</script>";
 if ($FoundErr==1){
 WriteErrMsg($ErrMsg);
 }else{
-$rs=mysql_query("Select * from zzcms_zsclass where classid='".$classid."'");
-$row= mysql_fetch_array($rs);
+$rs=query("Select * from zzcms_zsclass where classid='".$classid."'");
+$row= fetch_array($rs);
 ?>
 <table width="100%" border="0" cellpadding="0" cellspacing="0">
   <tr> 
@@ -120,8 +120,8 @@ $(document).ready(function(){
       <td width="252" height="22" align="right" class="border">所属大类</td>
       <td width="1163" class="border"> <select name="bigclassid" id="bigclassid">
           <?php
-	$rsb=mysql_query("Select * From zzcms_zsclass where parentid='A'");
-	while($rowb= mysql_fetch_array($rsb)){
+	$rsb=query("Select * From zzcms_zsclass where parentid='A'");
+	while($rowb= fetch_array($rsb)){
 			if ($rowb["classzm"]==$row["parentid"]){
 				echo "<option value=". $rowb['classzm'] ." selected>" . $rowb['classname']."</option>";
 			}else{

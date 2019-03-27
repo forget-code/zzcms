@@ -57,13 +57,13 @@ $discription=$classname;
 }
 
 if ($classid==""){
-	mysql_close($conn);
+	
 echo "<script>location.href='zsclassmanage.php'</script>";
 }
 	if ($classname<>$oldclassname){
 	$sql="Select * from zzcms_zsclass where parentid='A' and classname='".$classname."' and classid !=" .$classid." ";
-	$rs=mysql_query($sql);
-		$row= mysql_num_rows($rs);//返回记录数
+	$rs=query($sql);
+		$row= num_rows($rs);//返回记录数
 		if ($row){
 		$FoundErr=1;
 		$ErrMsg="<li>此大类名称已存在！</li>";
@@ -72,8 +72,8 @@ echo "<script>location.href='zsclassmanage.php'</script>";
 	
 	if ($classzm<>$oldclasszm) {
 	$sql="Select * from zzcms_zsclass where parentid='A' and classzm='".$classzm."' and classid != " .$classid." ";
-	$rs=mysql_query($sql);
-		$row= mysql_num_rows($rs);//返回记录数
+	$rs=query($sql);
+		$row= num_rows($rs);//返回记录数
 		if ($row){
 		$FoundErr=1;
 		$ErrMsg="<li>此大类名拼音已存在！</li>";
@@ -81,17 +81,17 @@ echo "<script>location.href='zsclassmanage.php'</script>";
 	}
 		
 	if ($FoundErr==0) {
-	mysql_query("update zzcms_zsclass set classname='$classname',classzm='$classzm',img='$img',
+	query("update zzcms_zsclass set classname='$classname',classzm='$classzm',img='$img',
 	isshow='$isshow',title='$title',keyword='$keyword',discription='$discription' where classid='$classid'");
 		
 		if ($classzm<>$oldclasszm){
-		mysql_query("update zzcms_main set bigclasszm='".$classzm."' where bigclasszm='".$oldclasszm."'");
-		mysql_query("update zzcms_dl set classzm='".$classzm."' where classzm='".$oldclasszm."'");
-		mysql_query("update zzcms_zsclass set parentid='".$classzm."' where parentid='".$oldclasszm."'");
-		mysql_query("RENAME TABLE `zzcms_dl_".$oldclasszm."` TO `zzcms_dl_".$classzm."`");
+		query("update zzcms_main set bigclasszm='".$classzm."' where bigclasszm='".$oldclasszm."'");
+		query("update zzcms_dl set classzm='".$classzm."' where classzm='".$oldclasszm."'");
+		query("update zzcms_zsclass set parentid='".$classzm."' where parentid='".$oldclasszm."'");
+		query("RENAME TABLE `zzcms_dl_".$oldclasszm."` TO `zzcms_dl_".$classzm."`");
 		}
 		
-/*mysql_query("CREATE TABLE `zzcms_dl_".$classzm."` (
+/*query("CREATE TABLE `zzcms_dl_".$classzm."` (
   `id` int(11) NOT NULL auto_increment,
   `dlid` int(11) default '0',
   `cpid` int(11) default '0',
@@ -117,7 +117,7 @@ echo "<script>location.href='zsclassmanage.php'</script>";
   `del` tinyint(4) default '0',
   PRIMARY KEY  (`id`)
 ) ENGINE=MyISAM AUTO_INCREMENT=1 DEFAULT CHARSET=utf8");
-mysql_query("ALTER TABLE  `zzcms_dl_".$classzm."` ADD INDEX (  `province` ,  `city` ,  `xiancheng` )") ;
+query("ALTER TABLE  `zzcms_dl_".$classzm."` ADD INDEX (  `province` ,  `city` ,  `xiancheng` )") ;
 */	
 		echo "<script>location.href='zsclassmanage.php?#B".$classzm."'</script>";
 	}
@@ -126,8 +126,8 @@ mysql_query("ALTER TABLE  `zzcms_dl_".$classzm."` ADD INDEX (  `province` ,  `ci
 if ($FoundErr==1){
 WriteErrMsg($ErrMsg);
 }else{
-$rs=mysql_query("Select * from zzcms_zsclass where classid='" .$classid."'");
-$row= mysql_fetch_array($rs);
+$rs=query("Select * from zzcms_zsclass where classid='" .$classid."'");
+$row= fetch_array($rs);
 ?>
 <form name="form1" method="post" action="?action=modify" onSubmit="return checkform()">
 <div class="admintitle">修改大类</div>

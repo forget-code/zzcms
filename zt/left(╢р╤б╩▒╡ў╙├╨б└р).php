@@ -2,8 +2,8 @@
 if (!isset($_SESSION['dlliuyan'])){
 $_SESSION['dlliuyan']='';
 }
-$rs=mysql_query("select config from zzcms_usergroup where groupid=$groupid");
-$row=mysql_fetch_array($rs);
+$rs=query("select config from zzcms_usergroup where groupid=$groupid");
+$row=fetch_array($rs);
 $showcontact=str_is_inarr($row["config"],'showcontact');
 $siteleft="<div class='titleleft'>联系人</div>";
 $siteleft=$siteleft."<div class='contentleft'>";
@@ -54,20 +54,20 @@ $smallclass="";
 $siteleft=$siteleft. "<div class='titleleft'>分类".channelzs."</div>";
 
 $siteleft=$siteleft. "<div class='contentleft'>";
-$rsleft=mysql_query("select bigclasszm from zzcms_main where editor='".$editor."'and bigclasszm<>'' group by bigclasszm");
-$rowleft=mysql_num_rows($rsleft);
+$rsleft=query("select bigclasszm from zzcms_main where editor='".$editor."'and bigclasszm<>'' group by bigclasszm");
+$rowleft=num_rows($rsleft);
 if ($rowleft){
-	while ($rowleft=mysql_fetch_array($rsleft)){
-		$rsb=mysql_query("select classname from zzcms_zsclass where classzm='".$rowleft["bigclasszm"]."'");
-		$rowb=mysql_num_rows($rsb);
+	while ($rowleft=fetch_array($rsleft)){
+		$rsb=query("select classname from zzcms_zsclass where classzm='".$rowleft["bigclasszm"]."'");
+		$rowb=num_rows($rsb);
 		if ($rowb){
-		$rowb=mysql_fetch_array($rsb);
+		$rowb=fetch_array($rsb);
 		$bigclassnames=cutstr($rowb["classname"],5);
 		}else{
 		$bigclassnames="大类已删除";
 		}
 		
-		$rsb=mysql_query("select count(id) from zzcms_main where editor='".$editor."'and bigclasszm='".$rowleft["bigclasszm"]."'");
+		$rsb=query("select count(id) from zzcms_main where editor='".$editor."'and bigclasszm='".$rowleft["bigclasszm"]."'");
 		$numb=mysql_result($rsb,0);
 		
 		$siteleft=$siteleft."<li style='font-weight:bold'>";
@@ -90,11 +90,11 @@ if ($rowleft){
 		
 		
 		
-		$rsn=mysql_query("select smallclasszm from zzcms_main where editor='".$editor."'and bigclasszm='".$rowleft["bigclasszm"]."' and smallclasszm<>''");
-		$rown=mysql_num_rows($rsn);
+		$rsn=query("select smallclasszm from zzcms_main where editor='".$editor."'and bigclasszm='".$rowleft["bigclasszm"]."' and smallclasszm<>''");
+		$rown=num_rows($rsn);
 		if ($rown){
 		$smallclasszms="";
-		while ($rown=mysql_fetch_array($rsn)){
+		while ($rown=fetch_array($rsn)){
 		$smallclasszms=$smallclasszms.$rown["smallclasszm"].",";
 		//echo $rown["smallclasszm"].","."<br/>";
 		}
@@ -105,20 +105,20 @@ if ($rowleft){
 		echo $smallclasszms;
 		//exit;
 		
-		$rsn=mysql_query("select classzm from zzcms_zsclass where parentid='".$rowleft["bigclasszm"]."' and classzm in ($smallclasszms)");
-		$rown=mysql_num_rows($rsn);
+		$rsn=query("select classzm from zzcms_zsclass where parentid='".$rowleft["bigclasszm"]."' and classzm in ($smallclasszms)");
+		$rown=num_rows($rsn);
 		if ($rown){
-			while ($rown=mysql_fetch_array($rsn)){
-				$rss=mysql_query("select classname from zzcms_zsclass where classzm='".$rown["classzm"]."'");
-				$rows=mysql_num_rows($rss);
+			while ($rown=fetch_array($rsn)){
+				$rss=query("select classname from zzcms_zsclass where classzm='".$rown["classzm"]."'");
+				$rows=num_rows($rss);
 				if ($rows){
-				$rows=mysql_fetch_array($rss);
+				$rows=fetch_array($rss);
 				$smallclassnames=$rows["classname"];
 				}else{
 				$smallclassnames="小类已删除";
 				}
 				
-				$rss=mysql_query("select count(id) from zzcms_main where editor='".$editor."'and smallclasszm='".$rown["classzm"]."'");
+				$rss=query("select count(id) from zzcms_main where editor='".$editor."'and smallclasszm='".$rown["classzm"]."'");
 				$nums=mysql_result($rss,0);
 		
 				$siteleft=$siteleft."<li style='list-style:none;'>";

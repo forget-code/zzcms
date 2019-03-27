@@ -101,14 +101,14 @@ eval("trquanxian3.style.display=\"\";");
         <?php
 
 $sql = "select * from zzcms_zxclass where parentid<>0 order by xuhao asc";
-$rs=mysql_query($sql);
+$rs=query($sql);
 ?>
         <script language = "JavaScript" type="text/JavaScript">
 var onecount;
 subcat = new Array();
         <?php 
         $count = 0;
-        while($row = mysql_fetch_array($rs)){
+        while($row = fetch_array($rs)){
         ?>
 subcat[<?php echo $count?>] = new Array("<?php echo trim($row["classname"])?>","<?php echo trim($row["parentid"])?>","<?php echo trim($row["classid"])?>");
         <?php
@@ -134,8 +134,8 @@ function changelocation(locationid)
           <option value="" selected="selected">请选择大类别</option>
           <?php
 	$sql = "select * from zzcms_zxclass where parentid=0 order by xuhao asc";
-    $rs=mysql_query($sql);
-	while($row = mysql_fetch_array($rs)){
+    $rs=query($sql);
+	while($row = fetch_array($rs)){
 	?>
           <option value="<?php echo trim($row["classid"])?>" <?php if ($row["classid"]==@$_COOKIE["zxbigclassid"]) { echo "selected";}?>><?php echo trim($row["classname"])?></option>
           <?php
@@ -146,8 +146,8 @@ function changelocation(locationid)
           <?php
 if ($_COOKIE["zxbigclassid"]!=""){
 $sql="select * from zzcms_zxclass where parentid=" .$_COOKIE["zxbigclassid"]." order by xuhao asc";
-$rs=mysql_query($sql);
-while($row = mysql_fetch_array($rs)){
+$rs=query($sql);
+while($row = fetch_array($rs)){
 	?>
           <option value="<?php echo $row["classid"]?>" <?php if ($row["classid"]==@$_COOKIE["zxsmallclassid"]) { echo "selected";}?>><?php echo $row["classname"]?></option>
           <?php
@@ -219,10 +219,10 @@ $(document).ready(function(){
       <td class="border" ><select name="groupid">
           <option value="0">全部用户</option>
           <?php
-		  $rs=mysql_query("Select * from zzcms_usergroup ");
-		  $row = mysql_num_rows($rs);
+		  $rs=query("Select * from zzcms_usergroup ");
+		  $row = num_rows($rs);
 		  if ($row){
-		  while($row = mysql_fetch_array($rs)){
+		  while($row = fetch_array($rs)){
 		  echo "<option value='".$row["groupid"]."'>".$row["groupname"]."</option>";
 		  }
 		  }

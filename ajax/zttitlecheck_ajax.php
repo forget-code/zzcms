@@ -13,8 +13,8 @@ require_once '../inc/conn.php';
 <?php  
 $id=$_GET['id'];
 	$sql="select title from zzcms_special where title='". $id ."'";
-	$rs=mysql_query($sql);
-	$row=mysql_num_rows($rs);
+	$rs=query($sql);
+	$row=num_rows($rs);
 	if($row){
 	$rt="<div style='background-color:#FFFF00;border:solid 1px #ffcc00;padding:5px;width:400px'>";
 	$rt=$rt."此条信息已存在！请查看你发布的信息是否与此重复！";

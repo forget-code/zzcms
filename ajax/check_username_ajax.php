@@ -25,8 +25,8 @@ $msg= "请输入用户名";
 	}else{ 
 
 	$sqlreg="select username from zzcms_user where username='".$id."'";
-	$rs = mysql_query($sqlreg);
-	$row= mysql_num_rows($rs);//返回记录数
+	$rs = query($sqlreg);
+	$row= num_rows($rs);//返回记录数
 		if(!$row){ 
 		$founderr=1;
 		$msg= "该用户名不存在！";

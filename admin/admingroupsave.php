@@ -21,21 +21,21 @@ $config=substr($config,0,strlen($config)-1);//去除最后面的"#"
 
 if ($action=="add"){	
 	$sql="Select * From zzcms_admingroup where groupname='".$groupname."'";	
-	$rs = mysql_query($sql,$conn);
-	$row= mysql_num_rows($rs);//返回记录数
+	$rs = query($sql,$conn);
+	$row= num_rows($rs);//返回记录数
 	if($row){ 
 			$FoundErr=1;
 			$ErrMsg="<li>用户组名称“" . $groupname . "”已经存在！</li>";
 			WriteErrMsg($ErrMsg);
 	}else{
 	$sql="insert into zzcms_admingroup (groupname,config)values('$groupname','$config')";
-	mysql_query($sql,$conn);
+	query($sql,$conn);
 	echo "<script>location.href='admingroupmanage.php'</script>";
 	}
 }elseif($action=="modify"){
 $id=$_POST["id"];
 $sql="update zzcms_admingroup set groupname='$groupname',config='$config' where id='$id'";
-$isok=mysql_query($sql);
+$isok=query($sql);
 
 if ($isok){
 echo "<script>alert('修改成功');location.href='admingroupmanage.php'</script>";

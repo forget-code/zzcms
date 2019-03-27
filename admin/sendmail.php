@@ -40,10 +40,10 @@ checkadminisdo("sendmail");
       <td align="right" class="border">对选定的用户组群发：</td>
       <td class="border"><select name="groupid">
         <?php
-			$rsn=mysql_query("select * from zzcms_usergroup order by groupid asc");
-			$r=mysql_num_rows($rsn);
+			$rsn=query("select * from zzcms_usergroup order by groupid asc");
+			$r=num_rows($rsn);
 			if ($r){
-			while ($r=mysql_fetch_array($rsn)){
+			while ($r=fetch_array($rsn)){
 				if ($r["groupid"]==$row["groupid"]){
 			 	echo "<option value='".$r["groupid"]."' selected>".$r["groupname"]."</option>";
 				}else{

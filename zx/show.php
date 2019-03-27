@@ -17,7 +17,7 @@ if ($user==''){
 $user='未登录用户';
 }
 $ip=trim($_POST["ip"]);
-mysql_query("insert into zzcms_pinglun (about,content,face,username,ip,sendtime)values('$about','$content','$face','$user','$ip','".date('Y-m-d H:i:s')."')");
+query("insert into zzcms_pinglun (about,content,face,username,ip,sendtime)values('$about','$content','$face','$user','$ip','".date('Y-m-d H:i:s')."')");
 showmsg('您的评论提交成功，正在审核... 感谢参与');
 }
 if (isset($_REQUEST["id"])){
@@ -28,12 +28,12 @@ $zxid=0;
 }
 
 $sql="select * from zzcms_zx where id='$zxid'";
-$rs=mysql_query($sql);
-$row=mysql_fetch_array($rs);
+$rs=query($sql);
+$row=fetch_array($rs);
 if (!$row){
 showmsg('不存在相关信息！');
 }else{
-mysql_query("update zzcms_zx set hit=hit+1 where id='$zxid'");
+query("update zzcms_zx set hit=hit+1 where id='$zxid'");
 $bigclassid=$row["bigclassid"];
 $smallclassid=$row["smallclassid"];
 $title=$row["title"];
@@ -47,20 +47,20 @@ $hit=$row["hit"];
 $groupid=$row["groupid"];//查看信息的用户组级别
 $jifen=$row["jifen"];//查看信息所需积分
 $smallclassname='';
-$rs=mysql_query("select classname from zzcms_zxclass where classid='".$bigclassid."'");
-$row=mysql_fetch_array($rs);
+$rs=query("select classname from zzcms_zxclass where classid='".$bigclassid."'");
+$row=fetch_array($rs);
 $bigclassname=$row["classname"];
 
 if ($smallclassid<>""){
-$rs=mysql_query("select classname from zzcms_zxclass where classid='".$smallclassid."'");
-$row=mysql_fetch_array($rs);
+$rs=query("select classname from zzcms_zxclass where classid='".$smallclassid."'");
+$row=fetch_array($rs);
 $smallclassname=$row["classname"];
 }
 
 $groupname='';
 if ($groupid<>0){
-$rs=mysql_query("select groupname from zzcms_usergroup where groupid='".$groupid."'");
-$row=mysql_fetch_array($rs);
+$rs=query("select groupname from zzcms_usergroup where groupid='".$groupid."'");
+$row=fetch_array($rs);
 $groupname=$row["groupname"];
 }
 
@@ -75,8 +75,8 @@ global $content,$zxid,$jifen,$editor;
 $looked=0;
 $str="";		       
 $sql="select groupid,totleRMB from zzcms_user where username='".$_COOKIE["UserName"]."'";
-$rs=mysql_query($sql);
-$row=mysql_fetch_array($rs);				
+$rs=query($sql);
+$row=fetch_array($rs);				
 $totleRMB=$row["totleRMB"];
 
 	if (!isset($_POST["action"]) && $looked==0){
@@ -88,10 +88,10 @@ $totleRMB=$row["totleRMB"];
 	$str=$str."</div>";	       
 	}elseif ($_POST["action"]=="kan"  && $looked==0) {
 		if( $totleRMB>=$jifen) {
-		mysql_query("update zzcms_user set totleRMB=totleRMB-".$jifen." where username='".$_COOKIE["UserName"]."'");//查看时扣除积分
-		mysql_query("update zzcms_user set totleRMB=totleRMB+".$jifen." where username='".$editor."'");//给发布者加积分
-		mysql_query("insert into zzcms_pay (username,dowhat,RMB,mark,sendtime) values('".$_COOKIE['UserName']."','查看资讯信息','-".$jifen."','<a href=/zx/show.php?id=$zxid>$zxid</a>','".date('Y-m-d H:i:s')."')");//写入冲值记录
-		mysql_query("insert into zzcms_pay (username,dowhat,RMB,mark,sendtime) values('".$editor."','资讯信息售出','+".$jifen."','<a href=/zx/show.php?id=$zxid>$zxid</a>','".date('Y-m-d H:i:s')."')");//写入冲值记录  
+		query("update zzcms_user set totleRMB=totleRMB-".$jifen." where username='".$_COOKIE["UserName"]."'");//查看时扣除积分
+		query("update zzcms_user set totleRMB=totleRMB+".$jifen." where username='".$editor."'");//给发布者加积分
+		query("insert into zzcms_pay (username,dowhat,RMB,mark,sendtime) values('".$_COOKIE['UserName']."','查看资讯信息','-".$jifen."','<a href=/zx/show.php?id=$zxid>$zxid</a>','".date('Y-m-d H:i:s')."')");//写入冲值记录
+		query("insert into zzcms_pay (username,dowhat,RMB,mark,sendtime) values('".$editor."','资讯信息售出','+".$jifen."','<a href=/zx/show.php?id=$zxid>$zxid</a>','".date('Y-m-d H:i:s')."')");//写入冲值记录  
 		$str=$str.showcontent($content,$zxid);
 		}else{
 		$str=$str."<div class='bgcolor1' >您的帐户中已不足 ".$jifen." 金币，暂不能查看！ <br /><br />";
@@ -104,13 +104,13 @@ return $str;
 function showcontent(){	//分页显示资讯
 global $content,$zxid ;
 $sql="Select * From zzcms_tagzx";
-$rs=mysql_query($sql);
-$row=mysql_num_rows($rs);
+$rs=query($sql);
+$row=num_rows($rs);
 if (!$row){
 $str=$content;
 }else{	
 	$str=str_replace($row["keyword"],"<a href='".$row["url"]."' target='_blank' style='color:blue'>".$row["keyword"]."</a>",$content);	  
-	while($row=mysql_fetch_array($rs)){
+	while($row=fetch_array($rs)){
 	$str=str_replace($row["keyword"],"<a href='".$row["url"]."' target='_blank' style='color:blue'>".$row["keyword"]."</a>",$str);	  
 	}
 }
@@ -161,8 +161,8 @@ $zxcontent=showcontent();
 	$zxcontent=$zxcontent."</div>";
 	}else{ 
 	$sqln="select groupid from zzcms_user where username='".$_COOKIE["UserName"]."'";
-	$rsn=mysql_query($sqln);
-	$rown=mysql_fetch_array($rsn);				
+	$rsn=query($sqln);
+	$rown=fetch_array($rsn);				
 	$groupid_user=$rown["groupid"];
 		if ($groupid_user>=$groupid){
 		$zxcontent=showcontent();
@@ -181,8 +181,8 @@ $zxcontent=showcontent();
 }
 
 $sql="select * from zzcms_zx where id < ".$zxid." and passed=1 and bigclassid in (select classid from zzcms_zxclass where isshowininfo=1 and parentid=0) order by id desc limit 0,1";
-$rs=mysql_query($sql);
-$row=mysql_fetch_array($rs);
+$rs=query($sql);
+$row=fetch_array($rs);
 if ($row){
 $nextid="上一篇文章：<a href=".getpageurl("zx",$row["id"]).">".$row["title"]."</a><br/> ";
 }else{ 
@@ -190,8 +190,8 @@ $nextid="上一篇文章：没有了<br/>";
 }
 	
 $sql="select * from zzcms_zx where id > ".$zxid." and passed=1 and bigclassid in (select classid from zzcms_zxclass where isshowininfo=1 and parentid=0) order by id asc limit 0,1";
-$rs=mysql_query($sql);
-$row=mysql_fetch_array($rs);
+$rs=query($sql);
+$row=fetch_array($rs);
 if ($row){
 $nextid=$nextid . "下一篇文章：<a href=".getpageurl("zx",$row["id"]).">".$row["title"]."</a> ";
 }else{ 
@@ -199,11 +199,11 @@ $nextid=$nextid . "下一篇文章：没有了";
 }
 	
 $sql="select * from zzcms_pinglun where about=".$zxid." and passed=1 order by id desc";
-$rs=mysql_query($sql);
-$row=mysql_num_rows($rs);
+$rs=query($sql);
+$row=num_rows($rs);
 if ($row){
     $pinglun="<ul> ";
-    while($row=mysql_fetch_array($rs)){	
+    while($row=fetch_array($rs)){	
 	
 	$pinglun=$pinglun . "<div class='box'>";
     $pinglun=$pinglun . "<div>评论人：".$row["username"]." IP：".$row["ip"]." 评论时间：".$row["sendtime"]."</div>";
@@ -240,7 +240,7 @@ $strout=str_replace("{#pinglunren}","",$strout);
 $strout=str_replace("{#sitebottom}",sitebottom(),$strout);
 $strout=str_replace("{#sitetop}",sitetop(),$strout);
 $strout=showlabel($strout);
-mysql_close($conn);
+
 session_write_close();
 echo  $strout;
 }

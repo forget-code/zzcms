@@ -13,10 +13,10 @@ $skin='';
 $bigclassname="";
 if ($b<>"") {
 $sql="select classname,title,keyword,discription,skin from zzcms_zxclass where classid='".$b."'";
-$rs=mysql_query($sql);
-$row=mysql_num_rows($rs);
+$rs=query($sql);
+$row=num_rows($rs);
 	if ($row){
-	$row=mysql_fetch_array($rs);
+	$row=fetch_array($rs);
 	$bigclassname=$row["classname"];
 	$classtitle=$row["title"];
 	$classkeyword=$row["keyword"];
@@ -43,6 +43,6 @@ $strout=str_replace("{#bigclassname}",$bigclassname,$strout);
 $strout=str_replace("{#sitebottom}",sitebottom(),$strout);
 $strout=str_replace("{#sitetop}",sitetop(),$strout);
 $strout=showlabel($strout);
-mysql_close($conn);
+
 echo $strout;
 ?>

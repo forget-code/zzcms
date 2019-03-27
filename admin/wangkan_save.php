@@ -29,10 +29,10 @@ $elite=0;
 }
 
 if ($_REQUEST["action"]=="add" && $_SESSION["admin"]<>''){
-mysql_query("INSERT INTO zzcms_wangkan (bigclassid,title,content,img,passed,elite,sendtime)VALUES('$bigclassid','$title','$content','$img','$passed','$elite','".date('Y-m-d H:i:s')."')");
+query("INSERT INTO zzcms_wangkan (bigclassid,title,content,img,passed,elite,sendtime)VALUES('$bigclassid','$title','$content','$img','$passed','$elite','".date('Y-m-d H:i:s')."')");
 }elseif ($_REQUEST["action"]=="modify") {
 $id=$_POST["id"];
-mysql_query("update zzcms_wangkan set bigclassid='$bigclassid',title='$title',content='$content',img='$img',passed='$passed',elite='$elite',sendtime='".date('Y-m-d H:i:s')."' where id='$id'");	
+query("update zzcms_wangkan set bigclassid='$bigclassid',title='$title',content='$content',img='$img',passed='$passed',elite='$elite',sendtime='".date('Y-m-d H:i:s')."' where id='$id'");	
 }
 echo  "<script>location.href='wangkan_manage.php?page=".$page."'</script>";
 ?>

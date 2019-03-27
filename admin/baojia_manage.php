@@ -24,12 +24,12 @@ if(!empty($_POST['id'])){
     for($i=0; $i<count($_POST['id']);$i++){
 	$id=$_POST['id'][$i];
 	$sql="select passed from zzcms_baojia where id ='$id'";
-	$rs = mysql_query($sql); 
-	$row = mysql_fetch_array($rs);
+	$rs = query($sql); 
+	$row = fetch_array($rs);
 	if ($row['passed']=='0'){
-	mysql_query("update zzcms_baojia set passed=1 where id ='$id'");
+	query("update zzcms_baojia set passed=1 where id ='$id'");
     }else{
-	mysql_query("update zzcms_baojia set passed=0 where id ='$id'");
+	query("update zzcms_baojia set passed=0 where id ='$id'");
 	}
 	
 	}	
@@ -57,12 +57,12 @@ echo "<script>location.href='?keyword=".$keyword."&page=".$page."'</script>";
   <div class="border2">
   <?php	
 $sql="select * from zzcms_zsclass where parentid='A' order by xuhao";
-$rs = mysql_query($sql); 
-$row = mysql_num_rows($rs);
+$rs = query($sql); 
+$row = num_rows($rs);
 if (!$row){
 echo '暂无分类';
 }else{
-while($row = mysql_fetch_array($rs)){
+while($row = fetch_array($rs)){
 echo "<a href=?b=".$row['classzm'].">";  
 	if ($row["classzm"]==$b) {
 	echo "<b>".$row["classname"]."</b>";
@@ -103,8 +103,8 @@ if ($keyword<>"") {
 	}
 }
 
-$rs = mysql_query($sql.$sql2); 
-$row = mysql_fetch_array($rs);
+$rs = query($sql.$sql2); 
+$row = fetch_array($rs);
 $totlenum = $row['total'];
 $totlepage=ceil($totlenum/$page_size);
 
@@ -112,7 +112,7 @@ $sql="select * from zzcms_baojia where id<>0 ";
 $sql=$sql.$sql2;
 $sql=$sql . " order by id desc limit $offset,$page_size";
 //$sql=$sql." and id>=(select id from zzcms_baojia order by id limit $offset,1) order by id desc limit $page_size";
-$rs = mysql_query($sql,$conn); 
+$rs = query($sql,$conn); 
 if(!$totlenum){
 echo "暂无信息";
 }else{
@@ -141,16 +141,16 @@ echo "暂无信息";
       <td width="5%" align="center" class="border">操作</td>
     </tr>
     <?php
-while($row = mysql_fetch_array($rs)){
+while($row = fetch_array($rs)){
 ?>
     <tr class="bgcolor1" onMouseOver="fSetBg(this)" onMouseOut="fReBg(this)"> 
       <td align="center"> <input name="id[]" type="checkbox"  value="<?php echo $row["id"]?>">     </td>
       <td><a href="?b=<?php echo $row["classzm"]?>" >
 	  <?php
-			$rsn=mysql_query("select classname from zzcms_zsclass where classzm='".$row['classzm']."'");
-			$r=mysql_num_rows($rsn);
+			$rsn=query("select classname from zzcms_zsclass where classzm='".$row['classzm']."'");
+			$r=num_rows($rsn);
 			if ($r){
-			$r=mysql_fetch_array($rsn);
+			$r=fetch_array($rsn);
 			echo $r["classname"];
 			}
 			 ?>
@@ -184,7 +184,7 @@ while($row = mysql_fetch_array($rs)){
 <div class="border center"><?php echo showpage_admin()?></div>
 <?php
 }
-mysql_close($conn);
+
 ?>
 </body>
 </html>

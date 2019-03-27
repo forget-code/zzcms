@@ -20,8 +20,8 @@ echo "<script>alert('请先选择广告小类别，只能在某一个小类别�
 exit;
 }
 $sql="select xuhao,id from zzcms_ad where bigclassname='$b' and smallclassname='$s'";
-$rs = mysql_query($sql); 
-while($row = mysql_fetch_array($rs)){
+$rs = query($sql); 
+while($row = fetch_array($rs)){
 $xuhao=$_POST["xuhao".$row["id"]];//表单名称是动态显示的，并于FORM里的名称相同。
 	   if (trim($xuhao) == "" || is_numeric($xuhao) == false) {
 	       $xuhao = 0;
@@ -30,7 +30,7 @@ $xuhao=$_POST["xuhao".$row["id"]];//表单名称是动态显示的，并于FORM�
 	   }else{
 	       $xuhao = $xuhao;
 	   }
-mysql_query("update zzcms_ad set xuhao=$xuhao where id=".$row['id']."");
+query("update zzcms_ad set xuhao=$xuhao where id=".$row['id']."");
 }
 }
 ?>
@@ -42,13 +42,13 @@ mysql_query("update zzcms_ad set xuhao=$xuhao where id=".$row['id']."");
           <td style="color:#999999"> 
             <?php	
 $sql="select * from zzcms_adclass where parentid='A' order by xuhao";
-$rs = mysql_query($sql); 
-$row = mysql_num_rows($rs);
+$rs = query($sql); 
+$row = num_rows($rs);
 if (!$row){
 echo '暂无分类';
 }else{
 echo "大类：";
-while($row = mysql_fetch_array($rs)){
+while($row = fetch_array($rs)){
 echo "<a href=?b=".$row['classname'].">";  
 	if ($row["classname"]==$b) {
 	echo "<b>".$row["classname"]."</b>";
@@ -61,13 +61,13 @@ echo "<a href=?b=".$row['classname'].">";
 echo "<br>";
 
 $sql="select * from zzcms_adclass where parentid='".$b."' order by xuhao";
-$rs = mysql_query($sql); 
-$row = mysql_num_rows($rs);
+$rs = query($sql); 
+$row = num_rows($rs);
 if (!$row){
 echo '暂无分类';
 }else{
 echo "小类：";
-while($row = mysql_fetch_array($rs)){
+while($row = fetch_array($rs)){
 echo "<a href=?b=".$b."&s=".$row['classname'].">";  
 	if ($row["classname"]==$s) {
 	echo "<b>".$row["classname"]."</b>";
@@ -92,8 +92,8 @@ if ($s<>"") {
 $sql=$sql." and smallclassname='".$s."' ";
 }
 $sql=$sql . " order by xuhao asc, id asc ";
-$rs = mysql_query($sql,$conn);
-$row= mysql_num_rows($rs);  
+$rs = query($sql,$conn);
+$row= num_rows($rs);  
 if(!$row){
 echo "暂无信息";
 }else{
@@ -111,11 +111,12 @@ echo "暂无信息";
       <td width="5%" align="center" class="border">序号</td>
       <td width="10%" class="border">所属类别</td>
       <td width="10%" class="border">标题</td>
-      <td width="10%" class="border">图片</td>
+      <td width="5%" class="border">图片</td>
+      <td width="5%" class="border">&nbsp;</td>
     </tr>
     <?php
 $n=1;
-while($row = mysql_fetch_array($rs)){
+while($row = fetch_array($rs)){
 ?>
     <tr class="bgcolor1" onMouseOver="fSetBg(this)" onMouseOut="fReBg(this)"> 
       <td align="center"><input name='<?php echo "xuhao".$row["id"]?>' type="text" value="<?php echo $row["xuhao"]?>" size="4" maxlength="4"></td>
@@ -139,6 +140,7 @@ if ($row["img"]<>""){
 	echo "文字广告-无图片";
 }	
 	?>      </td>
+      <td> <a href="ad_modify.php?b=<?php echo $b?>&id=<?php echo $row["id"]?>">修改</a></td>
     </tr>
     <?php
 $n++;

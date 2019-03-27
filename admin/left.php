@@ -31,24 +31,57 @@ img { float:none; vertical-align:middle; }
     <td valign="top" style="padding-top:10px;" class="left_color" id="menubar">
 	<div id="left0" style="display:"> 
 	<a href="zs_manage.php" target="frmright"><?php echo channelzs?>信息管理</a>
-	<a href="pp_manage.php" target="frmright">品牌信息管理</a> 
-	<a href="job_manage.php" target="frmright">招聘信息管理</a>
 	<a href="dl_manage.php" target="frmright"><?php echo channeldl?>信息管理</a>
      </div>	
-      <div id="left1" style="display:none"> 
+     <div id="left1" style="display:none"> 
 	  <a href="zs_manage.php" target="frmright"><?php echo channelzs?>信息管理</a> 
 	  <a href="dl_manage.php" target="frmright" ><?php echo channeldl?>信息管理</a>
 	  <a href="dl_data.php" target="frmright" ><?php echo channeldl?>信息导入</a>
 	  <a href="tagmanage.php?tabletag=zzcms_tagzs" target="frmright"><?php echo channelzs.channeldl?>关键词管理</a>
+	  <?php
+	if (str_is_inarr(channel,'pp')=='yes'){
+	?>
 	  <a href="pp_manage.php" target="frmright">品牌信息管理</a> 
+	<?php
+	}
+	if (str_is_inarr(channel,'job')=='yes'){
+	?>  
 	<a href="job_manage.php" target="frmright">招聘信息管理</a>
+	<?php
+	}
+	if (str_is_inarr(channel,'zh')=='yes'){
+	?>
 	  <a href="zh_manage.php" target="frmright"  >展会信息管理</a> 
+	<?php
+	}
+	if (str_is_inarr(channel,'zx')=='yes'){
+	?>  
 		<a href="zx_manage.php" target="frmright">资讯信息管理</a> 
          <a href="pinglun_manage.php" target="frmright">资讯评论管理</a> 
          <a href="tagmanage.php?tabletag=zzcms_tagzx" target="frmright">资讯关键词管理 </a> 
+	<?php
+	}
+	if (str_is_inarr(channel,'wangkan')=='yes'){
+	?>	 
 		 <a href="wangkan_manage.php" target="frmright">网刊管理</a> 
+	<?php
+	}
+	if (str_is_inarr(channel,'baojia')=='yes'){
+	?>	 
 		  <a href="baojia_manage.php" target="frmright" >报价管理</a>
+	<?php
+	}
+	if (str_is_inarr(channel,'special')=='yes'){
+	?>	  
 		 <a href="special_manage.php" target="frmright">专题信息管理</a> 
+	<?php
+	}
+	if (str_is_inarr(channel,'ask')=='yes'){
+	?>
+	 <a href="ask_manage.php" target="frmright">问答信息管理</a> 
+	 <?php
+	}
+	?>
 		<a href="ztliuyan_manage.php" target="frmright">展厅留言管理</a>
 		<a href="usermessage.php" target="frmright">用户返馈管理</a> 
 		<a href="licence.php" target="frmright">资质证书管理</a> 
@@ -60,11 +93,40 @@ img { float:none; vertical-align:middle; }
       <div id="left2" style="display:none"> 
 	  <a href="zsclassmanage.php" target="frmright"><?php echo channelzs?>/<?php echo channeldl?>类别管理</a> 
 	  <a href="classmanage.php?tablename=zzcms_zsclass_shuxing" target="frmright"><?php echo channelzs?>信息属性管理</a> 
+	 
+	 <?php
+	if (str_is_inarr(channel,'zx')=='yes'){
+	?>
 	  <a href="zxclassmanage.php" target="frmright">资讯类别管理</a>
+	  <?php
+	}
+	if (str_is_inarr(channel,'wangkan')=='yes'){
+	?>
 	  <a href="classmanage.php?tablename=zzcms_wangkanclass" target="frmright">网刊类别管理</a>  
+	  <?php
+	}
+	if (str_is_inarr(channel,'special')=='yes'){
+	?>
 	   <a href="specialclassmanage.php" target="frmright">专题类别管理</a> 
+	   <?php
+	}
+	if (str_is_inarr(channel,'job')=='yes'){
+	?>
 	  <a href="jobclassmanage.php" target="frmright">招聘类别管理</a>
+	<?php
+	}
+	if (str_is_inarr(channel,'zh')=='yes'){
+	?>  
       <a href="classmanage.php?tablename=zzcms_zhclass" target="frmright">展会类别管理</a> 
+	  <?php
+	}
+	if (str_is_inarr(channel,'ask')=='yes'){
+	?>
+	  <a href="askclassmanage.php" target="frmright">问答类别管理</a> 
+	    <?php
+	}
+	
+	?>
       <a href="adclass.php" target="frmright">广告类别管理</a> 
 	<a href="userclass.php" target="frmright">企业类别管理</a> 
 	<a href="classmanage.php?tablename=zzcms_linkclass" target="frmright">友情链接类别管理</a> 
@@ -138,28 +200,65 @@ img { float:none; vertical-align:middle; }
 			<a href="labelclass.php?classname=zsclass" target="frmright"><?php echo channelzs?>类别标签</a>			
 			<a href="labeldlshow.php" target="frmright"><?php echo channeldl?>内容标签</a>
 			<a href="labelclass.php?classname=dlclass" target="frmright"><?php echo channeldl?>类别标签</a>
+			<?php
+	if (str_is_inarr(channel,'pp')=='yes'){
+	?>
 			<a href="labelppshow.php" target="frmright">品牌内容标签</a>
 			<a href="labelclass.php?classname=ppclass" target="frmright">品牌类别标签</a>
+	<?php
+	}
+	if (str_is_inarr(channel,'job')=='yes'){
+	?>		
 			<a href="labeljobshow.php" target="frmright">招聘内容标签</a>
 			<a href="labelclass.php?classname=jobclass" target="frmright">招聘类别标签</a>			
+	<?php
+	}
+	if (str_is_inarr(channel,'zx')=='yes'){
+	?>		
 			<a href="labelzxshow.php" target="frmright">资讯内容标签</a>
 			<a href="labelclass.php?classname=zxclass" target="frmright">资讯类别标签</a>
+	<?php
+	}
+	if (str_is_inarr(channel,'wangkan')=='yes'){
+	?>		
 			<a href="labelwangkanshow.php" target="frmright">网刊内容标签</a>
 			<a href="labelclass.php?classname=wangkanclass" target="frmright">网刊类别标签</a>
+	<?php
+	}
+	if (str_is_inarr(channel,'baojia')=='yes'){
+	?>		
 			<a href="labelbaojiashow.php" target="frmright">报价内容标签</a>
 			<a href="labelclass.php?classname=baojiaclass" target="frmright">报价类别标签</a>
+	<?php
+	}
+	if (str_is_inarr(channel,'special')=='yes'){
+	?>		
 			<a href="labelztshow.php" target="frmright">专题内容标签</a>
 			<a href="labelclass.php?classname=specialclass" target="frmright">专题类别标签</a>
+	<?php
+	}
+	if (str_is_inarr(channel,'zh')=='yes'){
+	?>		
 			<a href="labelzhshow.php" target="frmright">展会内容标签</a>
 			<a href="labelclass.php?classname=zhclass" target="frmright">展会类别标签</a>
+	<?php
+	}
+	if (str_is_inarr(channel,'ask')=='yes'){
+	?>
+	<a href="labelaskshow.php" target="frmright">问答内容标签</a>
+	<a href="labelclass.php?classname=askclass" target="frmright">问答类别标签</a>
+	<?php
+	}
+	?>	
 			<a href="labelcompanyshow.php" target="frmright">企业内容标签</a>
 			<a href="labelclass.php?classname=companyclass" target="frmright">企业类别标签</a>
 			<a href="labeladshow.php" target="frmright">广告内容标签</a>
 			<a href="labeladclass.php" target="frmright">广告类别标签</a>
 			<a href="labelhelpshow.php" target="frmright">帮助内容标签</a>
+			<a href="labelaboutshow.php" target="frmright">单页内容标签</a>
 			<a href="labellinkshow.php" target="frmright">友情链接内容标签</a>
 			<a href="labelclass.php?classname=linkclass" target="frmright">友情链接类别标签</a>
-			<a href="labelaboutshow.php" target="frmright">单页内容标签</a>
+			
 			<a href="labelguestbookshow.php" target="frmright">留言本内容标签</a>
 			</div>
 			<div id="left10" style="display:none"> 

@@ -40,14 +40,14 @@ if( isset($_GET["page"]) && $_GET["page"]!="") {
 $page_size=pagesize_ht;  //每页多少条数据
 $offset=($page-1)*$page_size;
 $sql="select count(*) as total from zzcms_licence where editor='".$username."' ";
-$rs = mysql_query($sql); 
-$row = mysql_fetch_array($rs);
+$rs = query($sql); 
+$row = fetch_array($rs);
 $totlenum = $row['total'];
 $totlepage=ceil($totlenum/$page_size);
 
 $sql="select * from zzcms_licence where editor='".$username."' ";	
 $sql=$sql . " order by id desc limit $offset,$page_size";
-$rs = mysql_query($sql); 
+$rs = query($sql); 
 if(!$totlenum){
 echo  $f_array[2];
 }else{
@@ -58,7 +58,7 @@ echo  $f_array[2];
       <?php echo $f_array[3]?>
     </tr>
     <?php
-	while($row=mysql_fetch_array($rs)){
+	while($row=fetch_array($rs)){
 	?>
     <tr class="bgcolor1"  onMouseOver="fSetBg(this)" onMouseOut="fReBg(this)"> 
       <td><?php echo $row["title"]?></td>

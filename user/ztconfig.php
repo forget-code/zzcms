@@ -63,7 +63,7 @@ $mobile=0;
 }
 $tongji=str_replace('"','',str_replace("'",'',stripfxg(trim($_POST['tongji']))));
 $baidu_map=str_replace('"','',str_replace("'",'',stripfxg(trim($_POST['baidu_map']))));
-mysql_query("update zzcms_usersetting set comanestyle='$comanestyle',comanecolor='$comanecolor',swf='$swf',daohang='$daohang',bannerbg='$bannerbg',bannerheight='$bannerheight',mobile='$mobile',tongji='$tongji',baidu_map='$baidu_map' where username='".$username."'");		
+query("update zzcms_usersetting set comanestyle='$comanestyle',comanecolor='$comanecolor',swf='$swf',daohang='$daohang',bannerbg='$bannerbg',bannerheight='$bannerheight',mobile='$mobile',tongji='$tongji',baidu_map='$baidu_map' where username='".$username."'");		
 
 if($oldbannerbg<>$bannerbg && $oldbannerbg<>"/image/nopic.gif" && $oldbannerbg<>"" ) {
 	$f="../".$oldbannerbg;
@@ -74,13 +74,13 @@ if($oldbannerbg<>$bannerbg && $oldbannerbg<>"/image/nopic.gif" && $oldbannerbg<>
 echo $f_array[3];	
 }
 
-$rs=mysql_query("select * from zzcms_usersetting where username='".$username."'");
-$row=mysql_num_rows($rs);
+$rs=query("select * from zzcms_usersetting where username='".$username."'");
+$row=num_rows($rs);
 if(!$row){
-mysql_query("INSERT INTO zzcms_usersetting (username,skin,swf,daohang)VALUES('".$username."','blue1','6.swf','网站首页, 招商信息, 公司简介, 资质证书, 联系方式, 在线留言')");//如不存在自动添加
+query("INSERT INTO zzcms_usersetting (username,skin,swf,daohang)VALUES('".$username."','blue1','6.swf','网站首页, 招商信息, 公司简介, 资质证书, 联系方式, 在线留言')");//如不存在自动添加
 echo $f_array[4];
 }else{
-$row=mysql_fetch_array($rs);
+$row=fetch_array($rs);
 ?>
 </head>
 <body>
@@ -98,7 +98,7 @@ include("left.php");
 <div class="content">
 <div class="admintitle"><?php echo $f_array[0] ?></div>
 <?php 
-if (check_usergr_power("zt")=="no" && $usersf=='个人'){
+if (str_is_inarr(usergr_power,'zt')=="no" && $usersf=='个人'){
 echo $f_array[5];
 exit;
 }

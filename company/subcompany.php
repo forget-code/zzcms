@@ -2,10 +2,10 @@
 function bigclass($b){
 $n=1;
 $str='';
-$rs=mysql_query("select classid,classname from zzcms_userclass where parentid=0 order by xuhao asc");
-$row=mysql_num_rows($rs);
+$rs=query("select classid,classname from zzcms_userclass where parentid=0 order by xuhao asc");
+$row=num_rows($rs);
 if ($row){
-	while ($row=mysql_fetch_array($rs)){
+	while ($row=fetch_array($rs)){
 	$str=$str."<li>";
 	if($row['classid']==$b){
 	$str=$str."<a href='".getpageurl2("company",$row["classid"],"")."' class='current'>".$row["classname"]."</a>";
@@ -29,12 +29,12 @@ $sql="select classname,classid from zzcms_userclass where parentid='". $b ."' or
 }else{
 $sql="select classname,classid from zzcms_userclass where parentid='". $b ."' order by xuhao";
 }
-$rs=mysql_query($sql);
-$row=mysql_num_rows($rs);
+$rs=query($sql);
+$row=num_rows($rs);
 if (!$row){
 $str="暂无分类";
 }else{
-while ($row=mysql_fetch_array($rs)){
+while ($row=fetch_array($rs)){
 	$str=$str."<li>";
 	if($row['classid']==$s){
 	$str=$str. "<a href='".getpageurl2("company",$b,$row["classid"])."' class='current'>".$row["classname"]."</a>";	

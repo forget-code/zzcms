@@ -8,8 +8,8 @@ $page=1;
 }
 
 $bigclassid=trim($_POST["bigclassid"]);
-$rs = mysql_query("select * from zzcms_specialclass where classid=".$bigclassid.""); 
-$row= mysql_fetch_array($rs);
+$rs = query("select * from zzcms_specialclass where classid=".$bigclassid.""); 
+$row= fetch_array($rs);
 $bigclassname=$row["classname"];
 
 $smallclassid=trim($_POST["smallclassid"]);
@@ -17,8 +17,8 @@ if ($smallclassid==""){
 $smallclassid=0;
 }
 if ($smallclassid!=0){
-$rs = mysql_query("select * from zzcms_specialclass where classid=".$smallclassid.""); 
-$row= mysql_fetch_array($rs);
+$rs = query("select * from zzcms_specialclass where classid=".$smallclassid.""); 
+$row= fetch_array($rs);
 $smallclassname=$row["classname"];
 }else{
 $smallclassname="";
@@ -58,19 +58,19 @@ $passed=0;
 if ($_REQUEST["action"]=="add"){
 //判断是不是重复信息,为了修改信息时不提示这段代码要放到添加信息的地方
 //$sql="select title,editor from zzcms_special where title='".$title."'";
-//$rs = mysql_query($sql); 
-//$row= mysql_fetch_array($rs);
+//$rs = query($sql); 
+//$row= fetch_array($rs);
 //if ($row){
 //showmsg('此信息已存在，请不要发布重复的信息！','special_add.php');
 //}
 
-$isok=mysql_query("Insert into zzcms_special(bigclassid,bigclassname,smallclassid,smallclassname,title,link,laiyuan,keywords,description,content,img,groupid,jifen,elite,passed,sendtime) values('$bigclassid','$bigclassname','$smallclassid','$smallclassname','$title','$link','$laiyuan','$keywords','$description','$content','$img','$groupid','$jifen_info','$elite','$passed','".date('Y-m-d H:i:s')."')");  
+$isok=query("Insert into zzcms_special(bigclassid,bigclassname,smallclassid,smallclassname,title,link,laiyuan,keywords,description,content,img,groupid,jifen,elite,passed,sendtime) values('$bigclassid','$bigclassname','$smallclassid','$smallclassname','$title','$link','$laiyuan','$keywords','$description','$content','$img','$groupid','$jifen_info','$elite','$passed','".date('Y-m-d H:i:s')."')");  
 
-$id=mysql_insert_id();
+$id=insert_id();
 		
 }elseif ($_REQUEST["action"]=="modify"){
 $id=$_POST["id"];
-$isok=mysql_query("update zzcms_special set bigclassid='$bigclassid',bigclassname='$bigclassname',smallclassid='$smallclassid',smallclassname='$smallclassname',title='$title',link='$link',laiyuan='$laiyuan',keywords='$keywords',description='$description',content='$content',img='$img',groupid='$groupid',jifen='$jifen_info',sendtime='".date('Y-m-d H:i:s')."',elite='$elite',passed='$passed' where id='$id'");	
+$isok=query("update zzcms_special set bigclassid='$bigclassid',bigclassname='$bigclassname',smallclassid='$smallclassid',smallclassname='$smallclassname',title='$title',link='$link',laiyuan='$laiyuan',keywords='$keywords',description='$description',content='$content',img='$img',groupid='$groupid',jifen='$jifen_info',sendtime='".date('Y-m-d H:i:s')."',elite='$elite',passed='$passed' where id='$id'");	
 }
 
 setcookie("ztbigclassid",$bigclassid);
@@ -122,8 +122,6 @@ setcookie("ztsmallclassid",$smallclassid);
       </table></td>
   </tr>
 </table>
-<?php
-mysql_close($conn);
-?>
+
 </body>
 </html>

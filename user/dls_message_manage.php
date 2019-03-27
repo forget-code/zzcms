@@ -69,15 +69,15 @@ if ($lxr<>"") {
 $sql2=$sql2."and name like '%".$lxr."%' ";
 }
 
-$rs = mysql_query($sql.$sql2); 
-$row = mysql_fetch_array($rs);
+$rs = query($sql.$sql2); 
+$row = fetch_array($rs);
 $totlenum = $row['total'];
 $totlepage=ceil($totlenum/$page_size);
 
 $sql="select * from zzcms_dl where passed=1 and del=0 and saver='".$username."' ";
 $sql=$sql.$sql2;
 $sql=$sql." order by id desc limit $offset,$page_size";
-$rs = mysql_query($sql); 
+$rs = query($sql); 
 if(!$totlenum){
 echo  $f_array[3];
 }else{
@@ -87,7 +87,7 @@ echo  $f_array[3];
     <tr> 
      <?php echo $f_array[4]?>    </tr>
           <?php
-while($row = mysql_fetch_array($rs)){
+while($row = fetch_array($rs)){
 ?>
     <tr class="bgcolor1" onMouseOver="fSetBg(this)" onMouseOut="fReBg(this)"> 
       <td><?php echo $row["dlsname"]?></td>
@@ -126,7 +126,7 @@ while($row = mysql_fetch_array($rs)){
   </form>
 <?php
 }
-mysql_close($conn);
+
 unset ($f_array);
 ?>
 </div>

@@ -39,8 +39,8 @@ $s=$_GET["s"];
 </form>
 <?php
 $sql="select * from zzcms_user where username='".@$username."'";
-$rs=mysql_query($sql);
-$row=mysql_fetch_array($rs);
+$rs=query($sql);
+$row=fetch_array($rs);
 if ($row["usersf"]=="公司" ){
 	if ($row["content"]=="" || $row["content"]=="&nbsp;"){
 	 echo "<script>location.href='daohang_company.php'</script>";
@@ -67,12 +67,12 @@ include ("left.php");
 <div class="right">
  <?php
 $sql="select * from zzcms_message where sendto='' or  sendto='".@$username."'  order by id desc";
-$rs=mysql_query($sql);
-$row=mysql_num_rows($rs);
+$rs=query($sql);
+$row=num_rows($rs);
 if($row){
-$str="<div class='content'><div class='admintitle'>".$f_array[1]."</div>";
-while ($row=mysql_fetch_array($rs)){
-$str=$str."<div class='box'>";
+$str="<div class='content' style='margin-bottom:10px'><div class='admintitle'>".$f_array[1]."</div>";
+while ($row=fetch_array($rs)){
+$str=$str."<div class='box' style='margin-bottom:5px'>";
 $str=$str."<div style='font-weight:bold' title='".$f_array[2]."'>".$row["sendtime"]."</div>";
 $str=$str.$row["content"];
 $str=$str."</div>";
@@ -89,8 +89,8 @@ echo $str;
     <td width="87%" bgcolor="#FFFFFF" class="border2"> 
 	<?php
   $sql="select * from zzcms_user where username='".@$username."'";
-  $rs=mysql_query($sql);
-  $row=mysql_fetch_array($rs);
+  $rs=query($sql);
+  $row=fetch_array($rs);
   echo "<b>".@$username ."</b><br>".$row["regdate"];
   ?> </td>
   </tr>
@@ -120,8 +120,8 @@ echo $str;
 </table>
 <?php
 $sql="select id from zzcms_dl where saver='".@$username."' and looked=0 and del=0 and passed=1";
-$rs=mysql_query($sql);
-$row=mysql_num_rows($rs);
+$rs=query($sql);
+$row=num_rows($rs);
 if($row){
 ?>
 <script>
@@ -137,8 +137,8 @@ if($row){
 ?>
       <?php
 $sql="select id from zzcms_guestbook where saver='".@$username."' and looked=0 and passed=1";
-$rs=mysql_query($sql);
-$row=mysql_num_rows($rs);
+$rs=query($sql);
+$row=num_rows($rs);
 if($row){
 ?>
 <script>
@@ -156,9 +156,7 @@ if($row){
 </div>
 </div>
 </div>
-<?php
-mysql_close($conn);
-?>
+
 </body>
 </html>
 </body>

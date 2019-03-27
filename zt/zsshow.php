@@ -22,12 +22,12 @@ if (isset($_COOKIE["zzcmscpid"])){
 setcookie("zzcmscpid",$cpid,time()+3600*24*360);
 }
 
-$rs=mysql_query("select * from zzcms_main where id='$cpid'");
-$row=mysql_num_rows($rs);
+$rs=query("select * from zzcms_main where id='$cpid'");
+$row=num_rows($rs);
 if(!$row){
 showmsg('无记录');
 }else{
-$row=mysql_fetch_array($rs);
+$row=fetch_array($rs);
 $editorinzsshow=$row["editor"];//供传值到top.php
 $fbr=$row["editor"];
 $cpmc=$row['proname'];
@@ -54,12 +54,12 @@ $city=$row["city"];
 $shuxing_value = explode("|||",$row["shuxing_value"]);
 
 $smallclassname='';
-$rsn=mysql_query("select classname from zzcms_zsclass where classzm='".$bigclasszm."'");
-$rown=mysql_fetch_array($rsn);
+$rsn=query("select classname from zzcms_zsclass where classzm='".$bigclasszm."'");
+$rown=fetch_array($rsn);
 $bigclassname=$rown["classname"];
 if ($smallclasszm<>""){
-$rsn=mysql_query("select classname from zzcms_zsclass where classzm='".$smallclasszm."'");
-$rown=mysql_fetch_array($rsn);
+$rsn=query("select classname from zzcms_zsclass where classzm='".$smallclasszm."'");
+$rown=fetch_array($rsn);
 $smallclassname=$rown["classname"];
 }
 
@@ -111,8 +111,8 @@ $strout=str_replace("{#prouse}",cutstr($prouse,500),$strout) ;
 $strout=str_replace("{#city}",$province.$city,$strout) ;
 //cp		 
 if(showdlinzs=="Yes"){
-$rsn=mysql_query("select id from zzcms_dl where cpid='".$cpid."' and passed=1");
-$rown=mysql_num_rows($rsn);
+$rsn=query("select id from zzcms_dl where cpid='".$cpid."' and passed=1");
+$rown=num_rows($rsn);
 $liuyan="<tr>";
 $liuyan.$liuyan="<td class=\"bgcolor1\" align=\"middle\">".channeldl."留言</td>";
 $liuyan.$liuyan="<td bgcolor=\"#ffffff\"><span style=\"font-weight: bold\">".$rown."</span>条 </td>";
@@ -170,8 +170,8 @@ $phone=$rown="";
 $email=$rown="";
 if (isset($_COOKIE["UserName"])) {
 if (trim($_COOKIE["UserName"])!=$editor){//产品发布人登录时不显示自己的联系方式在表单
-$rsn=mysql_query("select * from zzcms_user where username='".trim($_COOKIE["UserName"])."'");
-$rown=mysql_fetch_array($rsn);
+$rsn=query("select * from zzcms_user where username='".trim($_COOKIE["UserName"])."'");
+$rown=fetch_array($rsn);
 $companyname=$rown["comane"];
 $somane=$rown["somane"];
 $phone=$rown["phone"];

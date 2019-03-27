@@ -18,12 +18,12 @@ preg_match_all('/<img[^>]*src\s*=\s*([\'"]?)([^\'" >]*)\1/isu', $str, $src);
 }
 //在一条记录中上传多张图片建网刊
 $sql="select id,title,img,content from zzcms_wangkan where id='$id' and passed=1"; 
-$rs = mysql_query($sql); 
-$row= mysql_fetch_array($rs);
+$rs = query($sql); 
+$row= fetch_array($rs);
 if (!$row){
 showmsg('不存在相关信息！');
 }else{
-mysql_query("update zzcms_wangkan set hit=hit+1 where id='$id'");
+query("update zzcms_wangkan set hit=hit+1 where id='$id'");
 $content=$row["content"];
 $title=$row["title"];
 $str2=getImgSrcFromStr($row["content"],false);
@@ -37,8 +37,8 @@ $pagedescription=$title.wangkanshowdescription;
 /*$str="";
 $sql="select id,title,img,content from zzcms_zx where passed=1 and bigclassid=14  and smallclassid=17"; 
 $sql=$sql." order by id desc";
-$rs = mysql_query($sql); 
-while($row= mysql_fetch_array($rs)){
+$rs = query($sql); 
+while($row= fetch_array($rs)){
 $str=$str. '"'.$row['img'].'"'.',';
 }
 $str=substr($str,0,-1);//去最后一个,

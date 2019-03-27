@@ -42,11 +42,11 @@ $id=0;
 }
 
 $sql="select * from zzcms_licence where id='$id'";
-$rs = mysql_query($sql); 
-$row = mysql_fetch_array($rs);
+$rs = query($sql); 
+$row = fetch_array($rs);
 if ($row["editor"]<>$username) {
 markit();
-mysql_close($conn);
+
 showmsg('非法操作！警告：你的操作已被记录！小心封你的用户及IP！');
 }
 ?>
@@ -92,7 +92,7 @@ showmsg('非法操作！警告：你的操作已被记录！小心封你的用�
 </div>
 </div>
 <?php
-mysql_close($conn);
+
 unset ($f_array);
 ?> 
 </body>

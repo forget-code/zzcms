@@ -21,7 +21,7 @@ $classname="";
 
 if ($action=="add") {
 checkadminisdo("label");//可查看不可修改
-$title=trim($_POST["title"]);
+$title=nostr(trim($_POST["title"]));
 $title_old=trim($_POST["title_old"]);
 $startnumber=trim($_POST["startnumber"]);
 $numbers=trim($_POST["numbers"]);
@@ -41,7 +41,7 @@ echo "<script>alert('".$msg."');location.href='?classname=".$classname."&labelna
 
 if ($action=="del") {
 checkadminisdo("label");//可查看不可修改
-$f="../template/".siteskin."/label/".$classname."/".trim($_POST["title"]).".txt";
+$f="../template/".siteskin."/label/".$classname."/".nostr(trim($_POST["title"])).".txt";
 	if (file_exists($f)){
 	unlink($f);
 	}else{

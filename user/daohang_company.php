@@ -33,12 +33,12 @@ if ($action=="modify") {
 			$sex=$_POST["sex"];
 			$mobile=$_POST["mobile"];
 			$qq=$_POST["qq"];
-			mysql_query("update zzcms_user set bigclassid='$b',smallclassid='$s',content='$content',img='$img',
+			query("update zzcms_user set bigclassid='$b',smallclassid='$s',content='$content',img='$img',
 			province='$province',city='$city',xiancheng='$xiancheng',sex='$sex',mobile='$mobile',address='$address',qq='$qq',
 			homepage='$homepage' where username='".$username."'");
 			if ($oldcontent=="" || $oldcontent=="&nbsp;"){//只有第一次完善时加分，修改信息不计分，这里需要加验证，不许改为空，防止刷分
-				mysql_query("update zzcms_user set totleRMB=totleRMB+".jf_addreginfo." where username='".$username."'");
-				mysql_query("insert into zzcms_pay (username,dowhat,RMB,mark,sendtime) values('$username','".$f_array[0]."','+".jf_addreginfo."','+".jf_addreginfo."','".date('Y-m-d H:i:s')."')");
+				query("update zzcms_user set totleRMB=totleRMB+".jf_addreginfo." where username='".$username."'");
+				query("insert into zzcms_pay (username,dowhat,RMB,mark,sendtime) values('$username','".$f_array[0]."','+".jf_addreginfo."','+".jf_addreginfo."','".date('Y-m-d H:i:s')."')");
 			echo str_replace("{#jf_addreginfo}",jf_addreginfo,$f_array[1]);
 			}		
 			echo $f_array[2];
@@ -67,8 +67,8 @@ include("left.php");
 <div class="admintitle"><?php echo $f_array[4]?></div>
 <?php
 $sql="select * from zzcms_user where username='" .$username. "'";
-$rs=mysql_query($sql);
-$row=mysql_fetch_array($rs);
+$rs=query($sql);
+$row=fetch_array($rs);
 
 if ($row['logins']==0) {
 echo "<div class='box'> 您好！<b>".$username."</b>".$f_array[5]."</div>";
@@ -107,14 +107,14 @@ new PCAS('province', 'city', 'xiancheng', '<?php echo $row['province']?>', '<?ph
             <td class="border">
 			<?php
 $sqln = "select * from zzcms_userclass where parentid<>'0' order by xuhao asc";
-$rsn=mysql_query($sqln);
+$rsn=query($sqln);
 ?>
 <script language = "JavaScript" type="text/JavaScript">
 var onecount;
 subcat = new Array();
 <?php 
 $count = 0;
-        while($rown = mysql_fetch_array($rsn)){
+        while($rown = fetch_array($rsn)){
         ?>
 subcat[<?php echo $count?>] = new Array("<?php echo trim($rown["classname"])?>","<?php echo trim($rown["parentid"])?>","<?php echo trim($rown["classid"])?>");
        <?php
@@ -137,8 +137,8 @@ function changelocation(locationid){
         <option value="" selected="selected"><?php echo $f_array[11]?></option>
         <?php
 	$sqln = "select * from zzcms_userclass where  parentid='0' order by xuhao asc";
-    $rsn=mysql_query($sqln);
-	while($rown = mysql_fetch_array($rsn)){
+    $rsn=query($sqln);
+	while($rown = fetch_array($rsn)){
 	?>
         <option value="<?php echo trim($rown["classid"])?>" <?php if ($rown["classid"]==$row["bigclassid"]) { echo "selected";}?>><?php echo trim($rown["classname"])?></option>
         <?php
@@ -149,8 +149,8 @@ function changelocation(locationid){
       <option value="0"><?php echo $f_array[12]?></option>
       <?php	  
 $sqln="select * from zzcms_userclass where parentid='" .$row["bigclassid"]."' order by xuhao asc";
-$rsn=mysql_query($sqln);
-while($rown = mysql_fetch_array($rsn)){
+$rsn=query($sqln);
+while($rown = fetch_array($rsn)){
 ?>
 <option value="<?php echo $rown["classid"]?>" <?php if ($rown["classid"]==$row["smallclassid"]) { echo "selected";}?>><?php echo $rown["classname"]?></option>
 <?php 	  
@@ -164,7 +164,7 @@ while($rown = mysql_fetch_array($rsn)){
 		   <?php echo $f_array[13]?><input name="oldcontent" type="hidden" id="oldcontent" value="<?php echo $row["content"]?>">
 		   </td>
             <td width="83%" class="border2"> 
-              <textarea name="content" id="content" class="biaodan" style="height:auto"><?php echo $row["content"]?></textarea> 
+              <textarea name="content" id="content"><?php echo $row["content"]?></textarea> 
 			   <script type="text/javascript" src="/3/ckeditor/ckeditor.js"></script>
 			  <script type="text/javascript">CKEDITOR.replace('content');</script> 
             </td>
@@ -214,6 +214,6 @@ while($rown = mysql_fetch_array($rsn)){
 </html>
 <?php
 }
-mysql_close($conn);
+
 unset ($f_array);
 ?>

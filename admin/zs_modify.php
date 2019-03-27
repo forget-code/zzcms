@@ -66,8 +66,8 @@ checkid($id);
 $id=0;
 }
 $sql="select * from zzcms_main where id='$id'";
-$rs=mysql_query($sql);
-$row=mysql_fetch_array($rs);
+$rs=query($sql);
+$row=fetch_array($rs);
 ?>
 <form action="zs_save.php" method="post" name="myform" id="myform" onSubmit="return CheckForm();">
   <table width="100%" border="0" cellpadding="5" cellspacing="0">
@@ -87,9 +87,9 @@ $row=mysql_fetch_array($rs);
                     <legend>请选择所属大类</legend>
                     <?php
         $sqlB = "select * from zzcms_zsclass where parentid='A' order by xuhao asc";
-		$rsB = mysql_query($sqlB,$conn); 
+		$rsB = query($sqlB,$conn); 
 		$n=0;
-		while($rowB= mysql_fetch_array($rsB)){
+		while($rowB= fetch_array($rsB)){
 		$n ++;
 		if ($row['bigclasszm']==$rowB['classzm']){
 		echo "<input name='bigclassid' type='radio' id='E$n'  onclick='javascript:doClick_E(this);uncheckall()' value='".$rowB['classzm']."' checked/><label for='E$n'>".$rowB['classname']."</label>";
@@ -104,9 +104,9 @@ $row=mysql_fetch_array($rs);
                   <td> 
                     <?php
 $sqlB="select * from zzcms_zsclass where parentid='A' order by xuhao asc";
-$rsB = mysql_query($sqlB,$conn); 
+$rsB = query($sqlB,$conn); 
 $n=0;
-while($rowB= mysql_fetch_array($rsB)){
+while($rowB= fetch_array($rsB)){
 $n ++;
 if ($row["bigclasszm"]==$rowB["classzm"]) {  
 echo "<div id='E_con$n' style='display:block;'>";
@@ -115,9 +115,9 @@ echo "<div id='E_con$n' style='display:none;'>";
 }
 echo "<fieldset><legend>请选择所属小类</legend>";
 $sqlS="select * from zzcms_zsclass where parentid='".$rowB['classzm']."' order by xuhao asc";
-$rsS = mysql_query($sqlS,$conn); 
+$rsS = query($sqlS,$conn); 
 $nn=0;
-while($rowS= mysql_fetch_array($rsS)){
+while($rowS= fetch_array($rsS)){
 if (zsclass_isradio=='Yes'){
 	if ($row['smallclasszm']==$rowS['classzm']){
 	echo "<input name='smallclassid[]' id='radio$nn$n' type='radio' value='".$rowS['classzm']."' checked/>";
@@ -143,8 +143,8 @@ echo "</div>";
               </table>		 </td>
     </tr>
 	   <?php 
-		  $rsn = mysql_query("select * from zzcms_zsclass_shuxing order by xuhao asc"); 
-		$rown= mysql_num_rows($rsn);
+		  $rsn = query("select * from zzcms_zsclass_shuxing order by xuhao asc"); 
+		$rown= num_rows($rsn);
 		if ($rown){
 		  ?>
           <tr>
@@ -152,7 +152,7 @@ echo "</div>";
             <td class="border" >
 			<?php
         $n=0;
-		while($rown= mysql_fetch_array($rsn)){
+		while($rown= fetch_array($rsn)){
 		$n ++;
 		if ($row['shuxing']==$rown['bigclassid']){
 		echo "<input name='shuxing' type='radio' id='shuxing$n' value='".$rown['bigclassid']."' checked/><label for='shuxing$n'>".$rown['bigclassname']."</label>";
@@ -281,8 +281,6 @@ echo "</div>";
     </tr>
   </table>
 </form>
-<?php
-mysql_close($conn);
-?>
+
 </body>
 </html>

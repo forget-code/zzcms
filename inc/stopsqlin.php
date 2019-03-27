@@ -52,7 +52,7 @@ if(!is_array($str)) {//有数组数据会传过来比如代理留言中的省份
 	
 	$sql_injdata = "";
 	$sql_injdata= $sql_injdata."|".stopwords;
-	$sql_injdata=CutFenGeXian($sql_injdata);
+	$sql_injdata=CutFenGeXian($sql_injdata,"|");
 	
     $sql_inj = explode("|",$sql_injdata);
 	for ($i=0; $i< count($sql_inj);$i++){

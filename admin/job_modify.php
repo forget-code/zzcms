@@ -36,8 +36,8 @@ checkid($id);
 $id=0;
 }
 $sqlzs="select * from zzcms_job where id='$id'";
-$rszs=mysql_query($sqlzs);
-$rowzs=mysql_fetch_array($rszs);
+$rszs=query($sqlzs);
+$rowzs=fetch_array($rszs);
 ?>
   <table width="100%" border="0" cellpadding="5" cellspacing="0">
     <tr> 
@@ -45,14 +45,14 @@ $rowzs=mysql_fetch_array($rszs);
       <td width="82%" class="border"> 
         <?php
 $sql = "select * from zzcms_jobclass where parentid<>'0' order by xuhao asc";
-$rs=mysql_query($sql);
+$rs=query($sql);
 ?>
         <script language = "JavaScript" type="text/JavaScript">
 var onecount;
 subcat = new Array();
         <?php 
         $count = 0;
-        while($row = mysql_fetch_array($rs)){
+        while($row = fetch_array($rs)){
         ?>
 subcat[<?php echo $count?>] = new Array("<?php echo trim($row["classname"])?>","<?php echo trim($row["parentid"])?>","<?php echo trim($row["classid"])?>");
         <?php
@@ -77,8 +77,8 @@ function changelocation(locationid)
           <option value="" selected="selected">请选择大类别</option>
           <?php
 	$sql = "select * from zzcms_jobclass where  parentid='0' order by xuhao asc";
-    $rs=mysql_query($sql);
-	while($row = mysql_fetch_array($rs)){
+    $rs=query($sql);
+	while($row = fetch_array($rs)){
 	?>
           <option value="<?php echo trim($row["classid"])?>" <?php if ($row["classid"]==$rowzs["bigclassid"]) { echo "selected";}?>><?php echo trim($row["classname"])?></option>
           <?php
@@ -88,8 +88,8 @@ function changelocation(locationid)
           <option value="0">不指定小类</option>
           <?php
 $sql="select * from zzcms_jobclass where parentid='" .$rowzs["bigclassid"]."' order by xuhao asc";
-$rs=mysql_query($sql);
-while($row = mysql_fetch_array($rs)){
+$rs=query($sql);
+while($row = fetch_array($rs)){
 ?>
           <option value="<?php echo $row["classid"]?>" <?php if ($row["classid"]==$rowzs["smallclassid"]) { echo "selected";}?>><?php echo $row["classname"]?></option>
           <?php 
@@ -126,8 +126,6 @@ while($row = mysql_fetch_array($rs)){
     </tr>
   </table>
 </form>
-<?php
-mysql_close($conn);
-?>
+
 </body>
 </html>

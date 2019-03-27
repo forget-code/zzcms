@@ -98,6 +98,8 @@ float:right;font-weight: normal;
 	cursor: hand;
 
 }
+.textbg {background-color: #999;border:0px;height:25px;line-height:25px;cursor: hand;color: #FFF;font-family: "微软雅黑";-webkit-border-radius: 12px;-moz-border-radius:12px;padding:0px 6px}
+
 .button_big {background-image: url(image/big_button.gif);background-repeat: no-repeat;height: 41px;width: 170px;border: 0px none;cursor: hand;font-size: 14px;font-weight: bolder;color: #FFF;padding-bottom: 8px;letter-spacing: 0.1em;}
 
 

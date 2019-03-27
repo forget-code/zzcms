@@ -12,7 +12,7 @@ $f_array=explode("|||",$fcontent) ;
 <meta http-equiv="X-UA-Compatible" content="IE=EmulateIE7" />
 <link href="style/<?php echo siteskin_usercenter?>/style.css" rel="stylesheet" type="text/css">
 <?php
-if (check_usergr_power("pp")=="no" && $usersf=='个人'){
+if (str_is_inarr(usergr_power,'pp')=="no" && $usersf=='个人'){
 echo $f_array[11];
 exit;
 }
@@ -67,8 +67,8 @@ $id=0;
 }
 
 $sql="select * from zzcms_pp where id='$id'";
-$rs = mysql_query($sql); 
-$row = mysql_fetch_array($rs);
+$rs = query($sql); 
+$row = fetch_array($rs);
 if ($row["editor"]<>$username) {
 markit();
 showmsg('非法操作！警告：你的操作已被记录！小心封你的用户及IP！');
@@ -91,9 +91,9 @@ showmsg('非法操作！警告：你的操作已被记录！小心封你的用�
                     <legend><?php echo $f_array[5]?></legend>
                     <?php
         $sqlB = "select * from zzcms_zsclass where parentid='A' order by xuhao asc";
-		$rsB = mysql_query($sqlB,$conn); 
+		$rsB = query($sqlB,$conn); 
 		$n=0;
-		while($rowB= mysql_fetch_array($rsB)){
+		while($rowB= fetch_array($rsB)){
 		$n ++;
 		if ($row['bigclasszm']==$rowB['classzm']){
 		echo "<input name='bigclassid' type='radio' id='E$n'  onclick='javascript:doClick_E(this)' value='$rowB[classzm]' checked/><label for='E$n'>$rowB[classname]</label>";
@@ -108,9 +108,9 @@ showmsg('非法操作！警告：你的操作已被记录！小心封你的用�
                   <td> 
                     <?php
 $sqlB="select * from zzcms_zsclass where parentid='A' order by xuhao asc";
-$rsB = mysql_query($sqlB,$conn); 
+$rsB = query($sqlB,$conn); 
 $n=0;
-while($rowB= mysql_fetch_array($rsB)){
+while($rowB= fetch_array($rsB)){
 $n ++;
 if ($row["bigclasszm"]==$rowB["classzm"]) {  
 echo "<div id='E_con$n' style='display:block;'>";
@@ -119,9 +119,9 @@ echo "<div id='E_con$n' style='display:none;'>";
 }
 echo "<fieldset class='fieldsetstyle'><legend>".$f_array[6]."</legend>";
 $sqlS="select * from zzcms_zsclass where parentid='$rowB[classzm]' order by xuhao asc";
-$rsS = mysql_query($sqlS,$conn); 
+$rsS = query($sqlS,$conn); 
 $nn=0;
-while($rowS= mysql_fetch_array($rsS)){
+while($rowS= fetch_array($rsS)){
 $nn ++;
 if ($row['smallclasszm']==$rowS['classzm']){
 echo "<input name='smallclassid' id='radio$nn$n' type='radio' value='$rowS[classzm]' checked/>";

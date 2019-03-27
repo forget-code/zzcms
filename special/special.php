@@ -41,8 +41,8 @@ $classdiscription="";
 $smallclassname="";
 if ($b<>0){
 $sql="select * from zzcms_specialclass where classid='".$b."'";
-$rs=mysql_query($sql);
-$row=mysql_fetch_array($rs);
+$rs=query($sql);
+$row=fetch_array($rs);
 if ($row){
 
 $bigclassname=$row["classname"];
@@ -54,8 +54,8 @@ $classdiscription=$row["discription"];
 
 if ($s<>0){
 $sql="select * from zzcms_specialclass where classid='".$s."'";
-$rs=mysql_query($sql);
-$row=mysql_fetch_array($rs);
+$rs=query($sql);
+$row=fetch_array($rs);
 if ($row){
 $smallclassname=$row["classname"];
 }
@@ -81,8 +81,8 @@ $sql2=$sql2." and bigclassid='".$b."' ";
 if ($s<>'') {
 $sql2=$sql2." and smallclassid='".$s."' ";
 }
-$rs = mysql_query($sql.$sql2); 
-$row = mysql_fetch_array($rs);
+$rs = query($sql.$sql2); 
+$row = fetch_array($rs);
 $totlenum = $row['total'];
 $offset=($page-1)*$page_size;//$page_size在上面被设为COOKIESS
 $totlepage=ceil($totlenum/$page_size);
@@ -90,7 +90,7 @@ $totlepage=ceil($totlenum/$page_size);
 $sql="select id,title,hit,elite,sendtime,img,link from zzcms_special where passed=1"; 
 $sql=$sql.$sql2;
 $sql=$sql." order by elite desc,id desc limit $offset,$page_size";
-$rs = mysql_query($sql); 
+$rs = query($sql); 
 if(!$totlenum){
 $strout=str_replace("{#fenyei}","",$strout) ;
 $strout=str_replace("{loop}".$list."{/loop}","暂无信息",$strout) ;
@@ -99,7 +99,7 @@ $list2="";
 $shuxing="";
 $i=0;
 
-while($row= mysql_fetch_array($rs)){
+while($row= fetch_array($rs)){
 
 if ($row["elite"]>0) {
 $listimg="<font color=red>[置顶]</font>&nbsp;";
@@ -144,6 +144,6 @@ $strout=str_replace("{#smallclass}",smallclass(10,$b,$s),$strout);
 $strout=str_replace("{#sitebottom}",sitebottom(),$strout);
 $strout=str_replace("{#sitetop}",sitetop(),$strout);
 $strout=showlabel($strout);
-mysql_close($conn);
+
 echo  $strout;
 ?>

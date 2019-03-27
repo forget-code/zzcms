@@ -44,13 +44,13 @@ if ($id=="") {
 	$errmsg="<li>参数不足！</li>";
 }else{
 	$sql="select * from zzcms_user where id='$id'";
-	$rs=mysql_query($sql);
-	$row=mysql_num_rows($rs);
+	$rs=query($sql);
+	$row=num_rows($rs);
 	if (!$row){
 	$FoundErr=1;
 	$errmsg=$errmsg . "<li>找不到指定的用户！</li>";
 	}else{
-		$row=mysql_fetch_array($rs);
+		$row=fetch_array($rs);
 		if ($action=="modify") {
 		checkadminisdo("userreg");
 			$usersf=trim($_POST["usersf"]);
@@ -102,28 +102,28 @@ if ($id=="") {
 				$errmsg=$errmsg . "<li>用户状态不能为空！</li>";
 			}
 			if ($FoundErr==0){
-			mysql_query("update zzcms_user set usersf='$usersf',sex='$sex',email='$email',homepage='$homepage',comane='$comane',content='$gsjj' where id='$id'");
-			mysql_query("update zzcms_user set img='$img',flv='$flv',b='$b',s='$s',address='$address',somane='$somane',phone='$phone' where id='$id' ");	
-			mysql_query("update zzcms_user set mobile='$mobile',fox='$fox',qq='$qq',passed='$passed',renzheng='$renzheng',lockuser='$lockuser' where id='$id' ");	
-			mysql_query("update zzcms_user set groupid='$groupid',totleRMB='$totleRMB',startdate='$startdate',enddate='$enddate',elite='$elite' where id='$id' ");	
+			query("update zzcms_user set usersf='$usersf',sex='$sex',email='$email',homepage='$homepage',comane='$comane',content='$gsjj' where id='$id'");
+			query("update zzcms_user set img='$img',flv='$flv',bigclassid='$b',smallclassid='$s',address='$address',somane='$somane',phone='$phone' where id='$id' ");	
+			query("update zzcms_user set mobile='$mobile',fox='$fox',qq='$qq',passed='$passed',renzheng='$renzheng',lockuser='$lockuser' where id='$id' ");	
+			query("update zzcms_user set groupid='$groupid',totleRMB='$totleRMB',startdate='$startdate',enddate='$enddate',elite='$elite' where id='$id' ");	
 				
 				if ($password!="") {
-				mysql_query("update zzcms_user set password='".md5($password)."',passwordtrue='$password' where id='$id' ");
+				query("update zzcms_user set password='".md5($password)."',passwordtrue='$password' where id='$id' ");
 				}
 				if ($qqid==0) {
-				mysql_query("update zzcms_user set qqid='' where id='$id' ");
+				query("update zzcms_user set qqid='' where id='$id' ");
 				}
 				if ($groupid!=$oldgroupid){
-					mysql_query("Update zzcms_main set groupid=" . $groupid . " where editor='" . $row["username"] . "'");	
+					query("Update zzcms_main set groupid=" . $groupid . " where editor='" . $row["username"] . "'");	
 				}
 				if ($qq<>$oldqq) {
-				mysql_query("Update zzcms_main set qq='" . $qq . "' where editor='" . $row["username"] . "'");
+				query("Update zzcms_main set qq='" . $qq . "' where editor='" . $row["username"] . "'");
 				}
 				if ($comane<>$oldcomane){
-				mysql_query("Update zzcms_main set comane='" . $comane ."' where editor='" . $row["username"] . "'");
+				query("Update zzcms_main set comane='" . $comane ."' where editor='" . $row["username"] . "'");
 				}
 				if ($renzheng<>$oldrenzheng) {
-				mysql_query("Update zzcms_main set renzheng=" . $renzheng . " where editor='" . $row["username"] . "'");
+				query("Update zzcms_main set renzheng=" . $renzheng . " where editor='" . $row["username"] . "'");
 				}
 				
 				if ($oldimg<>$img && $oldimg<>"/image/nopic.gif"){
@@ -213,14 +213,14 @@ WriteErrMsg($errmsg);
       <td class="border"> 
 	  <?php
 $sqln = "select * from zzcms_userclass where parentid<>'0' order by xuhao asc";
-$rsn=mysql_query($sqln);
+$rsn=query($sqln);
 ?>
 <script language = "JavaScript" type="text/JavaScript">
 var onecount;
 subcat = new Array();
 <?php 
 $count = 0;
-        while($rown = mysql_fetch_array($rsn)){
+        while($rown = fetch_array($rsn)){
         ?>
 subcat[<?php echo $count?>] = new Array("<?php echo trim($rown["classname"])?>","<?php echo trim($rown["parentid"])?>","<?php echo trim($rown["classid"])?>");
        <?php
@@ -240,11 +240,11 @@ function changelocation(locationid){
         }
     }</script>
       <select name="b" size="1" id="b" onChange="changelocation(document.myform.b.options[document.myform.b.selectedIndex].value)">
-        <option value="" selected="selected">请选择大类</option>
+        <option value="0" selected="selected">请选择大类</option>
         <?php
 	$sqln = "select * from zzcms_userclass where  parentid='0' order by xuhao asc";
-    $rsn=mysql_query($sqln);
-	while($rown = mysql_fetch_array($rsn)){
+    $rsn=query($sqln);
+	while($rown = fetch_array($rsn)){
 	?>
         <option value="<?php echo trim($rown["classid"])?>" <?php if ($rown["classid"]==$row["bigclassid"]) { echo "selected";}?>><?php echo trim($rown["classname"])?></option>
         <?php
@@ -252,17 +252,17 @@ function changelocation(locationid){
 				?>
       </select>
 	  <select name="s">
-      <option value="">请选择小类</option>
+      <option value="0">请选择小类</option>
       <?php
 $sqln="select * from zzcms_userclass  where parentid='" .$row["bigclassid"]."' order by xuhao asc";
-$rsn=mysql_query($sqln);
-$rown= mysql_num_rows($rsn);//返回记录数
+$rsn=query($sqln);
+$rown= num_rows($rsn);//返回记录数
 if(!$rown){
 ?>
- <option value="" >下无子类</option>
+ <option value="0" >下无子类</option>
  <?php
 }else{
-while($rown = mysql_fetch_array($rsn)){
+while($rown = fetch_array($rsn)){
 ?>
 <option value="<?php echo $rown["classid"]?>" <?php if ($rown["classid"]==$row["smallclassid"]) { echo "selected";}?>><?php echo $rown["classname"]?></option>
       <?php 	  
@@ -288,7 +288,7 @@ while($rown = mysql_fetch_array($rsn)){
     </tr>
     <tr> 
       <td align="right" class="border">公司形象图片：
-        <input name="img" type="hidden" id="img" value="<?php echo $row["img"]?>">
+        <input name="img" id="img" type="hidden" value="<?php echo $row["img"]?>">
         <input name="oldimg" type="hidden" id="oldimg" value="<?php echo $row["img"]?>">
       </td>
       <td class="border">
@@ -366,10 +366,10 @@ while($rown = mysql_fetch_array($rsn)){
       <td align="right" class="border">所属用户组：</td>
       <td class="border"> <select name="groupid">
           <?php
-			$rsn=mysql_query("select * from zzcms_usergroup order by groupid asc");
-			$r=mysql_num_rows($rsn);
+			$rsn=query("select * from zzcms_usergroup order by groupid asc");
+			$r=num_rows($rsn);
 			if ($r){
-			while ($r=mysql_fetch_array($rsn)){
+			while ($r=fetch_array($rsn)){
 				if ($r["groupid"]==$row["groupid"]){
 			 	echo "<option value='".$r["groupid"]."' selected>".$r["groupname"]."</option>";
 				}else{

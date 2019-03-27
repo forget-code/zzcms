@@ -1,5 +1,10 @@
 <?php
 if(@$step==5){
+if ($_POST['token'] != $_SESSION['token'] || $_POST['token']=='' ){    
+showmsg('非法提交','back');
+}else{
+unset($_SESSION['token']);
+}
 ?>
 <div class="body">
 <div style="width:660px; height:500px; overflow: scroll;">

@@ -45,13 +45,13 @@ $s=isset($_REQUEST["s"])?$_REQUEST["s"]:'';
           <td style="color:#999999">
 <?php	
 $sql="select * from zzcms_adclass where parentid='A' order by xuhao";
-$rs = mysql_query($sql); 
-$row = mysql_num_rows($rs);
+$rs = query($sql); 
+$row = num_rows($rs);
 if (!$row){
 echo '暂无分类';
 }else{
 echo "大类：";
-while($row = mysql_fetch_array($rs)){
+while($row = fetch_array($rs)){
 echo "<a href=?b=".$row['classname'].">";  
 	if ($row["classname"]==$b) {
 	echo "<b>".$row["classname"]."</b>";
@@ -64,13 +64,13 @@ echo "<a href=?b=".$row['classname'].">";
 echo "<br>";
 
 $sql="select * from zzcms_adclass where parentid='".$b."' order by xuhao";
-$rs = mysql_query($sql); 
-$row = mysql_num_rows($rs);
+$rs = query($sql); 
+$row = num_rows($rs);
 if (!$row){
 echo '';
 }else{
 echo "小类：";
-while($row = mysql_fetch_array($rs)){
+while($row = fetch_array($rs)){
 echo "<a href=?b=".$b."&s=".$row['classname'].">";  
 	if ($row["classname"]==$s) {
 	echo "<b>".$row["classname"]."</b>";
@@ -121,12 +121,12 @@ if ($keyword<>"") {
 if ($action=="showendtime") {
 $sql="select * from zzcms_ad where endtime< '".date('Y-m-d')."' ";
 }
-$rs = mysql_query($sql,$conn); 
-$totlenum= mysql_num_rows($rs);  
+$rs = query($sql,$conn); 
+$totlenum= num_rows($rs);  
 $totlepage=ceil($totlenum/$page_size);
 
 $sql=$sql . " order by xuhao asc,id asc limit $offset,$page_size";
-$rs = mysql_query($sql,$conn); 
+$rs = query($sql,$conn); 
 if(!$totlenum){
 echo "暂无信息";
 }else{
@@ -150,7 +150,7 @@ echo "暂无信息";
   </tr>
 <?php
 $n=1;
-while($row = mysql_fetch_array($rs)){
+while($row = fetch_array($rs)){
 ?>
   <tr class="bgcolor1" onMouseOver="fSetBg(this)" onMouseOut="fReBg(this)"> 
       <td width="45" align="center"><input name="id[]" type="checkbox"  value="<?php echo $row["id"]?>"></td>
@@ -203,7 +203,7 @@ $n++;
 <div class="border center"><?php echo showpage_admin()?></div>
 <?php
 }
-mysql_close($conn);
+
 ?>
 </body>
 </html>

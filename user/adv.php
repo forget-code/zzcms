@@ -19,6 +19,20 @@ function CheckForm(){
 }	
 </script>
 </head>
+<body>
+<div class="main">
+<?php
+include("top.php");
+?>
+<div class="pagebody">
+<div class="left">
+<?php
+include("left.php");
+?>
+</div>
+<div class="right">
+<div class="content">
+<div class="admintitle"><?php echo $f_array[0]?></div>
 <?php
 if (isset($_REQUEST["action"])){
 $action=$_REQUEST["action"];
@@ -51,16 +65,16 @@ $oldimg=$_REQUEST["oldimg"];
 $oldimg="";
 }
 
-$rs=mysql_query("select usersf from zzcms_user where username='".$_COOKIE["UserName"]."' ");
-$row=mysql_fetch_array($rs);
+$rs=query("select usersf from zzcms_user where username='".$_COOKIE["UserName"]."' ");
+$row=fetch_array($rs);
 if ($row["usersf"]=="个人"){
 echo  $f_array[2];
-mysql_close($conn);
+
 exit;
 }
 
 if ($action=="modify"){
-mysql_query("update zzcms_textadv set adv='$adv',company='$company',advlink='$advlink',img='$img',passed=0 where username='".$_COOKIE["UserName"]."'");
+query("update zzcms_textadv set adv='$adv',company='$company',advlink='$advlink',img='$img',passed=0 where username='".$_COOKIE["UserName"]."'");
 //为了防止一个用户通过修改广告词功能长期霸占一个位置当用户修改广告词时只更新其内容不更新时间。
 //deloldimg
 if ($oldimg<>$img){
@@ -70,16 +84,16 @@ if ($oldimg<>$img){
 		}
 }
 	//修改广告词后验查一下此用户是否已抢占了广告位
-	//$rs=mysql_query("select * from zzcms_ad where username='".$_COOKIE["UserName"]."'");
-    //$row=mysql_num_rows($rs);
+	//$rs=query("select * from zzcms_ad where username='".$_COOKIE["UserName"]."'");
+    //$row=num_rows($rs);
 	//if ($row){
-	//mysql_query("update zzcms_ad set title='<b>新的广告内容正在审核中...</b>',link='###' where username='".$_COOKIE["UserName"]."'");
+	//query("update zzcms_ad set title='<b>新的广告内容正在审核中...</b>',link='###' where username='".$_COOKIE["UserName"]."'");
 	//}
 	echo $f_array[3];
 }
 		
 if ($action=="add"){
-mysql_query("insert into zzcms_textadv (adv,company,advlink,img,username,passed,gxsj)values('$adv','$company','$advlink','$img','".$_COOKIE["UserName"]."',0,'".date('Y-m-d H:i:s')."') ");
+query("insert into zzcms_textadv (adv,company,advlink,img,username,passed,gxsj)values('$adv','$company','$advlink','$img','".$_COOKIE["UserName"]."',0,'".date('Y-m-d H:i:s')."') ");
 if ($oldimg<>$img && $oldimg!=''){
 		$f="../".$oldimg;
 		if (file_exists($f)){
@@ -89,26 +103,10 @@ if ($oldimg<>$img && $oldimg!=''){
 		echo $f_array[4];
 }
 
-?>
-<body>
-<div class="main">
-<?php
-include("top.php");
-?>
-<div class="pagebody">
-<div class="left">
-<?php
-include("left.php");
-?>
-</div>
-<div class="right">
-<div class="content">
-<div class="admintitle"><?php echo $f_array[0]?></div>
-<?php
-$rs=mysql_query("select * from zzcms_textadv where username='".$_COOKIE["UserName"]."'");
-$row=mysql_num_rows($rs);
+$rs=query("select * from zzcms_textadv where username='".$_COOKIE["UserName"]."'");
+$row=num_rows($rs);
 if ($row){
-$row=mysql_fetch_array($rs);
+$row=fetch_array($rs);
 ?> 
 <form name="myform" method="post" action="?action=modify" onSubmit="return CheckForm();"> 
         <table width="100%" border="0" cellpadding="3" cellspacing="1">
@@ -116,8 +114,8 @@ $row=mysql_fetch_array($rs);
             <td width="20%" align="right" class="border"><?php echo $f_array[5]?></td>
             <td width="80%" class="border"> <input name="adv" type="text" id="adv" class="biaodan" value="<?php echo $row["adv"]?>" size="40" maxlength="15"> 
               <?php
-		$rsn=mysql_query("select id,comane from zzcms_user where username='".$_COOKIE["UserName"]."'");
-        $rown=mysql_fetch_array($rsn);
+		$rsn=query("select id,comane from zzcms_user where username='".$_COOKIE["UserName"]."'");
+        $rown=fetch_array($rsn);
 			?>
               <input name="advlink" type="hidden" id="advlink4" value="<?php echo getpageurl("zt",$rown["id"])?>"> 
               <input name="company" type="hidden" id="company" value="<?php echo $rown["comane"]?>">            </td>
@@ -175,8 +173,8 @@ $row=mysql_fetch_array($rs);
             <td width="20%" align="right" class="border"><?php echo $f_array[5]?></td>
             <td width="80%" class="border"> <input name="adv" type="text" id="adv" class="biaodan" size="40" maxlength="15"> 
               <?php
-			$rsn=mysql_query("select id,comane from zzcms_user where username='".$_COOKIE["UserName"]."'");
-            $rown=mysql_fetch_array($rsn)
+			$rsn=query("select id,comane from zzcms_user where username='".$_COOKIE["UserName"]."'");
+            $rown=fetch_array($rsn)
 			?>
               <input name="advlink" type="hidden" id="advlink" value="<?php echo getpageurl("zt",$rown["id"])?>"> 
               <input name="company" type="hidden"  value="<?php echo $rown["comane"]?>">            </td>
@@ -186,7 +184,7 @@ $row=mysql_fetch_array($rs);
               <input name="img" type="hidden" id="img3" size="50" />              </td>
             <td class="border"> <table width="120" height="120" border="0" cellpadding="5" cellspacing="1" bgcolor="#cccccc">
                 <tr> 
-                  <td align="center" bgcolor="#FFFFFF" id="showimg" onclick='showtxt()'> 
+                  <td align="center" bgcolor="#FFFFFF" id="showimg" onclick="openwindow('/uploadimg_form.php?noshuiyin=1',400,300)"> 
                     <input name='Submit2' type='button'  value='<?php echo $f_array[8]?>'/> </td>
                 </tr>
               </table></td>
@@ -204,7 +202,7 @@ $row=mysql_fetch_array($rs);
 </form>
 <?php
 }
-mysql_close($conn);
+
 unset ($f_array);
 ?>
 </div>

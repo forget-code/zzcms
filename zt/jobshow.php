@@ -7,13 +7,13 @@ checkid($cpid);
 $cpid=0;
 }
 
-$rs=mysql_query("select * from zzcms_job where id='$cpid'");
-$row=mysql_num_rows($rs);
+$rs=query("select * from zzcms_job where id='$cpid'");
+$row=num_rows($rs);
 if(!$row){
 showmsg('无记录');
 }else{
-mysql_query("update zzcms_job set hit=hit+1 where id='$cpid'");
-$row=mysql_fetch_array($rs);
+query("update zzcms_job set hit=hit+1 where id='$cpid'");
+$row=fetch_array($rs);
 $editorinzsshow=$row["editor"];//供传值到top.php
 $jobname=$row['jobname'];
 $province=$row['province'];

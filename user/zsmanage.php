@@ -14,7 +14,7 @@ $f_array=explode("\n",$fcontent) ;
 <title><?php echo channelzs.$f_array[1]?></title>
 <link href="style/<?php echo siteskin_usercenter?>/style.css" rel="stylesheet" type="text/css">
 <?php
-if (check_usergr_power("zs")=="no" && $usersf=='个人'){
+if (str_is_inarr(usergr_power,'zs')=="no" && $usersf=='个人'){
 echo $f_array[0];
 exit;
 }
@@ -57,11 +57,11 @@ $bigclass="";
 <?php echo channelzs.$f_array[1]?></div>
 <?php
 $sql="select refresh_number,groupid from zzcms_usergroup where groupid=(select groupid from zzcms_user where username='".$username."')";
-$rs = mysql_query($sql); 
+$rs = query($sql); 
 if(empty($rs)){
 $refresh_number=3;
 }else{
-$row = mysql_fetch_array($rs);
+$row = fetch_array($rs);
 $refresh_number=$row["refresh_number"];
 }
 
@@ -72,11 +72,11 @@ $action="";
 }
 
 $sql="select refresh,sendtime from zzcms_main where editor='".$username."' ";
-$rs = mysql_query($sql);
-$row = mysql_fetch_array($rs);
+$rs = query($sql);
+$row = fetch_array($rs);
 if ($action=="refresh") {
     if ($row["refresh"]< $refresh_number){
-	mysql_query("update zzcms_main set sendtime='".date('Y-m-d H:i:s')."',refresh=refresh+1 where editor='".$username."'");
+	query("update zzcms_main set sendtime='".date('Y-m-d H:i:s')."',refresh=refresh+1 where editor='".$username."'");
 	echo $f_array[6];
 	exit;
     }else{
@@ -85,7 +85,7 @@ if ($action=="refresh") {
     }
 }else{
 	if (strtotime(date("Y-m-d H:i:s"))-strtotime($row['sendtime'])>12*3600){
-	mysql_query("update zzcms_main set refresh=0 where editor='".$username."'");
+	query("update zzcms_main set refresh=0 where editor='".$username."'");
   	}
 }
 
@@ -108,15 +108,15 @@ $sql2=$sql2 . " and bigclasszm ='".$bigclass."'";
 if (isset($_GET["id"])){
 $sql2=$sql2 . " and id ='".$_GET["id"]."'"; 
 }
-$rs = mysql_query($sql.$sql2); 
-$row = mysql_fetch_array($rs);
+$rs = query($sql.$sql2); 
+$row = fetch_array($rs);
 $totlenum = $row['total'];
 $totlepage=ceil($totlenum/$page_size);
 
 $sql="select id,bigclasszm,smallclasszm,proname,refresh,img,province,city,xiancheng,sendtime,elite,passed,elitestarttime,eliteendtime,tag from zzcms_main where editor='".$username."' ";
 $sql=$sql.$sql2;		
 $sql=$sql . " order by id desc limit $offset,$page_size";
-$rs = mysql_query($sql); 
+$rs = query($sql); 
 if(!$totlenum){
 echo $f_array[8];
 }else{
@@ -127,28 +127,28 @@ echo $f_array[8];
      <?php echo $f_array[9]?>
     </tr>
 <?php
-while($row = mysql_fetch_array($rs)){
+while($row = fetch_array($rs)){
 ?>
     <tr class="bgcolor1" onMouseOver="fSetBg(this)" onMouseOut="fReBg(this)"> 
       <td><a href="<?php echo getpageurl("zs",$row["id"])?>" target="_blank"><?php echo $row["proname"]?></a> </td>
       <td align="center">
 	  <?php
 	$sqln="select classname from zzcms_zsclass where classzm='".$row["bigclasszm"]."' ";
-	$rsn = mysql_query($sqln); 
-	$rown = mysql_fetch_array($rsn);
+	$rsn = query($sqln); 
+	$rown = fetch_array($rsn);
 	echo $rown["classname"];
 	
 	if (strpos($row["smallclasszm"],",")>0){
 	$sqln="select classname from zzcms_zsclass where parentid='".$row["bigclasszm"]."' and classzm in (".$row["smallclasszm"].") ";
-	$rsn = mysql_query($sqln);
+	$rsn = query($sqln);
 	echo "<br/> ";
-	while($rown = mysql_fetch_array($rsn)){
+	while($rown = fetch_array($rsn)){
 	echo " [".$rown["classname"]."]";
 	}
 	}else{
 	$sqln="select classname from zzcms_zsclass where classzm='".$row["smallclasszm"]."' ";
-	$rsn = mysql_query($sqln); 
-	$rown = mysql_fetch_array($rsn);
+	$rsn = query($sqln); 
+	$rown = fetch_array($rsn);
 	echo "<br/>".$rown["classname"];
 	}
 	  ?>	  </td>

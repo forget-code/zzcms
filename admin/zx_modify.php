@@ -63,8 +63,8 @@ $id=$_REQUEST["id"];
 if ($id=="" || is_numeric($id)==false){
 showmsg('参数有误！相关信息不存在。');
 }
-$rszx = mysql_query("select * from zzcms_zx where id='$id'"); 
-$rowzx= mysql_fetch_array($rszx);
+$rszx = query("select * from zzcms_zx where id='$id'"); 
+$rowzx= fetch_array($rszx);
 ?>
 <form action="zx_save.php?action=modify" method="post" name="myform" id="myform" onSubmit="return CheckForm();">
         
@@ -75,14 +75,14 @@ $rowzx= mysql_fetch_array($rszx);
         <?php
 
 $sql = "select * from zzcms_zxclass where parentid<>0 order by xuhao asc";
-$rs=mysql_query($sql);
+$rs=query($sql);
 ?>
         <script language = "JavaScript" type="text/JavaScript">
 var onecount;
 subcat = new Array();
         <?php 
         $count = 0;
-        while($row = mysql_fetch_array($rs)){
+        while($row = fetch_array($rs)){
         ?>
 subcat[<?php echo $count?>] = new Array("<?php echo trim($row["classname"])?>","<?php echo trim($row["parentid"])?>","<?php echo trim($row["classid"])?>");
         <?php
@@ -107,8 +107,8 @@ function changelocation(locationid)
           <option value="" selected="selected">请选择大类别</option>
           <?php
 	$sql = "select * from zzcms_zxclass where  parentid=0 order by xuhao asc";
-    $rs=mysql_query($sql);
-	while($row = mysql_fetch_array($rs)){
+    $rs=query($sql);
+	while($row = fetch_array($rs)){
 	?>
           <option value="<?php echo trim($row["classid"])?>" <?php if ($row["classid"]==$rowzx["bigclassid"]) { echo "selected";}?>><?php echo trim($row["classname"])?></option>
           <?php
@@ -119,8 +119,8 @@ function changelocation(locationid)
           <?php
 
 $sql="select * from zzcms_zxclass where parentid=" .$rowzx["bigclassid"]." order by xuhao asc";
-$rs=mysql_query($sql);
-while($row = mysql_fetch_array($rs)){
+$rs=query($sql);
+while($row = fetch_array($rs)){
 	?>
           <option value="<?php echo $row["classid"]?>" <?php if ($row["classid"]==$rowzx["smallclassid"]) { echo "selected";}?>><?php echo $row["classname"]?></option>
           <?php
@@ -183,10 +183,10 @@ while($row = mysql_fetch_array($rs)){
       <td class="border" > <select name="groupid">
           <option value="0">全部用户</option>
           <?php
-		  $rs=mysql_query("Select * from zzcms_usergroup ");
-		  $row = mysql_num_rows($rs);
+		  $rs=query("Select * from zzcms_usergroup ");
+		  $row = num_rows($rs);
 		  if ($row){
-		  while($row = mysql_fetch_array($rs)){
+		  while($row = fetch_array($rs)){
 		  	if ($rowzx["groupid"]== $row["groupid"]) {
 		  	echo "<option value='".$row["groupid"]."' selected>".$row["groupname"]."</option>";
 			}else{
@@ -214,8 +214,6 @@ while($row = mysql_fetch_array($rs)){
     </tr>
   </table>
 </form>
-<?php
-mysql_close($conn);
-?>	  
+	  
 </body>
 </html>

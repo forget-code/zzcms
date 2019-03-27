@@ -14,7 +14,7 @@ $action="";
 }
 if ($action=="add") {
 checkadminisdo("label");
-$title=trim($_POST["title"]);
+$title=nostr(trim($_POST["title"]));
 $title_old=trim($_POST["title_old"]);
 $numbers=trim($_POST["numbers"]);
 $titlenum=trim($_POST["titlenum"]);
@@ -33,7 +33,7 @@ echo "<script>alert('".$msg."');location.href='?labelname=".$title.".txt';</scri
 }
 if ($action=="del") {
 checkadminisdo("label");
-$f="../template/".siteskin."/label/guestbookshow/".trim($_POST["title"]).".txt";
+$f="../template/".siteskin."/label/guestbookshow/".nostr(trim($_POST["title"])).".txt";
 	if (file_exists($f)){
 	unlink($f);
 	}else{

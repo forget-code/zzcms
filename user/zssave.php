@@ -14,7 +14,7 @@ $f_array=explode("|||",$fcontent) ;
 <title></title>
 <link href="style/<?php echo siteskin_usercenter?>/style.css" rel="stylesheet" type="text/css">
 <?php
-if (check_usergr_power("zs")=="no" && $usersf=='个人'){
+if (str_is_inarr(usergr_power,'zs')=="no" && $usersf=='个人'){
 echo $f_array[0];
 exit;
 }
@@ -70,8 +70,8 @@ $title=isset($_POST["title"])?$_POST["title"]:$cp_name;
 $keyword=isset($_POST["keyword"])?$_POST["keyword"]:$cp_name;
 $discription=isset($_POST["discription"])?$_POST["discription"]:$cp_name;
 $skin=isset($_POST["skin"])?$_POST["skin"]:'';
-$rs=mysql_query("select groupid,qq,comane,id,renzheng from zzcms_user where username='".$username."'");
-$row=mysql_fetch_array($rs);
+$rs=query("select groupid,qq,comane,id,renzheng from zzcms_user where username='".$username."'");
+$row=fetch_array($rs);
 $groupid=$row["groupid"];
 $qq=$row["qq"];
 $comane=$row["comane"];
@@ -79,6 +79,7 @@ $renzheng=$row["renzheng"];
 $userid=$row["id"];
 if (isset($_POST["ypid"])){
 $cpid=$_POST["ypid"];
+checkid($cpid);
 }else{
 $cpid=0;
 }
@@ -86,16 +87,16 @@ $cpid=0;
 //判断是不是重复信息
 if ($_REQUEST["action"]=="add" ){
 $sql="select * from zzcms_main where proname='".$cp_name."' and editor='".$username."' ";
-$rs=mysql_query($sql);
-$row=mysql_num_rows($rs);
+$rs=query($sql);
+$row=num_rows($rs);
 if ($row){
 echo $f_array[1];
 exit;
 }
 }elseif($_REQUEST["action"]=="modify"){
 $sql="select * from zzcms_main where proname='".$cp_name."' and editor='".$username."' and id<>".$cpid." ";
-$rs=mysql_query($sql);
-$row=mysql_num_rows($rs);
+$rs=query($sql);
+$row=num_rows($rs);
 if ($row){
 echo $f_array[1];
 exit;
@@ -111,13 +112,13 @@ $TimeNum=date('Y');
 $TimeNum=$TimeNum.date("mdHis").$ranNum;
   
 if ($_POST["action"]=="add"){
-$isok=mysql_query("Insert into zzcms_main(proname,bigclasszm,smallclasszm,shuxing,szm,prouse,sm,img,flv,province,city,xiancheng,zc,yq,shuxing_value,title,keywords,description,sendtime,timefororder,editor,userid,groupid,qq,comane,renzheng,skin) values('$cp_name','$bigclassid','$smallclassid','$shuxing','$szm','$gnzz','$sm','$img','$flv','$province','$city','$xiancheng','$zc','$yq','$shuxing_value','$title','$keyword','$discription','".date('Y-m-d H:i:s')."','$TimeNum','$username','$userid','$groupid','$qq','$comane','$renzheng','$skin')") ;  
-$cpid=mysql_insert_id();		
+$isok=query("Insert into zzcms_main(proname,bigclasszm,smallclasszm,shuxing,szm,prouse,sm,img,flv,province,city,xiancheng,zc,yq,shuxing_value,title,keywords,description,sendtime,timefororder,editor,userid,groupid,qq,comane,renzheng,skin) values('$cp_name','$bigclassid','$smallclassid','$shuxing','$szm','$gnzz','$sm','$img','$flv','$province','$city','$xiancheng','$zc','$yq','$shuxing_value','$title','$keyword','$discription','".date('Y-m-d H:i:s')."','$TimeNum','$username','$userid','$groupid','$qq','$comane','$renzheng','$skin')") ;  
+$cpid=insert_id();		
 }elseif ($_POST["action"]=="modify"){
 $oldimg=trim($_POST["oldimg"]);
 $oldflv=trim($_POST["oldflv"]);
 
-$isok=mysql_query("update zzcms_main set proname='$cp_name',bigclasszm='$bigclassid',smallclasszm='$smallclassid',shuxing='$shuxing',szm='$szm',prouse='$gnzz',sm='$sm',img='$img',flv='$flv',province='$province',city='$city',xiancheng='$xiancheng',zc='$zc',yq='$yq',shuxing_value='$shuxing_value',title='$title',keywords='$keyword',description='$discription',sendtime='".date('Y-m-d H:i:s')."',timefororder='$TimeNum',editor='$username',userid='$userid',groupid='$groupid',qq='$qq',comane='$comane',renzheng='$renzheng',skin='$skin',passed=0 where id='$cpid'");
+$isok=query("update zzcms_main set proname='$cp_name',bigclasszm='$bigclassid',smallclasszm='$smallclassid',shuxing='$shuxing',szm='$szm',prouse='$gnzz',sm='$sm',img='$img',flv='$flv',province='$province',city='$city',xiancheng='$xiancheng',zc='$zc',yq='$yq',shuxing_value='$shuxing_value',title='$title',keywords='$keyword',description='$discription',sendtime='".date('Y-m-d H:i:s')."',timefororder='$TimeNum',editor='$username',userid='$userid',groupid='$groupid',qq='$qq',comane='$comane',renzheng='$renzheng',skin='$skin',passed=0 where id='$cpid'");
 
 	if ($oldimg<>$img && $oldimg<>"image/nopic.gif") {
 	//deloldimg

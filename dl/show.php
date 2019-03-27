@@ -11,15 +11,15 @@ $_COOKIE["UserName"]='';
 }
 
 if ($_COOKIE["UserName"]<>''){
-$rs=mysql_query("select looked_dls_number_oneday from zzcms_usergroup where groupid=(select groupid from zzcms_user where username='".$_COOKIE["UserName"]."')");
-$row=mysql_fetch_array($rs);
+$rs=query("select looked_dls_number_oneday from zzcms_usergroup where groupid=(select groupid from zzcms_user where username='".$_COOKIE["UserName"]."')");
+$row=fetch_array($rs);
 if ($row){
 $lookdlsnumber=$row["looked_dls_number_oneday"];
 }
 }
 
-$rs=mysql_query("select looked_dls_number_oneday from zzcms_looked_dls_number_oneday where username='".$_COOKIE["UserName"]."' and sendtime='".date('Y-m-d')."'");
-$row=mysql_fetch_array($rs);
+$rs=query("select looked_dls_number_oneday from zzcms_looked_dls_number_oneday where username='".$_COOKIE["UserName"]."' and sendtime='".date('Y-m-d')."'");
+$row=fetch_array($rs);
 if ($row){
 	if ($lookdlsnumber<>999 && $row["looked_dls_number_oneday"]>=$lookdlsnumber) {
 	$FoundErr=1;
@@ -38,12 +38,12 @@ $dlid=0;
 }
 
 $sql="select * from zzcms_dl where id='$dlid'";
-$rs=mysql_query($sql);
-$row=mysql_fetch_array($rs);
+$rs=query($sql);
+$row=fetch_array($rs);
 if (!$row){
 echo showmsg("不存在相关信息！");
 }else{
-mysql_query("update zzcms_dl set hit=hit+1 where id='$dlid'");
+query("update zzcms_dl set hit=hit+1 where id='$dlid'");
 $saver=$row["saver"];
 $cpid=$row["cpid"];
 $bigclasszm=$row["classzm"];
@@ -60,8 +60,8 @@ $woyaodl="<div><a href='".getpageurl("zs",$cpid)."#dl_liuyan' style='color:red'>
 $woyaodl="";
 }
 
-$rs=mysql_query("select classname from zzcms_zsclass where classzm='".$bigclasszm."'");
-$row=mysql_fetch_array($rs);
+$rs=query("select classname from zzcms_zsclass where classzm='".$bigclasszm."'");
+$row=fetch_array($rs);
 if ($row){
 $bigclassname=$row["classname"];
 }else{
@@ -85,12 +85,12 @@ function Payjf($dlid,$showlx){
 $looked=0;
 $str="";		       
 $sql="select groupid,totleRMB from zzcms_user where username='".$_COOKIE["UserName"]."'";
-$rs=mysql_query($sql);
-$row=mysql_fetch_array($rs);				
+$rs=query($sql);
+$row=fetch_array($rs);				
 $totleRMB=$row["totleRMB"];
 $sqllooked="select * from zzcms_looked_dls where dlsid=".$dlid." and username='".$_COOKIE["UserName"]."'";
-$rslooked=mysql_query($sqllooked);//打开已查看过的表，如果是已查看过的信息直接显示
-$rowlooked=mysql_num_rows($rslooked);
+$rslooked=query($sqllooked);//打开已查看过的表，如果是已查看过的信息直接显示
+$rowlooked=num_rows($rslooked);
 
 	if ($rowlooked){
 	$looked=1;
@@ -105,9 +105,9 @@ $rowlooked=mysql_num_rows($rslooked);
 	$str=$str."</div>";	       
 	}elseif ($_POST["action"]=="kan"  && $looked==0) {
 		if( $totleRMB>=jf_look_dl) {
-		mysql_query("update zzcms_user set totleRMB=totleRMB-".jf_look_dl." where username='".$_COOKIE["UserName"]."'");//查看时扣除积分
-		mysql_query("Insert into zzcms_looked_dls(dlsid,username,) values('$dlid','".$_COOKIE["UserName"]."')") ; //付分查看的写入记录表中
-		mysql_query("insert into zzcms_pay (username,dowhat,RMB,mark,sendtime) values('".$_COOKIE['UserName']."','查看".channeldl."信息','-".jf_look_dl."','<a href=/dl/show.php?id=$dlid>$dlid</a>','".date('Y-m-d H:i:s')."')");//写入冲值记录 
+		query("update zzcms_user set totleRMB=totleRMB-".jf_look_dl." where username='".$_COOKIE["UserName"]."'");//查看时扣除积分
+		query("Insert into zzcms_looked_dls(dlsid,username,) values('$dlid','".$_COOKIE["UserName"]."')") ; //付分查看的写入记录表中
+		query("insert into zzcms_pay (username,dowhat,RMB,mark,sendtime) values('".$_COOKIE['UserName']."','查看".channeldl."信息','-".jf_look_dl."','<a href=/dl/show.php?id=$dlid>$dlid</a>','".date('Y-m-d H:i:s')."')");//写入冲值记录 
 		$str=$str.$showlx;
 		}else{
 		$str=$str."<div class='bgcolor1' >您的帐户中已不足 ".jf_look_dl." 金币，暂不能查看！ <br /><br />";
@@ -146,15 +146,15 @@ case "No";
 			case 'yes';//有查看代理权限的用户组
 			
 			$sql="select * from zzcms_looked_dls_number_oneday where username='".$_COOKIE["UserName"]."'";
-			$rs=mysql_query($sql);
-			$row=mysql_fetch_array($rs);
+			$rs=query($sql);
+			$row=fetch_array($rs);
 			if (!$row){
-			mysql_query("Insert into zzcms_looked_dls_number_oneday(looked_dls_number_oneday,username,sendtime) values(1,'".$_COOKIE["UserName"]."','".date('Y-m-d')."')") ; //如果没有记录，加入新记录 
+			query("Insert into zzcms_looked_dls_number_oneday(looked_dls_number_oneday,username,sendtime) values(1,'".$_COOKIE["UserName"]."','".date('Y-m-d')."')") ; //如果没有记录，加入新记录 
 			}else{//如果有记录更新记录
 				if (date("Y-m-d",strtotime($row['sendtime']))==date('Y-m-d')){//如果当天查看过，查看数加一。
-				mysql_query("update zzcms_looked_dls_number_oneday set looked_dls_number_oneday=looked_dls_number_oneday+1 where username='".$_COOKIE["UserName"]."'");
+				query("update zzcms_looked_dls_number_oneday set looked_dls_number_oneday=looked_dls_number_oneday+1 where username='".$_COOKIE["UserName"]."'");
 				}else{//如果不是当天查看的查看数设为一，日期设为当天
-				mysql_query("update zzcms_looked_dls_number_oneday set looked_dls_number_oneday=1,sendtime='".date('Y-m-d')."' where username='".$_COOKIE["UserName"]."'");
+				query("update zzcms_looked_dls_number_oneday set looked_dls_number_oneday=1,sendtime='".date('Y-m-d')."' where username='".$_COOKIE["UserName"]."'");
 				}
 			}	
 			$str=$str.$showlx;//更新表后显示联系方式
@@ -169,8 +169,8 @@ function company($saver,$cpid)
 {
 $str="";
 if ($saver<>""){
-	$rs=mysql_query("select img,comane,id from zzcms_user where username='".$saver."'");
-	$row=mysql_fetch_array($rs);
+	$rs=query("select img,comane,id from zzcms_user where username='".$saver."'");
+	$row=fetch_array($rs);
 	if ($row){
 	$str=$str."<table width='100%' border='0' cellspacing='1' cellpadding='0' class='bgcolor2'>";
 	$str=$str."<tr>";
@@ -224,7 +224,7 @@ $strout=str_replace("{#dlmore}","暂无信息",$strout);
 $strout=str_replace("{#sitebottom}",sitebottom(),$strout);
 $strout=str_replace("{#sitetop}",sitetop(),$strout);
 $strout=showlabel($strout);
-mysql_close($conn);
+
 echo  $strout;
 }
 }

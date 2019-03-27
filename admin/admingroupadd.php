@@ -95,8 +95,15 @@ function CheckAll(form){
     </tr>
     <tr>
       <td align="right" class="border" >报价</td>
-      <td class="border" ><input name="config[]" type="checkbox" id="baojia" value="baojia">
-          <label for="wangkan">报价管理 </label><label for="wangkan"></label></td>
+      <td class="border" ><label><input name="config[]" type="checkbox" value="baojia">
+          报价管理 </label></td>
+    </tr>
+    <tr>
+      <td align="right" class="border" >问答</td>
+      <td class="border" ><label><input name="config[]" type="checkbox" value="ask">
+          问答管理 </label>
+       <label> <input name="config[]"  type="checkbox" value="ask">
+        问答类别管理</label></td>
     </tr>
     <tr>
       <td align="right" class="border" >广告</td>
@@ -180,6 +187,3 @@ function CheckAll(form){
 </form>
 </body>
 </html>
-<?php
-mysql_close($conn);
-?>

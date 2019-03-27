@@ -24,7 +24,7 @@ $f="../dl_excel/".$_REQUEST['filename'];
 $data->read($f);
 error_reporting(E_ALL ^ E_NOTICE);
 for ($i = 1; $i <= $data->sheets[0]['numRows']; $i++) {//行数
-mysql_query("insert into zzcms_dl(dlsname,tel,email,cp,city,content,sendtime)values('".$data->sheets[0]['cells'][$i][2]."','".$data->sheets[0]['cells'][$i][3]."','".$data->sheets[0]['cells'][$i][4]."','".$data->sheets[0]['cells'][$i][5]."','".$data->sheets[0]['cells'][$i][6]."','".$data->sheets[0]['cells'][$i][7]."','".date('Y-m-d H:i:s',strtotime($data->sheets[0]['cells'][$i][8]))."')");//转换成时间戳后，有空的时间，也能导入，否则时间为空的行不能导入
+query("insert into zzcms_dl(dlsname,tel,email,cp,city,content,sendtime)values('".$data->sheets[0]['cells'][$i][2]."','".$data->sheets[0]['cells'][$i][3]."','".$data->sheets[0]['cells'][$i][4]."','".$data->sheets[0]['cells'][$i][5]."','".$data->sheets[0]['cells'][$i][6]."','".$data->sheets[0]['cells'][$i][7]."','".date('Y-m-d H:i:s',strtotime($data->sheets[0]['cells'][$i][8]))."')");//转换成时间戳后，有空的时间，也能导入，否则时间为空的行不能导入
 }
 echo "完成";
 ?>

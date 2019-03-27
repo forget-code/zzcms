@@ -57,8 +57,8 @@ $action="";
 
 if ($action=="px") {
 $sql="Select * From ".$_SESSION['tablename']."";
-$rs=mysql_query($sql);
-while ($row=mysql_fetch_array($rs)){
+$rs=query($sql);
+while ($row=fetch_array($rs)){
 $xuhao=$_POST["xuhao".$row["bigclassid"].""];//表单名称是动态显示的，并于FORM里的名称相同。
 	   if (trim($xuhao) == "" || is_numeric($xuhao) == false) {
 	       $xuhao = 0;
@@ -67,7 +67,7 @@ $xuhao=$_POST["xuhao".$row["bigclassid"].""];//表单名称是动态显示的，
 	   }else{
 	       $xuhao = $xuhao;
 	   }
-mysql_query("update ".$_SESSION['tablename']." set xuhao='$xuhao' where bigclassid=".$row['bigclassid']."");
+query("update ".$_SESSION['tablename']." set xuhao='$xuhao' where bigclassid=".$row['bigclassid']."");
 }
 }
 if ($action=="del"){
@@ -75,7 +75,7 @@ checkadminisdo("siteconfig");
 $bigclassid=trim($_REQUEST["bigclassid"]);
 if ($bigclassid<>""){
 	$sql="delete from ".$_SESSION['tablename']." where bigclassid=" .$bigclassid. " ";
-	mysql_query($sql);
+	query($sql);
 }    
 echo "<script>location.href='?'</script>";
 }
@@ -90,8 +90,8 @@ echo "<script>location.href='?'</script>";
 </table>
 	<?php
 	$sql="Select * From ".$_SESSION['tablename']." order by xuhao asc";
-	$rs=mysql_query($sql);
-	$row=mysql_num_rows($rs);
+	$rs=query($sql);
+	$row=num_rows($rs);
 	if (!$row){
 	echo "暂无信息";
 	}else{
@@ -106,7 +106,7 @@ echo "<script>location.href='?'</script>";
       <td width="20%" height="25" class="border">操作选项</td>
     </tr>
     <?php
-	while ($row=mysql_fetch_array($rs)){
+	while ($row=fetch_array($rs)){
 ?>
      <tr class="bgcolor1" onMouseOver="fSetBg(this)" onMouseOut="fReBg(this)">  
       <td><?php echo $row["bigclassid"]?><a name="B<?php echo $row["bigclassid"]?>"></a></td>
@@ -137,10 +137,10 @@ if ($action=="add"){
     $bigclassname=($_POST['bigclassname'][$i]);
 		if ($bigclassname!=''){
 		$sql="select * from ".$_SESSION['tablename']." where bigclassname='" . $bigclassname . "'";
-		$rs=mysql_query($sql);
-		$row=mysql_num_rows($rs);
+		$rs=query($sql);
+		$row=num_rows($rs);
 			if (!$row) {
-			mysql_query("insert into ".$_SESSION['tablename']." (bigclassname)VALUES('$bigclassname') ");
+			query("insert into ".$_SESSION['tablename']." (bigclassname)VALUES('$bigclassname') ");
 			}
 		}
 	}	
@@ -208,24 +208,24 @@ echo "<script>location.href='?'</script>";
 
 if ($action=="modify"){
 	$sql="Select * from ".$_SESSION['tablename']." where bigclassid=" . $bigclassid."";
-	$rs=mysql_query($sql);
-	$row=mysql_num_rows($rs);
+	$rs=query($sql);
+	$row=num_rows($rs);
 	if (!$row){
 		$FoundErr==1;
 		$ErrMsg="<li>不存在！</li>";
 		WriteErrMsg($ErrMsg);
 	}else{
-	mysql_query("update ".$_SESSION['tablename']." set bigclassname='$bigclassname' where bigclassid=". $bigclassid." ");
+	query("update ".$_SESSION['tablename']." set bigclassname='$bigclassname' where bigclassid=". $bigclassid." ");
 	if ($_SESSION['tablename']=='zzcms_adclass' && $bigclassname!=$oldbigclassname){
-	mysql_query("update zzcms_ad set bigclassname='$bigclassname' where bigclassname='$oldbigclassname' ");
+	query("update zzcms_ad set bigclassname='$bigclassname' where bigclassname='$oldbigclassname' ");
 	}
 	
 	}	
 	echo "<script>location.href='?#B".$bigclassid."'</script>";
 }else{
 $sql="Select * from ".$_SESSION['tablename']." where bigclassid=".$bigclassid."";
-$rs=mysql_query($sql);
-$row=mysql_fetch_array($rs);
+$rs=query($sql);
+$row=fetch_array($rs);
 ?>
 <table width="100%" border="0" cellpadding="0" cellspacing="0">
   <tr> 

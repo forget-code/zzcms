@@ -25,12 +25,12 @@ if(!empty($_POST['id'])){
     for($i=0; $i<count($_POST['id']);$i++){
     $id=$_POST['id'][$i];
 	$sql="select passed from zzcms_user where id ='$id'";
-	$rs = mysql_query($sql); 
-	$row = mysql_fetch_array($rs);
+	$rs = query($sql); 
+	$row = fetch_array($rs);
 		if ($row['passed']=='0'){
-		mysql_query("update zzcms_user set passed=1 where id ='$id'");
+		query("update zzcms_user set passed=1 where id ='$id'");
 		}else{
-		mysql_query("update zzcms_user set passed=0 where id ='$id'");
+		query("update zzcms_user set passed=0 where id ='$id'");
 		}
 	}
 }else{
@@ -114,8 +114,8 @@ switch ($usersf){
 	$sql2=$sql2. " and elite>0";
 	break;
 	}
-$rs = mysql_query($sql.$sql2); 
-$row = mysql_fetch_array($rs);
+$rs = query($sql.$sql2); 
+$row = fetch_array($rs);
 $totlenum = $row['total'];   
 $totlepage=ceil($totlenum/$page_size);
 
@@ -123,7 +123,7 @@ $sql="select * from zzcms_user where id<>0 ";
 $sql=$sql.$sql2;
 $sql=$sql . " order by ".$px." desc limit $offset,$page_size";
 
-$rs = mysql_query($sql); 
+$rs = query($sql); 
 if(!$totlenum){
 echo "暂无信息";
 }else{
@@ -152,7 +152,7 @@ echo "暂无信息";
       <td width="10%" align="center" class="border"> 操作</td>
     </tr>
     <?php
-while($row = mysql_fetch_array($rs)){
+while($row = fetch_array($rs)){
 ?>
      <tr class="bgcolor1" onMouseOver="fSetBg(this)" onMouseOut="fReBg(this)">  
       <td align="center" class="docolor"> <input name="id[]" type="checkbox" id="id2" value="<?php echo $row["id"]?>"> 
@@ -160,8 +160,8 @@ while($row = mysql_fetch_array($rs)){
       <td align="center">
 	  <a href="<?php echo getpageurl("zt",$row["id"])?>" target="_blank"><?php echo str_replace($keyword,"<font color=red>".$keyword."</font>",$row["username"])?></a>
 <?php
-	$rsn=mysql_query("select config from zzcms_admingroup where id=(select groupid from zzcms_admin where pass='".@$_SESSION["pass"]."' and admin='".@$_SESSION["admin"]."')");//只验证密码会出现，两个管理员密码相同的情况，导致出错,前加@防止SESSION失效后出错提示
-	$rown=mysql_fetch_array($rsn);
+	$rsn=query("select config from zzcms_admingroup where id=(select groupid from zzcms_admin where pass='".@$_SESSION["pass"]."' and admin='".@$_SESSION["admin"]."')");//只验证密码会出现，两个管理员密码相同的情况，导致出错,前加@防止SESSION失效后出错提示
+	$rown=fetch_array($rsn);
 	echo "<br>密码：";
 	if(str_is_inarr($rown["config"],'userreg')=='no'){
 		echo "无【用户管理】权限，密码不于显示"; 
@@ -181,15 +181,15 @@ while($row = mysql_fetch_array($rs)){
       <td align="center"> 
         <?php
 	  if ($row["bigclassid"]<>"" && $row["bigclassid"]<>0 ){
-	  $rskind=mysql_query("select classname from zzcms_userclass where classid=".$row["bigclassid"]."");
-	  $r=mysql_fetch_array($rskind);
+	  $rskind=query("select classname from zzcms_userclass where classid=".$row["bigclassid"]."");
+	  $r=fetch_array($rskind);
 	  echo  $r["classname"];
 	  }
 	  ?>
       </td>
       <td align="center"> <?php
-	$rsn=mysql_query("select groupname from zzcms_usergroup where groupid='".$row["groupid"]."'");
-	$rown=mysql_fetch_array($rsn);
+	$rsn=query("select groupname from zzcms_usergroup where groupid='".$row["groupid"]."'");
+	$rown=fetch_array($rsn);
 	   echo $rown["groupname"]?> </td>
       <td align="center"><?php echo $row["logins"]?></td>
       <td><?php echo $row["loginip"]?></td>
@@ -259,7 +259,7 @@ while($row = mysql_fetch_array($rs)){
 </table>
 <?php
 }
-mysql_close($conn);
+
 ?>
 </body>
 </html>

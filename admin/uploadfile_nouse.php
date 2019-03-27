@@ -61,128 +61,128 @@ $ml='../uploadfiles/'.$mlname;
   	if ($file!="." && $file!="..") { //不读取. ..
 	$n++;
 	$file="/uploadfiles/".$mlname.'/'.$file;
-		$rs=mysql_query("select img from zzcms_main where img='".$file."' or img='".str_replace("_small.",".",$file)."'");
+		$rs=query("select img from zzcms_main where img='".$file."' or img='".str_replace("_small.",".",$file)."'");
 		//or img='".str_replace("_small.",".",$file)."'" 使小图片也与img能匹配以免把小图片删除
-    	$row=mysql_num_rows($rs);
+    	$row=num_rows($rs);
 	    if (!$row){
 		$a=0;//zzcms_main表中没有用到这个图片
 		}else{
 		$a=1;
 		}
 		
-		$rs=mysql_query("select sm from zzcms_main where sm like '%".$file."%' or sm like'%".str_replace("_small.",".",$file)."%'");
-    	$row=mysql_num_rows($rs);
+		$rs=query("select sm from zzcms_main where sm like '%".$file."%' or sm like'%".str_replace("_small.",".",$file)."%'");
+    	$row=num_rows($rs);
 	    if (!$row){
 		$a2=0;//zzcms_main表中没有用到这个图片
 		}else{
 		$a2=1;
 		}
 		
-		$rs=mysql_query("select flv from zzcms_main where flv='".$file."' ");
-    	$row=mysql_num_rows($rs);
+		$rs=query("select flv from zzcms_main where flv='".$file."' ");
+    	$row=num_rows($rs);
 	    if (!$row){
 		$a1=0;//zzcms_main表中没有用到这个图片
 		}else{
 		$a1=1;
 		}
 		
-		$rs=mysql_query("select img from zzcms_licence where img='".$file."' or img='".str_replace("_small.",".",$file)."'");
-    	$row=mysql_num_rows($rs);
+		$rs=query("select img from zzcms_licence where img='".$file."' or img='".str_replace("_small.",".",$file)."'");
+    	$row=num_rows($rs);
 	    if (!$row){
 		$b=0;//zzcms_main表中没有用到这个图片
 		}else{
 		$b=1;
 		}
 		
-		$rs=mysql_query("select img from zzcms_user where img='".$file."' or img='".str_replace("_small.",".",$file)."'");
-    	$row=mysql_num_rows($rs);
+		$rs=query("select img from zzcms_user where img='".$file."' or img='".str_replace("_small.",".",$file)."'");
+    	$row=num_rows($rs);
 	    if (!$row){
 		$c=0;//zzcms_main表中没有用到这个图片
 		}else{
 		$c=1;
 		}
 		
-		$rs=mysql_query("select flv from zzcms_user where flv='".$file."'");
-    	$row=mysql_num_rows($rs);
+		$rs=query("select flv from zzcms_user where flv='".$file."'");
+    	$row=num_rows($rs);
 	    if (!$row){
 		$c1=0;//zzcms_main表中没有用到这个图片
 		}else{
 		$c1=1;
 		}
 		
-		$rs=mysql_query("select content from zzcms_user where content like '%".$file."%' or content like'%".str_replace("_small.",".",$file)."%'");
-    	$row=mysql_num_rows($rs);
+		$rs=query("select content from zzcms_user where content like '%".$file."%' or content like'%".str_replace("_small.",".",$file)."%'");
+    	$row=num_rows($rs);
 	    if (!$row){
 		$c2=0;//zzcms_user表content(公司简介)字段中没有用到这个图片
 		}else{
 		$c2=1;
 		}
 		
-		$rs=mysql_query("select img from zzcms_ad where img='".$file."' or img='".str_replace("_small.",".",$file)."'");
-    	$row=mysql_num_rows($rs);
+		$rs=query("select img from zzcms_ad where img='".$file."' or img='".str_replace("_small.",".",$file)."'");
+    	$row=num_rows($rs);
 	    if (!$row){
 		$d=0;//zzcms_main表中没有用到这个图片
 		}else{
 		$d=1;
 		}
-		$rs=mysql_query("select img from zzcms_zx where img='".$file."' or img='".str_replace("_small.",".",$file)."'");
-    	$row=mysql_num_rows($rs);
+		$rs=query("select img from zzcms_zx where img='".$file."' or img='".str_replace("_small.",".",$file)."'");
+    	$row=num_rows($rs);
 	    if (!$row){
 		$e=0;//zzcms_zx表中没有用到这个图片
 		}else{
 		$e=1;
 		}
 		
-		$rs=mysql_query("select content from zzcms_zx where content like '%".$file."%' or content like'%".str_replace("_small.",".",$file)."%'");
-    	$row=mysql_num_rows($rs);
+		$rs=query("select content from zzcms_zx where content like '%".$file."%' or content like'%".str_replace("_small.",".",$file)."%'");
+    	$row=num_rows($rs);
 	    if (!$row){
 		$e1=0;//zzcms_zx表中没有用到这个图片
 		}else{
 		$e1=1;
 		}
 		
-		$rs=mysql_query("select img from zzcms_help where img='".$file."' or img='".str_replace("_small.",".",$file)."'");
-    	$row=mysql_num_rows($rs);
+		$rs=query("select img from zzcms_help where img='".$file."' or img='".str_replace("_small.",".",$file)."'");
+    	$row=num_rows($rs);
 	    if (!$row){
 		$f=0;//zzcms_zx表中没有用到这个图片
 		}else{
 		$f=1;
 		}
 		
-		$rs=mysql_query("select content from zzcms_help where content like '%".$file."%' or content like'%".str_replace("_small.",".",$file)."%'");
-    	$row=mysql_num_rows($rs);
+		$rs=query("select content from zzcms_help where content like '%".$file."%' or content like'%".str_replace("_small.",".",$file)."%'");
+    	$row=num_rows($rs);
 	    if (!$row){
 		$f1=0;//zzcms_zx表中没有用到这个图片
 		}else{
 		$f1=1;
 		}
 		
-		$rs=mysql_query("select bannerbg from zzcms_usersetting where bannerbg='".$file."'");
-    	$row=mysql_num_rows($rs);
+		$rs=query("select bannerbg from zzcms_usersetting where bannerbg='".$file."'");
+    	$row=num_rows($rs);
 	    if (!$row){
 		$g=0;//zzcms_usersetting表中没有用到这个图片
 		}else{
 		$g=1;
 		}
 		
-		$rs=mysql_query("select img from zzcms_pp where img='".$file."' or img='".str_replace("_small.",".",$file)."'");
-    	$row=mysql_num_rows($rs);
+		$rs=query("select img from zzcms_pp where img='".$file."' or img='".str_replace("_small.",".",$file)."'");
+    	$row=num_rows($rs);
 	    if (!$row){
 		$h=0;
 		}else{
 		$h=1;
 		}
 		
-		$rs=mysql_query("select img from zzcms_special where img='".$file."' or img='".str_replace("_small.",".",$file)."'");
-    	$row=mysql_num_rows($rs);
+		$rs=query("select img from zzcms_special where img='".$file."' or img='".str_replace("_small.",".",$file)."'");
+    	$row=num_rows($rs);
 	    if (!$row){
 		$m=0;//zzcms_special表中没有用到这个图片
 		}else{
 		$m=1;
 		}
 		
-		$rs=mysql_query("select content from zzcms_special where content like '%".$file."%' or content like'%".str_replace("_small.",".",$file)."%'");
-    	$row=mysql_num_rows($rs);
+		$rs=query("select content from zzcms_special where content like '%".$file."%' or content like'%".str_replace("_small.",".",$file)."%'");
+    	$row=num_rows($rs);
 	    if (!$row){
 		$m1=0;//zzcms_special表中没有用到这个图片
 		}else{

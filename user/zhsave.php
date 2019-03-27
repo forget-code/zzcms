@@ -13,7 +13,7 @@ $f_array=explode("|||",$fcontent) ;
 <title></title>
 <link href="style/<?php echo siteskin_usercenter?>/style.css" rel="stylesheet" type="text/css">
 <?php
-if (check_usergr_power("zh")=="no" && $usersf=='个人'){
+if (str_is_inarr(usergr_power,'zh')=="no" && $usersf=='个人'){
 echo $f_array[0];
 exit;
 }
@@ -31,12 +31,12 @@ $timeend=trim($_POST["timeend"]);
 $content=str_replace("'","",stripfxg(trim($_POST["content"])));
 $editor=trim($_POST["editor"]);
 if ($_POST["action"]=="add" && $editor<>''){//$editor<>''防垃圾信息
-mysql_query("Insert into zzcms_zh(bigclassid,title,address,timestart,timeend,content,editor,sendtime) values('$bigclassid','$title','$address','$timestart','$timeend','$content','$editor','".date('Y-m-d H:i:s')."')") ;  
-$id=mysql_insert_id();
+query("Insert into zzcms_zh(bigclassid,title,address,timestart,timeend,content,editor,sendtime) values('$bigclassid','$title','$address','$timestart','$timeend','$content','$editor','".date('Y-m-d H:i:s')."')") ;  
+$id=insert_id();
 		
 }elseif ($_POST["action"]=="modify"){
 $id=$_POST["id"];
-mysql_query("update zzcms_zh set bigclassid='$bigclassid',title='$title',address='$address',timestart='$timestart',timeend='$timeend',content='$content',
+query("update zzcms_zh set bigclassid='$bigclassid',title='$title',address='$address',timestart='$timestart',timeend='$timeend',content='$content',
 editor='$editor',sendtime='".date('Y-m-d H:i:s')."' where id='$id'");
 }		
 passed("zzcms_zh");
@@ -92,9 +92,7 @@ include("left.php");
       </table></td>
   </tr>
 </table>
-<?php
-mysql_close($conn);
-?>
+
 </div>
 </div>
 </div>

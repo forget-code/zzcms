@@ -54,8 +54,8 @@ $titles="";
 $bigclassname="";
 if ($b<>""){
 $sql="select * from zzcms_zsclass where classzm='".$b."'";
-$rs=mysql_query($sql);
-$row=mysql_fetch_array($rs);
+$rs=query($sql);
+$row=fetch_array($rs);
 if ($row){
 $descriptions=$row["discription"];
 $keywords=$row["keyword"];
@@ -70,8 +70,8 @@ $descriptionsx="";
 	$smallclassname="";
 if ($s<>"") {
 $sql="select * from zzcms_zsclass where classzm='".$s."'";
-$rs=mysql_query($sql);
-$row=mysql_fetch_array($rs);
+$rs=query($sql);
+$row=fetch_array($rs);
 if ($row){
 	$descriptionsx=$row["discription"];
 	$keywordsx=$row["keyword"];
@@ -130,13 +130,13 @@ if( isset($_GET["page"]) && $_GET["page"]!="")
 }
 
 $form_sx='';
-$rs = mysql_query("select * from zzcms_zsclass_shuxing order by xuhao asc"); 
-$row= mysql_num_rows($rs);
+$rs = query("select * from zzcms_zsclass_shuxing order by xuhao asc"); 
+$row= num_rows($rs);
 if ($row){
 $form_sx=$form_sx . "<select name='sx'>";
 $form_sx=$form_sx . "<option value='0' selected >请选择属性</option>";
 	$n=0;
-	while($row= mysql_fetch_array($rs)){
+	while($row= fetch_array($rs)){
 	$n ++;
 	if ($sx==$row['bigclassid']){
 	$form_sx=$form_sx . "<option value=$row[bigclassid] selected >$row[bigclassname]</option>";
@@ -301,8 +301,8 @@ if ($vip=="yes") {
 $sql2=$sql2." and editor in (select username from zzcms_user where groupid>1) ";
 }
 $sql=$sql.$sql2;
-$rs = mysql_query($sql); 
-$row = mysql_fetch_array($rs);
+$rs = query($sql); 
+$row = fetch_array($rs);
 $totlenum = $row['total'];
 $offset=($page-1)*$page_size;//$page_size在上面被设为COOKIESS
 $totlepage=ceil($totlenum/$page_size);
@@ -310,7 +310,7 @@ $totlepage=ceil($totlenum/$page_size);
 $sql="select id,proname,prouse,shuxing_value,img,province,city,xiancheng,sendtime,editor,elite,userid,comane,qq,groupid,renzheng from zzcms_main where passed=1 ";	
 $sql=$sql.$sql2;
 $sql=$sql." order by groupid desc,elite desc,".$px." desc limit $offset,$page_size";
-$rs = mysql_query($sql); 
+$rs = query($sql); 
 $zs=strbetween($strout,"{zs}","{/zs}");
 $list_list=strbetween($strout,"{loop_list}","{/loop_list}");
 $list_window=strbetween($strout,"{loop_window}","{/loop_window}");
@@ -324,7 +324,7 @@ $city="";
 $keyword="";
 $list2='';
 
-	while($row= mysql_fetch_array($rs)){
+	while($row= fetch_array($rs)){
 	if ($ys=="window"){
 	$list2 = $list2. str_replace("{#id}",$row["id"],$list_window) ;
 	}else{
@@ -369,15 +369,15 @@ $list2='';
 	$list2 =str_replace("{#prouse}" ,cutstr($row["prouse"],20),$list2) ;
 	$list2 =str_replace("{#sendtime}" ,$row["sendtime"],$list2) ;
 
-	$rsn=mysql_query("select grouppic,groupname from zzcms_usergroup where groupid=".$row["groupid"]."");
-	$rown=mysql_fetch_array($rsn);
+	$rsn=query("select grouppic,groupname from zzcms_usergroup where groupid=".$row["groupid"]."");
+	$rown=fetch_array($rsn);
 	if ($rown){
 	$list2 =str_replace("{#grouppic}" ,"<img src=".$rown["grouppic"]." alt=".$rown["groupname"].">",$list2) ;
 	}
 	
 	if (showdlinzs=="Yes") {
-	$rsn=mysql_query("select id from zzcms_dl where cpid=".$row["id"]." and passed=1");
-	$list2 =str_replace("{#dl_num}","(".channeldl."留言<font color='#FF6600'><b>".mysql_num_rows($rsn)."</b></font>条)",$list2) ;
+	$rsn=query("select id from zzcms_dl where cpid=".$row["id"]." and passed=1");
+	$list2 =str_replace("{#dl_num}","(".channeldl."留言<font color='#FF6600'><b>".num_rows($rsn)."</b></font>条)",$list2) ;
 	}else{
 	$list2 =str_replace("{#dl_num}","",$list2) ;
 	}
@@ -458,7 +458,7 @@ $strout=str_replace("{#form_xs}",$form_xs,$strout);
 $strout=str_replace("{#sitebottom}",sitebottom(),$strout);
 $strout=str_replace("{#sitetop}",sitetop(),$strout);
 $strout=showlabel($strout);
-mysql_close($conn);
+
 session_write_close();
 echo  $strout;	
 ?>

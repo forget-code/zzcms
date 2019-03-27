@@ -89,7 +89,7 @@ $strout=str_replace("{#showdaohang}",$showdaohang,$strout);
 $strout=str_replace("{#skin}",$skin,$strout);
 $strout=str_replace("{#lxfs}",$lxfs,$strout);
 $strout=str_replace("{#baidu_map}",$baidu_map,$strout);
-mysql_close($conn);
+
 session_write_close();
 echo  $strout;
 ?>

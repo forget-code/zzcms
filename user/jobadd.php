@@ -12,7 +12,7 @@ $f_array=explode("|||",$fcontent) ;
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=EmulateIE7" />
 <?php
-if (check_usergr_power("job")=="no" && $usersf=='个人'){
+if (str_is_inarr(usergr_power,'job')=="no" && $usersf=='个人'){
 echo $f_array[0];
 exit;
 }
@@ -73,9 +73,9 @@ include("checkaddinfo.php");
                     <legend><?php echo $f_array[4]?></legend>
                     <?php
         $sql = "select * from zzcms_jobclass where parentid='0' order by xuhao asc";
-		$rs = mysql_query($sql,$conn); 
+		$rs = query($sql,$conn); 
 		$n=0;
-		while($row= mysql_fetch_array($rs)){
+		while($row= fetch_array($rs)){
 		
 		$n ++;
 		if (@$_SESSION['bigclassid']==$row['classid']){
@@ -92,9 +92,9 @@ include("checkaddinfo.php");
                   <td> 
                     <?php
 $sql="select * from zzcms_jobclass where parentid=0 order by xuhao asc";
-$rs = mysql_query($sql,$conn); 
+$rs = query($sql,$conn); 
 $n=0;
-while($row= mysql_fetch_array($rs)){
+while($row= fetch_array($rs)){
 $n ++;
 if (@$_SESSION['bigclassid']==$row["classid"]) {  
 echo "<div id='E_con$n' style='display:block;'>";
@@ -104,9 +104,9 @@ echo "<div id='E_con$n' style='display:none;'>";
 echo "<fieldset class='fieldsetstyle'><legend>".$f_array[5]."</legend>";
 
 $sqln="select * from zzcms_jobclass where parentid='$row[classid]' order by xuhao asc";
-$rsn = mysql_query($sqln,$conn); 
+$rsn = query($sqln,$conn); 
 $nn=0;
-while($rown= mysql_fetch_array($rsn)){
+while($rown= fetch_array($rsn)){
 $nn ++;
 echo "<input name='smallclassid' id='radio$nn$n' type='radio' value='$rown[classid]' />";
 echo "<label for='radio$nn$n'>$rown[classname]</label>";

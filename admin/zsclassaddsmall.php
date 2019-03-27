@@ -48,16 +48,16 @@ $discription=$classname;
 }
 	
 	$sql="Select * From zzcms_zsclass Where parentid='" . $bigclassid . "' AND classname='" . $classname . "'";
-	$rs=mysql_query($sql);
-		$row= mysql_num_rows($rs);//返回记录数
+	$rs=query($sql);
+		$row= num_rows($rs);//返回记录数
 		if ($row){
 		$FoundErr=1;
 		$ErrMsg="<br><li>此大类中已经存在小类“" . $classname . "”！</li>";
 		}
 
 	$sql="Select * From zzcms_zsclass Where parentid='" . $bigclassid . "' AND classzm='" . $classzm . "'";
-	$rs=mysql_query($sql);
-		$row= mysql_num_rows($rs);//返回记录数
+	$rs=query($sql);
+		$row= num_rows($rs);//返回记录数
 		if ($row){
 		$FoundErr=1;
 		$ErrMsg= "<br><li>此大类中已经存在小类拼音“" . $classzm . "”！</li>";
@@ -65,7 +65,7 @@ $discription=$classname;
 	
 	if ($FoundErr==0){
 		$sql="insert into zzcms_zsclass (parentid,classname,classzm,title,keyword,discription) values('$bigclassid','$classname','$classzm','$title','$keyword','$discription')";
-		mysql_query($sql);
+		query($sql);
 		echo "<script>location.href='zsclassmanage.php?#B".$bigclassid."'</script>";
 		}
 }			
@@ -99,9 +99,9 @@ $(document).ready(function(){
       <td width="82%" class="border"> <select name="bigclassid">
           <?php
 	$sql="Select * From zzcms_zsclass where parentid='A'";
-	$rs=mysql_query($sql);
+	$rs=query($sql);
 	
-	while($row= mysql_fetch_array($rs)){
+	while($row= fetch_array($rs)){
 			if ($row['classzm']==$bigclassid){
 			echo "<option value='".$row['classzm']."' selected>".$row['classname']."</option>";
 			}else{

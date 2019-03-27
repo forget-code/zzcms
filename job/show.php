@@ -12,12 +12,12 @@ $cpid=0;
 }
 
 $sql="select * from zzcms_job where id='$cpid'";
-$rs=mysql_query($sql);
-$row=mysql_fetch_array($rs);
+$rs=query($sql);
+$row=fetch_array($rs);
 if (!$row){
 echo showmsg("不存在相关信息！");
 }else{
-mysql_query("update zzcms_job set hit=hit+1 where id='$cpid'");
+query("update zzcms_job set hit=hit+1 where id='$cpid'");
 $editor=$row["editor"];
 $jobname=$row["jobname"];
 
@@ -29,8 +29,8 @@ $sm=$row["sm"];
 $province=$row["province"];
 $city=$row["city"];
 
-$rs=mysql_query("select classname from zzcms_jobclass where classid='".$bigclassid."'");
-$row=mysql_fetch_array($rs);
+$rs=query("select classname from zzcms_jobclass where classid='".$bigclassid."'");
+$row=fetch_array($rs);
 if ($row){
 $bigclassname=$row["classname"];
 }else{
@@ -38,8 +38,8 @@ $bigclassname="大类已删除";
 }
 
 if ($smallclassid<>""){
-$rs=mysql_query("select classname from zzcms_jobclass where classid='".$smallclassid."'");
-$row=mysql_fetch_array($rs);
+$rs=query("select classname from zzcms_jobclass where classid='".$smallclassid."'");
+$row=fetch_array($rs);
 if ($row){
 $smallclassname=$row["classname"];
 }else{
@@ -48,8 +48,8 @@ $smallclassname="小类已删除";
 }
 
 $sql="select * from zzcms_user where username='".$editor."'";
-$rs=mysql_query($sql);
-$row=mysql_fetch_array($rs);
+$rs=query($sql);
+$row=fetch_array($rs);
 $startdate=$row["startdate"];
 $comane=$row["comane"];
 $bigclassid=$row["bigclassid"];
@@ -79,7 +79,7 @@ $strout=str_replace("{#pagetitle}",$jobname.jobshowtitle,$strout);
 $strout=str_replace("{#pagekeywords}",$jobname.jobshowkeyword,$strout);
 $strout=str_replace("{#pagedescription}",$jobname.jobshowdescription,$strout);
 
-$strout=str_replace("{#jobname}",$jobname,$strout);
+$strout=str_replace("{#title}",$jobname,$strout);
 $strout=str_replace("{#comane}",$comane,$strout);
 $strout=str_replace("{#sendtime}",$sendtime,$strout);
 $strout=str_replace("{#hit}",$hit,$strout);

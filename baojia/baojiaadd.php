@@ -144,8 +144,8 @@ echo sitetop();
           <option value="" selected>请选择类别</option>
           <?php
 		$sql="select * from zzcms_zsclass where parentid='A'";
-		$rs=mysql_query($sql);
-		while($row= mysql_fetch_array($rs)){
+		$rs=query($sql);
+		while($row= fetch_array($rs)){
 			?>
           <option value="<?php echo $row["classzm"]?>"<?php if (@$_SESSION['bigclassid']==$row["classzm"]){echo 'selected';}?>><?php echo $row["classname"]?></option>
           <?php
@@ -174,8 +174,8 @@ new PCAS('province', 'city', 'xiancheng', '<?php echo @$_SESSION['province']?>',
 	<?php
 	if (isset($_COOKIE["UserName"])){
 	$sql="select * from zzcms_user where username='".$_COOKIE["UserName"]."'";
-	$rs=mysql_query($sql);
-	$row= mysql_fetch_array($rs);
+	$rs=query($sql);
+	$row= fetch_array($rs);
 	?>
    
     <tr>
@@ -285,7 +285,7 @@ showmsg('电话号码不正确','back');
 }
 
 if ($cp<>'' && $truename<>'' && $tel<>''){
-$isok=mysql_query("Insert into zzcms_baojia(classzm,cp,province,city,xiancheng,price,companyname,truename,tel,address,email,sendtime,editor) values('$classid','$cp','$province','$city','$xiancheng','$price','$companyname','$truename','$tel','$address','$email','".date('Y-m-d H:i:s')."','".@$_COOKIE["UserName"]."')") ;
+$isok=query("Insert into zzcms_baojia(classzm,cp,province,city,xiancheng,price,companyname,truename,tel,address,email,sendtime,editor) values('$classid','$cp','$province','$city','$xiancheng','$price','$companyname','$truename','$tel','$address','$email','".date('Y-m-d H:i:s')."','".@$_COOKIE["UserName"]."')") ;
 }  
 if ($isok){
 echo showmsg('发布成功，审核后显示。');

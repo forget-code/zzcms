@@ -30,8 +30,8 @@ include("left.php");
 
 if (@$_REQUEST["action"]=="px"){
 $sql="select xuhao,id from zzcms_main where editor='".$username."'";
-$rs = mysql_query($sql); 
-while($row = mysql_fetch_array($rs)){
+$rs = query($sql); 
+while($row = fetch_array($rs)){
 $xuhao=$_POST["xuhao".$row["id"]];//表单名称是动态显示的，并于FORM里的名称相同。
 	   if (trim($xuhao) == "" || is_numeric($xuhao) == false) {
 	       $xuhao = 0;
@@ -40,7 +40,7 @@ $xuhao=$_POST["xuhao".$row["id"]];//表单名称是动态显示的，并于FORM�
 	   }else{
 	       $xuhao = $xuhao;
 	   }
-mysql_query("update zzcms_main set xuhao=$xuhao where id=".$row['id']."");
+query("update zzcms_main set xuhao=$xuhao where id=".$row['id']."");
 }
 }
 ?>
@@ -48,7 +48,7 @@ mysql_query("update zzcms_main set xuhao=$xuhao where id=".$row['id']."");
 <div class="admintitle"><?php echo channelzs.$f_array[0]?></div>
  <?php
 $sql="select * from zzcms_main where editor='".$username."' order by xuhao desc";
-$rs = mysql_query($sql); 
+$rs = query($sql); 
 ?>
 <form action="?action=px" method="post" name="form" id="form" >
   <table width="100%" border="0" cellspacing="0" cellpadding="0">
@@ -67,7 +67,7 @@ $rs = mysql_query($sql);
             <?php echo $f_array[3]?>
           </tr>
          <?php
-		 while($row = mysql_fetch_array($rs)){
+		 while($row = fetch_array($rs)){
 		 ?>
           <tr class="bgcolor1" onMouseOver="fSetBg(this)" onMouseOut="fReBg(this)"> 
             <td width="75" align="center"> <input name='<?php echo "xuhao".$row["id"]?>' type="text" value="<?php echo $row["xuhao"]?>" size="4" maxlength="4"> 
@@ -94,8 +94,6 @@ $rs = mysql_query($sql);
 </div>
 </div>
 </div>
-<?php
-mysql_close($conn);
-?>
+
 </body>
 </html>

@@ -61,8 +61,8 @@ $discription=$classname;
 }
 		
 		$sql="Select * From zzcms_zsclass Where classname='" .$classname. "'";
-		$rs=mysql_query($sql);
-		$row= mysql_num_rows($rs);//返回记录数
+		$rs=query($sql);
+		$row= num_rows($rs);//返回记录数
 		if ($row){
 		$FoundErr=1;
 		$ErrMsg="<br><li>大类名“" . $classname . "”已经存在！</li>";
@@ -70,12 +70,12 @@ $discription=$classname;
 		}else{
 		$sql="insert into zzcms_zsclass (parentid,classname,classzm,img,isshow,title,keyword,discription) values
 		('A','$classname','$classzm','img','$isshow','$title','$keyword','$discription')";
-		$isok=mysql_query($sql);
-		$rs=mysql_query("select * from zzcms_zsclass where classname='".$classname."'");
-		$row= mysql_fetch_array($rs);
+		$isok=query($sql);
+		$rs=query("select * from zzcms_zsclass where classname='".$classname."'");
+		$row= fetch_array($rs);
 		$bcid=$row["classid"];
 				
-mysql_query("CREATE TABLE `zzcms_dl_".$classzm."` (
+query("CREATE TABLE `zzcms_dl_".$classzm."` (
   `id` int(11) NOT NULL auto_increment,
   `dlid` int(11) default '0',
   `cpid` int(11) default '0',
@@ -101,7 +101,7 @@ mysql_query("CREATE TABLE `zzcms_dl_".$classzm."` (
   `del` tinyint(4) default '0',
   PRIMARY KEY  (`id`)
 ) ENGINE=MyISAM AUTO_INCREMENT=1 DEFAULT CHARSET=utf8");
-mysql_query("ALTER TABLE  `zzcms_dl_".$classzm."` ADD INDEX (  `province` ,  `city` ,  `xiancheng` )") ;
+query("ALTER TABLE  `zzcms_dl_".$classzm."` ADD INDEX (  `province` ,  `city` ,  `xiancheng` )") ;
 if ($isok){$msg="成功";}else{$msg="失败";}
 echo "<script>alert('".$msg."');location.href='zsclassaddbig.php'</script>";
 //echo "<script>location.href='zsclassmanage.php?#B".$bcid."'<//script>";

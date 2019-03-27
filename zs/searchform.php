@@ -24,14 +24,14 @@ body {
   <tr>
     <td><?php
 $sql = "select * from zzcms_zsclass where parentid<>'A' order by xuhao asc";
-$rs=mysql_query($sql);
+$rs=query($sql);
 ?>
       <script language = "JavaScript" type="text/JavaScript">
 var onecount;
 subcat = new Array();
         <?php 
         $count = 0;
-        while($row = mysql_fetch_array($rs)){
+        while($row = fetch_array($rs)){
         ?>
 subcat[<?php echo $count?>] = new Array("<?php echo trim($row["classname"])?>","<?php echo trim($row["parentid"])?>","<?php echo trim($row["classzm"])?>");
         <?php
@@ -57,8 +57,8 @@ function changelocation(locationid)
         <option value="" selected="selected">请选择大类</option>
         <?php
 	$sql = "select * from zzcms_zsclass where  parentid='A' order by xuhao asc";
-    $rs=mysql_query($sql);
-	while($row = mysql_fetch_array($rs)){
+    $rs=query($sql);
+	while($row = fetch_array($rs)){
 	?>
         <option value="<?php echo trim($row["classzm"])?>" ><?php echo trim($row["classname"])?></option>
         <?php
@@ -71,8 +71,8 @@ function changelocation(locationid)
       <option value="">请选择小类</option>
       <?php
 $sql="select * from zzcms_zsclass  order by xuhao asc";
-$rs=mysql_query($sql);
-while($row = mysql_fetch_array($rs)){
+$rs=query($sql);
+while($row = fetch_array($rs)){
 ?>
 <option value="<?php echo $row["classzm"]?>" ><?php echo $row["classname"]?></option>
 <?php 	  

@@ -13,12 +13,12 @@ $dlid=0;
 }
 
 $sql="select * from zzcms_baojia where id='$dlid'";
-$rs=mysql_query($sql);
-$row=mysql_fetch_array($rs);
+$rs=query($sql);
+$row=fetch_array($rs);
 if (!$row){
 echo showmsg("不存在相关信息！");
 }else{
-mysql_query("update zzcms_baojia set hit=hit+1 where id='$dlid'");
+query("update zzcms_baojia set hit=hit+1 where id='$dlid'");
 $bigclasszm=$row["classzm"];
 $cp=$row["cp"];
 $province=$row["province"];
@@ -32,8 +32,8 @@ $address=$row["address"];
 $tel=$row["tel"];
 
 
-$rs=mysql_query("select classname from zzcms_zsclass where classzm='".$bigclasszm."'");
-$row=mysql_fetch_array($rs);
+$rs=query("select classname from zzcms_zsclass where classzm='".$bigclasszm."'");
+$row=fetch_array($rs);
 if ($row){
 $bigclassname=$row["classname"];
 }else{
@@ -53,9 +53,14 @@ $showlx=$showlx."<li>电话：".$tel."</li> ";
 $showlx=$showlx." </ul> ";        
 
 $fp="../template/".$siteskin."/baojia_show.htm";
+if (file_exists($fp)==false){
+WriteErrMsg($fp.'模板文件不存在');
+exit;
+}
 $f= fopen($fp,'r');
 $strout = fread($f,filesize($fp));
 fclose($f);
+
 $strout=str_replace("{#siteskin}",$siteskin,$strout) ;
 $strout=str_replace("{#sitename}",sitename,$strout) ;
 $strout=str_replace("{#pagetitle}",$pagetitle,$strout);
@@ -73,7 +78,7 @@ $strout=str_replace("{#danwei}",$danwei,$strout);
 $strout=str_replace("{#sitebottom}",sitebottom(),$strout);
 $strout=str_replace("{#sitetop}",sitetop(),$strout);
 $strout=showlabel($strout);
-mysql_close($conn);
+
 echo  $strout;
 }
 ?>

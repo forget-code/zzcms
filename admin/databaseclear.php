@@ -69,10 +69,10 @@ if (!isset($_POST["action"])) {
 			<?php 
 $str='';		
 $sql="select classname,classid,classzm from zzcms_zsclass where parentid='A' order by xuhao";
-$rs=mysql_query($sql);
-$row=mysql_num_rows($rs);
+$rs=query($sql);
+$row=num_rows($rs);
 if ($row){
-while ($row=mysql_fetch_array($rs)){
+while ($row=fetch_array($rs)){
 $str=$str."<input name='table[]' type='checkbox' value='zzcms_dl_".$row["classzm"]."' id='zzcms_dl_".$row["classzm"]."'>";
 $str=$str."<label for='zzcms_dl_".$row["classzm"]."'>zzcms_dl_".$row["classzm"]."(".channeldl.$row["classname"]."类分表)</label>";	
 }
@@ -89,6 +89,17 @@ echo $str;
                 <label for="zzcms_tagzx"> zzcms_tagzx(资讯标签表) </label>
                 <input name="table[]" type="checkbox" id="zzcms_pinglun" value="zzcms_pinglun">
                 <label for="zzcms_pinglun"> zzcms_pinglun(资讯评论表)</label></td>
+          </tr>
+          <tr>
+            <td class="border"><label>
+              <input name="table[]" type="checkbox" id="table[]" value="zzcms_ask">
+              zzcms_ask(问表) </label>
+                <label>
+                  <input name="table[]" type="checkbox" id="table[]" value="zzcms_answer">
+                  zzcms_answer(答表) </label>
+                <label>
+                  <input name="table[]" type="checkbox" id="table[]" value="zzcms_askclass">
+                  zzcms_askclass(问答分类表)</label></td>
           </tr>
           <tr> 
             <td class="border"> <input name="table[]" type="checkbox" id="zzcms_wangkan" value="zzcms_wangkan">
@@ -168,7 +179,7 @@ checkadminisdo("siteconfig");
 <?php
 if(!empty($_POST['table'])){
     for($i=0; $i<count($_POST['table']);$i++){
-	mysql_query("truncate ".trim($_POST['table'][$i])."");
+	query("truncate ".trim($_POST['table'][$i])."");
 	echo $table[$i]."表已被初始化<br>"; 
     }	
 }

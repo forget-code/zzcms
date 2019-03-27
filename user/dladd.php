@@ -81,8 +81,8 @@ include("checkaddinfo.php");
           <option value="" selected><?php echo $f_array[4]?> </option>
           <?php
 		$sql="select * from zzcms_zsclass where parentid='A'";
-		$rs=mysql_query($sql);
-		while($row= mysql_fetch_array($rs)){
+		$rs=query($sql);
+		while($row= fetch_array($rs)){
 			?>
           <option value="<?php echo $row["classzm"]?>"<?php if (@$_SESSION['bigclassid']==$row["classzm"]){echo 'selected';}?>><?php echo $row["classname"]?></option>
           <?php
@@ -166,8 +166,8 @@ new PCAS('province', 'city', 'xiancheng', '<?php echo @$_SESSION['province']?>',
     </tr>
 	<?php
 	$sql="select * from zzcms_user where username='".$username."'";
-	$rs=mysql_query($sql);
-	$row= mysql_fetch_array($rs);
+	$rs=query($sql);
+	$row= fetch_array($rs);
 	?>
     <tr> 
       <td align="right" class="border"><?php echo $f_array[9]?></td>
@@ -217,7 +217,7 @@ new PCAS('province', 'city', 'xiancheng', '<?php echo @$_SESSION['province']?>',
 </div>
 <?php
 unset ($f_array);
-mysql_close($conn);
+
 session_write_close();
 ?>
 </body>

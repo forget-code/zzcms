@@ -1,5 +1,11 @@
 <?php
 if(@$step==4){
+if ($_POST['token'] != $_SESSION['token'] || $_POST['token']=='' ){    
+echo "非法提交".$_POST['token']."<br>".$_SESSION['token'];
+exit();
+//}else{
+//unset($_SESSION['token']);
+}
 ?>
 <script type="text/javascript">
 function check() {
@@ -62,6 +68,7 @@ var re=/^[A-Za-z0-9\\-_-]*$/;
 <div class="body">
 <form action="index.php" method="post" id="myform" name="myform" onsubmit="return check();">
 <input type="hidden" name="step" value="5"/>
+<input name="token" type="hidden"  value="<?php echo $_POST['token']?>"/>
     <table width="100%" cellpadding="3" cellspacing="1">
       <tr> 
         <td width="31%" align="right"><strong>填写数据库信息</strong></td>

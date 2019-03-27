@@ -109,7 +109,6 @@ if (strpos($str,"{@zxclass.")!==false) {
 	$str=str_replace("{@zxclass.".$mylabel."}",zxclass($mylabel),$str);
 	}
 }
-
 if (strpos($str,"{@wangkanshow.")!==false) {
 	$n=count(explode("{@wangkanshow.",$str));
 	for ($i=1;$i<$n;$i++){ 
@@ -117,7 +116,6 @@ if (strpos($str,"{@wangkanshow.")!==false) {
 	$str=str_replace("{@wangkanshow.".$mylabel."}",wangkanshow($mylabel,$b,0),$str);
 	}
 }
-
 if (strpos($str,"{@wangkanclass.")!==false) {
 	$n=count(explode("{@wangkanclass.",$str));
 	for ($i=1;$i<$n;$i++){ 
@@ -125,7 +123,6 @@ if (strpos($str,"{@wangkanclass.")!==false) {
 	$str=str_replace("{@wangkanclass.".$mylabel."}",wangkanclass($mylabel),$str);
 	}
 }
-
 if (strpos($str,"{@baojiashow.")!==false) {
 	$n=count(explode("{@baojiashow.",$str));
 	for ($i=1;$i<$n;$i++){ 
@@ -133,7 +130,6 @@ if (strpos($str,"{@baojiashow.")!==false) {
 	$str=str_replace("{@baojiashow.".$mylabel."}",baojiashow($mylabel,$b,0),$str);
 	}
 }
-
 if (strpos($str,"{@baojiaclass.")!==false) {
 	$n=count(explode("{@baojiaclass.",$str));
 	for ($i=1;$i<$n;$i++){ 
@@ -141,7 +137,20 @@ if (strpos($str,"{@baojiaclass.")!==false) {
 	$str=str_replace("{@baojiaclass.".$mylabel."}",baojiaclass($mylabel),$str);
 	}
 }
-
+if (strpos($str,"{@askshow.")!==false) {
+	$n=count(explode("{@askshow.",$str));
+	for ($i=1;$i<$n;$i++){ 
+	$mylabel=strbetween($str,"{@askshow.","}");
+	$str=str_replace("{@askshow.".$mylabel."}",askshow($mylabel,$b,0),$str);
+	}
+}
+if (strpos($str,"{@askclass.")!==false) {
+	$n=count(explode("{@askclass.",$str));
+	for ($i=1;$i<$n;$i++){ 
+	$mylabel=strbetween($str,"{@askclass.","}");
+	$str=str_replace("{@askclass.".$mylabel."}",askclass($mylabel),$str);
+	}
+}
 if (strpos($str,"{@specialshow.")!==false) {
 	$n=count(explode("{@specialshow.",$str));
 	for ($i=1;$i<$n;$i++){ 
@@ -211,6 +220,7 @@ function companyclass($labelname){return labelclass($labelname,'company');}
 function zxclass($labelname){return labelclass($labelname,'zx');}
 function wangkanclass($labelname){return labelclass($labelname,'wangkan');}
 function baojiaclass($labelname){return labelclass($labelname,'baojia');}
+function askclass($labelname){return labelclass($labelname,'ask');}
 function specialclass($labelname){return labelclass($labelname,'special');}
 
 function writecache($channel,$classid,$labelname,$str){//$classid,$labelname 这两个参数在外部函数的参数里，没有在函数内部无法通过global获取到。
@@ -239,7 +249,7 @@ $fcontent=file_get_contents($fpath);
 $f=explode("|||",$fcontent) ;
 $startnumber = $f[1];$numbers = $f[2];$row = $f[3];$start = $f[4];$mids = $f[5];
 
-if($channel=="zx" || $channel=="special"){
+if($channel=="zx" || $channel=="special" || $channel=="ask"){
 	$mids = str_replace($channel.".php?b={#bigclassid}","/".$channel."/".$channel.".php?b={#bigclassid}",$mids);//后有小类的同样会被转换前面加/
 	}
 
@@ -248,7 +258,7 @@ $mids = str_replace($channel.".php?b={#classid}", "{#classid}",$mids);
 	if($channel=="zs"){
 	$mids = str_replace("class.php?b={#classid}", "{#classid}.htm",$mids);
 	}
-	if($channel=="zx" || $channel=="special"){
+	if($channel=="zx" || $channel=="special" || $channel=="ask"){
 	$mids = str_replace("/".$channel."/".$channel.".php?b={#bigclassid}&s={#smallclassid}","/".$channel."/{#bigclassid}/{#smallclassid}",$mids);
 	$mids = str_replace("/".$channel."/".$channel.".php?b={#bigclassid}","{#bigclassid}",$mids);
 	}
@@ -265,15 +275,15 @@ $sql ="select * from zzcms_jobclass where parentid='0' order by xuhao limit $sta
 $sql ="select * from zzcms_".$channel."class order by xuhao limit $startnumber,$numbers ";
 }elseif($channel=="company"){
 $sql ="select * from zzcms_userclass where  parentid='0' order by xuhao limit $startnumber,$numbers ";
-}elseif($channel=="zx" || $channel=="special"){
+}elseif($channel=="zx" || $channel=="special" || $channel=="ask"){
 	if ($b<>""){
 	$sql ="select * from zzcms_".$channel."class where  parentid=".$b." order by xuhao limit $startnumber,$numbers ";
 	}else{
 	$sql ="select * from zzcms_".$channel."class where  isshowininfo=1 and parentid=0 order by xuhao limit $startnumber,$numbers ";
 	}
 }
-$rs=mysql_query($sql);
-$r=mysql_num_rows($rs);
+$rs=query($sql);
+$r=num_rows($rs);
 if (!$r){
 $str="暂无信息";
 }else{
@@ -289,7 +299,7 @@ if (count(explode("{@".$channel."show.",$mids))==3) {
 	$mids2 = str_replace("{@".$channel."show." . $mylabel1 . "}", "",$mids); //把第一个标签换空,方可找出第二个标签
 	$mylabel2=strbetween($mids2,"{@".$channel."show.","}");	
 }
-while($r=mysql_fetch_array($rs)){	
+while($r=fetch_array($rs)){	
 
 if ($channel=='zs'){
 $zssmallclass_num=strbetween($mids,"{#zssmallclass:","}");
@@ -346,6 +356,19 @@ $mids3=$mids3.str_replace("{@companyshow." . $mylabel2 . "}", companyshow($mylab
 	$mids3=str_replace("{#classname}",$r["classname"],$mids3);
 	$mids3=str_replace("{#bigclassid}",$r["classid"],$mids3);
 	}
+}elseif($channel=="ask"){
+	if ($b<>""){//父类不为空，调出的classid为小类
+	$mids3=$mids3.str_replace("{@askshow." . $mylabel1 . "}", askshow($mylabel1,$b,$r["classname"]),$mids);//注意这里用首次替换已把$mids赋值给$mids3了，	
+	$mids3=str_replace("{@askshow." . $mylabel2 . "}", askshow($mylabel2,$b,$r["classname"]),$mids3);//这里替换$mids3里的内容
+	$mids3=str_replace("{#classname}",$r["classname"],$mids3);
+	$mids3=str_replace("{#bigclassid}",$b,$mids3);
+	$mids3=str_replace("{#smallclassid}",$r["classid"],$mids3);
+	}else{//父类为空，只调出的为大类就行了
+	$mids3=$mids3.str_replace("{@askshow." . $mylabel1 . "}", askshow($mylabel1,$r["classid"],0),$mids);	
+	$mids3=str_replace("{@askshow." . $mylabel2 . "}", askshow($mylabel2,$r["classid"],0),$mids3);
+	$mids3=str_replace("{#classname}",$r["classname"],$mids3);
+	$mids3=str_replace("{#bigclassid}",$r["classid"],$mids3);
+	}
 }
 $mids3=str_replace("{#i}", $i,$mids3);//类别标签中序号用i，内容标签中用n,以区别开，这样在内容标签中可以调用i
 	if ($row <> "" && $row >0){
@@ -399,8 +422,8 @@ $sql = "select id,proname,bigclasszm,prouse,shuxing_value,sendtime,img,flv,hit,c
 	}elseif ($orderby == "sendtime") {$sql = $sql . " order by sendtime desc limit 0,$numbers ";
 	}elseif ($orderby == "rand") {
 	$sqln="select count(*) as total from zzcms_main where passed<>0 ";
-	$rsn=mysql_query($sqln);
-	$rown = mysql_fetch_array($rsn);
+	$rsn=query($sqln);
+	$rown = fetch_array($rsn);
 	$totlenum = $rown['total'];
 		if (!$totlenum){
 		$shuijishu=0;
@@ -411,13 +434,13 @@ $sql = "select id,proname,bigclasszm,prouse,shuxing_value,sendtime,img,flv,hit,c
 	$sql = $sql . " limit $shuijishu,$numbers";
 	}
 //echo $sql;
-$rs=mysql_query($sql);
-$r=mysql_num_rows($rs);
+$rs=query($sql);
+$r=num_rows($rs);
 if (!$r){
 $str="暂无信息";
 }else{
 $xuhao=1;$n = 1;$mids2='';
-while($r=mysql_fetch_array($rs)){
+while($r=fetch_array($rs)){
 $mids2 = $mids2 . str_replace("{#hit}", $r["hit"],str_replace("{#n}", $n,str_replace("{#sendtime}", date("Y-m-d",strtotime($r['sendtime'])),str_replace("{#imgbig}",$r["img"],str_replace("{#img}",getsmallimg($r["img"]),str_replace("{#id}", $r["id"],str_replace("{#proname}",cutstr($r["proname"],$titlenum),$mids)))))));
 	$mids2 =str_replace("{#prouse}", cutstr($r["prouse"],$titlenum*5),$mids2);
 	$mids2 =str_replace("{#flv}", $r["flv"],$mids2);
@@ -490,19 +513,19 @@ $sql = "select id,ppname,sendtime,img,hit,editor from zzcms_pp where passed=1 ";
 	}elseif ($orderby == "sendtime") {$sql = $sql . " order by sendtime desc limit 0,$numbers ";
 	}elseif ($orderby == "rand") {
 	$sqln="select count(*) as total from zzcms_pp where passed<>0 ";
-	$rsn=mysql_query($sqln);
-	$rown = mysql_fetch_array($rsn);
+	$rsn=query($sqln);
+	$rown = fetch_array($rsn);
 	$totlenum = $rown['total'];
 	if (!$totlenum){$shuijishu=0;}else{$shuijishu=rand(1,$totlenum-$numbers);}
 	$sql = $sql . " limit $shuijishu,$numbers";
 	}
-$rs=mysql_query($sql);
-$r=mysql_num_rows($rs);
+$rs=query($sql);
+$r=num_rows($rs);
 if (!$r){
 $str="暂无信息";
 }else{
 $xuhao=1;$n = 1;$mids2='';
-while($r=mysql_fetch_array($rs)){
+while($r=fetch_array($rs)){
 	$mids2 = $mids2 . str_replace("{#hit}", $r["hit"],str_replace("{#n}", $n,str_replace("{#sendtime}", date("Y-m-d",strtotime($r['sendtime'])),str_replace("{#imgbig}",$r["img"],str_replace("{#img}",getsmallimg($r["img"]),str_replace("{#id}", $r["id"],str_replace("{#title}",cutstr($r["ppname"],$titlenum),$mids)))))));
 	if ($n<=3){
 	$mids2=str_replace("{#xuhao}", "<font class=xuhao1>".addzero($xuhao,2)."</font>",$mids2);
@@ -562,18 +585,18 @@ $sql = "select * from zzcms_job where passed=1 ";
 	}elseif ($orderby == "id") {$sql = $sql . " order by id desc limit 0,$numbers ";
 	}elseif ($orderby == "sendtime") {$sql = $sql . " order by sendtime desc limit 0,$numbers ";
 	}elseif ($orderby == "rand") {
-	$rs=mysql_query($sql);
-	$r=mysql_num_rows($rs);
+	$rs=query($sql);
+	$r=num_rows($rs);
 	if (!$r){$shuijishu=0;}else{$shuijishu=rand(1,$r-$numbers);}
 	$sql = $sql . " limit $shuijishu,$numbers";
 	}
-$rs=mysql_query($sql);
-$r=mysql_num_rows($rs);
+$rs=query($sql);
+$r=num_rows($rs);
 if (!$r){
 $str="暂无信息";
 }else{
 $xuhao=1;$n = 1;$mids2='';
-while($r=mysql_fetch_array($rs)){
+while($r=fetch_array($rs)){
 	$mids2 = $mids2 . str_replace("{#province}", $r["province"],str_replace("{#city}", $r["city"],str_replace("{#hit}", $r["hit"],str_replace("{#n}", $n,str_replace("{#sendtime}", date("Y-m-d",strtotime($r['sendtime'])),str_replace("{#comane}",$r["comane"],str_replace("{#id}", $r["id"],str_replace("{#title}",cutstr($r["jobname"],$titlenum),$mids))))))));
 	if ($n<=3){
 	$mids2=str_replace("{#xuhao}", "<font class=xuhao1>".addzero($xuhao,2)."</font>",$mids2);
@@ -639,22 +662,22 @@ $sql2='';
 	}elseif ($orderby == "sendtime") {$sql3 = " order by sendtime desc";}
 	$sql4 = " limit 0,$numbers ";	
 
-$rs = mysql_query($sql.$sql2.$sql4);
+$rs = query($sql.$sql2.$sql4);
 //echo  $sql.$sql2.$sql4;
-$row = mysql_fetch_array($rs);
+$row = fetch_array($rs);
 $totlenum = $row['total'];
 if ( $b <> "empty") {
 $sql = "select id,dlid,cp,sendtime,editor,dlsname,city,saver,tel from zzcms_dl_".$b." where passed<>0 ";
 }else{
 $sql = "select id,cp,sendtime,editor,dlsname,city,saver,tel from zzcms_dl where passed<>0 ";
 }
-$rs=mysql_query($sql.$sql2.$sql3.$sql4);
+$rs=query($sql.$sql2.$sql3.$sql4);
 //echo $sql.$sql2.$sql3.$sql4;
 if (!$totlenum){
 $str="暂无信息";
 }else{
 $xuhao = 1;$n = 1;$mids2='';
-while($row=mysql_fetch_array($rs)){
+while($row=fetch_array($rs)){
 	$mids2 = $mids2 . str_replace("{#name}", $row["dlsname"],str_replace("{#n}", $n,str_replace("{#sendtime}", date("Y-m-d",strtotime($row['sendtime'])),str_replace("{#cp}",cutstr($row["cp"],$titlenum),$mids))));
 	if ( $b <> "empty") {
 	$mids2=str_replace("{#id}",$row['dlid'],$mids2);
@@ -664,10 +687,10 @@ while($row=mysql_fetch_array($rs)){
 	$mids2=str_replace("{#mobile}",str_replace(substr($row['tel'],3,4),"****",$row['tel']),$mids2);
 	if (strpos($mids,'{#companyname}')!==false || strpos($mids,'{#companyimg}')!==false || strpos($mids,'{#companyimgbig}')!==false){
 		$sqln = "select id,username,img,comane from zzcms_user where username='".$row['saver']."' ";
-		$rsn=mysql_query($sqln);
-		$rown= mysql_num_rows($rsn);//返回记录数
+		$rsn=query($sqln);
+		$rown= num_rows($rsn);//返回记录数
 		if ($rown){
-		$rown=mysql_fetch_array($rsn);
+		$rown=fetch_array($rsn);
 		if (sdomain=="Yes"){$mids2= str_replace("{#zturl}","http://".$rown['username'].".".substr(siteurl,strpos(siteurl,".")+1),$mids2);}
 		if (whtml == "Yes") {$mids2 = str_replace("{#zturl}","/zt/show-".$rown['id'].".htm",$mids2);}//需要从company目录转到zt}
 		$mids2 = str_replace("{#zturl}","/zt/show.php?id=".$rown['id'],$mids2);//需要从company目录转到zt
@@ -680,6 +703,8 @@ while($row=mysql_fetch_array($rs)){
 		}
 		$mids2=str_replace("{#companyimg}", getsmallimg($rown['img']),$mids2);
 		$mids2=str_replace("{#companyimgbig}", $rown['img'],$mids2);
+		}else{
+		$mids2=str_replace("{#companyname}",'意向公司用户已不存在',$mids2);//不存在时加提示
 		}
 	}
 	if ($n<=3){
@@ -743,19 +768,19 @@ $sql2='';
 	}elseif ($orderby == "sendtime") {$sql3 = " order by sendtime desc";}
 	$sql4 = " limit 0,$numbers ";	
 
-$rs = mysql_query($sql.$sql2.$sql4);
+$rs = query($sql.$sql2.$sql4);
 //echo  $sql.$sql2.$sql4."<br>";
-$row = mysql_fetch_array($rs);
+$row = fetch_array($rs);
 $totlenum = $row['total'];
 
 $sql = "select id,cp,sendtime,editor,truename,city,price,danwei,tel from zzcms_baojia where passed<>0 ";
-$rs=mysql_query($sql.$sql2.$sql3.$sql4);
+$rs=query($sql.$sql2.$sql3.$sql4);
 //echo $sql.$sql2.$sql3.$sql4;
 if (!$totlenum){
 $str="暂无信息";
 }else{
 $xuhao = 1;$n = 1;$mids2='';
-while($row=mysql_fetch_array($rs)){
+while($row=fetch_array($rs)){
 	$mids2 = $mids2 . str_replace("{#name}", $row["truename"],str_replace("{#n}", $n,str_replace("{#sendtime}", date("Y-m-d",strtotime($row['sendtime'])),str_replace("{#cp}",cutstr($row["cp"],$titlenum),$mids))));
 	$mids2=str_replace("{#id}",$row['id'],$mids2);
 	$mids2=str_replace("{#price}",$row['price'],$mids2);
@@ -804,26 +829,26 @@ $sql="select count(*) as total from zzcms_guestbook where passed<>0 ";
 $sql2 = " order by id desc";
 $sql3 = " limit 0,$numbers ";	
 
-$rs = mysql_query($sql); 
-$row = mysql_fetch_array($rs);
+$rs = query($sql); 
+$row = fetch_array($rs);
 $totlenum = $row['total'];
 
 $sql = "select id,title,content,sendtime,linkmen,phone,email,saver from zzcms_guestbook where passed<>0 ";
-$rs=mysql_query($sql.$sql2.$sql3);
+$rs=query($sql.$sql2.$sql3);
 //echo $sql.$sql2.$sql3;
 if (!$totlenum){
 $str="暂无信息";
 }else{
 $xuhao = 1;$n = 1;$mids2='';
-while($row=mysql_fetch_array($rs)){
+while($row=fetch_array($rs)){
 	$mids2 = $mids2 . str_replace("{#name}", $row["linkmen"],str_replace("{#n}", $n,str_replace("{#sendtime}", date("Y-m-d",strtotime($row['sendtime'])),str_replace("{#id}", $row["id"],str_replace("{#content}",cutstr($row["content"],$titlenum),$mids)))));
 	$mids2=str_replace("{#mobile}",str_replace(substr($row['phone'],3,4),"****",$row['phone']),$mids2);
 	if (strpos($mids,'{#companyname}')!==false || strpos($mids,'{#companyimg}')!==false){
 	$sqln = "select id,username,img,comane from zzcms_user where username='".$row['saver']."' ";
-	$rsn=mysql_query($sqln);
-	$rown= mysql_num_rows($rsn);//返回记录数
+	$rsn=query($sqln);
+	$rown= num_rows($rsn);//返回记录数
 	if ($rown){
-	$rown=mysql_fetch_array($rsn);
+	$rown=fetch_array($rsn);
 	if (sdomain=="Yes"){$mids2= str_replace("{#zturl}","http://".$rown['username'].".".substr(siteurl,strpos(siteurl,".")+1),$mids2);}//
 	if (whtml == "Yes") {$mids2 = str_replace("{#zturl}","/zt/show-".$rown['id'].".htm",$mids2);}//需要从company目录转到zt}
 	$mids2 = str_replace("{#zturl}","/zt/show.php?id=".$rown['id'],$mids2);//需要从company目录转到zt
@@ -883,8 +908,8 @@ $title=$f[0];
 if ($classid <> ""){$bigclassid = $classid;}else{$bigclassid =$f[1];}
 $groupid = $f[2];$pic =$f[3];$flv =$f[4];$elite = $f[5];$numbers = $f[6];$orderby =$f[7];$titlenum = $f[8];$row = $f[9];$start =$f[10];$mids = $f[11];
 	if (sdomain=="Yes"){$mids= str_replace("show.php?id={#id}","http://{#username}.".substr(siteurl,strpos(siteurl,".")+1),$mids);}
-	if (whtml == "Yes") {$mids = str_replace("/zt/show.php?id={#id}", "/zt/show-{#id}.htm",$mids);}//需要从company目录转到zt
-	$mids = str_replace("show.php?id={#id}", "/zt/show.php?id={#id}",$mids);//需要从company目录转到zt
+	$mids = str_replace("show.php?id={#id}", "/zt/show.php?id={#id}",$mids);//需要从company目录转到zt,注意顺序这个要放在上面
+	if (whtml == "Yes") {$mids = str_replace("/zt/show.php?id={#id}", "/zt/show-{#id}.htm",$mids);}
 $ends = $f[12];
 $sql = "select id,comane,regdate,img,flv,content,username from zzcms_user  where passed=1 and usersf='公司' and comane<>'' and lockuser=0";
 	if ($bigclassid<> 0){$sql =$sql . " and bigclassid=" . $bigclassid . "";}
@@ -896,13 +921,13 @@ $sql = "select id,comane,regdate,img,flv,content,username from zzcms_user  where
 	if ( $orderby == "id") {$sql = $sql . " order by id desc";
 	}elseif ($orderby == "lastlogintime") {$sql = $sql . " order by lastlogintime desc";}
 	$sql = $sql . " limit 0,$numbers ";
-$rs=mysql_query($sql);
-$r=mysql_num_rows($rs);
+$rs=query($sql);
+$r=num_rows($rs);
 if (!$r){
 $str="暂无信息";
 }else{
 $xuhao = 1;$n = 1;$mids2='';
-while($r=mysql_fetch_array($rs)){
+while($r=fetch_array($rs)){
 	$mids2 = $mids2 . str_replace("{#sendtime}", $r["regdate"],str_replace("{#content}", cutstr(nohtml($r["content"]),$titlenum*4),str_replace("{#imgbig}",$r["img"],str_replace("{#img}",getsmallimg($r["img"]),str_replace("{#title}",cutstr($r["comane"],$titlenum),$mids)))));
 	$mids2 =str_replace("{#n}", $n,$mids2);
 	$mids2=str_replace("{#id}", $r["id"],$mids2);
@@ -959,13 +984,13 @@ $sql = "select id,title,sendtime,timestart,timeend,address,editor,elite from zzc
 	}elseif ($orderby == "id") {$sql = $sql . "id desc";
 	}elseif ($orderby = "sendtime") {$sql = $sql . "sendtime desc";}
 	$sql = $sql . " limit 0,$numbers ";
-$rs=mysql_query($sql);
-$r=mysql_num_rows($rs);
+$rs=query($sql);
+$r=num_rows($rs);
 if (!$r){
 $str="暂无信息";
 }else{
 $xuhao =1;$n = 1;$mids2='';
-while($r=mysql_fetch_array($rs)){
+while($r=fetch_array($rs)){
 	$mids2 = $mids2 . str_replace("{#address}", cutstr($r["address"],$titlenum),str_replace("{#n}", $n,str_replace("{#sendtime}", date("Y-m-d",strtotime($r['sendtime'])),str_replace("{#timestart}", date("Y-m-d",strtotime($r["timestart"])),str_replace("{#timeend}",date("Y-m-d",strtotime($r["timeend"])) ,str_replace("{#id}", $r["id"],$mids))))));
 	if ($n<=3){
 	$mids2=str_replace("{#xuhao}", "<font class=xuhao1>".addzero($xuhao,2)."</font>",$mids2);
@@ -1023,13 +1048,13 @@ $sql = "select id,title,img,sendtime,hit,editor,elite from zzcms_wangkan where p
 	}elseif ($orderby == "id") {$sql = $sql . "id desc";
 	}elseif ($orderby = "sendtime") {$sql = $sql . "sendtime desc";}
 	$sql = $sql . " limit 0,$numbers ";
-$rs=mysql_query($sql);
-$r=mysql_num_rows($rs);
+$rs=query($sql);
+$r=num_rows($rs);
 if (!$r){
 $str="暂无信息";
 }else{
 $xuhao =1;$n = 1;$mids2='';
-while($r=mysql_fetch_array($rs)){
+while($r=fetch_array($rs)){
 	$mids2 = $mids2 . str_replace("{#n}", $n,str_replace("{#sendtime}", date("Y-m-d",strtotime($r['sendtime'])),str_replace("{#id}", $r["id"],$mids)));
 	if ($n<=3){
 	$mids2=str_replace("{#xuhao}", "<font class=xuhao1>".addzero($xuhao,2)."</font>",$mids2);
@@ -1093,8 +1118,8 @@ $ends = $f[12];
 $sql = "select id,bigclassid,bigclassname,smallclassid,smallclassname,title,link,sendtime,img,editor,hit,content,elite from zzcms_zx where passed=1 ";
 if ($b<>'' && is_numeric($b)==false){//接收的zsclass大类值
 	$sql2="select classname from zzcms_zsclass where classzm='".$b."'";
-	$rs2=mysql_query($sql2);
-	$row2=mysql_fetch_array($rs2);
+	$rs2=query($sql2);
+	$row2=fetch_array($rs2);
 	$classname='';
 	if ($row2){
 	$classname=$row2["classname"];
@@ -1121,13 +1146,13 @@ if ($b<>'' && is_numeric($b)==false){//接收的zsclass大类值
 	}elseif ($orderby = "timefororder") {$sql = $sql . "sendtime desc";}
 	$sql = $sql . " limit 0,$numbers ";
 //echo $sql ."<br>"; 
-$rs=mysql_query($sql);
-$r=mysql_num_rows($rs);
+$rs=query($sql);
+$r=num_rows($rs);
 if (!$r){
 $str="暂无信息";
 }else{
 $n = 1;$xuhao = 1;$mids2='';
-while($r=mysql_fetch_array($rs)){
+while($r=fetch_array($rs)){
 	if ($r["img"] <> ""){
     $mids2=$mids2.str_replace('{#img}',getsmallimg($r["img"]),str_replace("{#imgbig}", $r["img"],$mids)); 
     }else{
@@ -1224,13 +1249,11 @@ $mids = str_replace("show.php?id={#id}", "/special/show.php?id={#id}",$mids);
 $ends = $f[12];
 $sql = "select id,bigclassid,bigclassname,smallclassid,smallclassname,title,link,sendtime,img,editor,hit,content,elite from zzcms_special where passed=1 ";
 	if ($bid == 0) {//当大类为0时，取所有显示大类,小类的信息
-	$sql = $sql . "and bigclassid in (select classid from zzcms_specialclass where isshowininfo=1) and smallclassid in (select classid from zzcms_specialclass where isshowininfo=1) ";
+	$sql = $sql . "and bigclassid in (select classid from zzcms_specialclass where isshowininfo=1)  ";
 	}else{
     	if ($bid <> 0) {$sql = $sql . " and bigclassid=".$bid."";}
-    	if ($sid <> '') {//这里是按小类名取值的，显示不同大类，但小类名相同的信息，如按ID不能达到这种效果，原理同广告调用。
+    	if ($sid <> '' && $sid <>'empty') {//这里是按小类名取值的，显示不同大类，但小类名相同的信息，如按ID不能达到这种效果，原理同广告调用。
     	$sql = $sql . " and smallclassname='".$sid."'";
-   		}else{
-		$sql = $sql . " and smallclassid in (select classid from zzcms_specialclass where isshowininfo=1)";//当小类为空时，取所有显示小类的信息
 		}
 	}
  	if ($pic == 1) {$sql = $sql . " and img is not null and img <>''";}
@@ -1241,13 +1264,13 @@ $sql = "select id,bigclassid,bigclassname,smallclassid,smallclassname,title,link
 	}elseif ($orderby = "timefororder") {$sql = $sql . "sendtime desc";}
 	$sql = $sql . " limit 0,$numbers ";
 //echo $sql ."<br>"; 
-$rs=mysql_query($sql);
-$r=mysql_num_rows($rs);
+$rs=query($sql);
+$r=num_rows($rs);
 if (!$r){
 $str="暂无信息";
 }else{
 $n = 1;$xuhao = 1;$mids2='';
-while($r=mysql_fetch_array($rs)){
+while($r=fetch_array($rs)){
 	if ($r["img"] <> ""){
     $mids2=$mids2.str_replace('{#img}',getsmallimg($r["img"]),str_replace("{#imgbig}", $r["img"],$mids));  
     }else{
@@ -1301,6 +1324,129 @@ return $str;
 }//end if (file_exists($fpath)!==false)
 }
 
+function askshow($labelname,$bid,$sid){
+global $siteskin,$b;//取外部值，供演示模板用,这里的$b为了接收zsclass下大类值
+if (!$siteskin){$siteskin=siteskin;}
+if ($sid!=0){
+$fpath=zzcmsroot."/cache/ask/".$bid."-".$sid."-".$labelname.".txt";
+}elseif ($bid!='empty' && $bid!=''){
+$fpath=zzcmsroot."/cache/ask/".$bid."-".$labelname.".txt";
+}else{
+$fpath=zzcmsroot."/cache/ask/".$labelname.".txt";
+}
+if (cache_update_time!=0 && file_exists($fpath)!==false && time()-filemtime($fpath)<3600*24*cache_update_time){
+	return file_get_contents($fpath);
+}else{
+$fpath=zzcmsroot."/template/".$siteskin."/label/askshow/".$labelname.".txt";
+if (file_exists($fpath)==true){
+if (filesize($fpath)<10){ showmsg(zzcmsroot."template/".$siteskin."/label/askshow/".$labelname.".txt 内容为空");}//utf-8有文件头，空文件大小为3字节
+$fcontent=file_get_contents($fpath);
+$f=explode("|||",$fcontent) ;
+$title=$f[0];
+if ($b){//自动获取外部大类值的情况
+$bid = $b;//大类用外部的值
+if ($sid<>''){$sid = $sid;}else{$sid = $f[2];}//小类用指定的类别名，自动根据大类参数调用相应大类下的小类，小类名要相同
+}elseif($bid<>0){//嵌套在ztclass内的情况
+$bid=$bid;
+}else{//直接使用标签内的值
+$bid = $f[1];$sid = $f[2];
+}
+$pic =$f[3];$elite = $f[4];$typeid = $f[5];$numbers = $f[6];$orderby =$f[7];$titlenum = $f[8];$cnum = $f[9];$row = $f[10];$start =$f[11];$mids = $f[12];
+$mids = str_replace("show.php?id={#id}", "/ask/show.php?id={#id}",$mids);
+	if (whtml == "Yes") {
+	$mids = str_replace("/ask/show.php?id={#id}", "/ask/show-{#id}.htm",$mids);
+	$mids = str_replace("class.php?b={#bigclassid}","/ask/class/{#bigclassid}",$mids);
+	$mids = str_replace("ask.php?b={#bigclassid}&s={#smallclassid}","/ask/{#bigclassid}/{#smallclassid}",$mids);
+	$mids = str_replace("ask.php?b={#bigclassid}","/ask/{#bigclassid}",$mids);
+	}
+$ends = $f[13];
+$sql = "select * from zzcms_ask where passed=1 ";
+	if ($bid == 0) {//当大类为0时，取所有显示大类,小类的信息
+	$sql = $sql . "and bigclassid in (select classid from zzcms_askclass where isshowininfo=1)  ";
+	}else{
+    	if ($bid <> 0) {$sql = $sql . " and bigclassid=".$bid."";}
+    	if ($sid <> '' && $sid <>'empty') {//这里是按小类名取值的，显示不同大类，但小类名相同的信息，如按ID不能达到这种效果，原理同广告调用。
+    	$sql = $sql . " and smallclassname='".$sid."'";
+		}
+	}
+ 	if ($pic == 1) {$sql = $sql . " and img is not null and img <>''";}
+    if ($elite == 1){$sql = $sql . " and elite>0";}
+	if ($typeid != 999){$sql = $sql . " and typeid='".$typeid."' ";}
+	$sql = $sql . " order by ";
+	if ( $orderby == "hit") {$sql = $sql . "hit desc";
+	}elseif ($orderby == "id") {$sql = $sql . "id desc";
+	}elseif ($orderby = "timefororder") {$sql = $sql . "sendtime desc";}
+	$sql = $sql . " limit 0,$numbers ";
+//echo $sql ."<br>"; 
+$rs=query($sql);
+$r=num_rows($rs);
+if (!$r){
+$str="暂无信息";
+}else{
+$n = 1;$xuhao = 1;$mids2='';
+while($r=fetch_array($rs)){
+	if ($r["img"] <> ""){
+    $mids2=$mids2.str_replace('{#img}',getsmallimg($r["img"]),str_replace("{#imgbig}", $r["img"],$mids));  
+    }else{
+    $mids2=$mids2.str_replace("{#img}","",str_replace("{#imgbig}", "",$mids));
+	}
+	if ($n<=3){
+	$mids2=str_replace("{#xuhao}", "<font class=xuhao1>".addzero($xuhao,2)."</font>",$mids2);
+	}else{
+	$mids2=str_replace("{#xuhao}", "<font class=xuhao2>".addzero($xuhao,2)."</font>",$mids2);
+	}
+	
+	$mids2=str_replace("{#bigclassname}", $r["bigclassname"],str_replace("{#bigclassid}", $r["bigclassid"],$mids2));
+	$mids2=str_replace("{#sendtime}", date("Y-m-d",strtotime($r['sendtime'])),$mids2);
+	$mids2=str_replace("{#content}", cutstr(nohtml($r["content"]),$cnum),$mids2);
+	$mids2=str_replace("{#smallclassid}", $r["smallclassid"],$mids2);
+	$mids2=str_replace("{#smallclassname}", $r["smallclassname"],$mids2);
+	$mids2=str_replace("{#hit}", $r["hit"],$mids2);
+	$mids2=str_replace("{#id}", $r["id"],$mids2);
+	$mids2=str_replace("{#n}", $n,$mids2);
+	$mids2=str_replace("{#title}",cutstr($r["title"],$titlenum),$mids2);
+	
+	$rs_answer_num = query("select count(*) as total from zzcms_answer where about='".$r["id"]."' "); 
+	$row_answer_num = fetch_array($rs_answer_num);
+	$answer_num = $row_answer_num['total'];
+	$mids2=str_replace("{#answer_num}", $answer_num,$mids2);
+	
+	$zhuangtai_biaozhi='';
+	if ($r["typeid"]==1){
+	$zhuangtai_biaozhi="<img src='/image/dui2.png' title='已解决'>";
+	}elseif ($r["typeid"]==0){
+	$zhuangtai_biaozhi="<img src='/image/wenhao.png' title='待解决'>";
+	}
+	
+	$mids2=str_replace("{#zhuangtai}", $zhuangtai_biaozhi,$mids2);
+	
+	if ( $row <> "" && $row >0) {
+		if ( $n % $row == 0) {$mids2 = $mids2 . "</tr>";}
+	}
+	$mids2 = $mids2 . "\r\n";
+$n = $n + 1;
+$xuhao++;
+}
+$str = $start.$mids2.$ends;
+}
+if (cache_update_time!=0){
+	if ($sid!=0){
+	$fpath=zzcmsroot."cache/".$siteskin."/ask/".$bid."-".$sid."-".$labelname.".txt";
+	}elseif ($bid!='empty' && $bid!=''){
+	$fpath=zzcmsroot."cache/".$siteskin."/ask/".$bid."-".$labelname.".txt";
+	}else{
+	$fpath=zzcmsroot."cache/".$siteskin."/ask/".$labelname.".txt";
+	}
+	if (!file_exists(zzcmsroot."cache/".$siteskin."/ask")) {mkdir(zzcmsroot."cache/".$siteskin."/ask",0777,true);}
+	$fp=fopen($fpath,"w+");//fopen()的其它开关请参看相关函数
+	fputs($fp,stripfxg($str));//写入文件
+	fclose($fp);
+}
+return $str;
+}//end if file_exists($fpath)==true
+}//end if (file_exists($fpath)!==false)
+}
+
 function helpshow($labelname){
 global $siteskin;//取外部值，供演示模板用
 if (!$siteskin){$siteskin=siteskin;}
@@ -1320,13 +1466,13 @@ $sql = "select id,title,sendtime,img,content,elite from zzcms_help where classid
 	}elseif ($orderby = "timefororder") {$sql = $sql . "sendtime desc";}
 	$sql = $sql . " limit 0,$numbers ";
 //echo $sql ."<br>"; 
-$rs=mysql_query($sql);
-$r=mysql_num_rows($rs);
+$rs=query($sql);
+$r=num_rows($rs);
 if (!$r){
 $str="暂无信息";
 }else{
 $n = 1;$xuhao = 1;$mids2='';
-while($r=mysql_fetch_array($rs)){
+while($r=fetch_array($rs)){
 	if ($r["img"] <> ""){
     $mids2=$mids2.str_replace('{#img}',getsmallimg($r["img"]),str_replace("{#imgbig}", $r["img"],$mids)); 
     }else{
@@ -1374,13 +1520,13 @@ if ($bigclassid <> 0 ){$sql = $sql ." and bigclassid=" . $bigclassid . "";}
 if ($pic == 1) {$sql = $sql . " and logo is not null and logo <>''";}
 if ($elite == 1){$sql = $sql . " and elite>0";}
 $sql = $sql . " limit 0,$numbers ";
-$rs=mysql_query($sql);
-$r=mysql_num_rows($rs);
+$rs=query($sql);
+$r=num_rows($rs);
 if (!$r){
 $str="暂无信息";
 }else{
 $mids2 ='';$n = 1;$xuhao=1;
-while($r=mysql_fetch_array($rs)){
+while($r=fetch_array($rs)){
 	$mids2 = $mids2 . str_replace("{#url}",$r["url"],str_replace("{#logo}", $r["logo"],str_replace("{#sitename}",cutstr($r["sitename"],$titlenum),$mids)));
 	if ($n<=3){
 	$mids2=str_replace("{#xuhao}", "<font class=xuhao1>".addzero($xuhao,2)."</font>",$mids2);
@@ -1410,8 +1556,8 @@ $fcontent=file_get_contents($fpath);
 $f=explode("|||",$fcontent) ;
 $b = $f[1];$numbers = $f[2];$row = $f[3];$start = $f[4];$mids = $f[5];$ends = $f[6];
 $sql ="select * from zzcms_adclass where  parentid='".$b."' order by xuhao limit 0,$numbers ";
-$rs=mysql_query($sql);
-$r=mysql_num_rows($rs);
+$rs=query($sql);
+$r=num_rows($rs);
 if (!$r){
 $str="暂无信息";
 }else{
@@ -1425,7 +1571,7 @@ if (count(explode("{@adshow.",$mids))==3) {
 	$mylabel2=strbetween($mids2,"{@adshow.","}");
 }
 //echo $mylabel2;
-while($r=mysql_fetch_array($rs)){
+while($r=fetch_array($rs)){
 if ($b<>""){//父类不为空，调出的classid为小类
 $mids3=$mids3.str_replace("{@adshow." . $mylabel1 . "}", adshow($mylabel1,$b,$r["classname"]),$mids);//注意这里用首次替换已把$mids赋值给$mids3了，	
 $mids3=str_replace("{@adshow." . $mylabel2 . "}", adshow($mylabel2,$b,$r["classname"]),$mids3);//这里替换$mids3里的内容
@@ -1454,8 +1600,8 @@ $f=explode("|||",$fcontent) ;
 $title=$f[0];
 if ($b){//自动获取外部大类值的情况
 $sql="select classname from zzcms_zsclass where classzm='".$b."'";
-$rs=mysql_query($sql);
-$row=mysql_fetch_array($rs);
+$rs=query($sql);
+$row=fetch_array($rs);
 $classname='';	
 	if ($row){
 	$classname=$row["classname"];
@@ -1478,13 +1624,13 @@ $sql=$sql. "and endtime>= '".date('Y-m-d H:i:s')."' ";
 }
 $sql=$sql. "order by xuhao asc,id asc";
 //echo $sql;
-$rs=mysql_query($sql);
-$r=mysql_num_rows($rs);
+$rs=query($sql);
+$r=num_rows($rs);
 if (!$r){
 $str="暂无信息";
 }else{
 $mids2='';$n = 1;
-while($r=mysql_fetch_array($rs)){
+while($r=fetch_array($rs)){
 $mids2 =$mids2 .str_replace("{#link}", $r["link"],str_replace("{#n}", addzero($n,2),str_replace("{#title}",cutstr($r["title"],$titlenum),$mids)));
 	$mids2 =str_replace("{#width}",$r["imgwidth"],$mids2);
 	$mids2 =str_replace("{#height}",$r["imgheight"],$mids2);
@@ -1529,14 +1675,14 @@ $sql = "select * from zzcms_about  ";
 if ($id <> 0 ){$sql = $sql ."where id='" . $id . "'";}
 $sql = $sql ." order by id asc";
 //echo $sql;
-$rs=mysql_query($sql);
-$r=mysql_num_rows($rs);
+$rs=query($sql);
+$r=num_rows($rs);
 if (!$r){
 $str="暂无信息";
 }else{
 $mids2 ='';
 $n = 1;
-while($r=mysql_fetch_array($rs)){
+while($r=fetch_array($rs)){
 	$mids2 = $mids2 . str_replace("{#title}",cutstr($r["title"],$titlenum),$mids);
 	$mids2=str_replace("{#content}", cutstr($r["content"],$contentnum),$mids2);
 	if ( $row <> "" && $row >0) {

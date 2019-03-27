@@ -18,12 +18,12 @@ $pagekeywords=$comane."-资质";
 $pagedescription=$comane."-资质";
 $list=strbetween($strout,"{loop}","{/loop}");
 
-$rs=mysql_query("select img,title,passed,editor from zzcms_licence where editor='" .$editor. "' and passed=1");
-$row=mysql_num_rows($rs);
+$rs=query("select img,title,passed,editor from zzcms_licence where editor='" .$editor. "' and passed=1");
+$row=num_rows($rs);
 if ($row){
 $n=0;
 $list2='';
-while ($row=mysql_fetch_array($rs)){
+while ($row=fetch_array($rs)){
 $list2 = $list2. str_replace("{#img}",getsmallimg($row["img"]),$list) ;
 $list2 =str_replace("{#imgbig}",$row['img'],$list2) ;
 $list2 =str_replace("{#link}",$row['img'],$list2) ;

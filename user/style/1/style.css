@@ -22,6 +22,7 @@ a:hover {color: #FF3300;text-decoration: underline;}
 .docolor {color: #CCCCCC;}
 .buttons {background-color: #FF5721;border:0px;height:25px;line-height:25px;cursor: hand;color: #FFF;font-family: "微软雅黑";-webkit-border-radius: 12px;-moz-border-radius:12px;padding:0px 6px}
 .buttons:hover {background:#FF6721;}
+.textbg {background-color: #666;border:0px;height:25px;line-height:25px;cursor: hand;color: #FFF;font-family: "微软雅黑";-webkit-border-radius: 12px;-moz-border-radius:12px;padding:0px 6px}
 .help {cursor: help;}
 .userbar {background-color: #FFF;-webkit-border-radius: 4px;-moz-border-radius:4px;padding:3px 10px;margin:10px 0;box-shadow: 0 0 6px 0 #B4CCEB;}
 .menu { background:#FFFFFF url("image/manage_top_bg.gif");height:46px;}

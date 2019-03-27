@@ -28,8 +28,8 @@ if ($s<>"") {
 
 $sql=$sql." order by groupid desc,elite desc,".$px." desc limit $last,$amount";
 
-$rs = mysql_query($sql); 
-while($row= mysql_fetch_array($rs)){
+$rs = query($sql); 
+while($row= fetch_array($rs)){
 
 
  $sayList[] = array(

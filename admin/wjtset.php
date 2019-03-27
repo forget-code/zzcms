@@ -183,6 +183,29 @@ function showconfig(){
         <input name="jobshowdescription" type="text"  value="<?php echo jobshowdescription?>" size="50" maxlength="255">      </td>
     </tr>
     <tr>
+      <td align="right" class="border">报价列表页</td>
+      <td class="border"> title<br>
+          <input name="baojialisttitle" type="text" value="<?php echo baojialisttitle?>" size="50" maxlength="255">
+          <br>
+        keywords<br>
+        <input name="baojialistkeyword" type="text"  value="<?php echo baojialistkeyword?>" size="50" maxlength="255">
+        <br>
+        description<br>
+        <input name="baojialistdescription" type="text"  value="<?php echo baojialistdescription?>" size="50" maxlength="255"></td>
+    </tr>
+    <tr>
+      <td align="right" class="border">报价信息页</td>
+      <td class="border"> title<br>
+          <input name="baojiashowtitle" type="text"  value="<?php echo baojiashowtitle?>" size="50" maxlength="255">
+          <br>
+        keywords<br>
+        <input name="baojiashowkeyword" type="text"  value="<?php echo baojiashowkeyword?>" size="50" maxlength="255">
+        <br>
+        description<br>
+        <input name="baojiashowdescription" type="text"  value="<?php echo baojiashowdescription?>" size="50" maxlength="255">
+      </td>
+    </tr>
+    <tr>
       <td align="right" class="border">网刊列表页</td>
       <td class="border"> title<br>
           <input name="wangkanlisttitle" type="text" value="<?php echo wangkanlisttitle?>" size="50" maxlength="255">
@@ -202,8 +225,7 @@ function showconfig(){
         <input name="wangkanshowkeyword" type="text"  value="<?php echo wangkanshowkeyword?>" size="50" maxlength="255">
         <br>
         description<br>
-        <input name="wangkanshowdescription" type="text"  value="<?php echo wangkanshowdescription?>" size="50" maxlength="255">
-      </td>
+        <input name="wangkanshowdescription" type="text"  value="<?php echo wangkanshowdescription?>" size="50" maxlength="255">      </td>
     </tr>
     <tr> 
       <td align="right" class="border">&nbsp;</td>
@@ -275,6 +297,13 @@ function SaveConfig(){
 	$fcontent=$fcontent. "define('jobshowtitle','". trim($_POST['jobshowtitle'])."') ;//jobshowtitle\n";
 	$fcontent=$fcontent. "define('jobshowkeyword','". trim($_POST['jobshowkeyword'])."') ;//jobshowkeyword\n";
 	$fcontent=$fcontent. "define('jobshowdescription','". trim($_POST['jobshowdescription'])."') ;//jobshowdescription\n";
+	
+	$fcontent=$fcontent. "define('baojialisttitle','". trim($_POST['baojialisttitle'])."') ;//baojialisttitle\n";
+	$fcontent=$fcontent. "define('baojialistkeyword','". trim($_POST['baojialistkeyword'])."') ;//baojialistkeyword\n";
+	$fcontent=$fcontent. "define('baojialistdescription','". trim($_POST['baojialistdescription'])."') ;//baojialistdescription\n";
+	$fcontent=$fcontent. "define('baojiashowtitle','". trim($_POST['baojiashowtitle'])."') ;//baojiashowtitle\n";
+	$fcontent=$fcontent. "define('baojiashowkeyword','". trim($_POST['baojiashowkeyword'])."') ;//baojiashowkeyword\n";
+	$fcontent=$fcontent. "define('baojiashowdescription','". trim($_POST['baojiashowdescription'])."') ;//baojiashowdescription\n";
 	
 	$fcontent=$fcontent. "define('wangkanlisttitle','". trim($_POST['wangkanlisttitle'])."') ;//wangkanlisttitle\n";
 	$fcontent=$fcontent. "define('wangkanlistkeyword','". trim($_POST['wangkanlistkeyword'])."') ;//wangkanlistkeyword\n";

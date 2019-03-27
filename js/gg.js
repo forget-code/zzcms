@@ -5,9 +5,7 @@ function ConfirmDel(){
    else
      return false;	 
 }
-function DLS(id) { 
-window.open("dls_show.php?id="+id,"","height=420,width=470,left=300,top=100,resizable=yes,scrollbars=yes,status=no,toolbar=no,menubar=no,location=no");
-}
+
 function fSetBg(obj){
 	obj.style.backgroundColor = '#F1F6FC';
 }
@@ -68,4 +66,32 @@ function  deluser(myform){
 function MM_jumpMenu(targ,selObj,restore){ //v3.0
   eval(targ+".location='"+selObj.options[selObj.selectedIndex].value+"'");
   if (restore) selObj.selectedIndex=0;
+}
+
+function openwindow(pageurl,iWidth,iHeight){
+var iTop = (window.screen.availHeight-30-iHeight)/2; //获得窗口的垂直位置;
+var iLeft = (window.screen.availWidth-10-iWidth)/2; //获得窗口的水平位置;
+window.open (pageurl,"","height="+iHeight+",width="+iWidth+",left="+iLeft+",top="+iTop+",toolbar =no,menubar=no,scrollbars=no,resizable=no, location=no,status=no");
+}
+
+function valueFormOpenwindow(value){ //子页面引用此函数传回value值,上传图片用
+//alert(value);
+document.getElementById("img").value=value;
+document.getElementById("showimg").innerHTML="<img src='"+value+"' width=120>";
+}
+
+function valueFormOpenwindowForFlv(value){ //子页面引用此函数传回value值，上传flv用
+//alert(value);
+document.getElementById("flv").value=value;
+if(value.substr(value.length-3).toLowerCase()=='flv'){//用这个播放器无法播放网络上的SWF格式的视频
+        var s1 = new SWFObject("/image/player.swf","ply","200","200","9","#FFFFFF");
+          s1.addParam("allowfullscreen","true");
+          s1.addParam("allowscriptaccess","always");
+          s1.addParam("flashvars","file="+value+"&autostart=true");
+          s1.write("container");
+		  
+	}else if(value.substr(value.length-3).toLowerCase()=='swf'){
+	var s1="<embed src='"+value+"' quality='high' pluginspage='http://www.macromedia.com/go/getflashplayer' type='application/x-shockwave-flash' width=200 height=200></embed>";
+	document.getElementById("container").innerHTML=s1+"<br/>点击可修改";
+	}
 }

@@ -10,7 +10,7 @@ if(@$step==3){
     </tr>
 	<?php 
 $pass=true;
-$files_array=array("../inc/config.php","../inc/wjt.php","../skin/test.txt","../template/test.txt","../uploadfiles/test.txt","../html/test.txt","../cache/test.txt");
+$files_array=array("../inc/config.php","../inc/wjt.php","../skin/test.txt","../template/test.txt","../uploadfiles/test.txt","../html/test.txt");
 	foreach ($files_array as $files){ ?>
     <tr> 
       <td bgcolor="#FFFFFF"><?php echo str_replace('/test.txt','',$files)?></td>

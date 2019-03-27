@@ -347,7 +347,8 @@ $list2 =str_replace("{#usergroup}" ,$usergroup,$list2) ;
 $list2 =str_replace("{#address}" ,$row["address"],$list2) ;
 $list2 =str_replace("{#phone}" ,$row["phone"],$list2) ;
 $list2 =str_replace("{#cp}" ,$cp,$list2) ;
-$list2 =str_replace("{#img}" ,$row["img"],$list2) ;		
+$list2 =str_replace("{#imgbig}" ,$row["img"],$list2) ;		
+$list2 =str_replace("{#img}" ,getsmallimg($row["img"]),$list2) ;	
 $i=$i+1;
 }
 $strout=str_replace("{loop}".$list."{/loop}",$list2,$strout) ;

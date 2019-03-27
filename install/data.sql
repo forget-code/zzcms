@@ -58,17 +58,12 @@ CREATE TABLE `zzcms_main` (
   `szm` varchar(255) default NULL,
   `prouse` text,
   `procompany` varchar(255) default NULL,
-  `pricezs` varchar(255) default NULL,
-  `pricels` varchar(255) default NULL,
-  `gg` varchar(255) default NULL,
   `sm` text,
   `xuhao` int(4) default NULL,
   `bigclasszm` varchar(255) default NULL,
   `smallclasszm` varchar(255) default NULL,
   `shuxing`  int(4) default NULL,
   `img` varchar(255) default NULL,
-  `img2` varchar(255) default NULL,
-  `img3` varchar(255) default NULL,
   `flv` varchar(255) default NULL,
   `province` varchar(50) default NULL,
   `city` varchar(50) default NULL,
@@ -76,6 +71,7 @@ CREATE TABLE `zzcms_main` (
   `zc` text,
   `yq` text,
   `other` text,
+  `shuxing_value` text,
   `sendtime` datetime default NULL,
   `timefororder` varchar(255) default NULL,
   `editor` varchar(255) default NULL,
@@ -129,6 +125,30 @@ CREATE TABLE `zzcms_dl` (
   PRIMARY KEY  (`id`)
 ) ENGINE=MyISAM AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
 ALTER TABLE  `zzcms_dl` ADD INDEX (  `province` ,  `city` ,  `xiancheng` ) ;
+
+DROP TABLE IF EXISTS `zzcms_baojia`;
+CREATE TABLE `zzcms_baojia` (
+  `id` int(11) NOT NULL auto_increment,
+  `classzm` varchar(255) default NULL,
+  `cp` varchar(255) default NULL,
+  `province` varchar(50) default NULL,
+  `city` varchar(50) default NULL,
+  `xiancheng` varchar(50) default NULL,
+  `price` varchar(50) default NULL,
+  `danwei` varchar(50) default NULL,
+  `companyname` varchar(255) default NULL,
+  `truename` varchar(255) default NULL,
+  `address` varchar(255) default NULL,
+  `tel` varchar(255) default NULL,
+  `email` varchar(255) default NULL,
+  `editor` varchar(255) default NULL,
+  `ip` varchar(255) default NULL,
+  `sendtime` datetime default NULL,
+  `hit` int(11) default '0',
+  `passed` tinyint(4) default '0',
+  PRIMARY KEY  (`id`)
+) ENGINE=MyISAM AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
+ALTER TABLE  `zzcms_baojia` ADD INDEX (  `province` ,  `city` ,  `xiancheng` ) ;
 
 DROP TABLE IF EXISTS `zzcms_guestbook`;
 CREATE TABLE `zzcms_guestbook` (
@@ -562,7 +582,7 @@ CREATE TABLE `zzcms_zsclass` (
   `parentid` varchar(255) NOT NULL default 'A',
   `classname` varchar(255) NOT NULL,
   `classzm` varchar(255) default NULL,
-  `img` varchar(255) default NULL,
+  `img` varchar(255) NOT NULL default '0',
   `xuhao` int(11) NOT NULL default '0',
   `title` varchar(255) default NULL,
   `keyword` varchar(255) default NULL,
@@ -663,6 +683,16 @@ CREATE TABLE `zzcms_msg` (
   `id` int(11) NOT NULL auto_increment,
   `content` varchar(1000) NOT NULL,
   `elite` tinyint(4) NOT NULL default '0',
+  PRIMARY KEY  (`id`)
+) ENGINE=MyISAM AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
+
+DROP TABLE IF EXISTS `zzcms_userdomain`;
+CREATE TABLE `zzcms_userdomain` (
+  `id` int(11) NOT NULL auto_increment,
+  `username` varchar(50) default NULL,
+  `domain` varchar(255) default NULL,
+  `passed` tinyint(4) default '0',
+  `del` tinyint(4) default '0',
   PRIMARY KEY  (`id`)
 ) ENGINE=MyISAM AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
 

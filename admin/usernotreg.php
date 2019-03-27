@@ -1,5 +1,6 @@
 <?php
 include("admin.php");
+include("../inc/fy.php");
 ?>
 <html>
 <head>
@@ -10,22 +11,11 @@ include("admin.php");
 </head>
 <body>
 <?php
-if (isset($_REQUEST["action"])){
-$action=$_REQUEST["action"];
-}else{
-$action="";
-}
+$action=isset($_REQUEST["action"])?$_REQUEST["action"]:'';
+$page=isset($_GET["page"])?$_GET["page"]:1;
 
-if( isset($_GET["page"]) && $_GET["page"]!="") {
-    $page=$_GET['page'];
-}else{
-    $page=1;
-}
-if (isset($_REQUEST["keyword"])){
-$keyword=$_REQUEST["keyword"];
-}else{
-$keyword="";
-}
+$keyword=isset($_REQUEST["keyword"])?$_REQUEST["keyword"]:'';
+
 if ($action=="del"){
 checkadminisdo("siteconfig");
 $id="";
@@ -77,12 +67,10 @@ echo "暂无信息";
 
 ?>
 <form name="myform" method="post" action="?action=del">
-  <table width="100%" border="0" cellpadding="5" cellspacing="0" class="border">
-    <tr>
-      <td><label for="chkAll2" style="text-decoration: underline;cursor: hand;"></label>
-          <input name="submit2"  type="submit" value="删除选中的信息" onClick="return ConfirmDel()"></td>
-    </tr>
-  </table>
+<div class="border">
+<input name="submit2"  type="submit" value="删除选中的信息" onClick="return ConfirmDel()">
+</div>
+
   <table width="100%" border="0" cellspacing="1" cellpadding="5">
     <tr> 
       <td width="5%" align="center" class="border"><label for="chkAll" style="text-decoration: underline;cursor: hand;">全选</label></td>
@@ -111,38 +99,13 @@ while($row = mysql_fetch_array($rs)){
 }
 ?>
   </table>
-  <table width="100%" border="0" cellpadding="5" cellspacing="0" class="border">
-    <tr> 
-      <td> <input name="chkAll" type="checkbox" id="chkAll" onClick="CheckAll(this.form)" value="checkbox">
+      <div class="border"> <input name="chkAll" type="checkbox" id="chkAll" onClick="CheckAll(this.form)" value="checkbox">
         <label for="chkAll" style="text-decoration: underline;cursor: hand;">全选</label> 
         <input name="submit"  type="submit" value="删除选中的信息" onClick="return ConfirmDel()"> 
-        <input name="page" type="hidden" id="page" value="<%=CurrentPage%>"></td>
-    </tr>
-  </table>
+        <input name="page" type="hidden" id="page" value="<%=CurrentPage%>">
+		</div>
 </form>
-<table width="100%" border="0" cellpadding="0" cellspacing="0" class="border">
-  <tr> 
-    <td width="55%" height="30" align="center"> 
-	页次：<strong><font color="#CC0033"><?php echo $page?></font>/<?php echo $totlepage?>　</strong> 
-      <strong><?php echo $page_size?></strong>条/页　共<strong><?php echo $totlenum ?></strong>条
-<?php
-		
-		if ($page<>1) {
-			echo "【<a href='?keyword=".$keyword."&page=1'>首页</a>】 ";
-			echo "【<a href='?keyword=".$keyword."&page=".($page-1)."'>上一页</a>】 ";
-		}else{
-			echo "【首页】【上一页】";
-		}
-		if ($page<>$totlepage) {
-			echo "【<a href='?keyword=".$keyword."&page=".($page+1)."'>下一页</a>】 ";
-			echo "【<a href='?keyword=".$keyword."&page=".$totlepage."'>尾页</a>】 ";
-		}else{
-			echo "【下一页】【尾页】";
-		}       
-	?>
-    </td>
-  </tr>
-</table>
+<div class="border center"><?php echo showpage_admin()?></div>
 <?php
 }
 mysql_close($conn);

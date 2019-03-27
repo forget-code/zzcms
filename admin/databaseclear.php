@@ -78,18 +78,27 @@ $str=$str."<label for='zzcms_dl_".$row["classzm"]."'>zzcms_dl_".$row["classzm"].
 }
 echo $str;
 }
-			?>
-			</td>
+			?>			</td>
+          </tr>
+          <tr>
+            <td class="border"><input name="table[]" type="checkbox" id="zzcms_zx" value="zzcms_zx">
+                <label for="zzcms_zx">zzcms_zx(资讯表) </label>
+                <input name="table[]" type="checkbox" id="zzcms_zxclass" value="zzcms_zxclass">
+                <label for="zzcms_zxclass"> zzcms_zxclass(资讯分类表)</label>
+                <input name="table[]" type="checkbox" id="zzcms_tagzx" value="zzcms_tagzx">
+                <label for="zzcms_tagzx"> zzcms_tagzx(资讯标签表) </label>
+                <input name="table[]" type="checkbox" id="zzcms_pinglun" value="zzcms_pinglun">
+                <label for="zzcms_pinglun"> zzcms_pinglun(资讯评论表)</label></td>
           </tr>
           <tr> 
-            <td class="border"> <input name="table[]" type="checkbox" id="zzcms_zx" value="zzcms_zx">
-              <label for="zzcms_zx">zzcms_zx(资讯表) </label>
-              <input name="table[]" type="checkbox" id="zzcms_zxclass" value="zzcms_zxclass">
-             <label for="zzcms_zxclass"> zzcms_zxclass(资讯分类表)</label> 
-              <input name="table[]" type="checkbox" id="zzcms_tagzx" value="zzcms_tagzx">
-             <label for="zzcms_tagzx"> zzcms_tagzx(资讯标签表) </label>
-              <input name="table[]" type="checkbox" id="zzcms_pinglun" value="zzcms_pinglun">
-             <label for="zzcms_pinglun"> zzcms_pinglun(资讯评论表)</label></td>
+            <td class="border"> <input name="table[]" type="checkbox" id="zzcms_wangkan" value="zzcms_wangkan">
+              <label for="zzcms_wangkan">zzcms_wangkan(网刊表) </label>
+              <input name="table[]" type="checkbox" id="zzcms_wangkanclass" value="zzcms_wangkanclass">
+             <label for="zzcms_wangkanclass"> zzcms_wangkanclass(网刊分类表)</label>             </td>
+          </tr>
+          <tr>
+            <td class="border"><input name="table[]" type="checkbox" id="zzcms_baojia" value="zzcms_baojia">
+                <label for="zzcms_baojia">zzcms_baojia(报价表) </label></td>
           </tr>
           <tr> 
             <td class="border"> <input name="table[]" type="checkbox" id="zzcms_licence" value="zzcms_licence">

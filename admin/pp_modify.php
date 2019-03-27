@@ -6,13 +6,7 @@ include("admin.php");
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <title></title>
 <link href="style.css" rel="stylesheet" type="text/css">
-<?php
-checkadminisdo("pp");
-?>
-<script language="javascript" src="/js/timer.js"></script>
-</head>
-<body>
-
+<script language="javascript" src="/js/gg.js"></script>
 <script language = "JavaScript">
 function CheckForm(){
 if (document.myform.bigclassid.value==""){
@@ -26,10 +20,12 @@ if (document.myform.bigclassid.value==""){
 	return false;
 }
 }
-</script>   
+</script>
+</head>
+<body>  
 <div class="admintitle">修改品牌信息</div>
-<form action="pp_save.php" method="post" name="myform" id="myform" onSubmit="return CheckForm();">
 <?php
+checkadminisdo("pp");
 $id=$_REQUEST["id"];
 if ($id<>"") {
 checkid($id);
@@ -40,6 +36,7 @@ $sqlzs="select * from zzcms_pp where id='$id'";
 $rszs=mysql_query($sqlzs);
 $rowzs=mysql_fetch_array($rszs);
 ?>
+<form action="pp_save.php" method="post" name="myform" id="myform" onSubmit="return CheckForm();">
   <table width="100%" border="0" cellpadding="5" cellspacing="0">
     <tr> 
       <td align="right" class="border">名称 <font color="#FF0000">*</font></td>
@@ -109,23 +106,10 @@ while($row = mysql_fetch_array($rs)){
     </tr>
     <tr> 
       <td align="right" class="border">图片： 
-        <script type="text/javascript">
-function showtxt(num)
-{
-var sd =window.showModalDialog('/uploadimg_form.php?noshuiyin=1','','dialogWidth=400px;dialogHeight=300px');
-//for chrome 
-if(sd ==undefined) {  
-sd =window.returnValue; 
-}
-if(sd!=null) {  
-document.getElementById("img"+num).value=sd;//从子页面得到值写入母页面
-document.getElementById("showimg"+num).innerHTML="<img src='"+sd+"' width=120>";
-}
-}
-</script> <input name="img1" type="hidden" id="img1" value="<?php echo $rowzs["img"]?>" size="45"></td>
+ <input name="img" type="hidden" id="img" value="<?php echo $rowzs["img"]?>" size="45"></td>
       <td class="border"> <table height="120" border="0" cellpadding="5" cellspacing="1" bgcolor="#999999">
           <tr> 
-            <td width="120" align="center" bgcolor="#FFFFFF" id="showimg1" onclick='showtxt(1)'> 
+            <td width="120" align="center" bgcolor="#FFFFFF" id="showimg" onClick="openwindow('/uploadimg_form.php',400,300)"> 
               <?php
 				  if($rowzs["img"]<>""){
 				  echo "<img src='".$rowzs["img"]."' border=0 width=120 /><br>点击可更换图片";

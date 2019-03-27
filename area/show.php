@@ -11,7 +11,7 @@ $province=$_GET["province"];
 $province="";
 }
 $provincezm=$province;
-$province=province_zm2hz($province);
+$province=trim(province_zm2hz($province));//省份名从记事本中的数组中读出的，得加trim去除去两端空白内容，否则无法从数据库中读取到内容
 $fp="../template/".$siteskin."/area_show.htm";
 $f = fopen($fp,'r');
 $strout = fread($f,filesize($fp));

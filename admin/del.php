@@ -29,9 +29,9 @@ mysql_close($conn);
 switch ($tablename){
 case "zzcms_main";
 if (strpos($id,",")>0){
-$sql="select img,img2,img3,flv,id from zzcms_main where id in (". $id .")";
+$sql="select img,flv,id from zzcms_main where id in (". $id .")";
 }else{
-$sql="select img,img2,img3,flv,id from zzcms_main where id='$id'";
+$sql="select img,flv,id from zzcms_main where id='$id'";
 }
 $rs=mysql_query($sql);
 while($row=mysql_fetch_array($rs)){
@@ -43,22 +43,7 @@ while($row=mysql_fetch_array($rs)){
 			unlink($fs);		
 			}
 		}
-		if ($row["img2"]<>"/image/nopic.gif") {
-		$f="../".substr($row["img2"],1);
-		$fs="../".substr(str_replace(".","_small.",$row["img2"]),1);
-			if (file_exists($f)){
-			unlink($f);
-			unlink($fs);		
-			}
-		}
-		if ($row["img3"]<>"/image/nopic.gif") {
-		$f="../".substr($row["img3"],1);
-		$fs="../".substr(str_replace(".","_small.",$row["img3"]),1);
-			if (file_exists($f)){
-			unlink($f);
-			unlink($fs);		
-			}
-		}
+		
 		if ($row['flv']<>''){//flv里没有设默认值
 			$f="../".substr($row['flv'],1);
 			if (file_exists($f)){

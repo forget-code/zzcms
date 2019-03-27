@@ -9,44 +9,15 @@ include("admin.php");
 <script language="JavaScript" src="/js/gg.js"></script>
 </head>
 <?php
-if (isset($_REQUEST["action"])){
-$action=$_REQUEST["action"];
-}else{
-$action="";
-}
-if( isset($_GET["page"]) && $_GET["page"]!="") {
-    $page=$_GET['page'];
-}else{
-    $page=1;
-}
-if (isset($_REQUEST["kind"])){
-$kind=$_REQUEST["kind"];
-}else{
-$kind="";
-}
+$action=isset($_REQUEST["action"])?$_REQUEST["action"]:'';
+$page=isset($_GET["page"])?$_GET["page"]:1;
+$shenhe=isset($_REQUEST["shenhe"])?$_REQUEST["shenhe"]:'';
 
-if (isset($_GET["px"])){
-$px=$_GET["px"];
-}else{
-$px="id";
-}
+$keyword=isset($_REQUEST["keyword"])?$_REQUEST["keyword"]:'';
+$kind=isset($_REQUEST["kind"])?$_REQUEST["kind"]:'username';
 
-if (isset($_REQUEST["usersf"])){
-$usersf=$_REQUEST["usersf"];
-}else{
-$usersf="";
-}
-
-if (isset($_REQUEST["shenhe"])){
-$shenhe=$_REQUEST["shenhe"];
-}else{
-$shenhe="";
-}
-if (isset($_REQUEST["keyword"])){
-$keyword=trim($_REQUEST["keyword"]);
-}else{
-$keyword="";
-}
+$px=isset($_GET["px"])?$_GET["px"]:'id';
+$usersf=isset($_REQUEST["usersf"])?$_REQUEST["usersf"]:'';
 
 if ($action=="pass"){
 checkadminisdo("userreg");//本页涉及到用户密码信息，验证权限放在开始的地方
@@ -73,7 +44,7 @@ echo "<script>location.href='?keyword=".$keyword."&page=".$page."'</script>";
 <form name="form1" method="post" action="?">
   <table width="100%" border="0" cellpadding="5" cellspacing="0">
     <tr> 
-      <td class="border"> <input name="kind" id="username" type="radio" value="username" <?php if ($kind=="username") { echo "checked";}?> >
+      <td class="border"> <input name="kind" type="radio" id="username" value="username" checked <?php if ($kind=="username") { echo "checked";}?> >
         <label for="username">按用户名</label>
 <input name="kind" type="radio" value="comane" id="comane" checked <?php if ($kind=="comane") { echo "checked";}?>>
          <label for="comane">按公司名 </label>
@@ -172,7 +143,7 @@ echo "暂无信息";
       <td width="10%" align="center" class="border"> 用户名</td>
       <td width="10%" class="border">公司名称</td>
       <td width="5%" align="center" class="border">企业类型</td>
-      <td width="5%" align="center" class="border">用户组ID</td>
+      <td width="5%" align="center" class="border">所属用户组</td>
       <td width="5%" align="center" class="border">登录次数</td>
       <td width="10%" align="center" class="border">最后登录IP</td>
       <td width="5%" align="center" class="border" title="最后登录时间">最后登录</td>
@@ -216,7 +187,10 @@ while($row = mysql_fetch_array($rs)){
 	  }
 	  ?>
       </td>
-      <td align="center"> <?php echo $row["groupid"]?> </td>
+      <td align="center"> <?php
+	$rsn=mysql_query("select groupname from zzcms_usergroup where groupid='".$row["groupid"]."'");
+	$rown=mysql_fetch_array($rsn);
+	   echo $rown["groupname"]?> </td>
       <td align="center"><?php echo $row["logins"]?></td>
       <td><?php echo $row["loginip"]?></td>
       <td title="<?php echo $row["lastlogintime"]?>"><?php echo date("Y-m-d",strtotime($row["lastlogintime"]))?></td>

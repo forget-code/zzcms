@@ -366,10 +366,10 @@ while($row= mysql_fetch_array($rs)){
 
 $list2 = $list2. str_replace("{#province}",$row['province'],$list) ;
 $list2 =str_replace("{#city}",cutstr($row["city"],8),$list2) ;
-$list2 =str_replace("{#jobname}",cutstr($row["jobname"],8),$list2) ;
-$list2 =str_replace("{#joblink}",getpageurl("job",$row['id']),$list2) ;
+$list2 =str_replace("{#title}",cutstr($row["jobname"],8),$list2) ;
+$list2 =str_replace("{#url}",getpageurl("job",$row['id']),$list2) ;
 $list2 =str_replace("{#comane}",$row["comane"],$list2) ;
-$list2 =str_replace("{#gslink}",getpageurlzt($row['editor'],$row['userid']),$list2) ;
+$list2 =str_replace("{#companyurl}",getpageurlzt($row['editor'],$row['userid']),$list2) ;
 $list2 =str_replace("{#sendtime}",$row["sendtime"],$list2) ;
 $i=$i+1;
 }

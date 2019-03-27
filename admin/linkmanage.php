@@ -1,5 +1,6 @@
 <?php
 include("admin.php");
+include("../inc/fy.php");
 ?>
 <html>
 <head>
@@ -8,34 +9,14 @@ include("admin.php");
 <link href="style.css" rel="stylesheet" type="text/css">
 <script language="JavaScript" src="/js/gg.js"></script>
 </head>
-
 <body>
 <?php
-if (isset($_REQUEST["keyword"])){
-$keyword=$_REQUEST["keyword"];
-}else{
-$keyword="";
-}
-if (isset($_REQUEST["b"])){
-$b=$_REQUEST["b"];
-}else{
-$b="";
-}
-if (isset($_REQUEST["shenhe"])){
-$shenhe=$_REQUEST["shenhe"];
-}else{
-$shenhe="";
-}
-if (isset($_REQUEST["action"])){
-$action=$_REQUEST["action"];
-}else{
-$action="";
-}
-if( isset($_GET["page"]) && $_GET["page"]!="") {
-    $page=$_GET['page'];
-}else{
-    $page=1;
-}
+$action=isset($_REQUEST["action"])?$_REQUEST["action"]:'';
+$page=isset($_GET["page"])?$_GET["page"]:1;
+$shenhe=isset($_REQUEST["shenhe"])?$_REQUEST["shenhe"]:'';
+
+$keyword=isset($_REQUEST["keyword"])?$_REQUEST["keyword"]:'';
+$b=isset($_REQUEST["b"])?$_REQUEST["b"]:'';
 
 if ($action<>""){
 checkadminisdo("friendlink");
@@ -158,44 +139,20 @@ while($row = mysql_fetch_array($rs)){
       <td><?php echo $row["content"]?></td>
       <td><?php echo $row["sendtime"]?></td>
       <td align="center" > 
-        <?php if ($row["passed"]==1) { echo"已审核";} else{ echo"<font color=red>未审核</font>";}?>  <br>
-		<?php if ($row["elite"]==1) { echo"已推荐";} else{ echo"未推荐";}?>		    </td>
+<?php if ($row["passed"]==1) { echo"已审核";} else{ echo"<font color=red>未审核</font>";}?><br><?php if ($row["elite"]==1) { echo"已推荐";} else{ echo"未推荐";}?></td>
       <td align="center" class="docolor"><a href="link_modify.php?id=<?php echo $row["id"]?>&page=<?php echo $page ?>">修改</a>      </td>
     </tr>
 <?php
 }
 ?>
   </table>
-  <table width="100%" border="0" cellpadding="5" cellspacing="0" class="border">
-    <tr>
-      <td><input name="chkAll" type="checkbox" id="chkAll" onClick="CheckAll(this.form)" value="checkbox">
+      <div class="border"><input name="chkAll" type="checkbox" id="chkAll" onClick="CheckAll(this.form)" value="checkbox">
         <label for="chkAll" style="text-decoration: underline;cursor: hand;">全选</label>
         <input name="submit23" type="submit" onClick="myform.action='?action=pass'" value="【取消/审核】选中的信息">
         <input name="submit222" type="submit" onClick="myform.action='?action=elite'" value="【取消/推荐】选中的信息">
-      <input name="submit4" type="submit" onClick="myform.action='?action=del'" value="删除选中的信息"></td>
-    </tr>
-  </table>
-  <table width="100%" border="0" cellpadding="0" cellspacing="0" class="border">
-  <tr> 
-    <td height="30" align="center">页次：<strong><font color="#CC0033"><?php echo $page?></font>/<?php echo $totlepage?>　</strong> 
-      <strong><?php echo $page_size?></strong>条/页　共<strong><?php echo $totlenum ?></strong>条
-<?php
-		if ($page<>1) {
-			echo "【<a href='?b=".$b."&keyword=".$keyword."&shenhe=".$shenhe."&page=1'>首页</a>】 ";
-			echo "【<a href='?b=".$b."&keyword=".$keyword."&shenhe=".$shenhe."&page=".($page-1)."'>上一页</a>】 ";
-		}else{
-			echo "【首页】【上一页】";
-		}
-		if ($page<>$totlepage) {
-			echo "【<a href='?b=".$b."&keyword=".$keyword."&shenhe=".$shenhe."&page=".($page+1)."'>下一页</a>】 ";
-			echo "【<a href='?b=".$b."&keyword=".$keyword."&shenhe=".$shenhe."&page=".$totlepage."'>尾页</a>】 ";
-		}else{
-			echo "【下一页】【尾页】";
-		}       
-	?> 
-    </td>
-  </tr>
-</table>
+      <input name="submit4" type="submit" onClick="myform.action='?action=del'" value="删除选中的信息">
+	  </div>
+<div class="border center"><?php echo showpage_admin()?></div>
 </form>
 <?php
 }

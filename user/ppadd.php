@@ -11,13 +11,14 @@ $f_array=explode("|||",$fcontent) ;
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=EmulateIE7" />
+<title></title>
 <?php
 if (check_usergr_power("pp")=="no" && $usersf=='个人'){
 echo $f_array[11];
 exit;
 }
 ?>
-<title></title>
+<script language = "JavaScript" src="/js/gg.js"></script>
 <script language = "JavaScript">
 function CheckForm(){
 <?php echo $f_array[0]?>
@@ -42,8 +43,8 @@ function doClick_E(o){
 	 //document.write(classnum)
 	 }
 </script>
-</head>
 <link href="style/<?php echo siteskin_usercenter?>/style.css" rel="stylesheet" type="text/css">
+</head>
 <body>
 <div class="main">
 <?php
@@ -132,24 +133,11 @@ echo "</div>";
           </tr>
           <tr> 
             <td align="right" class="border" ><?php echo str_replace("{#maximgsize}",maximgsize,$f_array[8])?><br /> 
-            <script src="/js/swfobject.js" type="text/javascript"></script> <script type="text/javascript">
-function showtxt(num){
-var sd =window.showModalDialog('/uploadimg_form.php?noshuiyin=1','','dialogWidth=400px;dialogHeight=300px');
-//for chrome 
-if(sd ==undefined) {  
-sd =window.returnValue; 
-}
-if(sd!=null) { 
-document.getElementById("img"+num).value=sd;//从子页面得到值写入母页面
-document.getElementById("showimg"+num).innerHTML="<img src='"+sd+"' width=120>";
-}
-}
-
-</script> <input name="img1" type="hidden" id="img1" value="/image/nopic.gif"/></td>
+ <input name="img" type="hidden" id="img" value="/image/nopic.gif"/></td>
             <td class="border" >
-			 <table height="120" border="0" cellpadding="0" cellspacing="1" bgcolor="#CCCCCC">
+			 <table width="140" height="140" border="0" cellpadding="0" cellspacing="1" bgcolor="#CCCCCC">
                 <tr align="center" bgcolor="#FFFFFF"> 
-                  <td width="120" id="showimg1" onClick="showtxt(1)"> <input name="Submit2" type="button"  value="<?php echo $f_array[9]?>" /></td>
+                  <td width="120" id="showimg" onClick="openwindow('/uploadimg_form.php',400,300)"> <input name="Submit2" type="button"  value="<?php echo $f_array[9]?>" /></td>
                 </tr>
               </table></td>
           </tr>

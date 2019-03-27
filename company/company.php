@@ -137,7 +137,8 @@ $clist2 =str_replace("{#usergroup}" ,$usergroup,$clist2) ;
 $clist2 =str_replace("{#address}" ,$row["address"],$clist2) ;
 $clist2 =str_replace("{#phone}" ,$row["phone"],$clist2) ;
 $clist2 =str_replace("{#cp}" ,$cp,$clist2) ;
-$clist2 =str_replace("{#img}" ,$row["img"],$clist2) ;		
+$clist2 =str_replace("{#imgbig}" ,$row["img"],$clist2) ;	
+$clist2 =str_replace("{#img}" ,getsmallimg($row["img"]),$clist2) ;	
 $i=$i+1;
 }
 $strout=str_replace("{loop}".$clist."{/loop}",$clist2,$strout) ;

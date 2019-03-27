@@ -13,9 +13,15 @@ checkid($id);
 $id=0;
 }
 
-$domain=$_SERVER['HTTP_HOST']; //取得用户所访问的域名全称
-$dian= strpos($domain,'.');//.出现的位置
-$editor=substr($domain,0,$dian);//从二级域名中获取用户名
+$editor=substr($_SERVER['HTTP_HOST'],0,strpos($_SERVER['HTTP_HOST'],'.'));//从二级域名中获取用户名
+$sql="select * from zzcms_userdomain where domain='".$_SERVER['HTTP_HOST']."' and passed=1 and del=0";//从顶级级域名中获取用户名
+$rs=mysql_query($sql);
+$row=mysql_num_rows($rs);
+if (!$row){
+	$row=mysql_fetch_array($rs);
+	$editor=$row["username"];
+}
+
 $channel=strtolower($_SERVER['REQUEST_URI']);
 //echo $channel;
 if($id<>0){//ID放前面，EDITOR放后面

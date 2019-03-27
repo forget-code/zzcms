@@ -12,6 +12,7 @@ $f_array=explode("|||",$fcontent) ;
 <meta http-equiv="X-UA-Compatible" content="IE=EmulateIE7" />
 <title><?php echo $f_array[0] ?></title>
 <link href="style/<?php echo siteskin_usercenter?>/style.css" rel="stylesheet" type="text/css">
+<script language = "JavaScript" src="/js/gg.js"></script>
 <script>
 function  checkmobile(){ 
 <?php echo $f_array[1] ?>
@@ -144,21 +145,9 @@ closedir($dir)
             <td align="right" class="border2"><?php echo $f_array[7] ?> 
               <input name="oldimg" type="hidden" id="oldimg" value="<?php echo $row["bannerbg"]?>" /> 
               <input name="img" type="hidden" id="img" value="<?php echo trim($row["bannerbg"])?>" size="50" maxlength="255"></td>
-            <td class="border2"> <script type="text/javascript">
-function showtxt(){
-var sd =window.showModalDialog('/uploadimg_form.php?noshuiyin=1','','dialogWidth=400px;dialogHeight=300px');
-//for chrome 
-if(sd ==undefined) {  
-sd =window.returnValue; 
-}
-if(sd!=null) {  
-document.getElementById("img").value=sd;//从子页面得到值写入母页面
-document.getElementById("showimg").innerHTML="<img src='../"+sd+"' width=120>";
-}
-}
-</script> <table width="120" height="120" border="0" cellpadding="5" cellspacing="1" bgcolor="#cccccc">
+            <td class="border2">  <table width="120" height="120" border="0" cellpadding="5" cellspacing="1" bgcolor="#cccccc">
                 <tr> 
-                  <td align="center" bgcolor="#FFFFFF" id="showimg" onclick='showtxt()'> 
+                  <td align="center" bgcolor="#FFFFFF" id="showimg" onClick="openwindow('/uploadimg_form.php?noshuiyin=1',400,300)"> 
                     <?php
 				  if($row["bannerbg"]<>""){
 				  echo "<img src='".$row["bannerbg"]."' border=0 width=120 /><br>".$f_array[8];

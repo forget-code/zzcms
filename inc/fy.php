@@ -3,6 +3,34 @@ $fpath="../inc/text/fy.txt";
 $fcontent=file_get_contents($fpath);
 $f_array_fy=explode("\n",$fcontent) ;
 
+function showpage_admin(){
+global $page,$totlepage,$totlenum,$page_size,$shenhe,$b,$s,$kind,$keyword,$showwhat;
+$cs="";
+if ($shenhe!=''){$cs=$cs."&shenhe=".$shenhe;}
+if ($keyword!=''){$cs=$cs."&keyword=".$keyword;}
+if ($b!=''){$cs=$cs."&b=".$b;}
+if ($s!=''){$cs=$cs."&s=".$s;}
+if ($kind<>''){$cs=$cs."&kind=".$kind;}
+if ($showwhat<>''){$cs=$cs."&showwhat=".$showwhat;}
+
+$str="页次：<strong><font color=#CC0033>".$page."</font>/".$totlepage."　</strong> ";
+$str=$str." <strong>".$page_size."</strong>条/页　共<strong>".$totlenum."</strong>条";		 
+ 
+if ($page!=1){
+$str=$str."【<a href=?page=1".$cs.">首页</a>】";
+$str=$str."【<a href=?page=".($page-1).$cs.">上一页</a>】";
+}else{
+$str=$str."【首页】【上一页】";
+}
+if ($page!=$totlepage){
+$str=$str."【<a href=?page=".($page+1).$cs.">下一页</a>】";
+$str=$str."【<a href=?page=".$totlepage.$cs.">尾页</a>】";
+}else{
+$str=$str."【下一页】【尾页】";
+}
+return $str;
+}
+
 function showpage($b='no'){
 global $page,$totlepage,$totlenum,$page_size,$bigclassid,$f_array_fy;
 $str=$f_array_fy[0]."<strong><font color=#CC0033>".$page."</font>/".$totlepage."　</strong> ";
@@ -37,8 +65,12 @@ function showpage1(){
 global $page,$totlepage,$totlenum,$page_size,$keyword,$yiju,$szm;
 //$cs="&keyword=".$keyword."&province=".$province."&city=".$city."&xiancheng=".$xiancheng."&b=".$b."&s=".$s."&sj=".$sj."&yiju=".$yiju;
 //这个用在搜索页中，在搜索页中上面的大多数参数都写在cookies中了
-$cs="&keyword=".$keyword."&yiju=".$yiju."&szm=".$szm;
 $str="";
+$cs='';
+if ($keyword!=''){$cs=$cs."&keyword=".$keyword;}
+if ($yiju!=''){$cs=$cs."&yiju=".$yiju;}
+if ($szm!=''){$cs=$cs."&szm=".$szm;}
+
 $str=$str."<a><nobr>共".$totlenum."</nobr></a>";
 		if ($page<>1) {
 			$str=$str . "<a href='?page=1".$cs."' title='转到第一页'><nobr>&lt;&lt;</nobr></a>";
@@ -158,7 +190,7 @@ $str=$str."<a><nobr>共".$totlenum."</nobr></a>";
 		}
 $str=$str."\n";		
 $str=$str."<input name='page' type='text' maxlength='10' value='$page' class='biaodan' style='width:40px;'/>";
-$str=$str."<input type='submit'name='submit' value='GO' style='height:20px' class='buttons'/>";
+$str=$str."<input type='submit'name='submit' value='GO' class='button'/>";
 $str=$str."<input name='b' type='hidden' value='$b'/><input name='s' type='hidden' value='$s'/>";
 $str=$str."</form>";	
 return $str;

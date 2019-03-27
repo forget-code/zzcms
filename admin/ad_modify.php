@@ -7,6 +7,7 @@ include("admin.php");
 <title></title>
 <link href="style.css" rel="stylesheet" type="text/css">
 <script language="javascript" src="/js/timer.js"></script>
+<script language="javascript" src="/js/gg.js"></script>
 <script>
 function isNumber(String){ 
 var Letters = "1234567890-";   //可以自己增加可输入值
@@ -24,8 +25,7 @@ return  false;
 }
 return  true;
 }
-function  CheckNum()
-{ 
+function  CheckNum(){ 
 if(! isNumber(document.myform.imgwidth.value))   { 
 alert("图片宽度必需为数字！");
 document.myform.imgwidth.value="";
@@ -153,22 +153,10 @@ while($rown = mysql_fetch_array($rsn)){
       <td align="right" class="border">广告图片： 
         <input name="oldimg" type="hidden" id="oldimg" value="<?php echo $row["img"]?>"> 
         <input name="img" type="hidden" id="img" value="<?php echo $row["img"]?>"></td>
-      <td class="border"> <script type="text/javascript">
-function showtxt()
-{
-var sd =window.showModalDialog('/uploadimg_form.php?noshuiyin=1','','dialogWidth=400px;dialogHeight=300px');
-//for chrome 
-if(sd ==undefined) {  
-sd =window.returnValue; 
-}
-if(sd!=null) {  
-document.getElementById("img").value=sd;//从子页面得到值写入母页面
-document.getElementById("showimg").innerHTML="<img src='"+sd+"' width=120>";
-}
-}
-</script> <table width="120" height="120" border="0" cellpadding="5" cellspacing="1" bgcolor="#999999">
+      <td class="border"> 
+	  <table width="120" height="120" border="0" cellpadding="5" cellspacing="1" bgcolor="#999999">
           <tr> 
-            <td align="center" bgcolor="#FFFFFF" id="showimg" onclick='showtxt()'> 
+            <td align="center" bgcolor="#FFFFFF" id="showimg" onClick="openwindow('/uploadimg_form.php?noshuiyin=1',400,300)"> 
               <?php
 				 if ($row["img"]<>""){
 						if (substr($row["img"],-3)=="swf"){

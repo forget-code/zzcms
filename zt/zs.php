@@ -127,7 +127,10 @@ $lb=$blb.$slb;
 $list2 = $list2. str_replace("{#link}" ,$link,$list) ;
 $list2 =str_replace("{#img}",$row['img'],$list2) ;
 $list2 =str_replace("{#proname}",cutstr($row["proname"],8),$list2) ;
-$list2 =str_replace("{#gg}",$row["gg"],$list2) ;
+$shuxing_value = explode("|||",$row["shuxing_value"]);
+	for ($n=0; $n< count($shuxing_value);$n++){
+	$list2=str_replace("{#shuxing".$n."}",$shuxing_value[$n],$list2);
+	}
 $list2 =str_replace("{#city}",$row["province"].$row["city"],$list2) ;
 
 $prouse_long=strbetween($list2,"{#prouse:","}");

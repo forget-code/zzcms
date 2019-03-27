@@ -1,5 +1,5 @@
 <?php
-error_reporting(0);
+//error_reporting(0);
 define('zzcmsroot', str_replace("\\", '/', substr(dirname(__FILE__), 0, -3)));//-3截除当前目录inc
 ini_set("date.timezone","Asia/Chongqing");//设时区。php.ini里date.timezone选项，默认情况下是关闭的
 include(zzcmsroot."/inc/config.php");

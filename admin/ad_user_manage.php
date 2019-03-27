@@ -1,36 +1,13 @@
 <?php
 include("admin.php");
+include("../inc/fy.php");
 checkadminisdo("advtext");
-if (isset($_REQUEST["action"])){
-$action=$_REQUEST["action"];
-}else{
-$action="";
-}
-if (isset($_REQUEST["kind"])){
-$kind=$_REQUEST["kind"];
-}else{
-$kind="";
-}
-if (isset($_REQUEST["shenhe"])){
-$shenhe=$_REQUEST["shenhe"];
-}else{
-$shenhe="";
-}
-if (isset($_REQUEST["keyword"])){
-$keyword=$_REQUEST["keyword"];
-}else{
-$keyword="";
-}
-if( isset($_GET["page"]) && $_GET["page"]!="") {
-    $page=$_GET['page'];
-}else{
-    $page=1;
-}
-if (isset($_REQUEST["id"])){
-$id=$_REQUEST["id"];
-}else{
-$id="";
-}
+
+$action=isset($_REQUEST["action"])?$_REQUEST["action"]:'';
+$page=isset($_GET["page"])?$_GET["page"]:1;
+$keyword=isset($_REQUEST["keyword"])?$_REQUEST["keyword"]:'';
+$kind=isset($_REQUEST["kind"])?$_REQUEST["kind"]:'';
+$id=isset($_REQUEST["id"])?$_REQUEST["id"]:'';
 ?>
 <html>
 <head>
@@ -192,7 +169,7 @@ if ($row["img"]<>""){
       <?php if ($row["passed"]==1) { echo"已审核";} else{ echo"<font color=red>未审核</font>";}?>    </td>
     <td align="center"><?php echo $row["gxsj"]?></td>
     <td align="center"><a href="usermanage.php?keyword=<?php echo $row["username"]?>"><?php echo $row["username"]?></a></td>
-    <td align="center" class="docolor"><a href="adv_modify.php?page=<?php echo $page?>&id=<?php echo $row["id"]?>">修改</a></td>
+    <td align="center" class="docolor"><a href="ad_user_modify.php?page=<?php echo $page?>&id=<?php echo $row["id"]?>">修改</a></td>
   </tr>
   <?php
 }
@@ -208,28 +185,7 @@ if ($row["img"]<>""){
   </tr>
 </table>
 </form>
-<table width="100%" border="0" cellpadding="0" cellspacing="0" class="border">
-  <tr> 
-    <td height="30" align="center">页次：<strong><font color="#CC0033"><?php echo $page?></font>/<?php echo $totlepage?>　</strong> 
-      <strong><?php echo $page_size?></strong>条/页　共<strong><?php echo $totlenum ?></strong>条
-<?php
-		
-		if ($page<>1) {
-			echo "【<a href='?kind=".$kind."&keyword=".$keyword."&shenhe=".$shenhe."&page=1'>首页</a>】 ";
-			echo "【<a href='?kind=".$kind."&keyword=".$keyword."&shenhe=".$shenhe."&page=".($page-1)."'>上一页</a>】 ";
-		}else{
-			echo "【首页】【上一页】";
-		}
-		if ($page<>$totlepage) {
-			echo "【<a href='?kind=".$kind."&keyword=".$keyword."&shenhe=".$shenhe."&page=".($page+1)."'>下一页</a>】 ";
-			echo "【<a href='?kind=".$kind."&keyword=".$keyword."&shenhe=".$shenhe."&page=".$totlepage."'>尾页</a>】 ";
-		}else{
-			echo "【下一页】【尾页】";
-		}       
-	?> 
-    </td>
-  </tr>
-</table>
+<div class="border center"><?php echo showpage_admin()?></div>
 <?php
 }
 ?>

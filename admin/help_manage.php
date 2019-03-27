@@ -1,5 +1,6 @@
 <?php
 include("admin.php");
+include("../inc/fy.php");
 ?>
 <html>
 <head>
@@ -10,26 +11,28 @@ include("admin.php");
 </head>
 <body>
 <?php
-if( isset($_GET["page"]) && $_GET["page"]!="") {
-    $page=$_GET['page'];
-}else{
-    $page=1;
-}
-if (isset($_REQUEST["b"])){
-$b=$_REQUEST["b"];
-}else{
-$b="";
-}
+$action=isset($_REQUEST["action"])?$_REQUEST["action"]:'';
+$page=isset($_GET["page"])?$_GET["page"]:1;
+$keyword=isset($_REQUEST["keyword"])?$_REQUEST["keyword"]:'';
+$b=isset($_REQUEST["b"])?$_REQUEST["b"]:'';
 
-if (isset($_REQUEST["shenhe"])){
-$shenhe=$_REQUEST["shenhe"];
+if ($action=="elite"){
+if(!empty($_POST['id'])){
+    for($i=0; $i<count($_POST['id']);$i++){
+    $id=$_POST['id'][$i];
+	$sql="select elite from zzcms_help where id ='$id'";
+	$rs = mysql_query($sql); 
+	$row = mysql_fetch_array($rs);
+		if ($row['elite']=='0'){
+		mysql_query("update zzcms_help set elite=1 where id ='$id'");
+		}else{
+		mysql_query("update zzcms_help set elite=0 where id ='$id'");
+		}
+	}
 }else{
-$shenhe="";
+echo "<script>alert('操作失败！至少要选中一条信息。');history.back()</script>";
 }
-if (isset($_REQUEST["keyword"])){
-$keyword=$_REQUEST["keyword"];
-}else{
-$keyword="";
+echo "<script>location.href='?b=".$b."&keyword=".$keyword."&page=".$page."'</script>";	
 }
 ?>
 <div class="admintitle"><?php if ($b==1 ){echo"帮助"; }else{ echo"公告";}?>信息管理</div>
@@ -61,7 +64,6 @@ $sql="select * from zzcms_help where classid=".$b." ";
 if ($keyword<>"") {  		
 $sql=$sql." and  title like '%".$keyword."%' ";
 }
-
 $rs = mysql_query($sql,$conn); 
 $totlenum= mysql_num_rows($rs);  
 $totlepage=ceil($totlenum/$page_size);
@@ -77,6 +79,7 @@ echo "暂无信息";
     <tr> 
       <td> 
 		<input type="submit" onClick="myform.action='del.php';myform.target='_self';return ConfirmDel()" value="删除选中的信息">
+        <input name="submit2" type="submit" onClick="myform.action='?action=elite&b=<?php echo $b?>'" value="【取消/首页显示】选中的信息">
         <input name="pagename" type="hidden"  value="help_manage.php?b=<?php echo $b?>&page=<?php echo $page ?>"> 
         <input name="tablename" type="hidden"  value="zzcms_help"> </td>
     </tr>
@@ -107,33 +110,12 @@ while($row = mysql_fetch_array($rs)){
     <tr> 
       <td> <input name="chkAll" type="checkbox" id="chkAll" onClick="CheckAll(this.form)" value="checkbox">
         <label for="chkAll" style="text-decoration: underline;cursor: hand;">全选</label> 
-        <input name="submit" type="submit" onClick="myform.action='del.php';myform.target='_self';return ConfirmDel()" value="删除选中的信息"></td>
+        <input name="submit" type="submit" onClick="myform.action='del.php';myform.target='_self';return ConfirmDel()" value="删除选中的信息">
+        <input name="submit22" type="submit" onClick="myform.action='?action=elite&b=<?php echo $b?>'" value="【取消/首页显示】选中的信息"></td>
     </tr>
   </table>
 </form>
-<table width="100%" border="0" cellpadding="0" cellspacing="0" class="border">
-  <tr> 
-    <td width="55%" height="30" align="center">
-     页次：<strong><font color="#CC0033"><?php echo $page?></font>/<?php echo $totlepage?>　</strong> 
-      <strong><?php echo $page_size?></strong>条/页　共<strong><?php echo $totlenum ?></strong>条
-<?php
-		
-		if ($page<>1) {
-			echo "【<a href='?keyword=".$keyword."&b=".$b."&page=1'>首页</a>】 ";
-			echo "【<a href='?keyword=".$keyword."&b=".$b."&page=".($page-1)."'>上一页</a>】 ";
-		}else{
-			echo "【首页】【上一页】";
-		}
-		if ($page<>$totlepage) {
-			echo "【<a href='?keyword=".$keyword."&b=".$b."&page=".($page+1)."'>下一页</a>】 ";
-			echo "【<a href='?keyword=".$keyword."&b=".$b."&page=".$totlepage."'>尾页</a>】 ";
-		}else{
-			echo "【下一页】【尾页】";
-		}       
-	?>
-    </td>
-  </tr>
-</table>
+<div class="border center"><?php echo showpage_admin()?></div>
 <?php
 }
 mysql_close($conn);

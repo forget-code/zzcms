@@ -69,8 +69,6 @@ $_SESSION["imgwidth"]=$imgwidth;
 $_SESSION["imgheight"]=$imgheight;
 
 ?>
-<link href="style.css" rel="stylesheet" type="text/css">
-
 <table width="100%" height="100%" border="0" cellpadding="0" cellspacing="0">
   <tr> 
     <td align="center">
@@ -97,7 +95,7 @@ $_SESSION["imgheight"]=$imgheight;
 				<?php if (isset($newsid)){?>
                 <td width="33%" align="center" class="border"><a href="ad_modify.php?id=<?php echo $newsid?>">修改</a></td>
 				<?php }?>
-                <td width="33%" align="center" class="border"><a href="ad_manage.php?b=<?php echo $bigclassname?>&page=<?php echo $page?>">返回</a></td>
+                <td width="33%" align="center" class="border"><a href="ad_manage.php?b=<?php echo $bigclassname?>&s=<?php echo $smallclassname?>&page=<?php echo $page?>">返回</a></td>
               </tr>
             </table></td>
         </tr>

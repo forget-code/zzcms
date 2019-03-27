@@ -35,32 +35,17 @@ $username=$_COOKIE["UserName"];
 }
 session_write_close();
 $id="";
+$i=0;
 if(!empty($_POST['id'])){
     for($i=0; $i<count($_POST['id']);$i++){
     $id=$id.($_POST['id'][$i].',');
     }
 	
-}else{//如果为空直接取前几条
-	$sql="select * from zzcms_dl where passed<>0 ";
-	if (liuyanysnum!=0){
-	$liuyanysnum=liuyanysnum*3600*24;
-	$sql=$sql. " and id not in (select id from zzcms_dl where savergroupid>1 and unix_timestamp()-unix_timestamp(sendtime)<$liuyanysnum) order by id desc limit 0,10";
-	}
-	$rs = mysql_query($sql);
-	while($row= mysql_fetch_array($rs)){
-	$id=$id. $row["id"].',';
-	}
+}else{
+	$founderr=1;
+	$ErrMsg="<li>操作失败！请先选中要下载的信息</li>";
 }
 $id=substr($id,0,strlen($id)-1);//去除最后面的","
-if (!isset($id) || $id==""){
-echo "<script>alert('操作失败！至少要选中一条信息。');history.back()</script>";
-}else{
-    if (strpos($id,",")>0){
-	$sql="select * from zzcms_dl where passed=1 and id in (". $id .") ";
-	}else{
-	$sql="select * from zzcms_dl where passed=1  and id=".$id." order by id desc";
-	}
-}
 ?>
 <div class="main">
 <?php
@@ -97,6 +82,11 @@ WriteErrMsg($ErrMsg);
 		mysql_query("update zzcms_looked_dls_number_oneday set looked_dls_number_oneday=".$i.",sendtime='".date('Y-m-d H:i:s')."' where username='".$username."'");
 		}
 	}
+if (strpos($id,",")>0){
+	$sql="select * from zzcms_dl where passed=1 and id in (". $id .") ";
+	}else{
+	$sql="select * from zzcms_dl where passed=1  and id=".$id." order by id desc";
+}
 	
 $rs=mysql_query($sql,$conn);
 echo "<div style=text-align:center><a href='javascript:window.print()'><img src='/image/ico-dy.gif' width='18' height='17' border='0'>打印</a></div>";

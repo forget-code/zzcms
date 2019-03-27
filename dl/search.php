@@ -242,19 +242,19 @@ function formxiancheng(){
 		$selected="";
 		}
 		
-if (isset($_COOKIE["UserName"])){
+//if (isset($_COOKIE["UserName"])){
 $dl_download_url="form1.action='/dl/dl_download.php'";
 $dl_print_url="form1.action='/dl/dl_print.php'";
 $dl_sendmail_url="form1.action='/dl/dl_sendmail.php'";
 $dl_sendsms_url="form1.action='/dl/dl_sendsms.php'";
 $buttontype="submit";
-}else{
-$dl_download_url="MsgBox('用户登录','/user/login2.php?fromurl=http://".$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI']."',460,196,1)";
-$dl_print_url="MsgBox('用户登录','/user/login2.php?fromurl=http://".$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI']."',460,196,1)";
-$dl_sendmail_url="MsgBox('用户登录','/user/login2.php?fromurl=http://".$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI']."',460,196,1)";
-$dl_sendsms_url="MsgBox('用户登录','/user/login2.php?fromurl=http://".$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI']."',460,196,1)";
-$buttontype="button";
-}
+//}else{
+//$dl_download_url="MsgBox('用户登录','/user/login2.php?fromurl=http://".$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI']."',460,196,1)";
+//$dl_print_url="MsgBox('用户登录','/user/login2.php?fromurl=http://".$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI']."',460,196,1)";
+//$dl_sendmail_url="MsgBox('用户登录','/user/login2.php?fromurl=http://".$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI']."',460,196,1)";
+//$dl_sendsms_url="MsgBox('用户登录','/user/login2.php?fromurl=http://".$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI']."',460,196,1)";
+//$buttontype="button";
+//}
 $strout=str_replace("{#dl_download_url}",$dl_download_url,$strout) ;
 $strout=str_replace("{#dl_print_url}",$dl_print_url,$strout) ;
 $strout=str_replace("{#dl_sendmail_url}",$dl_sendmail_url,$strout) ;

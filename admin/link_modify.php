@@ -87,11 +87,11 @@ $row=mysql_fetch_array($rs);
     </tr>
     <tr> 
       <td width="100" align="right" class="border">网址：</td>
-      <td class="border"> <input name="url" type="text" id="title2" value="<?php echo $row["url"]?>" size="50"></td>
+      <td class="border"> <input name="url" type="text" id="url" value="<?php echo $row["url"]?>" size="50"></td>
     </tr>
     <tr> 
       <td width="100" align="right" class="border">logo：</td>
-      <td class="border"><input name="logo" type="text" id="url" value="<?php echo $row["logo"]?>" size="50"></td>
+      <td class="border"><input name="logo" type="text" id="logo" value="<?php echo $row["logo"]?>" size="50"></td>
     </tr>
     <tr> 
       <td width="100" align="right" class="border">描述：</td>

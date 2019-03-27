@@ -6,14 +6,20 @@ include("admin.php");
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <title></title>
 <link href="style.css" rel="stylesheet" type="text/css">
-<?php
-checkadminisdo("zs");
-?>
 <script language="javascript" src="/js/timer.js"></script>
 <script language = "JavaScript" src="/js/gg.js"></script>
-</head>
-<body>
-<script language = "JavaScript">
+<script type="text/javascript" src="/js/jquery.js"></script>  
+<script type="text/javascript" language="javascript">
+$.ajaxSetup ({
+cache: false //close AJAX cache
+});
+
+$(document).ready(function(){  
+  $("#name").change(function() { //jquery 中change()函数  
+	$("#span_szm").load(encodeURI("../ajax/zsadd_ajax.php?id="+$("#name").val()));//jqueryajax中load()函数 加encodeURI，否则IE下无法识别中文参数 
+  });  
+});  
+
 function CheckForm(){
 if (document.myform.bigclassid.value==""){
     alert("请选择产品类别！");
@@ -47,24 +53,12 @@ function doClick_E(o){
 		document.getElementById("E_con1").style.display = "block";
 	   }
 	 }
-</script> 
+</script>  
+</head>
+<body>
 <div class="admintitle">修改<?php echo channelzs?>信息</div>
-<script type="text/javascript" src="/js/jquery.js"></script>  
-<script type="text/javascript" language="javascript">
-$.ajaxSetup ({
-cache: false //close AJAX cache
-});
-</script>
-<script language="javascript">  
-$(document).ready(function(){  
-  $("#name").change(function() { //jquery 中change()函数  
-	$("#span_szm").load(encodeURI("../ajax/zsadd_ajax.php?id="+$("#name").val()));//jqueryajax中load()函数 加encodeURI，否则IE下无法识别中文参数 
-  });  
-});  
-</script> 
-<form action="zs_save.php" method="post" name="myform" id="myform" onSubmit="return CheckForm();">
-
 <?php
+checkadminisdo("zs");
 $id=$_REQUEST["id"];
 if ($id<>"") {
 checkid($id);
@@ -75,6 +69,7 @@ $sql="select * from zzcms_main where id='$id'";
 $rs=mysql_query($sql);
 $row=mysql_fetch_array($rs);
 ?>
+<form action="zs_save.php" method="post" name="myform" id="myform" onSubmit="return CheckForm();">
   <table width="100%" border="0" cellpadding="5" cellspacing="0">
     <tr> 
       <td align="right" class="border">产品名称 <font color="#FF0000">*</font></td>
@@ -145,8 +140,7 @@ echo "</div>";
 }
 ?>                  </td>
                 </tr>
-              </table>
-		 </td>
+              </table>		 </td>
     </tr>
 	   <?php 
 		  $rsn = mysql_query("select * from zzcms_zsclass_shuxing order by xuhao asc"); 
@@ -176,69 +170,40 @@ echo "</div>";
       <td align="right" class="border">产品特点<font color="#FF0000"> *</font></td>
       <td class="border"> <textarea name="prouse" cols="60" rows="3" id="prouse"><?php echo $row["prouse"]?></textarea>      </td>
     </tr>
-    <tr> 
-      <td align="right" class="border">规格/包装 <font color="#FF0000">*</font></td>
-      <td class="border"> <input name="gg" type="text" id="gg" value="<?php echo $row["gg"]?>" size="45">      </td>
+    <?php
+	if (shuxing_name!=''){
+	$shuxing_name = explode("|",shuxing_name);
+	$shuxing_value = explode("|||",$row["shuxing_value"]);
+	for ($i=0; $i< count($shuxing_name);$i++){
+	?>
+	<tr>
+      <td align="right" class="border" ><?php echo $shuxing_name[$i]?>：</td>
+      <td class="border" ><input name="sx[]" type="text" value="<?php echo @$shuxing_value[$i]?>" size="45"></td>
     </tr>
-    <tr> 
-      <td align="right" class="border" >零售价 <font color="#FF0000">*</font></td>
-      <td class="border" ><input name="lsj" type="text" id="lsj"  value="<?php echo $row["pricels"]?>" size="45"></td>
-    </tr>
+	<?php
+	}
+	}
+	?>
     <tr> 
       <td align="right" class="border">产品说明：</td>
       <td class="border"> 
 	  <textarea name="sm" id="sm"><?php echo $row["sm"] ?></textarea> 
              <script type="text/javascript" src="/3/ckeditor/ckeditor.js"></script>
-			  <script type="text/javascript">CKEDITOR.replace('sm');</script>   
-			
-	  </td>
+			  <script type="text/javascript">CKEDITOR.replace('sm');</script>	  </td>
     </tr>
     <tr> 
-      <td align="right" class="border">图片地址： <script type="text/javascript">
-function showtxt(num)
-{
-var sd =window.showModalDialog('/uploadimg_form.php','','dialogWidth=400px;dialogHeight=300px');
-//for chrome 
-if(sd ==undefined) {  
-sd =window.returnValue; 
-}
-if(sd!=null) {  
-document.getElementById("img"+num).value=sd;//从子页面得到值写入母页面
-document.getElementById("showimg"+num).innerHTML="<img src='"+sd+"' width=120>";
-}
-}
-</script> <input name="img1" type="hidden" id="img1" value="<?php echo $row["img"]?>" size="45"> 
-        <input name="img2" type="hidden" id="img2" value="<?php echo $row["img2"]?>" size="45"> 
-        <input name="img3" type="hidden" id="img3" value="<?php echo $row["img3"]?>" size="45"></td>
-      <td class="border"> <table height="120" border="0" cellpadding="5" cellspacing="1" bgcolor="#999999">
+      <td align="right" class="border">图片地址： <input name="img" type="hidden" id="img" value="<?php echo $row["img"]?>" size="45"> </td>
+      <td class="border"> <table height="140"  width="140" border="0" cellpadding="5" cellspacing="1" bgcolor="#999999">
           <tr> 
-            <td width="120" align="center" bgcolor="#FFFFFF" id="showimg1" onclick='showtxt(1)'> 
+            <td align="center" bgcolor="#FFFFFF" id="showimg" onClick="openwindow('/uploadimg_form.php',400,300)"> 
               <?php
 				  if($row["img"]<>""){
 				  echo "<img src='".$row["img"]."' border=0 width=120 /><br>点击可更换图片";
 				  }else{
 				  echo "<input name='Submit2' type='button'  value='上传图片'/>";
 				  }
-				  
 				  ?>            </td>
-            <td width="120" align="center" bgcolor="#FFFFFF" id="showimg2" onclick='showtxt(2)'> 
-              <?php
-				  if($row["img2"]<>""){
-				  echo "<img src='".$row["img2"]."' border=0 width=120 /><br>点击可更换图片";
-				  }else{
-				  echo "<input name='Submit2' type='button'  value='上传图片'/>";
-				  }
-				  
-				  ?>            </td>
-            <td width="120" align="center" bgcolor="#FFFFFF" id="showimg3" onclick='showtxt(3)'> 
-              <?php
-				  if($row["img3"]<>""){
-				  echo "<img src='".$row["img3"]."' border=0 width=120 /><br>点击可更换图片";
-				  }else{
-				  echo "<input name='Submit2' type='button'  value='上传图片'/>";
-				  }
-				  
-				  ?>            </td>
+            
           </tr>
         </table></td>
     </tr>
@@ -291,11 +256,12 @@ document.getElementById("showimg"+num).innerHTML="<img src='"+sd+"' width=120>";
       <td class="border"><input type="submit" name="Submit2" value="修 改"></td>
     </tr>
     <tr> 
-      <td colspan="2" class="userbar">排名设置</td>
+      <td colspan="2" class="userbar">排名（推荐）设置</td>
     </tr>
     <tr> 
       <td align="right" class="border">设为关键字排名产品</td>
       <td class="border"><input name="elite[]" type="checkbox" id="elite[]" value="1" <?php if ($row["elite"]==1) { echo "checked";}?>>
+      （选中后生效）
         时间： 
         <input name="elitestarttime" type="text" value="<?php echo $row["elitestarttime"]?>" size="20" onFocus="JTC.setday(this)">
         至 

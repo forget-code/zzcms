@@ -47,8 +47,13 @@ $n=$n+1;
 return $str;
 }
 
-function showjob($num,$strnum,$editor){
+function showjob($cs){
 $str="";
+$cs=explode(",",$cs); //传入的$cs是一个整体字符串,转成数组
+$num=isset($cs[0])?$cs[0]:10;checkid($num);
+$strnum=isset($cs[1])?$cs[1]:10;checkid($strnum);
+$editor=isset($cs[2])?$cs[2]:'';
+
 $sql="select jobname,id from zzcms_job where editor ='".$editor."' and passed=1 order by id desc";
 $sql=$sql." limit 0,$num";
 $rs=mysql_query($sql);

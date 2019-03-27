@@ -1,5 +1,6 @@
 <?php
 include("admin.php");
+include("../inc/fy.php");
 ?>
 <html>
 <head>
@@ -10,44 +11,12 @@ include("admin.php");
 </head>
 <body>
 <?php
-if (isset($_REQUEST["action"])){
-$action=$_REQUEST["action"];
-}else{
-$action="";
-}
-
-if( isset($_GET["page"]) && $_GET["page"]!="") {
-    $page=$_GET['page'];
-}else{
-    $page=1;
-}
-if (isset($_REQUEST["keyword"])){
-$keyword=$_REQUEST["keyword"];
-}else{
-$keyword="";
-}
-if (isset($_REQUEST["kind"])){
-$kind=$_REQUEST["kind"];
-}else{
-$kind="";
-}
-if (isset($_REQUEST["b"])){
-$b=$_REQUEST["b"];
-}else{
-$b="";
-}
-
-if (isset($_REQUEST["s"])){
-$s=$_REQUEST["s"];
-}else{
-$s="";
-}
-
-if (isset($_REQUEST["id"])){
-$id=$_REQUEST["id"];
-}else{
-$id="";
-}
+$action=isset($_REQUEST["action"])?$_REQUEST["action"]:'';
+$page=isset($_GET["page"])?$_GET["page"]:1;
+$keyword=isset($_REQUEST["keyword"])?$_REQUEST["keyword"]:'';
+$kind=isset($_REQUEST["kind"])?$_REQUEST["kind"]:'';
+$b=isset($_REQUEST["b"])?$_REQUEST["b"]:'';
+$s=isset($_REQUEST["s"])?$_REQUEST["s"]:'';
 ?>
 <div class="admintitle">广告管理</div>
 <table width="100%" border="0" cellspacing="0" cellpadding="5">
@@ -119,9 +88,9 @@ echo "<a href=?b=".$b."&s=".$row['classname'].">";
   </tr>
   <tr> 
     <td bgcolor="#FFFFFF" class="border2"> <strong>前台调用代码示例：</strong> 
-        <input name="js" type="text" id="js" style="width:240px" value="{#showad:4,0,yes,yes,no,0,0,0,b,s,no}" size="40" maxlength="255">
+        <input name="js" type="text" id="js" style="width:240px" value="{#showad:b,s,40,198,117,12,yes}" size="40" maxlength="255">
     把这个代码放到网站模板页中，广告就可以在网页中显示了。<img src="../image/help.gif" alt="help" width="45" height="18" onMouseOver="showfilter2(help)" onMouseOut="showfilter2(help)">
-	<div id="help">参数说明：<br>4：列数<br>0：限制显示前条数，0为不限制<br>yes：是否显示图片标题<br>yes：是否显示图片边框<br>no：是否显示表格边框<br>0：图片宽度<br>0：图片高度<br>0：广告标题长度<br>b：广告大类名<br>s：广告小类名<br>no：是否显示广告标题前的数字序号(yes,no)</div></td>
+	<div id="help">参数说明：<br>b：广告大类名<br>s：广告小类名<br>40：显示前40条数，0为不限制<br>198：图片宽度<br>117：图片高度<br>12：广告标题长度，设为0则不显示文字<br>yes：是否显示广告标题前的数字序号(yes,no)</div></td>
   </tr>
 </table>
 <?php
@@ -218,7 +187,7 @@ if ($row["img"]<>""){
 	?> </td>
     <td width="246" align="center"><?php echo date("Y-m-d",strtotime($row["starttime"]))?>至<?php echo date("Y-m-d",strtotime($row["endtime"]))?></td>
       <td width="141" align="center" class="docolor"> <a href="ad_modify.php?b=<?php echo $b?>&page=<?php echo $page?>&id=<?php echo $row["id"]?>">修改</a> 
-        | <a href="ad_px.php?b=<?php echo $b?>">排序</a> 
+        | <a href="ad_px.php?b=<?php echo $row['bigclassname']?>&s=<?php echo $row['smallclassname']?>">排序</a> 
       </td>
   </tr>
 <?php
@@ -228,32 +197,10 @@ $n++;
 </table>
 <div class="border">
 <input name="chkAll" type="checkbox" id="chkAll" onClick="CheckAll(this.form)" value="checkbox">
-    全选 
-    <input type="submit" onClick="myform.action='del.php';myform.target='_self';return ConfirmDel()" value="删除选中的信息">
+全选 <input type="submit" onClick="myform.action='del.php';myform.target='_self';return ConfirmDel()" value="删除选中的信息">
   </div>
 </form>
-<table width="100%" border="0" cellpadding="0" cellspacing="0" class="border">
-  <tr> 
-    <td height="30" align="center">页次：<strong><font color="#CC0033"><?php echo $page?></font>/<?php echo $totlepage?>　</strong> 
-      <strong><?php echo $page_size?></strong>条/页　共<strong><?php echo $totlenum ?></strong>条
-<?php
-		
-		if ($page<>1) {
-			echo "【<a href='?b=".$b."&s=".$s."&page=1'>首页</a>】 ";
-			echo "【<a href='?b=".$b."&s=".$s."&page=".($page-1)."'>上一页</a>】 ";
-		}else{
-			echo "【首页】【上一页】";
-		}
-		if ($page<>$totlepage) {
-			echo "【<a href='?b=".$b."&s=".$s."&page=".($page+1)."'>下一页</a>】 ";
-			echo "【<a href='?b=".$b."&s=".$s."&page=".$totlepage."'>尾页</a>】 ";
-		}else{
-			echo "【下一页】【尾页】";
-		}       
-	?>
-    </td>
-  </tr>
-</table>
+<div class="border center"><?php echo showpage_admin()?></div>
 <?php
 }
 mysql_close($conn);

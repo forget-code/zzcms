@@ -1,6 +1,11 @@
 <?php
-function showcookieszs($column,$imgwidth,$imgheight,$title_num){
+function showcookieszs($cs){
 $str="";
+$cs=explode(",",$cs); //传入的$cs是一个整体字符串,转成数组
+$column=isset($cs[0])?$cs[0]:3;
+$imgwidth=isset($cs[1])?$cs[1]:80;
+$imgheight=isset($cs[2])?$cs[2]:80;
+$title_num=isset($cs[3])?$cs[3]:6;
 if (!isset($_COOKIE["zzcmscpid"])){
 $str="暂无记录";
 }else{
@@ -224,9 +229,22 @@ $n++;
 return $str;
 }
 
-function showzs($num,$strnum,$time,$img,$xuhao,$order,$b,$s,$editor,$keyword,$cpid){
+function showzs($cs){
 $n=1;
 $str="";
+$cs=explode(",",$cs); //传入的$cs是一个整体字符串,转成数组
+$num=isset($cs[0])?$cs[0]:10;checkid($num);
+$strnum=isset($cs[1])?$cs[1]:10;checkid($strnum);
+$time=isset($cs[2])?$cs[2]:'no';
+$img=isset($cs[3])?$cs[3]:'no';
+$xuhao=isset($cs[4])?$cs[4]:'no';
+$order=isset($cs[5])?$cs[5]:'id';
+$b=isset($cs[6])?$cs[6]:'no';
+$s=isset($cs[7])?$cs[7]:'no';
+$editor=isset($cs[8])?$cs[8]:'no';
+$keyword=isset($cs[9])?$cs[9]:'no';
+$cpid=isset($cs[10])?$cs[10]:'no';
+
 	$sql="select id,proname,img,sendtime,passed,elite,hit,city,comane,userid from zzcms_main where passed=1 ";
 	if ($b!='no') {$sql=$sql. "and bigclasszm='$b' ";}
 	if ($s!='no') {$sql=$sql. "and bigclasszm='$s' ";}

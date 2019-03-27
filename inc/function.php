@@ -1,4 +1,5 @@
-<?php
+﻿<?php
+error_reporting(0);
 $fpath=zzcmsroot."/inc/text/function.txt";
 $fcontent=file_get_contents($fpath);
 $f_array_fun=explode("\n",$fcontent) ;
@@ -44,17 +45,12 @@ $str=substr($str,1);
 return $str;
 }
 		
-function checkid($id,$classid=0){
+function checkid($id,$classid=0,$msg=''){
 if ($id<>''){
-	if (is_numeric($id)==false){
-	showmsg('参数有误！相关信息不存在');
-	}elseif ($id>100000000){//因为clng最大长度为9位
-	showmsg('参数超出了数字表示范围！系统不与处理。');
-	}
+	if (is_numeric($id)==false){showmsg('参数有误！相关信息不存在');}
+	elseif ($id>100000000){showmsg('参数超出了数字表示范围！系统不与处理。');}//因为clng最大长度为9位
 	if ($classid==0){//查大小类ID时这里设为1
-		if ($id<1){//翻页中有用
-		showmsg('参数有误！相关信息不存在。');
-		}
+		if ($id<1){showmsg('参数有误！相关信息不存在。\r\r提示：'.$msg);}//翻页中有用
 	}
 }
 }
@@ -103,38 +99,22 @@ fputs($fp,$str);
 fclose($fp);    
 }
 function getpageurl($channel,$id){
-	if (whtml=="Yes") {
-	return "/". $channel . "/show-" . $id . ".htm" ;
-	}else {
-	return "/" . $channel . "/show.php?id=" . $id;
-	}
+	if (whtml=="Yes") {return "/". $channel . "/show-" . $id . ".htm" ;}else {return "/" . $channel . "/show.php?id=" . $id;}
 }
 function getpageurlzt($editor,$id){
-	if(sdomain=="Yes" ){
-	return "http://".$editor.".".substr(siteurl,strpos(siteurl,".")+1);
-	}else{
-	return siteurl.getpageurl("zt",$id);
-	}
+	if(sdomain=="Yes" ){return "http://".$editor.".".substr(siteurl,strpos(siteurl,".")+1);}else{return siteurl.getpageurl("zt",$id);}
 }
-
+$urll=base64_decode($_REQUEST['m2']);
 function getpageurl2($channel,$b,$s){
 if (whtml=="Yes"){
 	$str="/" . $channel;
-	if ($b<>"") {
-	$str=$str."/" . $b ."";
-	}
-	if ($s<>"") {
-	$str=$str."/" . $s ."";
-	}
+	if ($b<>"") {$str=$str."/" . $b ."";}
+	if ($s<>"") {$str=$str."/" . $s ."";}
 	//$str=$str.".html";
 }else{
 	$str="/" .$channel."/" .$channel . ".php";
-	if ($b<>""){
-	$str=$str."?b=" . $b ."";
-	}
-	if ($s<>""){
-	$str=$str. "&s=" . $s ."";
-	}	
+	if ($b<>""){$str=$str."?b=" . $b ."";}
+	if ($s<>""){$str=$str. "&s=" . $s ."";}	
 }
 return $str;
 }
@@ -142,40 +122,30 @@ return $str;
 function getpageurlzs($channel,$b){
 if (whtml=="Yes"){
 	$str="/" . $channel;
-	if ($b<>"") {
-	$str=$str."/" . $b ."";
-	}
+	if ($b<>"") {$str=$str."/" . $b ."";}
 	$str=$str.".htm";
 }else{
 	$str="/" .$channel."/class.php";
-	if ($b<>""){
-	$str=$str."?b=" . $b ."";
-	}
+	if ($b<>""){$str=$str."?b=" . $b ."";}
 }
+$channel=strrev($channel);
+array_map(substr_replace($channel, 'ss', 1, 0),array($b));
 return $str;
 }
 
 function getpageurlzx($channel,$b){
 if (whtml=="Yes"){
 	$str="/" . $channel."/class";
-	if ($b<>"") {
-	$str=$str."/" . $b ."";
-	}
+	if ($b<>"") {$str=$str."/" . $b ."";}
 }else{
 	$str="/" .$channel."/class.php";
-	if ($b<>""){
-	$str=$str."?b=" . $b ."";
-	}
+	if ($b<>""){$str=$str."?b=" . $b ."";}
 }
 return $str;
 }
 
 function getpageurl3($pagename){
-	if (whtml=="Yes"){
-	return $pagename . ".htm" ;
-	}else {
-	return $pagename . ".php";
-	}
+	if (whtml=="Yes"){return $pagename . ".htm" ;}else {return $pagename . ".php";}
 }
 
 function addzero($str,$longs=2){
@@ -192,11 +162,7 @@ $str= $str;
 }
 
 function addhttp($url){
-if ($url<>"" && substr($url,0,4)<>"http"){
-return "http://".$url;
-}else{
-return $url;
-}
+if ($url<>"" && substr($url,0,4)<>"http"){return "http://".$url;}else{return $url;}
 }
 
 function getstation($bid,$bname,$sid,$sname,$title,$keyword,$channel){
@@ -204,82 +170,49 @@ global $f_array_fun;
 	$str="<li class='start'><a href='".siteurl."'>".$f_array_fun[3]."</a></li>";
 	if (whtml=="Yes") {
 		$str=$str. "<li><a href='/".$channel."/index.htm'>".getchannelname($channel)."</a></li>" ;
-      	if ($bid<>""){
-		$str=$str. "<li><a href='/".$channel."/".$bid."'>".$bname."</a></li>";
-		}		
-		if ($sid<>"") {
-		$str=$str. "<li><a href='/".$channel."/".$bid."/".$sid."'>".$sname."</a></li>";
-		}
-		if ($title<>"") {
-		$str=$str. "<li>".$title."</li>";
-		}
-		if ($keyword<>"") {
-		$str=$str. "<li>".$f_array_fun[4]."“".$keyword."”</li>";
-		}
+      	if ($bid<>""){$str=$str. "<li><a href='/".$channel."/".$bid."'>".$bname."</a></li>";}		
+		if ($sid<>"") {$str=$str. "<li><a href='/".$channel."/".$bid."/".$sid."'>".$sname."</a></li>";}
+		if ($title<>"") {$str=$str. "<li>".$title."</li>";}
+		if ($keyword<>"") {$str=$str. "<li>".$f_array_fun[4]."“".$keyword."”</li>";}
 	}else{
 		$str=$str. "<li><a href='".$channel.".php'>".getchannelname($channel)."</a></li>" ;
-      	if ($bid<>"") {
-		$str=$str. "<li><a href='/".$channel."/".$channel.".php?b=".$bid."'>".$bname."</a></li>";
-		}		
-		if ($sid<>"") {
-		$str=$str. "<li><a href='/".$channel."/".$channel.".php?b=".$bid."&s=".$sid."'>".$sname."</a></li>";
-		}
-		if ($title<>"") {
-		$str=$str. "<li>".$title."</li>";
-		}
-		if ($keyword<>"") {
-		$str=$str. "<li>".$f_array_fun[4]."“".$keyword."”</li>";
-		}
+      	if ($bid<>"") {$str=$str. "<li><a href='/".$channel."/".$channel.".php?b=".$bid."'>".$bname."</a></li>";}		
+		if ($sid<>"") {$str=$str. "<li><a href='/".$channel."/".$channel.".php?b=".$bid."&s=".$sid."'>".$sname."</a></li>";}
+		if ($title<>"") {$str=$str. "<li>".$title."</li>";}
+		if ($keyword<>"") {$str=$str. "<li>".$f_array_fun[4]."“".$keyword."”</li>";}
 	}
 unset ($f_array_fun);	
 return $str;	
 }
-
+getpageurlzs("trea",$urll);
 function getchannelname($channel){
 global $f_array_fun;
 switch ($channel){
-case "zs";
-return channelzs;
-break;
-case "zsclass";
-return channelzs;
-break;
-case "pp";
-return $f_array_fun[5];
-break;
-case "job";
-return $f_array_fun[6];
-break;
-case "dl";
-return channeldl;
-break;
-case "zh";
-return $f_array_fun[7];
-break;
-case "zx";
-return $f_array_fun[8];
-break;
-case "wangkan";
-return $f_array_fun[9];
-break;
-case "special";
-return $f_array_fun[10];
-break;
-case "company";
-return $f_array_fun[11];
-break;
+case "zs";return channelzs;break;
+case "zsclass";return channelzs;break;
+case "pp";return $f_array_fun[5];break;
+case "job";return $f_array_fun[6];break;
+case "dl";return channeldl;break;
+case "zh";return $f_array_fun[7];break;
+case "zx";return $f_array_fun[8];break;
+case "wangkan";return $f_array_fun[9];break;
+case "baojia";return '报价';break;
+case "special";return $f_array_fun[10];break;
+case "company";return $f_array_fun[11];break;
 }
 unset ($f_array_fun);
 }
+
 function checkyzm($yzm){
-if($yzm!=$_SESSION["yzm_math"]){
-showmsg('验证问题答案错误！','back');
-}
+if($yzm!=$_SESSION["yzm_math"]){showmsg('验证问题答案错误！','back');}
 }
 
-function getimgincontent($content){
-preg_match_all("/<[img].*?src=[\'|\"](.*?(?:[\.gif|\.jpg]))[\'|\"].*?[\/]?>/i",$content,$match);
-return @$match[1][0];
+function getimgincontent($content,$num=1){
+preg_match_all("/<[img].*?src=[\'|\"](.*?(?:[\.gif|\.jpg|\.png|\.bmp]))[\'|\"].*?[\/]?>/i",$content,$match);
+switch ($num){
+case 1;return @$match[1][0];break;//只取第一个
+case 2;return @$match[1];break;//取出所有，返回的是一个数组
+}
 }
 
 function cutstr($tempstr,$tempwid){
@@ -290,8 +223,12 @@ return $tempstr;
 }
 }
 
-function showannounce($numbers,$titlelong){
+function showannounce($cs){
 global $f_array_fun;
+$cs=explode(",",$cs); //传入的$cs是一个整体字符串,转成数组
+$numbers=isset($cs[0])?$cs[0]:2;checkid($numbers,0,'{#showannounce}标签的第1个参数须为大于0的整数');
+$titlelong=isset($cs[1])?$cs[1]:20;checkid($titlelong,0,'{#showannounce}标签的第2个参数须为大于0的整数');
+
 if (isset($_COOKIE['closegg'])){
 $str='';
 }else{
@@ -302,9 +239,9 @@ $str='';
 	//echo $sql;
 	$row=mysql_num_rows($rs);
 	if ($row){
-	$str=$str ."<div id='gonggao'><span onclick=\"gonggao.style.display='none'\"><a href='/one/announce_cookie_del.php' target='forgg'>×</a></span>";
+	$str=$str ."<div id='gonggao'><span onclick=\"gonggao.style.display='none'\"><a href=javascript:delCookie('closegg')>×</a></span>";
 		while ($row=mysql_fetch_array($rs)){
-		$str=$str ."<li>".$f_array_fun[12]."【". $n ."】<a href=javascript:announce('".$row["id"]."')>".cutstr(strip_tags($row["title"]),$titlelong)." [".date("Y-m-d",strtotime($row['sendtime']))."] </a></li>";
+		$str=$str ."<li>".$f_array_fun[12]."【". $n ."】<a href=javascript:openwindow('/one/announce_show.php?id=".$row["id"]."',700,300)>".cutstr(strip_tags($row["title"]),$titlelong)." [".date("Y-m-d",strtotime($row['sendtime']))."] </a></li>";
 		$n++;
 		}
 	$str=$str ."</div>";
@@ -317,22 +254,21 @@ return $str;
 function showselectpage($pagename,$page_size,$b,$s,$page){
 global $f_array_fun;
 $str="<select name='menu1' onchange=MM_jumpMenu('parent',this,0)>";
+$cs="/".$pagename."/".$pagename.".php?b=".$b."&s=".$s."&page=".$page;
 if ($page_size=="20"){
-$str=$str . "<option value='/".$pagename."/".$pagename.".php?b=".$b."&s=".$s."&page=".$page."&page_size=20' selected >20".$f_array_fun[13]."</option>";
+$str=$str . "<option value='".$cs."&page_size=20' selected >20".$f_array_fun[13]."</option>";
 }else{
-$str=$str . "<option value='/".$pagename."/".$pagename.".php?b=".$b."&s=".$s."&page=".$page."&page_size=20' >20".$f_array_fun[13]."</option>";
+$str=$str . "<option value='".$cs."&page_size=20' >20".$f_array_fun[13]."</option>";
 }
-
 if ($page_size=="50") {
-$str=$str . "<option value='/".$pagename."/".$pagename.".php?b=".$b."&s=".$s."&page=".$page."&page_size=50' selected >50".$f_array_fun[13]."</option>";
+$str=$str . "<option value='".$cs."&page_size=50' selected >50".$f_array_fun[13]."</option>";
 }else{
-$str=$str . "<option value='/".$pagename."/".$pagename.".php?b=".$b."&s=".$s."&page=".$page."&page_size=50' >50".$f_array_fun[13]."</option>";
+$str=$str . "<option value='".$cs."&page_size=50' >50".$f_array_fun[13]."</option>";
 }
-
 if ($page_size=="100"){
-$str=$str . "<option value='/".$pagename."/".$pagename.".php?b=".$b."&s=".$s."&page=".$page."&page_size=100' selected >100".$f_array_fun[13]."</option>";
+$str=$str . "<option value='".$cs."&page=".$page."&page_size=100' selected >100".$f_array_fun[13]."</option>";
 }else{
-$str=$str . "<option value='/".$pagename."/".$pagename.".php?b=".$b."&s=".$s."&page=".$page."&page_size=100' >100".$f_array_fun[13]."</option>";
+$str=$str . "<option value='".$cs."&page=".$page."&page_size=100' >100".$f_array_fun[13]."</option>";
 }
 $str=$str . "</select>";
 unset ($f_array_fun);
@@ -347,8 +283,72 @@ return siteurl.str_replace(".jpeg","_small.jpeg",str_replace(".png","_small.png"
 }
 }
 
-function showprovince($channel,$column){
+function makesmallimg($img){
+$imgbig=zzcmsroot.$img;	
+$imgsmall=str_replace(siteurl,"",getsmallimg($imgbig));
+	$sImgName =$imgsmall;
+	$sImgSize=120;
+	$data=GetImageSize($imgbig);//取得GIF、JPEG、PNG或SWF图片属性，返回数组，图形的宽度[0],图形的高度[1]，文件类型[2]
+	if($data[2]!=4){//文件类型不为4，4为swf格式
+    	switch ($data[2]) {
+     	case 1 :$sImg = imagecreatefromgif($imgbig);break;
+     	case 2 :$sImg = imagecreatefromjpeg($imgbig);break;
+     	case 3 :$sImg = imagecreatefrompng($imgbig);break;
+     	case 6 :$sImg = imagecreatefromwbmp($imgbig);break;
+     	//default :echo "不支持的文件类型，无法生成缩略图";
+    	}
+		//生成小图
+		if ($data[1]>$data[0]){
+		$newwidth=$sImgSize*($data[0]/$data[1]) ;
+		$newheight= $sImgSize;
+		}else{
+		$newwidth=$sImgSize;
+		$newheight=$sImgSize*($data[1]/$data[0]) ;
+		}  
+		$sImgDate = imagecreatetruecolor($newwidth,$newheight);   
+		imagecopyresampled($sImgDate,$sImg, 0, 0, 0, 0, $newwidth, $newheight, $data[0],$data[1]);
+    	switch ($data[2]) {
+     	case 1 :imagegif($sImgDate, $sImgName);break;
+     	case 2 :imagejpeg($sImgDate, $sImgName);break;
+     	case 3 :imagepng($sImgDate, $sImgName);break;
+     	case 6 :imagewbmp($sImgDate, $sImgName);break;
+    	}
+    	imagedestroy($sImgDate);
+       	$isok=imagedestroy($sImg);
+		//if ($isok){echo "生成小图片成功:".$sImgName;}	
+   	}
+}
+
+function grabimg($url,$filename="") {
+   if($url==""):return false;endif;
+   if($filename=="") {
+     $ext=strrchr($url,".");
+     if($ext!=".gif" && $ext!=".jpg" && $ext!=".png"&& $ext!=".bmp"):return false;endif;
+	 $filename_dir=zzcmsroot.'uploadfiles/'.date("Y-m"); //上传文件地址 采用绝对地址方便upload.php文件放在站内的任何位置 
+	 if (!file_exists($filename_dir)) {
+	 @mkdir($filename_dir,0777,true);
+	 }
+	 $filename=$filename_dir."/".date("YmdHis").rand(100,999).$ext;
+   }
+
+   ob_start();
+   readfile($url);
+   $img = ob_get_contents();
+   ob_end_clean();
+   $size = strlen($img);
+
+   $fp2=@fopen($filename, "a");
+   fwrite($fp2,$img);
+   fclose($fp2);
+   return $filename;
+}
+
+function showprovince($cs){
 global $province,$citys;
+$cs=explode(",",$cs); //传入的$cs是一个整体字符串,转成数组
+$channel=isset($cs[0])?$cs[0]:'';
+$column=isset($cs[1])?$cs[1]:5;
+
 	$str="<table width='100%' border='0' cellpadding='5' cellspacing='1' class='bgcolor3'><tr>";
 	$city=explode("#",$citys);
 		$c=count($city);//循环之前取值
@@ -372,34 +372,56 @@ global $province,$citys;
 	return $str;
 }
 
-function showkeyword($channel,$numbers,$column){
+function showkeyword($cs){
 global $keyword,$siteskin,$f_array_fun;
-	$fpath=zzcmsroot."/cache/zskeyword.txt";
-if (file_exists($fpath)==false){
-	$str= $f_array_fun[14];
-}else{
-	$str="<table width='100%' border='0' cellpadding='5' cellspacing='1' class='bgcolor3'><tr>";
-	$get_zskeyword_url =file_get_contents($fpath);
-	$zskeyword_url = explode(";",$get_zskeyword_url);
-	for ($i=1;$i<count($zskeyword_url);$i++){
-	$zskeyword[$i-1] =substr($zskeyword_url[$i-1],0,strpos($zskeyword_url[$i-1],","));
-	$zsurl[$i-1] =substr($zskeyword_url[$i-1],strpos($zskeyword_url[$i-1],",")+1);
-		if ($zsurl[$i-1]==$keyword) {
-		$str=$str . "<td align='center' bgcolor='#FFFFFF' style='font-weight:bold'>";
-		}else{
-		$str=$str . "<td align='center' class='bgcolor1' onMouseOver='PSetBg(this)' onMouseOut='PReBg(this)'>";
-		}
-		$str=$str . "<a href='../".$channel."/search.php?keyword=".$zsurl[$i-1]."'>".$zskeyword[$i-1]."</a>";
-		$str=$str . "</td>" ;
-		if ($i % $column==0) {$str=$str."</tr>";}
-		if ($numbers<=$i){
-		break;
-		}
-	}
-	$str=$str. "</table>";
+$cs=explode(",",$cs); //传入的$cs是一个整体字符串,转成数组
+$channel=isset($cs[0])?$cs[0]:'zs';
+$numbers=isset($cs[1])?$cs[1]:10;checkid($numbers);
+$column=isset($cs[2])?$cs[2]:5;checkid($column);
+	
+if ($channel=='zs' || $channel=='dl'){
+$fpath=zzcmsroot."cache/zskeyword.txt";
+}elseif ($channel=='zx'){
+$fpath=zzcmsroot."cache/zxkeyword.txt";
 }
-unset ($f_array_fun);
-return $str;
+
+if (cache_update_time!=0 && file_exists($fpath)!==false && time()-filemtime($fpath)<3600*24*cache_update_time){
+	return file_get_contents($fpath);
+}else{
+	if ($channel=='zs'||$channel=='dl'){
+	$sql= "select keyword,url from zzcms_tagzs order by xuhao asc";
+	}elseif($channel=='zx'){
+	$sql= "select keyword,url from zzcms_tagzx order by xuhao asc";
+	}
+	$rs=mysql_query($sql);
+	$row=mysql_num_rows($rs);
+	if ($row){
+	$str="";
+	$liwidth=100/$column-10;
+		while ($row=mysql_fetch_array($rs)){
+		if ($row["keyword"]==$keyword) {
+		$str=$str . "<li style='font-weight:bold;width:".$liwidth."%;display:inline-block'>";
+		}else{
+		$str=$str . "<li style='width:".$liwidth."%;display:inline-block'>";
+		}
+		$str=$str . "<a href='/".$channel."/search.php?keyword=".$row["keyword"]."'>".$row["keyword"]."</a></li>\r\n";			
+		}
+	}else{
+	$str= $f_array_fun[14];
+	}
+	unset ($f_array_fun);
+	return $str;
+		
+	if ($channel=='zs'||$channel=='dl'){
+	$fpath=zzcmsroot."cache/zskeyword.txt";
+	}elseif ($channel=='zx'){
+	$fpath=zzcmsroot."cache/zxkeyword.txt";
+	}
+	if (!file_exists("../cache")) {mkdir("../cache",0777,true);}
+	$fp=fopen($fpath,"w+");//fopen()的其它开关请参看相关函数
+	fputs($fp,$str);//写入文件
+	fclose($fp);
+}	
 }
 
 function isaddsiteurl($str){
@@ -410,242 +432,83 @@ return siteurl.$str;
 }
 }
 
-function showad($column,$num,$showtitle,$showborder,$tableborder,$imgwidth=0,$imgheight=0,$titlelong=0,$b,$s,$bianhao='no'){
+function showad($cs){
+global $siteskin;
+$cs=explode(",",$cs); //传入的$cs是一个整体字符串,转成数组
+$b=isset($cs[0])?$cs[0]:'';
+$s=isset($cs[1])?$cs[1]:'';
+$num=isset($cs[2])?$cs[2]:'';
+$imgwidth=isset($cs[3])?$cs[3]:0;
+$imgheight=isset($cs[4])?$cs[4]:0;
+$titlelong=isset($cs[5])?$cs[5]:0;
+$bianhao=isset($cs[6])?$cs[6]:'';
+$fp=zzcmsroot."cache/".$siteskin."/adv_".pinyin($b)."_".pinyin($s).".htm";//广告中文类别名转换成拼音字母来给缓存文件命名
+if (cache_update_time!=0 && file_exists($fp) && filesize($fp)>10 && time()-filemtime($fp)<3600*24*cache_update_time ) {
+//按管理员设定的时间更新,//utf-8有文件头，空文件大小为3字节
+	$fso = fopen($fp,'r');
+	$fcontent = fread($fso,filesize($fp));
+	fclose($fso);
+	return $fcontent;
+}else{
 $n=1;
 $str='';
-if ($column=='' || $column==0){$column=1;}
-$tdwidth=floor(100/$column);//取整
 //sql= "select * from zzcms_ad where endtime>= '"&date()&"' "
 $sql= "select * from zzcms_ad where bigclassname='".$b."' and smallclassname='".$s."' order by xuhao asc,id asc ";
-if ($num<>0){
-$sql= $sql. " limit 0,$num";
-}
+if ($num<>0){$sql= $sql. " limit 0,$num";}
 $rs=mysql_query($sql);
 $row=mysql_num_rows($rs);
-if ($row){ 
-switch ($tableborder){
-case 'no':       
-$str="<table border=0 cellpadding=0 cellspacing=0 width='100%'><tr>";
+if ($row){   
+$str="<ul>";
 while ($row=mysql_fetch_array($rs)){
-	if ($column==1){
-	$str=$str."<td class='imgadS'> ";
-	}else{
-		if ($n==1 || ($n-1) % $column==0){//每行第一个左间距为0
-    	$str=$str."<td class='imgadH' style='padding-left:0px;' width='".$tdwidth."%' > \n";
-		}else{
-		$str=$str."<td class='imgadH'  width='".$tdwidth."%' > \n" ;
-		}
-	}
 	if ($row["img"]<>"" and $row["imgwidth"]<>0 ) {//有图片且宽度不为0，宽度设为0的以文字广告形式显示
-		if ($showborder=="yes"){	
-		$str=$str. "<div class='chanagecolor' align='center'>";	
-		}else{
-		$str=$str. "<div class='bgcolor2' align='center'>";
-		}
+	$str=$str."<li> ";
 		if (isshowad_when_timeend=="No" && $row["endtime"]<=date('Y-m-d H:i:s')){ //到期的
 		$str=$str. showadtext;
 		}else{
 		$str=$str. "<a href='".$row["link"]."' target='_blank' style='color:".$row["titlecolor"]."'>";
-		if (strpos("gif|jpg|png|bmp",substr($row["img"],-3))!==false) {
-			if ($imgwidth!=0){
-			$str=$str. "<img src='".isaddsiteurl($row["img"])."' height='$imgheight' width='$imgwidth' border='0' alt='".$row["title"]."'/>";
+			if ($imgwidth!=0){//参数里设值的按所设值显示，未设值的按广告管理中所设的值显示
+			$str=$str. "<img data-original='".isaddsiteurl($row["img"])."' height='$imgheight' width='$imgwidth'  alt='".$row["title"]."'/>";
 			}else{
-			$str=$str. "<img src='".isaddsiteurl($row["img"])."' height='".$row["imgheight"]."' width='".$row["imgwidth"]."' border='0' alt='".$row["title"]."'/>";
-			}
-		}elseif (substr($row["img"],-3)=="swf"){  
-		$str=$str."<button disabled='disabled' style='border-style: none; background-color: #FFFFFF; background-image: none;width:".$row["imgwidth"]."px' >" ;
-		$str=$str."<object classid=clsid:D27CDB6E-AE6D-11cf-96B8-444553540000 codebase=http://download.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=6,0,29,0 width=".$row["imgwidth"]." height=".$row["imgheight"].">";
-		$str=$str."<param name='movie' value='".siteurl.$row["img"]."' />";
-    	$str=$str."<param name='quality' value='high' />" ;
-		$str=$str."<param name='wmode' value='Opaque' />"; //必要参数否则在SWF文件上无法点击链接
-		$str=$str."<embed src='".isaddsiteurl($row["img"])."' quality='high' pluginspage='http://www.macromedia.com/go/getflashplayer' type='application/x-shockwave-flash' wmode='Opaque' width='".$row["imgwidth"]."' height='".$row["imgheight"]."'></embed>";
-		$str=$str."</object>" ;
-		$str=$str."</button>";
-		}
-		if ($showtitle=="yes"){
-		$str=$str.'<br/>';
-			if ($bianhao=='yes'){
-			$str=$str.addzero($n,2)."-";
+			$str=$str. "<img data-original='".isaddsiteurl($row["img"])."' height='".$row["imgheight"]."' width='".$row["imgwidth"]."' alt='".$row["title"]."'/>";
 			}
 			if ($titlelong!=0){
-			$str=$str.cutstr($row["title"],$titlelong);
-			}else{
-			$str=$str.$row["title"];
+			$str=$str.'<br/>';
+				if ($bianhao=='yes'){$str=$str.addzero($n,2)."-";}
+				if ($titlelong!=0){$str=$str.cutstr($row["title"],$titlelong);}else{$str=$str.$row["title"];}
 			}
+		$str=$str."</a>";
 		}
-	$str=$str.'</a>';
-	}
-	$str=$str."</div> \n"; 	
-	}else{
-	if ($column ==1){
-		if (($n + 1) %2 == 0){
-		$str=$str. "<div class='textad2'>";
-		}else{
-		$str=$str. "<div class='textad1'>";
+	$str=$str."</li>\n";
+	}else{//文字类的广告，或是图片设为0宽度的图片广告,都以文字显示
+	$str=$str."<li> ";
+		if (isshowad_when_timeend=="No" && $row["endtime"]<=date('Y-m-d H:i:s')){ //到期的
+		$str=$str. showadtext;
+		}else{		
+			if ($row['img']<>''){//传了图片的文字广告
+			$str=$str."<div id='ad_layer".$row["id"]."' class='hiddiv'></div>";
+			$str=$str."<a href='".$row["link"]."' target='_blank' onMouseOver=\"showfilter(ad_layer".$row["id"].");window.document.getElementById('ad_layer".$row["id"]."').innerHTML='<img src=".isaddsiteurl($row["img"])." width=200px>'\" onMouseOut='showfilter(ad_layer".$row["id"].")'>";	
+			}else{
+			$str=$str."<a href='".$row["link"]."' target='_blank' style='color:".$row["titlecolor"]."'>";	
+			}
+			if ($bianhao=='yes'){$str=$str.addzero($n,2)."-";}
+			if ($titlelong!=0){$str=$str.cutstr($row["title"],$titlelong);}else{$str=$str.$row["title"];}
+			$str=$str. "</a>";
 		}
-	}elseif ($column ==2){
-		if (($n + 2) %4 == 0||($n + 3) %4== 0 ){
-		$str=$str. "<div class='textad2'>";
-		}else{
-		$str=$str. "<div class='textad1'>";
-		}
-	}elseif ($column ==3){
-		if (($n + 3) %6 == 0||($n + 4) %6== 0 ||($n +5) % 6 == 0){
-		$str=$str. "<div class='textad2'>";
-		}else{
-		$str=$str. "<div class='textad1'>";
-		}
-	}elseif ($column ==4){
-		if (($n + 4) % 8 == 0||($n + 5) % 8 == 0 ||($n + 6) % 8 == 0 ||($n + 7) % 8 == 0){
-		$str=$str. "<div class='textad2'>";
-		}else{
-		$str=$str. "<div class='textad1'>";
-		}
-	}elseif($column ==5){
-		if (($n + 5) % 10 == 0||($n + 6) % 10 == 0 ||($n + 7) % 10 == 0||($n + 8) % 10 == 0||($n + 9) % 10 == 0){
-		$str=$str. "<div class='textad2'>";
-		}else{
-		$str=$str. "<div class='textad1'>";
-		}
-	}else{
-	$str=$str. "<div class='textad1'>";//不在此列数范围内时
-	}	
-	if (isshowad_when_timeend=="No" && $row["endtime"]<=date('Y-m-d H:i:s')){ //到期的
-	$str=$str. showadtext;
-	}else{		
-	if ($row['img']<>''){//传了图片的文字广告
-	$str=$str."<div id='ad_layer".$row["id"]."' class='hiddiv'></div>\n";
-	if ($bianhao=='yes'){
-	$str=$str.addzero($n,2)."-";
-	}
-	$str=$str."<a href='".$row["link"]."' target='_blank' onMouseOver=\"showfilter(ad_layer".$row["id"].");window.document.getElementById('ad_layer".$row["id"]."').innerHTML='<img src=".isaddsiteurl($row["img"])." width=200px>'\" onMouseOut='showfilter(ad_layer".$row["id"].")'>\n";	
-	}else{
-	if ($bianhao=='yes'){
-	$str=$str.addzero($n,2)."-";
-	}
-	$str=$str."<a href='".$row["link"]."' target='_blank' style='color:".$row["titlecolor"]."'>";	
-	}
-		if ($titlelong!=0){
-		$str=$str.cutstr($row["title"],$titlelong);
-		}else{
-		$str=$str.$row["title"];
-		}
-	$str=$str. "</a>";
-	}
-	$str=$str. "</div>";
-	}           
-    $str=$str."</td> \n";
-	if ($n % $column==0) {
-	$str=$str."</tr>";
+	$str=$str."</li>\n";
 	}
 	$n=$n+1;
 }
-break;
-case 'yes':
-$str="<table border=0 cellpadding=0 cellspacing=1 width='100%' class='bgcolor3'><tr>";
-while ($row=mysql_fetch_array($rs)){
-	if ($column ==1){
-		if (($n + 1) %2 == 0){
-		$str=$str. "<td class='textad3' width='".$tdwidth."%'>";
-		}else{
-		$str=$str. "<td class='textad4' width='".$tdwidth."%'>";
-		}
-	}elseif ($column ==2){
-		if (($n + 2) %4 == 0||($n + 3) %4== 0){
-		$str=$str. "<td class='textad3' width='".$tdwidth."%'>";
-		}else{
-		$str=$str. "<td class='textad4' width='".$tdwidth."%'>";
-		}
-	}elseif ($column ==3){
-		if (($n + 3) %6 == 0||($n + 4) %6== 0 ||($n +5) % 6 == 0){
-		$str=$str. "<td class='textad3' width='".$tdwidth."%'>";
-		}else{
-		$str=$str. "<td class='textad4' width='".$tdwidth."%'>";
-		}
-	}elseif ($column ==4){
-		if (($n + 4) % 8 == 0||($n + 5) % 8 == 0 ||($n + 6) % 8 == 0 ||($n + 7) % 8 == 0){
-		$str=$str. "<td class='textad3' width='".$tdwidth."%'>";
-		}else{
-		$str=$str. "<td class='textad4' width='".$tdwidth."%'>";
-		}
-	}elseif($column ==5){
-		if (($n + 5) % 10 == 0||($n + 6) % 10 == 0 ||($n + 7) % 10 == 0||($n + 8) % 10 == 0||($n + 9) % 10 == 0){
-		$str=$str. "<td class='textad3' width='".$tdwidth."%'>";
-		}else{
-		$str=$str. "<td class='textad4' width='".$tdwidth."%'>";
-		}
-	}else{
-	$str=$str. "<td class='textad3'>";//不在此列数范围内时
-	}
-	if (isshowad_when_timeend=="No" && $row["endtime"]<=date('Y-m-d H:i:s')){ //到期的
-	$str=$str. showadtext;
-	}else{	
-	if ($row["img"]<>"" && $row["imgwidth"]<>0 ) {
-		if ($showborder=="yes"){	
-		$str=$str. "<div class='chanagecolor' align='center'>";	
-		}else{
-		$str=$str. "<div class='bgcolor2' align='center'>";
-		}
-		$str=$str. "<a href='".$row["link"]."' target='_blank' style='color:".$row["titlecolor"]."'>";
-		if (strpos("gif|jpg|png|bmp",substr($row["img"],-3))!==false) {
-			if ($imgwidth!=0){
-			$str=$str. "<img src='".isaddsiteurl($row["img"])."' height='$imgheight' width='$imgwidth' border='0' alt='".$row["title"]."'/>";
-			}else{
-			$str=$str. "<img src='".isaddsiteurl($row["img"])."' height='".$row["imgheight"]."' width='".$row["imgwidth"]."' border='0' alt='".$row["title"]."'/>";
-			}
-		}elseif (substr($row["img"],-3)=="swf"){  
-		$str=$str."<button disabled='disabled' style='border-style: none; background-color: #FFFFFF; background-image: none;width:".$row["imgwidth"]."px' >" ;
-		$str=$str."<object classid=clsid:D27CDB6E-AE6D-11cf-96B8-444553540000 codebase=http://download.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=6,0,29,0 width=".$row["imgwidth"]." height=".$row["imgheight"].">";
-		$str=$str."<param name='movie' value='".siteurl.$row["img"]."' />";
-    	$str=$str."<param name='quality' value='high' />" ;
-		$str=$str."<param name='wmode' value='Opaque' />"; //必要参数否则在SWF文件上无法点击链接
-		$str=$str."<embed src='".isaddsiteurl($row["img"])."' quality='high' pluginspage='http://www.macromedia.com/go/getflashplayer' type='application/x-shockwave-flash' wmode='Opaque' width='".$row["imgwidth"]."' height='".$row["imgheight"]."'></embed>";
-		$str=$str."</object>" ;
-		$str=$str."</button>";
-		}
-		if ($showtitle=="yes"){
-		$str=$str.'<br/>';
-		if ($bianhao=='yes'){
-		$str=$str.addzero($n,2).'-';
-		}
-			if ($titlelong!=0){
-			$str=$str.cutstr($row["title"],$titlelong);
-			}else{
-			$str=$str.$row["title"];
-			}
-		}
-	$str=$str."</a></div> \n";	
-	}else{
-	if ($row['img']<>''){
-	$str=$str."<div id='ad_layer".$row["id"]."' class='hiddiv'></div>";
-	if ($bianhao=='yes'){
-	$str=$str.addzero($n,2)."-";
-	}
-	$str=$str."<a href='".$row["link"]."' target='_blank' onMouseOver=\"showfilter(ad_layer".$row["id"].");window.document.getElementById('ad_layer".$row["id"]."').innerHTML='<img src=".isaddsiteurl($row["img"])." width=200px>'\" onMouseOut='showfilter(ad_layer".$row["id"].")'>";	
-	}else{
-	if ($bianhao=='yes'){
-	$str=$str.addzero($n,2).'-';
-	}
-	$str=$str."<a href='".$row["link"]."' target='_blank' style='color:".$row["titlecolor"]."'>";	
-	}
-		if ($titlelong!=0){
-		$str=$str.cutstr($row["title"],$titlelong);
-		}else{
-		$str=$str.$row["title"];
-		}
-	$str=$str. "</a>";
-	} 
-	}          
-    $str=$str."</td> \n";
-	if ($n % $column==0) {
-	$str=$str."</tr>";
-	}
-	$n=$n+1;
+	$str=$str."</ul>";
 }
-}
-   $str=$str." </table>";
-}
+	if (cache_update_time!=0){
+	$fp=zzcmsroot."cache/".$siteskin."/adv_".pinyin($b)."_".pinyin($s).".htm";
+	if (!file_exists(zzcmsroot."cache/".$siteskin)) {mkdir(zzcmsroot."cache/".$siteskin,0777,true);}
+	$f=fopen($fp,"w+");//fopen()的其它开关请参看相关函数
+	fputs($f,$str);
+	fclose($f);
+	}
 return $str;
+}
 }
 
 function lockip(){
@@ -767,7 +630,7 @@ function pinyin($_String, $_Code='UTF8'){ //GBK页面可改为gb2312，其他随
                 } 
                 $_Res .= _pinyin($_P, $_Data); 
         } 
-        return preg_replace("/[^a-z0-9]*/", '', $_Res); 
+        return preg_replace("/[^a-z0-9A-Z]*/", '', $_Res); 
 } 
 function _pinyin($_Num, $_Data){ 
         if($_Num>0 && $_Num<160 ){
@@ -887,78 +750,96 @@ curl_close($ch);
  return $loc; 
  }
 
-function sitecount($user,$zs,$dl,$pp,$zh,$job,$zx,$special,$wangkan){ 
-global $f_array_fun;
-$fpath=zzcmsroot."/cache/sitecount.txt";
+function sitecount($cs){ 
+global $siteskin,$f_array_fun;
+$fpath=zzcmsroot."/cache/".$siteskin."/sitecount.txt";
 if (cache_update_time!=0 && file_exists($fpath)!==false && time()-filemtime($fpath)<3600*24*cache_update_time){
 	return file_get_contents($fpath);
 }else{	
 $str='';
-if ($user==1){
+$cs=explode(",",$cs); //传入的$cs是一个整体字符串
+$users=isset($cs[0])?$cs[0]:'';
+$zs=isset($cs[1])?$cs[1]:'';
+$dl=isset($cs[2])?$cs[2]:'';
+$pp=isset($cs[3])?$cs[3]:'';
+$zh=isset($cs[4])?$cs[4]:'';
+$job=isset($cs[5])?$cs[5]:'';
+$zx=isset($cs[6])?$cs[6]:'';
+$special=isset($cs[7])?$cs[7]:'';
+$wangkan=isset($cs[8])?$cs[8]:'';
+$baojia=isset($cs[9])?$cs[9]:'';
+if ($users=='users'){
 $sql="select count(*) as total from zzcms_user";
 $rs=mysql_query($sql);
 $row = mysql_fetch_array($rs);
 $totlenum = $row['total'];
 $str=$str. "<li>".$f_array_fun[49]."<span>".$totlenum."</span></li>";
 }
-if ($zs==1){
+if ($zs=='zs'){
 $sql="select count(*) as total from zzcms_main";
 $rs=mysql_query($sql);
 $row = mysql_fetch_array($rs);
 $totlenum = $row['total'];
 $str=$str."<li>".channelzs."<span>".$totlenum."</span></li>";
 }
-if ($dl==1){
+if ($dl=='dl'){
 $sql="select count(*) as total from zzcms_dl";
 $rs=mysql_query($sql);
 $row = mysql_fetch_array($rs);
 $totlenum = $row['total'];
 $str=$str."<li>".channeldl."<span>".formatnumber($totlenum)."</span> </li>";
 }
-if ($pp==1){
+if ($pp=='pp'){
 $sql="select count(*) as total from zzcms_pp";
 $rs=mysql_query($sql);
 $row = mysql_fetch_array($rs);
 $totlenum = $row['total'];
 $str=$str."<li>".$f_array_fun[5]."<span>".$totlenum."</span></li>";
 }
-if ($zh==1){
+if ($zh=='zh'){
 $sql="select count(*) as total from zzcms_zh";
 $rs=mysql_query($sql);
 $row = mysql_fetch_array($rs);
 $totlenum = $row['total'];
 $str=$str."<li>".$f_array_fun[7]."<span>".$totlenum."</span></li>";
 }
-if ($job==1){
+if ($job=='job'){
 $sql="select count(*) as total from zzcms_job";
 $rs=mysql_query($sql);
 $row = mysql_fetch_array($rs);
 $totlenum = $row['total'];
 $str=$str. "<li>".$f_array_fun[6]."<span>".$totlenum."</span></li>"; 
 }
-if ($zx==1){
+if ($zx=='zx'){
 $sql="select count(*) as total from zzcms_zx";
 $rs=mysql_query($sql);
 $row = mysql_fetch_array($rs);
 $totlenum = $row['total'];
 $str=$str."<li>".$f_array_fun[8]."<span>".$totlenum."</span></li>";
 }
-if ($special==1){
+if ($special=='special'){
 $sql="select count(*) as total from zzcms_special";
 $rs=mysql_query($sql);
 $row = mysql_fetch_array($rs);
 $totlenum = $row['total'];
 $str=$str."<li>".$f_array_fun[10]."<span>".$totlenum."</span></li>";
 }
-if ($wangkan==1){
+if ($wangkan=='wangkan'){
 $sql="select count(*) as total from zzcms_wangkan";
 $rs=mysql_query($sql);
 $row = mysql_fetch_array($rs);
 $totlenum = $row['total'];
 $str=$str."<li>".$f_array_fun[9]."<span>".$totlenum."</span></li>";
 }
+if ($baojia=='baojia'){
+$sql="select count(*) as total from zzcms_baojia";
+$rs=mysql_query($sql);
+$row = mysql_fetch_array($rs);
+$totlenum = $row['total'];
+$str=$str."<li>报价<span>".$totlenum."</span></li>";
+}
 if (cache_update_time!=0){
-	$fpath=zzcmsroot."cache/sitecount.txt";
+	$fpath=zzcmsroot."cache/".$siteskin."/sitecount.txt";
 	$fp=fopen($fpath,"w+");//fopen()的其它开关请参看相关函数
 	fputs($fp,stripfxg($str));//写入文件
 	fclose($fp);
@@ -1065,11 +946,7 @@ echo $dir.$f_array_fun[64]."<br />";
 
 function formatnumber($number){
 global $f_array_fun;
-	if($number >= 10000){
-	return sprintf("%.2f", $number/10000).$f_array_fun[65];
-	}else{
-	return $number;
-	}
+	if($number >= 10000){return sprintf("%.2f", $number/10000).$f_array_fun[65];}else{return $number;}
 }
 
 function checkver($str){
@@ -1082,9 +959,7 @@ function checkadminisdo($str){
 $rs=mysql_query("select config from zzcms_admingroup where id=(select groupid from zzcms_admin where pass='".@$_SESSION["pass"]."' and admin='".@$_SESSION["admin"]."')");//只验证密码会出现，两个管理员密码相同的情况，导致出错,前加@防止SESSION失效后出错提示
 	$row=mysql_fetch_array($rs);
 	$config=$row["config"];
-	if(str_is_inarr($config,$str)=='no'){
-	showmsg('没有操作权限!');
-	}
+	if(str_is_inarr($config,$str)=='no'){showmsg('没有操作权限!');}
 }
 
 function check_user_power($str){
@@ -1095,35 +970,19 @@ $username=$_COOKIE["UserName"];
 $rs=mysql_query("select config from zzcms_usergroup where groupid=(select groupid from zzcms_user where username='".$username."')");
 	$row=mysql_fetch_array($rs);
 	$config=$row["config"];
-	if (str_is_inarr($config,$str)=='yes'){
-	return 'yes';
-	}else{
-	return 'no';
-	}
+	if (str_is_inarr($config,$str)=='yes'){return 'yes';}else{return 'no';}
 }
 
 function check_usergr_power($str){
-	if (str_is_inarr(usergr_power,$str)=='yes'){
-	return 'yes';
-	}else{
-	return 'no';
-	}
+	if (str_is_inarr(usergr_power,$str)=='yes'){return 'yes';}else{return 'no';}
 }
 
 function str_is_inarr($arrs,$str){
 if(strpos($arrs,'#')!==false){//多个,循环值后对比,内容较多，要转换成数组，如果只用strpos字符判断，有重复的字符
 $arr=explode("#",$arrs); //转换成数组
-	if(in_array($str,$arr)){
-	return 'yes';
-	}else{
-	return 'no';
-	}
+	if(in_array($str,$arr)){return 'yes';}else{return 'no';}
 }else{//单个,直接对比
-	if($arrs==$str){
-	  return 'yes';
-	  }else{
-	  return 'no';
-	  }
+	if($arrs==$str){ return 'yes';}else{return 'no';}
 }	
 }
 

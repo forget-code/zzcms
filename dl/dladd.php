@@ -381,6 +381,14 @@ if (sendsms=="Yes"){
 	if($yzm_mobile!=@$_SESSION["yzm_mobile"]){showmsg('验证码错误！','back');}
 }
 
+if(!preg_match("/^[\x7f-\xff]+$/",$truename)){
+showmsg('姓名只能用中文','back');
+}
+
+if(!preg_match("/1[3458]{1}\d{9}$/",$tel) && !preg_match('/^400(\d{3,4}){2}$/',$tel) && !preg_match('/^400(-\d{3,4}){2}$/',$tel) && !preg_match('/^(010|02\d{1}|0[3-9]\d{2})-\d{7,9}(-\d+)?$/',$tel)){//分别是手机，400电话(加-和不加两种情况都可以)，和普通电话
+showmsg('电话号码不正确','back');
+}
+
 if ($cp<>'' && $truename<>'' && $tel<>''){
 $isok=mysql_query("Insert into zzcms_dl(classzm,cpid,cp,province,city,content,company,companyname,dlsname,tel,address,email,sendtime,editor) values('$classid',0,'$cp','$province','$city','$content','$dlsf','$companyname','$truename','$tel','$address','$email','".date('Y-m-d H:i:s')."','".@$_COOKIE["UserName"]."')") ;
 }  

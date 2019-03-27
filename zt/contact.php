@@ -10,7 +10,7 @@ $pagekeywords=$comane.companyshowkeyword;
 $pagedescription=$comane.companyshowdescription;
 
 $lxfs="<div class='lxfsbg'>";
-if ($showcontact==1  || $_SESSION["dlliuyan"]==$editor) {
+if ($showcontact=='yes'  || $_SESSION["dlliuyan"]==$editor) {
 $lxfs=$lxfs."<ul>";
 $lxfs=$lxfs."<li><b>".$comane."</b></li>";
 $lxfs=$lxfs."<li>地址：".$address."</li>";

@@ -34,14 +34,9 @@ td {
 
 }
 .border2 {
-	border-top-width: 1px;
-	border-right-width: 1px;
-	border-bottom-width: 1px;
-	border-left-width: 1px;
-	border-top-style: solid;
-	border-right-style: solid;
-	border-bottom-style: solid;
-	border-left-style: solid;
+
+	border-width: 1px;
+	border-style: solid;
 	border-top-color: #FFFFFF;
 	border-right-color: #666666;
 	border-bottom-color: #666666;
@@ -50,7 +45,7 @@ td {
 	font-size: 9pt;
 	line-height: 19px;
 	color: #025BAD;
-
+padding:5px;
 
 }
 

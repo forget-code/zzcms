@@ -1,4 +1,5 @@
 <?php
+session_start();//为向AJAX/zx.php中传b,s值
 include("../inc/conn.php");
 include("../inc/fy.php");
 include("../inc/top.php");
@@ -24,6 +25,7 @@ checkid($b,1);
 }else{
 $b=0;
 }
+$_SESSION['zx_b']=$b;
 
 if (isset($_GET['s'])){
 $s=$_GET['s'];
@@ -31,6 +33,8 @@ checkid($s,1);
 }else{
 $s=0;
 }
+$_SESSION['zx_s']=$s;
+
 $bigclassname="";
 $classtitle="";
 $classkeyword="";

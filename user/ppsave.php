@@ -28,7 +28,7 @@ $bigclassid=trim($_POST["bigclassid"]);
 $smallclassid=trim($_POST["smallclassid"]);
 $cp_name=$_POST["name"];
 $sm=$_POST["sm"];
-$img=$_POST["img1"];
+$img=$_POST["img"];
 
 $rs=mysql_query("select comane,id from zzcms_user where username='".$username."'");
 $row=mysql_fetch_array($rs);
@@ -72,7 +72,7 @@ if ($_POST["action"]=="add"){
 $isok=mysql_query("Insert into zzcms_pp(ppname,bigclasszm,smallclasszm,sm,img,sendtime,editor,userid,comane) values('$cp_name','$bigclassid','$smallclassid','$sm','$img','".date('Y-m-d H:i:s')."','$username','$userid','$comane')") ;  
 $cpid=mysql_insert_id();		
 }elseif ($_POST["action"]=="modify"){
-$oldimg=trim($_POST["oldimg1"]);
+$oldimg=trim($_POST["oldimg"]);
 
 $isok=mysql_query("update zzcms_pp set ppname='$cp_name',bigclasszm='$bigclassid',smallclasszm='$smallclassid',sm='$sm',img='$img',sendtime='".date('Y-m-d H:i:s')."',editor='$username',userid='$userid',comane='$comane',passed=0 where id='$cpid'");
 

@@ -12,6 +12,7 @@ $f_array=explode("|||",$fcontent) ;
 <meta http-equiv="X-UA-Compatible" content="IE=EmulateIE7" />
 <title></title>
 <link href="style/<?php echo siteskin_usercenter?>/style.css" rel="stylesheet" type="text/css">
+<script language = "JavaScript" src="/js/gg.js"></script>
 <script language = "JavaScript">
 <?php echo $f_array[0];?>
 </script>
@@ -47,22 +48,10 @@ include("top.php");
           <tr>
             <td align="right" class="border"><?php echo $f_array[6];?>
               <input name="img" type="hidden" id="img"></td>
-            <td class="border"><script type="text/javascript">
-function showtxt(){
-var sd =window.showModalDialog('/uploadimg_form.php?noshuiyin=1','','dialogWidth=400px;dialogHeight=300px');
-//for chrome 
-if(sd ==undefined) {  
-sd =window.returnValue; 
-}
-if(sd!=null) {  
-document.getElementById("img").value=sd;//从子页面得到值写入母页面
-document.getElementById("showimg").innerHTML="<img src='"+sd+"' width=120>";
-}
-}
-          </script>
-                <table width="120" height="120" border="0" cellpadding="5" cellspacing="1" bgcolor="#cccccc">
+            <td class="border">
+                <table width="140" height="140" border="0" cellpadding="5" cellspacing="1" bgcolor="#cccccc">
                   <tr align="center" bgcolor="#FFFFFF">
-                    <td id="showimg" onclick="showtxt()"><input name="Submit2" type="button"  value="<?php echo $f_array[7];?>" /></td>
+                    <td id="showimg" onClick="openwindow('/uploadimg_form.php?noshuiyin=1',400,300)"><input name="Submit2" type="button"  value="<?php echo $f_array[7];?>" /></td>
                   </tr>
               </table></td>
           </tr>

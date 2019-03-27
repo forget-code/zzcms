@@ -307,7 +307,7 @@ $totlenum = $row['total'];
 $offset=($page-1)*$page_size;//$page_size在上面被设为COOKIESS
 $totlepage=ceil($totlenum/$page_size);
 
-$sql="select id,proname,prouse,pricels,gg,img,province,city,xiancheng,sendtime,editor,elite,userid,comane,qq,groupid,renzheng from zzcms_main where passed=1 ";	
+$sql="select id,proname,prouse,shuxing_value,img,province,city,xiancheng,sendtime,editor,elite,userid,comane,qq,groupid,renzheng from zzcms_main where passed=1 ";	
 $sql=$sql.$sql2;
 $sql=$sql." order by groupid desc,elite desc,".$px." desc limit $offset,$page_size";
 $rs = mysql_query($sql); 
@@ -362,9 +362,11 @@ $list2='';
 	$list2 =str_replace("{#qq}","",$list2) ;
 	}
 	
-	$list2 =str_replace("{#gg}" ,$row["gg"],$list2) ;
+	$shuxing_value = explode("|||",$row["shuxing_value"]);
+	for ($n=0; $n< count($shuxing_value);$n++){
+	$list2=str_replace("{#shuxing".$n."}",$shuxing_value[$n],$list2);
+	}
 	$list2 =str_replace("{#prouse}" ,cutstr($row["prouse"],20),$list2) ;
-	$list2 =str_replace("{#pricels}" ,$row["pricels"],$list2) ;
 	$list2 =str_replace("{#sendtime}" ,$row["sendtime"],$list2) ;
 
 	$rsn=mysql_query("select grouppic,groupname from zzcms_usergroup where groupid=".$row["groupid"]."");

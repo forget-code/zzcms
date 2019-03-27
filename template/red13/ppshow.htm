@@ -31,7 +31,7 @@ $("#getcode_math").click(function(){
 	  <table width="100%" border="0" cellpadding="8" cellspacing="1" class="bgcolor3">
           <tr class="bgcolor1">
             <td width="19%" align="center">品牌名称</td>
-            <td width="81%" bgcolor="#FFFFFF">{#ppname}</td>
+            <td width="81%" bgcolor="#FFFFFF">{#title}</td>
           </tr>
           <tr class="bgcolor1">
             <td align="center">公司名称</td>
@@ -49,7 +49,7 @@ $("#getcode_math").click(function(){
       </table><br />
 
 	  <input name="Submit" type="button" class="button_big" value="留言咨询" onclick="location.href='#dl_liuyan'"/>	  </td>
-      <td valign="top" bgcolor="#FFFFFF" style="padding-left:8px"><a href='{#img}' ><img src='{#img}' alt='{#ppname}' border='0' width="200"/></a></td>
+      <td valign="top" bgcolor="#FFFFFF" style="padding-left:8px"><a href='{#img}' ><img src='{#img}' alt='{#title}' border='0' width="200"/></a></td>
     </tr>
   </table>
 </div>
@@ -81,8 +81,8 @@ $("#getcode_math").click(function(){
              <tr>
                <td width="35%">{textarea}
                  <input id="saver" value="{#editor}" type="hidden" name="saver" /></td>
-               <td width="65%"><input id="chcontent1" onclick="showinfo('content',1)" value="愿加盟“{#ppname}”这个品牌，请与我联系。" type="checkbox" name="chcontent" />
-                 <label id="content1" for="chcontent1">愿加盟“{#ppname}”这个品牌，请与我联系。</label>
+               <td width="65%"><input id="chcontent1" onclick="showinfo('content',1)" value="愿加盟“{#title}”这个品牌，请与我联系。" type="checkbox" name="chcontent" />
+                 <label id="content1" for="chcontent1">愿加盟“{#title}”这个品牌，请与我联系。</label>
                  <br />
                  <input id="chcontent2" onclick="showinfo('content',2);" value="有什么支持？" type="checkbox" name="chcontent" />
                  <label id="content2" for="chcontent2">有什么支持？</label>

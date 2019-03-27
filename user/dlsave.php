@@ -49,8 +49,8 @@ checkyzm($_POST["yzm"]);
 if ($_POST["action"]=="add"){
 if ($cp<>'' && $truename<>'' && $tel<>''){
 mysql_query("Insert into zzcms_dl(classzm,cpid,cp,province,city,content,company,companyname,dlsname,tel,address,email,sendtime,editor) values('$classid',0,'$cp','$province','$city','$content','$dlsf','$companyname','$truename','$tel','$address','$email','".date('Y-m-d H:i:s')."','$username')") ;  
-$dlid=mysql_insert_id();	
-mysql_query("Insert into `zzcms_dl_".$classid."`(dlid,cpid,cp,province,city,content,company,companyname,dlsname,tel,address,email,sendtime,editor) values('$dlid',0,'$cp','$province','$city','$content','$dlsf','$companyname','$truename','$tel','$address','$email','".date('Y-m-d H:i:s')."','$username')") ; 
+$id=mysql_insert_id();	
+mysql_query("Insert into `zzcms_dl_".$classid."`(dlid,cpid,cp,province,city,content,company,companyname,dlsname,tel,address,email,sendtime,editor) values('$id',0,'$cp','$province','$city','$content','$dlsf','$companyname','$truename','$tel','$address','$email','".date('Y-m-d H:i:s')."','$username')") ; 
 }	
 }elseif ($_POST["action"]=="modify"){
 mysql_query("update zzcms_dl set classzm='$classid',cp='$cp',province='$province',city='$city',content='$content',company='$dlsf',companyname='$companyname',dlsname='$truename',tel='$tel',address='$address',email='$email',sendtime='".date('Y-m-d H:i:s')."' where id='$id'");
@@ -99,9 +99,9 @@ include("left.php");
       <table width="100%" border="0" cellpadding="5" cellspacing="1" class="bgcolor">
         <tr> 
           <td width="120" align="center" class="bgcolor1"><a href="dladd.php"><?php echo $f_array[5]?></a></td>
-                <td width="120" align="center" class="bgcolor1"><a href="dlmodify.php?id=<?php echo $dlid?>"><?php echo $f_array[6]?></a></td>
+                <td width="120" align="center" class="bgcolor1"><a href="dlmodify.php?id=<?php echo $id?>"><?php echo $f_array[6]?></a></td>
                 <td width="120" align="center" class="bgcolor1"><a href="dlmanage.php?page=<?php echo $page?>"><?php echo $f_array[7]?></a></td>
-                <td width="120" align="center" class="bgcolor1"><a href="<?php echo getpageurl("dl",$dlid)?>" target="_blank"><?php echo $f_array[8]?></a></td>
+                <td width="120" align="center" class="bgcolor1"><a href="<?php echo getpageurl("dl",$id)?>" target="_blank"><?php echo $f_array[8]?></a></td>
         </tr>
       </table></td>
   </tr>

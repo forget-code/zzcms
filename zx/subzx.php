@@ -53,11 +53,17 @@ return $str;
 }
 }
 
-function showzx($b,$s,$editor,$show){
+function showzx($cs){
 $str="";
-$sql="select content,id,title,img from zzcms_zx where bigclassid=$b ";
+$cs=explode(",",$cs); //传入的$cs是一个整体字符串,转成数组
+$b=isset($cs[0])?$cs[0]:0;checkid($b);
+$s=isset($cs[1])?$cs[1]:0;checkid($s);
+$editor=isset($cs[2])?$cs[2]:'';
+$show=isset($cs[3])?$cs[3]:1;
+
+$sql="select content,id,title,img from zzcms_zx where bigclassid='$b' ";
 if ($s!=0){
-$sql=$sql." and smallclassid=$s ";
+$sql=$sql." and smallclassid='$s' ";
 }
 $sql=$sql." and editor ='".$editor."' and passed=1 order by id desc";
 $rs=mysql_query($sql);

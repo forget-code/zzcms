@@ -49,6 +49,7 @@ $link=addhttp(trim($_POST["link"]));
 $laiyuan=trim($_POST["laiyuan"]);
 $content=str_replace("'","",stripfxg(trim($_POST["content"])));
 $img=getimgincontent($content);
+
 $editor=trim($_POST["editor"]);
 $keywords=trim($_POST["keywords"]);
 if ($keywords=="" ){

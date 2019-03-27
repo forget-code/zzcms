@@ -24,6 +24,8 @@ $simgheight=$_SESSION["imgheight"];
 $simgheight=100;
 }
 ?>
+<script language="javascript" src="/js/timer.js"></script>	
+<script language="javascript" src="/js/gg.js"></script>
 <script language = "JavaScript">
 function CheckForm(){	  
 if (document.myform.title.value==""){
@@ -51,7 +53,6 @@ return false;
 }
 } 
 </script>
-<script language="javascript" src="/js/timer.js"></script>	
 </head>
 <body>
 <div class="admintitle">添加广告</div>
@@ -143,21 +144,9 @@ while($row = mysql_fetch_array($rs)){
     <tr> 
       <td align="right" class="border">上传图片： <input name="img" type="hidden" id="img" ></td>
       <td class="border"> 
-<script type="text/javascript">
-function showtxt(){
-var sd =window.showModalDialog('/uploadimg_form.php?noshuiyin=1','','dialogWidth=400px;dialogHeight=300px');
-//for chrome 
-if(sd ==undefined) {  
-sd =window.returnValue; 
-}
-if(sd!=null) {  
-document.getElementById("img").value=sd;//从子页面得到值写入母页面
-document.getElementById("showimg").innerHTML="<img src='"+sd+"' width=120>";
-}
-}
-</script> <table width="120" height="120" border="0" cellpadding="5" cellspacing="1" bgcolor="#999999">
+ <table width="120" height="120" border="0" cellpadding="5" cellspacing="1" bgcolor="#999999">
           <tr align="center" bgcolor="#FFFFFF"> 
-            <td id="showimg" onClick="showtxt()"> <input name="Submit2" type="button"  value="上传图片" /></td>
+            <td id="showimg" onClick="openwindow('/uploadimg_form.php?noshuiyin=1',400,300)"> <input name="Submit2" type="button"  value="上传图片" /></td>
           </tr>
         </table></td>
     </tr>

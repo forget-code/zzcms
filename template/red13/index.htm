@@ -16,15 +16,16 @@
 <script src="js/scrolltop.js" type="text/javascript" language="JavaScript"></script>
 <script src="js/jquery.js" type="text/javascript" language="JavaScript"></script>
 <script src="js/slider.js" type="text/javascript" language="JavaScript"></script>
+<script src="/js/jquery.lazyload.js"></script>
 <link href="template/{#siteskin}/jdimg2.css" rel="stylesheet" type="text/css">
 </head>
 <body>
 {#flyad}
 {#duilianad}
 <div class="main">
-{#showad:4,0,no,no,no,0,0,0,首页,顶部,no}
+{#showad:首页,顶部,4,0,0,0,no}
 <!--<div id='topad'><div id='boxtopadclose'><span onclick=topad.style.display='none'>×</span></div>
-{#showad:4,0,no,no,no,0,0,0,首页,顶部,no}
+{#showad:首页,顶部,4,0,0,0,no}
 </div>
 -->
 </div>
@@ -35,7 +36,7 @@
 	<ul>
 		<li style="float:left;width:240px;margin-right:8px">
 		<div class="titles3">全部商品分类</div>
-		{#zsclass:1,1,6,8,4,99,8,2,2,5,yes,no}
+		<div id="flzs" style="display:block">{#zsclass:1,6,8,99,8,2,2,5,yes,no}
 		</li>		
 		<li style="float:left;width:642px">
 		<div style="margin-bottom:10px">{@adshow.jdimg2}</div>
@@ -75,16 +76,16 @@
 	</div>	
 </div>
 
-<div class="titles"><span><a href="user/index.php?gotopage=adv2.php">抢占招商A区广告位</a></span>火爆招商Z区</div>
-<div class="content1" style="padding-bottom:0">{#showad:6,0,yes,yes,no,180,100,0,首页,1F,no}</div>
+<div class="titles1"><span><a href="user/index.php?gotopage=adv2.php">抢占招商A区广告位</a></span>火爆招商Z区</div>
+<div class="adStyle1" style="margin-bottom:10px">{#showad:首页,1F,10,198,117,12,yes}</div>
 
 <div class="titles1"> <span><a href="user/index.php?gotopage=adv2.php">抢占招商A区广告位</a></span>火爆招商A区</div>
-<div style="margin-bottom:8px">{#showad:5,35,no,no,yes,0,0,0,首页,A,no}</div>
-<div style="margin-bottom:8px">{#showad:5,5,no,no,yes,0,0,0,首页,A_img,no}</div>
+<div class="adStyle1" style="margin-bottom:8px">{#showad:首页,A,35,0,0,12,yes}</div>
+<div class="adStyle1" style="margin-bottom:8px">{#showad:首页,A_img,0,0,12,no}</div>
 
 <div class="titles1"> <span><a href="user/index.php?gotopage=adv2.php">抢占招商B区广告位</a></span>火爆招商B区</div>
-<div style="margin-bottom:8px">{#showad:5,0,no,no,yes,0,0,0,首页,B,no}</div>
-<div style="margin-bottom:8px">{#showad:5,5,no,no,yes,0,0,0,首页,B_img,no}</div>
+<div class="adStyle1" style="margin-bottom:8px">{#showad:5,0,no,no,yes,0,0,0,首页,B,no}</div>
+<div class="adStyle1" style="margin-bottom:8px">{#showad:首页,B_img,0,0,12,no}</div>
 
 <div class="titles"> <span>我要刷新 </span>刷新区</div>
 <div class="content1">
@@ -93,14 +94,14 @@
 {@zsclass.content2}
 </div>
 
-{#showad:4,0,0,no,no,no,0,0,0,首页,第一行,no}
+{#showad:首页,第一行,0,0,0,no}
 
 <div class="titles1"><span><a href="user/index.php">点击登录</a></span><h3>新登录企业</h3></div>
 
 <div style="margin-bottom:8px">{@companyshow.xdl}</div>
 
 
-{#showad:4,0,0,no,no,no,0,0,0,首页,第二行,no}
+{#showad:首页,第二行,0,0,0,no}
 <div class="titles">资讯中心</div>
 <div class="content1" style="padding:0px">
 {@zxclass.forindex}
@@ -155,6 +156,14 @@ document.getElementById("bdshell_js").src = "http://bdimg.share.baidu.com/static
 </script>
 <!-- Baidu Button END -->
 <div style="display: none" id="goTopBtn"></DIV>
-<SCRIPT type=text/javascript>goTopEx();</SCRIPT>
+<SCRIPT type=text/javascript>goTopEx();
+$(function() {
+$("img").lazyload({
+//placeholder : "/image/loading.gif", //用图片提前占位//placeholder,值为某一图片路径.此图片用来占据将要加载的图片的位置,待图片加载时,占位图则会隐藏
+effect: "fadeIn", // 载入使用何种效果//effect(特效),值有show(直接显示),fadeIn(淡入),slideDown(下拉)等,常用fadeIn
+threshold: 200// 提前开始加载//threshold,值为数字,代表页面高度.如设置为200,表示滚动条在离目标位置还有200的高度时就开始加载图片,可以做到不让用户察觉   
+	  });
+  });
+</SCRIPT>
 </body>
 </html>

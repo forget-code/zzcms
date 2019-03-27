@@ -3,7 +3,7 @@ require("inc/conn.php");
 $domain=$_SERVER['HTTP_HOST']; //取得用户所访问的域名全称
 $domain2=substr($domain,0,strpos($domain,'.'));
 $domain_zhu=get_zhuyuming($domain);//针对www.为空的情况，判断$domain2<>$domainzhu
-if ($domain<>str_replace("http://","",siteurl) && sdomain<>'No' && $domain2<>'www' && $domain<>'localhost:8080' && $domain<>'localhost' && $domain2<>$domainzhu && check_isip($domain)==false){//针对输入IP的情况is_numeric($domain2)
+if ($domain<>str_replace("http://","",siteurl) && $domain<>'localhost:8080' && $domain<>'localhost' && $domain2<>$domain_zhu && check_isip($domain)==false){
 header("Location: default.htm",TRUE,301);//show.php及其它页面中以二级域名值为$editor
 exit;
 }
@@ -14,13 +14,14 @@ include("label.php");
 include("zs/subzs.php");
 include("inc/fly.php");
 
-$file=dirname(__FILE__)."/template/".$siteskin."/index.htm";
-if (file_exists($file)==false){
-WriteErrMsg($file.'模板文件不存在');
+$fp=dirname(__FILE__)."/template/".$siteskin."/index.htm";
+if (file_exists($fp)==false){
+WriteErrMsg($fp.'模板文件不存在');
 exit;
 }
-$fso = fopen($file,'r');
-$strout = fread($fso,filesize($file));
+$fso = fopen($fp,'r');
+$strout = fread($fso,filesize($fp));
+fclose($fso);
 $strout=str_replace("{#siteskin}",$siteskin,$strout) ;
 $strout=str_replace("{#sitename}",sitename,$strout) ;
 $strout=str_replace("{#siteurl}",siteurl,$strout) ;

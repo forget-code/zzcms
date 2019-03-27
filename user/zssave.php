@@ -39,17 +39,21 @@ $smallclassid="";
 }
 
 $shuxing = isset($_POST['shuxing'])?$_POST['shuxing']:'0'; 
+$shuxing_value="";
+	if(!empty($_POST['sx'])){
+    for($i=0; $i<count($_POST['sx']);$i++){
+	$shuxing_value=$shuxing_value.($_POST['sx'][$i].'|||');
+    }
+	$shuxing_value=substr($shuxing_value,0,strlen($shuxing_value)-3);//去除最后面的"|||"
+	}
 $szm = isset($_POST['szm'])?$_POST['szm']:''; 
 $cp_name=$_POST["name"];
 $gnzz=$_POST["gnzz"];
-$gg=$_POST["gg"];
 //$sm=stripfxg(trim($_POST["sm"]));
 $sm=str_replace("'","",stripfxg(trim($_POST["sm"])));
-$img1=$_POST["img1"];
-$img2=$_POST["img2"];
-$img3=$_POST["img3"];
+$img=$_POST["img"];
 
-$flv=@$_POST["flv"];
+$flv=isset($_POST["flv"])?$_POST["flv"]:'';
 $province=$_POST["province"];
 $city=$_POST["city"];
 if ($city=='请选择城区'){
@@ -59,17 +63,13 @@ $xiancheng=$_POST["cityforadd"];
 if ($xiancheng=='请选择县城'){
 $xiancheng='';
 }
-$lsj=$_POST["lsj"];
 $zc=$_POST["zc"];
 $yq=$_POST["yq"];
-$title=@$_POST["title"];
-if ($title==""){$title=$cp_name;}
-$keyword=@$_POST["keyword"];
-if ($keyword==""){$keyword=$cp_name;}
-$discription=@$_POST["discription"];
-if ($discription==""){$discription=$cp_name;}
-$skin=$_POST["skin"];
 
+$title=isset($_POST["title"])?$_POST["title"]:$cp_name;
+$keyword=isset($_POST["keyword"])?$_POST["keyword"]:$cp_name;
+$discription=isset($_POST["discription"])?$_POST["discription"]:$cp_name;
+$skin=isset($_POST["skin"])?$_POST["skin"]:'';
 $rs=mysql_query("select groupid,qq,comane,id,renzheng from zzcms_user where username='".$username."'");
 $row=mysql_fetch_array($rs);
 $groupid=$row["groupid"];
@@ -111,45 +111,21 @@ $TimeNum=date('Y');
 $TimeNum=$TimeNum.date("mdHis").$ranNum;
   
 if ($_POST["action"]=="add"){
-$isok=mysql_query("Insert into zzcms_main(proname,bigclasszm,smallclasszm,shuxing,szm,prouse,gg,pricels,sm,img,img2,img3,flv,province,city,xiancheng,zc,yq,title,keywords,description,sendtime,timefororder,editor,userid,groupid,qq,comane,renzheng,skin) values('$cp_name','$bigclassid','$smallclassid','$shuxing','$szm','$gnzz','$gg','$lsj','$sm','$img1','$img2','$img3','$flv','$province','$city','$xiancheng','$zc','$yq','$title','$keyword','$discription','".date('Y-m-d H:i:s')."','$TimeNum','$username','$userid','$groupid','$qq','$comane','$renzheng','$skin')") ;  
+$isok=mysql_query("Insert into zzcms_main(proname,bigclasszm,smallclasszm,shuxing,szm,prouse,sm,img,flv,province,city,xiancheng,zc,yq,shuxing_value,title,keywords,description,sendtime,timefororder,editor,userid,groupid,qq,comane,renzheng,skin) values('$cp_name','$bigclassid','$smallclassid','$shuxing','$szm','$gnzz','$sm','$img','$flv','$province','$city','$xiancheng','$zc','$yq','$shuxing_value','$title','$keyword','$discription','".date('Y-m-d H:i:s')."','$TimeNum','$username','$userid','$groupid','$qq','$comane','$renzheng','$skin')") ;  
 $cpid=mysql_insert_id();		
 }elseif ($_POST["action"]=="modify"){
-$oldimg1=trim($_POST["oldimg1"]);
-$oldimg2=trim($_POST["oldimg2"]);
-$oldimg3=trim($_POST["oldimg3"]);
+$oldimg=trim($_POST["oldimg"]);
 $oldflv=trim($_POST["oldflv"]);
 
-$isok=mysql_query("update zzcms_main set proname='$cp_name',bigclasszm='$bigclassid',smallclasszm='$smallclassid',shuxing='$shuxing',szm='$szm',prouse='$gnzz',gg='$gg',pricels='$lsj',sm='$sm',img='$img1',img2='$img2',img3='$img3',flv='$flv',province='$province',city='$city',xiancheng='$xiancheng',zc='$zc',yq='$yq',title='$title',keywords='$keyword',description='$discription',sendtime='".date('Y-m-d H:i:s')."',timefororder='$TimeNum',editor='$username',userid='$userid',groupid='$groupid',qq='$qq',comane='$comane',renzheng='$renzheng',skin='$skin',passed=0 where id='$cpid'");
+$isok=mysql_query("update zzcms_main set proname='$cp_name',bigclasszm='$bigclassid',smallclasszm='$smallclassid',shuxing='$shuxing',szm='$szm',prouse='$gnzz',sm='$sm',img='$img',flv='$flv',province='$province',city='$city',xiancheng='$xiancheng',zc='$zc',yq='$yq',shuxing_value='$shuxing_value',title='$title',keywords='$keyword',description='$discription',sendtime='".date('Y-m-d H:i:s')."',timefororder='$TimeNum',editor='$username',userid='$userid',groupid='$groupid',qq='$qq',comane='$comane',renzheng='$renzheng',skin='$skin',passed=0 where id='$cpid'");
 
-	if ($oldimg1<>$img1 && $oldimg1<>"image/nopic.gif") {
+	if ($oldimg<>$img && $oldimg<>"image/nopic.gif") {
 	//deloldimg
-		$f=$oldimg1;
+		$f=$oldimg;
 		if (file_exists($f)){
 		unlink($f);		
 		}
-		$fs=str_replace(".","_small.",$oldimg1);
-		if (file_exists($fs)){
-		unlink($fs);		
-		}
-	}
-	if ($oldimg2<>$img2 && $oldimg2<>"image/nopic.gif") {
-	//deloldimg
-		$f=$oldimg2;
-		if (file_exists($f)){
-		unlink($f);		
-		}
-		$fs=str_replace(".","_small.",$oldimg2);
-		if (file_exists($fs)){
-		unlink($fs);		
-		}
-	}
-	if ($oldimg3<>$img3 && $oldimg3<>"image/nopic.gif") {
-	//deloldimg
-		$f=$oldimg3;
-		if (file_exists($f)){
-		unlink($f);		
-		}
-		$fs=str_replace(".","_small.",$oldimg3);
+		$fs=str_replace(".","_small.",$oldimg);
 		if (file_exists($fs)){
 		unlink($fs);		
 		}
@@ -200,10 +176,7 @@ include("left.php");
         <td width="25%" align="right" bgcolor="#FFFFFF"><strong><?php echo $f_array[4]?></strong></td>
         <td width="75%"><?php echo $cp_name?></td>
       </tr>
-      <tr bgcolor="#FFFFFF">
-        <td align="right" bgcolor="#FFFFFF"><strong><?php echo $f_array[5]?></strong></td>
-        <td><?php echo $gg?></td>
-      </tr>
+      
       <tr bgcolor="#FFFFFF">
         <td align="right" bgcolor="#FFFFFF"><strong><?php echo $f_array[6]?></strong></td>
         <td><?php echo $province.$city?></td>

@@ -10,17 +10,8 @@ include ("admin.php");
 </head>
 <body>
 <?php
-if (isset($_REQUEST["b"])){
-$b=$_REQUEST["b"];
-}else{
-$b="";
-}
-
-if (isset($_REQUEST["s"])){
-$s=$_REQUEST["s"];
-}else{
-$s="";
-}
+$b=isset($_REQUEST["b"])?$_REQUEST["b"]:'';
+$s=isset($_REQUEST["s"])?$_REQUEST["s"]:'';
 
 if (@$_REQUEST["action"]=="px"){
 checkadminisdo("adv");
@@ -112,7 +103,7 @@ echo "暂无信息";
     <input name="submit2" type="submit" class="buttons" id="submit22"  value="更新序号">
     <input name="b" type="hidden" id="b" value="<?php echo $b?>">
 	<input name="s" type="hidden" id="s" value="<?php echo $s?>">
-    提示：在表单内填上每条信息的序号（0-9999）数字越大显示越向前，然后点击 
+    提示：在表单内填上每条信息的序号（0-9999）广告将会按顺序排列，然后点击 
     <input name="submit22" type="submit" class="buttons" id="submit23"  value="更新序号">
   </div>
   <table width="100%" border="0" cellspacing="1" cellpadding="5">
@@ -121,7 +112,6 @@ echo "暂无信息";
       <td width="10%" class="border">所属类别</td>
       <td width="10%" class="border">标题</td>
       <td width="10%" class="border">图片</td>
-      <td width="5%" align="center" class="border">操作</td>
     </tr>
     <?php
 $n=1;
@@ -149,7 +139,6 @@ if ($row["img"]<>""){
 	echo "文字广告-无图片";
 }	
 	?>      </td>
-      <td align="center" class="docolor"> <a href="news_modify.php?b=<?php echo $b?>&id=<?php echo $row["id"]?>">修改</a></td>
     </tr>
     <?php
 $n++;
@@ -158,7 +147,7 @@ $n++;
   </table>
   <div class="border"> 
     <input name="submit23" type="submit" class="buttons" id="submit2"  value="更新序号">
-    提示：在表单内填上每条信息的序号（0-9999）数字越大显示越向前，然后点击 
+    提示：在表单内填上每条信息的序号（0-9999）广告将会按顺序排列，然后点击 
     <input name="submit222" type="submit" class="buttons" id="submit222"  value="更新序号">
   </div>
 </form>

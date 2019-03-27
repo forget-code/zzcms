@@ -9,15 +9,11 @@
 <link href="/template/{#siteskin}/style.css" rel="stylesheet" type="text/css">
 <script src="/js/msgbox.js" type="text/javascript" language="JavaScript"></script>
 <script>
-function window.onload() 
-{
-    if(top.location != self.location)
-    {
+function window.onload() {
+    if(top.location != self.location){
         var a = window.parent.document.getElementsByTagName('iframe'); 
-        for (var i=0; i<a.length; i++)
-        {
-            if (a[i].name == self.name)
-            { 
+        for (var i=0; i<a.length; i++){
+            if (a[i].name == self.name){ 
                 a[i].height = document.body.scrollHeight+10;
                 return;
              }

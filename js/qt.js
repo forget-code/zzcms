@@ -1,5 +1,7 @@
-function announce(id){ 
-window.open("/one/announce_show.php?id="+id,"","height=340,width=770,left=300,top=100,resizable=yes,scrollbars=yes,status=no,toolbar=no,menubar=no,location=no");
+function openwindow(pageurl,iWidth,iHeight){
+var iTop = (window.screen.availHeight-30-iHeight)/2; //获得窗口的垂直位置;
+var iLeft = (window.screen.availWidth-10-iWidth)/2; //获得窗口的水平位置;
+window.open (pageurl,"","height="+iHeight+",width="+iWidth+",left="+iLeft+",top="+iTop+",toolbar =no,menubar=no,scrollbars=no,resizable=no, location=no,status=no");
 }
 function setbgcolor(obj){
 	var objChildCheck = document.all ? obj.children[0].children[0] : obj.childNodes[1].childNodes[1];
@@ -108,25 +110,6 @@ function PSetBg(obj){
 function PReBg(obj){	
 	obj.style.backgroundColor = '';
 }
-function adSetBg(obj){
-obj.className='zsclass_td_style2';
-}
-function adReBg(obj){
-obj.className='zsclass_td_style1';	
-}
-
-function zslistSetBg(obj,obj1,obj2,obj3){
-obj.className='zslist_style2';
-document.getElementById(obj1).className='lxfs_style2';
-document.getElementById(obj2).className='liuyan_style2';
-document.getElementById(obj3).className='shoucang_style2';
-}
-function zslistReBg(obj,obj1,obj2,obj3){
-obj.className='zslist_style1';	
-document.getElementById(obj1).className='lxfs_style1';
-document.getElementById(obj2).className='liuyan_style1';
-document.getElementById(obj3).className='shoucang_style1';
-}
 
 function CheckAll(form){
   for (var i=0;i<form.elements.length;i++)//elements
@@ -198,3 +181,9 @@ catch (e) {
 alert("加入收藏失败，请使用Ctrl+D进行添加"); } 
 } 
 } 
+
+function delCookie(name) {
+    var date=new Date();
+    date.setTime(date.getTime()-10000);
+    document.cookie=name+"=; expire="+date.toGMTString()+"; path=/";//要加上 path=/否则清不掉的
+}

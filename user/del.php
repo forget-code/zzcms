@@ -49,26 +49,6 @@ while ($row=mysql_fetch_array($rs)){
 			unlink($fs);		
 			}
 	}
-	if ($row['img2']<>"/image/nopic.gif"){
-			$f="../".substr($row['img2'],1);
-			if (file_exists($f)){
-			unlink($f);
-			}
-			$fs="../".substr(str_replace(".","_small.",$row['img2']),1)."";
-			if (file_exists($fs)){
-			unlink($fs);		
-			}
-	}
-	if ($row['img3']<>"/image/nopic.gif"){
-			$f="../".substr($row['img3'],1);
-			if (file_exists($f)){
-			unlink($f);
-			}
-			$fs="../".substr(str_replace(".","_small.",$row['img3']),1)."";
-			if (file_exists($fs)){
-			unlink($fs);		
-			}
-	}
 	if ($row['flv']<>''){//flv里没有设默认值
 			$f="../".substr($row['flv'],1);
 			if (file_exists($f)){

@@ -11,36 +11,30 @@ checkadminisdo("zx");
 <script type="text/javascript" src="/3/ckeditor/ckeditor.js"></script>
 <script language = "JavaScript">
 function CheckForm(){
-if (document.myform.bigclassid.value=="")
-  {
+if (document.myform.bigclassid.value==""){
     alert("请选择大类别！");
 	document.myform.bigclassid.focus();
 	return false;
   } 	  
-if (document.myform.title.value=="")
-  {
+if (document.myform.title.value==""){
     alert("标题不能为空！");
 	document.myform.title.focus();
 	return false;
   }  
 //创建正则表达式
 var re=/^[0-9]*$/;		
-	if(document.myform.elite.value=="")
-	{
+	if(document.myform.elite.value==""){
 		alert("请输入数值！");
 		document.myform.elite.focus();
 		return false;
 	}
-	if(document.myform.elite.value.search(re)==-1)  
-	{
+	if(document.myform.elite.value.search(re)==-1)  {
     alert("必须为正整数！");
 	document.myform.elite.value="";
 	document.myform.elite.focus();
 	return false;
   	}
-	
-	if(document.myform.elite.value>127)  
-	{
+	if(document.myform.elite.value>127)  {
     alert("不得大于127");
 	document.myform.elite.focus();
 	return false;
@@ -55,16 +49,10 @@ function doChange(objText, pic){
 		pic.options[i] = new Option(arr[i], arr[i]);
 	}
 } 
-
-	</script>
+</script>
 </head>
-
 <body>
-<table width="100%" border="0" align="center" cellpadding="0" cellspacing="0">
-  <tr> 
-    <td class="admintitle">修改资讯信息</td>
-  </tr>
-</table>
+<div class="admintitle">修改资讯信息</div>
 <?php
 if (isset($_GET["page"])){
 $page=$_GET["page"];
@@ -160,6 +148,11 @@ while($row = mysql_fetch_array($rs)){
         <script type="text/javascript">CKEDITOR.replace('content');	</script> 
         <input name="id" type="hidden" id="id" value="<?php echo $rowzx["id"]?>"> 
         <input name="page" type="hidden" id="page" value="<?php echo $page?>"> </td>
+    </tr>
+    <tr id="trkeywords">
+      <td align="right" class="border" >封面图片：</td>
+      <td class="border" ><input name="img" type="text" id="title2" value="<?php echo $rowzx["img"]?>" size="50" maxlength="255">
+      （如果内容中有图片，这里可以留空，会自动获取内容中的第一张图片）</td>
     </tr>
     <tr id="trkeywords">
       <td colspan="2" class="border2" >SEO</td>

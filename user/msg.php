@@ -28,17 +28,13 @@ checkid($id);
 
 if ($action=="savedata" ){
 	$saveas=trim($_REQUEST["saveas"]);
-	$title=trim($_POST["title"]);
 	$content=stripfxg(rtrim($_POST["info_content"]));
-	$link=trim($_POST["link"]);
 	if ($saveas=="add"){
 	mysql_query("insert into zzcms_msg (content)VALUES('$content') ");
 	$go=1;
-	//echo "<script>location.href='about_manage.php'<//script>";	
 	}elseif ($saveas=="modify"){
 	mysql_query("update zzcms_msg set content='$content' where id=". $_POST['id']." ");
 	$go=1;
-	//echo "<script>location.href='about_manage.php'<//script>";
 	}
 }
 ?>
@@ -61,7 +57,7 @@ include("left.php");
 if ($action=="add") {
 ?>
 <div class="admintitle"><?php echo $f_array[0]?></div>
-<form action="?action=savedata&saveas=add" method="POST" name="myform" id="myform" onSubmit="return CheckForm();">
+<form action="?action=savedata&saveas=add" method="POST" name="myform" id="myform">
   <table width="100%" border="0" cellpadding="5" cellspacing="1">
     <tr> 
       <td width="10%" align="right" class="border"><?php echo $f_array[1]?></td>
@@ -83,7 +79,7 @@ $rs=mysql_query($sql);
 $row=mysql_fetch_array($rs);
 ?>
 <div class="admintitle"><?php echo $f_array[3]?></div>  
-<form action="?action=savedata&saveas=modify" method="POST" name="myform" id="myform" onSubmit="return CheckForm();">
+<form action="?action=savedata&saveas=modify" method="POST" name="myform" id="myform">
   <table width="100%" border="0" cellpadding="5" cellspacing="1">
     <tr> 
       <td width="10%" align="right" class="border"><?php echo $f_array[4]?></td>

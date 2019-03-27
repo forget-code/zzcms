@@ -22,6 +22,7 @@ setcookie("page_size_pp",$page_size,time()+3600*24*360);
 	$page_size=pagesize_qt;
 	}
 }
+
 if (isset($_GET["b"])){
 $b=$_GET["b"];
 }else{
@@ -33,7 +34,6 @@ $s=$_GET["s"];
 }else{
 $s="";
 }
-
 
 $bigclassname='';
 if ($b<>""){
@@ -58,11 +58,9 @@ if ($row){
 $pagetitle=pplisttitle;
 $pagekeyword=pplistkeyword;
 $pagedescription=pplistdescription;
-
 $station=getstation($b,$bigclassname,$s,$smallclassname,"","","pp");
 
-if( isset($_GET["page"]) && $_GET["page"]!="") 
-{
+if( isset($_GET["page"]) && $_GET["page"]!="") {
     $page=$_GET['page'];
 	checkid($page);
 }else{
@@ -102,13 +100,18 @@ $strout=str_replace("{loop}".$list."{/loop}","暂无信息",$strout) ;
 
 $list2='';
 $i=0;
+$title_num=strbetween($list,"{#title:","}");
+$content_num=strbetween($list,"{#content:","}");
 while($row= mysql_fetch_array($rs)){
-
-$list2 = $list2. str_replace("{#img}",$row['img'],$list) ;
-$list2 =str_replace("{#ppname}",cutstr($row["ppname"],8),$list2) ;
-$list2 =str_replace("{#pplink}",getpageurl("pp",$row['id']),$list2) ;
+$list2 = $list2. str_replace("{#img}",getsmallimg($row['img']),$list) ;
+$list2 =str_replace("{#imgbig}",$row['img'],$list2) ;
+$list2 =str_replace("{#title:".$title_num."}",cutstr($row["ppname"],$title_num),$list2) ;
+$list2 =str_replace("{#title}",$row["ppname"],$list2) ;
+$list2 =str_replace("{#content:".$content_num."}",cutstr($row["sm"],$content_num),$list2) ;
+$list2 =str_replace("{#content}",$row["sm"],$list2) ;
+$list2 =str_replace("{#url}",getpageurl("pp",$row['id']),$list2) ;
 $list2 =str_replace("{#comane}",$row["comane"],$list2) ;
-$list2 =str_replace("{#gslink}",getpageurlzt($row['editor'],$row['userid']),$list2) ;
+$list2 =str_replace("{#companyurl}",getpageurlzt($row['editor'],$row['userid']),$list2) ;
 $list2 =str_replace("{#sendtime}",$row["sendtime"],$list2) ;
 $i=$i+1;
 }

@@ -61,7 +61,7 @@ $ml='../uploadfiles/'.$mlname;
   	if ($file!="." && $file!="..") { //不读取. ..
 	$n++;
 	$file="/uploadfiles/".$mlname.'/'.$file;
-		$rs=mysql_query("select img,img2,img3 from zzcms_main where img='".$file."' or img='".str_replace("_small.",".",$file)."' or img2='".$file."' or img2='".str_replace("_small.",".",$file)."' or img3='".$file."' or img3='".str_replace("_small.",".",$file)."'");
+		$rs=mysql_query("select img from zzcms_main where img='".$file."' or img='".str_replace("_small.",".",$file)."'");
 		//or img='".str_replace("_small.",".",$file)."'" 使小图片也与img能匹配以免把小图片删除
     	$row=mysql_num_rows($rs);
 	    if (!$row){

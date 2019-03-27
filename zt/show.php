@@ -52,8 +52,12 @@ $zslist2 = $zslist2. str_replace("{#link}",$link,$zslist) ;
 $zslist2 =str_replace("{#img}",getsmallimg($row['img']),$zslist2) ;
 $zslist2 =str_replace("{#imgbig}",isaddsiteurl($row["img"]),$zslist2) ;
 $zslist2 =str_replace("{#proname}",cutstr($row["proname"],8),$zslist2) ;
-$zslist2 =str_replace("{#gg}",$row["gg"],$zslist2) ;
 $zslist2 =str_replace("{#city}",$row["province"].$row["city"],$zslist2) ;
+
+$shuxing_value = explode("|||",$row["shuxing_value"]);
+	for ($n=0; $n< count($shuxing_value);$n++){
+	$zslist2=str_replace("{#shuxing".$n."}",$shuxing_value[$n],$zslist2);
+	}
 
 $prouse_long=strbetween($zslist2,"{#prouse:","}");
 if ($prouse_long!=''){

@@ -7,6 +7,7 @@ include("admin.php");
 <title></title>
 <link href="style.css" rel="stylesheet" type="text/css">
 <script language="javascript" src="/js/timer.js"></script>
+<script language="javascript" src="/js/gg.js"></script>
 <script>
 function  checkform(){ 
 //定义正则表达式部分
@@ -286,28 +287,15 @@ while($rown = mysql_fetch_array($rsn)){
       </td>
     </tr>
     <tr> 
-      <td align="right" class="border">公司形象图片：<font color="#666666">
+      <td align="right" class="border">公司形象图片：
         <input name="img" type="hidden" id="img" value="<?php echo $row["img"]?>">
         <input name="oldimg" type="hidden" id="oldimg" value="<?php echo $row["img"]?>">
-      </font></td>
+      </td>
       <td class="border">
- <script type="text/javascript">	  
-	  function openimg()
-{
-var sd =window.showModalDialog('/uploadimg_form.php','','dialogWidth=400px;dialogHeight=300px');
-//for chrome 
-if(sd ==undefined) {  
-sd =window.returnValue; 
-}
-if(sd!=null) {  
-document.getElementById("img").value=sd;//从子页面得到值写入母页面
-document.getElementById("showimg").innerHTML="<img src='"+sd+"' width=200>";
-}
-}
-</script> 
+
         <table width="120" height="120" border="0" cellpadding="5" cellspacing="1" bgcolor="#999999">
           <tr>
-            <td align="center" bgcolor="#FFFFFF" id="showimg" onclick='openimg()'><?php
+            <td align="center" bgcolor="#FFFFFF" id="showimg" onClick="openwindow('/uploadimg_form.php',400,300)"><?php
 				  if($row["img"]<>"" && $row["img"]<>"/image/nopic.gif"){
 				  echo "<img src='".$row["img"]."' border=0 width=120/><br>点击可更换图片";
 				  }else{

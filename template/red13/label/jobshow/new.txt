@@ -5,7 +5,7 @@ new|||empty|||empty|||10|||sendtime|||10|||1|||<table width="100%" border="0" ce
 <td width="10%">工作地点</td>
 <td width="10%">发布时间</td>
 </tr>|||<tr bgcolor="#FFFFFF">
-<td width="10%"><a href=show.php?id={#id} target=_blank>{#jobname}</a></td>
+<td width="10%"><a href=show.php?id={#id} target=_blank>{#title}</a></td>
 <td width="10%">{#comane}</td>
 <td width="10%">{#province}{#city}</td>
 <td width="10%">{#sendtime}</td>

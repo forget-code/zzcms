@@ -1,9 +1,9 @@
 <?php
-define('sqldb','zzcms42');//数据库名
+define('sqldb','zzcms8');//数据库名
 define('sqluser','root');//用户名
 define('sqlpwd','root');//密码
 define('sqlhost','localhost');//连接服务器,本机填(local)，外地填IP地址
-define('zzcmsver','Powered By <a target=_blank style=font-weight:bold href=http://www.zzcms.net><font color=#FF6600 face=Arial>ZZ</font><font color=#025BAD face=Arial>CMS7.2</font></a>');//版本
+define('zzcmsver','Powered By <a target=_blank style=font-weight:bold href=http://www.zzcms.net><font color=#FF6600 face=Arial>ZZ</font><font color=#025BAD face=Arial>CMS8.0</font></a>');//版本
 define('sitename','zzcms') ;//网站名称
 define('siteurl','http://localhost:8080') ;//网站地址
 define('logourl','http://localhost:8080/image/logo.png') ;//Logo地址
@@ -20,7 +20,7 @@ define('showwordwhenclose','网站正在维护中……') ;//关闭网站原因
 define('openuserreg','Yes') ;//注册用户状态
 define('openuserregwhy','网站暂时关闭注册功能，明天开放！') ;//关闭注册用户原因
 define('isaddinfo','No') ;//是否允许未审核的用户发布信息
-define('pagesize_ht','50');//管理员后台每页显示信息数
+define('pagesize_ht','5');//管理员后台每页显示信息数
 define('pagesize_qt','5');//前台每页显示信息数
 define('whendlsave','No') ;//当有代理或求购留言是否打开在线发邮件功能
 define('whenuserreg','No') ;//当新用户注册时是否打开在线发邮件功能
@@ -28,15 +28,16 @@ define('whenmodifypassword','Yes') ;//当用户修改密码时是否开发在线
 define('smtpserver','smtp.126.com') ;//邮件服务器
 define('sender','ggyyxxcom@126.com') ;//发送邮件的地址
 define('smtppwd','') ;//email密码
-define('sendsms','Yes') ;//发手机短信开关
+define('sendsms','No') ;//发手机短信开关
 define('smsusername','cmsx') ;//SMS用户名
-define('smsuserpass','zxcv1234') ;//SMS密码
+define('smsuserpass','') ;//SMS密码
 define('apikey_mobile_msg','cdac640014f9d05cc1baaf5e7cf35f33') ;//apikey_mobile_msg
 define('isshowcontact','No') ;//是否公开代理商联系方式
 define('liuyanysnum','0'); //延时时间
 define('usergr_power','dl#wangkan#zx') ;//个人用户权限
-define('wordsincomane','') ;//公司名称中必填行业性关键字
-define('lastwordsincomane','') ;//公司名称中必填公司类型性关键字
+define('shuxing_name','包装规格|零售价格|批准文号|成份') ;//产品更多属性设置
+define('wordsincomane','医|药|生物|览|展|会|保健|广告|包装|印刷') ;//公司名称中必填行业性关键字
+define('lastwordsincomane','集团|公司|厂|药店|药房|部') ;//公司名称中必填公司类型性关键字
 define('nowordsincomane','a|b|c|d|e|f|g|h|i|g|k|l|m|n|o|p|q|r|s|t|u|v|w|x|w|z|A|B|C|D|E|F|G|H|I|G|K|L|M|N|O|P|Q|R|S|T|U|V|W|X|Y|Z|1|2|3|4|5|6|7|8|9|0') ;//公司名称中禁用关键字
 define('stopwords','得普利麻|易瑞沙|益赛普|赫赛汀|日达仙|百泌达|多吉美|拜科奇|赛美维|施多宁|派罗欣|妥塞敏|格列卫|特罗凯|手机窃听器|手枪') ;//网站禁用关键字
 define('allowrepeatreg','Yes') ;//是否允许重复注册用户
@@ -56,8 +57,8 @@ define('isshowad_when_timeend','Yes') ;//到期的广告是否还让显示
 define('showadtext','asdf') ;//到期的广告前台显示语
 define('qiangad','Yes') ;//是否开通抢占广告位功能
 define('showadvdate','15') ;//广告位置占用时间
-define('duilianadisopen','Yes') ;//是否打开对联广告
-define('flyadisopen','Yes') ;//是否打开漂浮广告
+define('duilianadisopen','No') ;//是否打开对联广告
+define('flyadisopen','No') ;//是否打开漂浮广告
 define('jifen','Yes') ;//是否启用积分功能
 define('jifen_bilu','1') ;//1元等于多少积分
 define('jf_reg','50') ;//注册时获取积分值
@@ -71,7 +72,7 @@ define('maximgsize','20000') ;  //图片文件大小限制,单位K
 define('maxflvsize','20') ;  //视频文件大小限制,单位M
 define('shuiyin','No') ;//是否启用水印功能
 define('addimgXY','right') ;//水印位置
-define('syurl','uploadfiles/2014-07/20140721223830783.jpg') ;//水印图片地址
+define('syurl','uploadfiles/2016-11/20161106174625754.png') ;//水印图片地址
 define('alipay_partner','2088002168041280') ;//合作者身份ID
 define('alipay_key','g6m9go08qiag25d6bvb1uvrtkdpqral7') ;//安全检验码
 define('alipay_seller_email','lzy0393@126.com') ;//签约支付宝账号或卖家支付宝帐户

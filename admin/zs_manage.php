@@ -1,5 +1,6 @@
 <?php
 include("admin.php");
+include("../inc/fy.php");
 ?>
 <html>
 <head>
@@ -8,15 +9,13 @@ include("admin.php");
 <script language="JavaScript" src="/js/gg.js"></script>
 <?php
 checkadminisdo("zs");
-$action=@$_REQUEST["action"];
+$action=isset($_REQUEST["action"])?$_REQUEST["action"]:'';
 $page=isset($_GET["page"])?$_GET["page"]:1;
-$keyword=@$_POST["keyword"] ;
-
-$kind=isset($_REQUEST["kind"])?$_REQUEST["kind"]:'proname' ;
-
-$b=@$_REQUEST["b"] ;
-$shenhe=@$_REQUEST["shenhe"];
-$showwhat=@$_REQUEST["showwhat"];
+$shenhe=isset($_REQUEST["shenhe"])?$_REQUEST["shenhe"]:'';
+$keyword=isset($_REQUEST["keyword"])?$_REQUEST["keyword"]:'';
+$kind=isset($_REQUEST["kind"])?$_REQUEST["kind"]:'editor';
+$b=isset($_REQUEST["b"])?$_REQUEST["b"]:'';
+$showwhat=isset($_REQUEST["showwhat"])?$_REQUEST["showwhat"]:'';
 
 if ($action=="pass"){
 if(!empty($_POST['id'])){
@@ -132,15 +131,12 @@ echo "暂无信息";
 }else{
 ?>
 <form name="myform" id="myform" method="post" action="">
-<table width="100%" border="0" cellpadding="5" cellspacing="0" class="border">
-    <tr> 
-      <td> 
+<div class="border"> 
         <input type="submit" onClick="myform.action='?action=pass'" value="【取消/审核】选中的信息">
          <input type="submit" onClick="myform.action='del.php';myform.target='_self';return ConfirmDel()" value="删除选中的信息">
         <input name="pagename" type="hidden"  value="zs_manage.php?b=<?php echo $b?>&shenhe=<?php echo $shenhe?>&page=<?php echo $page ?>"> 
-        <input name="tablename" type="hidden"  value="zzcms_main"> </td>
-    </tr>
-  </table>
+        <input name="tablename" type="hidden"  value="zzcms_main"> 
+</div>
   <table width="100%" border="0" cellpadding="3" cellspacing="1">
     <tr> 
       <td width="5%" height="25" align="center" class="border"> <label for="chkAll" style="text-decoration: underline;cursor: hand;">全选</label></td>
@@ -194,39 +190,13 @@ while($row = mysql_fetch_array($rs)){
  }
  ?>
   </table>
-  <table width="100%" border="0" cellpadding="5" cellspacing="0" class="border">
-    <tr> 
-      <td> <input name="chkAll" type="checkbox" id="chkAll" onClick="CheckAll(this.form)" value="checkbox">
+      <div class="border"> <input name="chkAll" type="checkbox" id="chkAll" onClick="CheckAll(this.form)" value="checkbox">
          <label for="chkAll" style="text-decoration: underline;cursor: hand;">全选</label> 
         <input type="submit" onClick="myform.action='?action=pass'" value="【取消/审核】选中的信息"> 
         <input type="submit" onClick="myform.action='del.php';myform.target='_self';return ConfirmDel()" value="删除选中的信息">
-      </td>
-    </tr>
-  </table>
+      </div>
 </form>
-<table width="100%" border="0" cellpadding="0" cellspacing="0" class="border">
-  <tr> 
-    <td height="30" align="center">
-	页次：<strong><font color="#CC0033"><?php echo $page?></font>/<?php echo $totlepage?>　</strong> 
-      <strong><?php echo $page_size?></strong>条/页　共<strong><?php echo $totlenum ?></strong>条
-	<?php
-	$cs="b=".$b."&kind=".$kind."&showwhat=".$showwhat."&keyword=".$keyword."&shenhe=".$shenhe;
-		if ($page<>1) {
-			echo  "【<a href='?".$cs."&page=1'>首页</a>】";
-			echo  "【<a href='?".$cs."&page=".($page-1)."'>上一页</a>】";
-		}else{
-			echo  "【首页】【上一页】";
-		}
-		if ($page!=$totlepage){
-			echo  "【<a href='?".$cs."&page=".($page+1)."'>下一页</a>】";
-			echo  "【<a href='?".$cs."&page=".$totlepage."'>尾页</a>】";
-		}else{
-			echo  "【下一页】【尾页】";
-		}
-          
-	?> </td>
-  </tr>
-</table>
+<div class="border center"><?php echo showpage_admin()?></div>
 <?php
 }
 ?>

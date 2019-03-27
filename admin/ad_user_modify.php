@@ -1,15 +1,14 @@
-<?PHP include("admin.php"); ?>
+<?php include("admin.php"); ?>
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <title></title>
 <link href="style.css" rel="stylesheet" type="text/css">
+<script language = "JavaScript" src="/js/gg.js"></script>
 </head>
 <body>
 <?php
-
 checkadminisdo("advtext");
-
 if (isset($_REQUEST["id"])){
 $id=$_REQUEST["id"];
 checkid($id);
@@ -46,11 +45,7 @@ mysql_query("update zzcms_ad set title='$adv',link='$advlink',img='$img' where u
 	echo "<script>alert('修改成功');window.location.href='adv_manage.php?page=".$page."'</script>";
 }
 ?>
-<table width="100%" border="0" cellpadding="0" cellspacing="0">
-  <tr>
-    <td class="admintitle">修改用户审请的文字广告</td>
-  </tr>
-</table>
+<div class="admintitle">修改用户审请的文字广告</div>
 <form name="myform" method="post" action="?action=modify">
   <?php
 $rs=mysql_query("select * from zzcms_textadv where id='$id'");
@@ -76,22 +71,10 @@ $row=mysql_fetch_array($rs);
     </tr>
     <tr> 
       <td align="right" class="border"><strong>上传图片</strong></td>
-      <td class="border"><script type="text/javascript">
-function showtxt()
-{
-var sd =window.showModalDialog('/uploadimg_form.php?noshuiyin=1','','dialogWidth=400px;dialogHeight=300px');
-//for chrome 
-if(sd ==undefined) {  
-sd =window.returnValue; 
-}
-if(sd!=null) {  
-document.getElementById("img").value=sd;//从子页面得到值写入母页面
-document.getElementById("showimg").innerHTML="<img src='../"+sd+"' width=120>";
-}
-}
-</script> <table width="120" height="120" border="0" cellpadding="5" cellspacing="1" bgcolor="#999999">
+      <td class="border">
+	   <table width="120" height="120" border="0" cellpadding="5" cellspacing="1" bgcolor="#999999">
           <tr> 
-            <td align="center" bgcolor="#FFFFFF" id="showimg" onclick='showtxt()'> 
+            <td align="center" bgcolor="#FFFFFF" id="showimg" onClick="openwindow('/uploadimg_form.php?noshuiyin=1',400,300)"> 
               <?php
 				 if ($row["img"]<>""){
 						if (substr($row["img"],-3)=="swf"){

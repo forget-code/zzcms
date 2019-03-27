@@ -41,12 +41,6 @@ $smallclasszm=explode(",",$smallclasszm); //转换成数组
 $smallclasszm=$smallclasszm[0];//只取第一个小类，供显示在station中
 } 
 $smallclasszm=str_replace('"',"",$smallclasszm);//开启多选后小类两边都加了""
-if ($row["pricezs"]<>""){
-$pricezs=$row["pricezs"]; 
-}else{
-$pricezs="请留言，或来电咨询";
-}
-$pricels=$row["pricels"]; 
 $sendtime=$row["sendtime"];
 $hit=$row["hit"];
 $title=$row["title"];
@@ -55,9 +49,9 @@ $description=$row["description"];
 $sm=$row["sm"];
 $yq=$row["yq"];
 $zc=$row["zc"];
-$gg=$row["gg"];
 $province=$row["province"];
 $city=$row["city"];
+$shuxing_value = explode("|||",$row["shuxing_value"]);
 
 $smallclassname='';
 $rsn=mysql_query("select classname from zzcms_zsclass where classzm='".$bigclasszm."'");
@@ -114,9 +108,7 @@ $strout=str_replace("{#proname}",$cpmc,$strout) ;
 $strout=str_replace("{#bigclass}",$bigclassname,$strout) ;
 $strout=str_replace("{#smallclass}",$smallclassname,$strout) ;
 $strout=str_replace("{#prouse}",cutstr($prouse,500),$strout) ;
-$strout=str_replace("{#gg}",$gg,$strout) ;
 $strout=str_replace("{#city}",$province.$city,$strout) ;
-$strout=str_replace("{#pricels}",$pricels,$strout) ;
 //cp		 
 if(showdlinzs=="Yes"){
 $rsn=mysql_query("select id from zzcms_dl where cpid='".$cpid."' and passed=1");
@@ -209,6 +201,10 @@ $strout=str_replace("{#ztleft}",$siteleft,$strout);
 $strout=str_replace("{#showdaohang}",$showdaohang,$strout);
 $strout=str_replace("{#skin}",$skin,$strout);
 $strout=str_replace("{#station}",$station,$strout);
+
+for ($i=0; $i< count($shuxing_value);$i++){
+$strout=str_replace("{#shuxing".$i."}",$shuxing_value[$i],$strout);
+}
 
 $strout=str_replace("{#sitebottom}",$sitebottom,$strout);
 $strout=str_replace("{#sitetop}",$sitetop,$strout);

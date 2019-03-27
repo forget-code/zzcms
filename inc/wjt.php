@@ -50,6 +50,12 @@ define('joblistdescription','招聘') ;//joblistdescription
 define('jobshowtitle','招聘') ;//jobshowtitle
 define('jobshowkeyword','招聘') ;//jobshowkeyword
 define('jobshowdescription','招聘') ;//jobshowdescription
+define('baojialisttitle','baojialisttitle') ;//baojialisttitle
+define('baojialistkeyword','baojialistkeyword') ;//baojialistkeyword
+define('baojialistdescription','baojialistdescription') ;//baojialistdescription
+define('baojiashowtitle','baojiashowtitle') ;//baojiashowtitle
+define('baojiashowkeyword','baojiashowkeyword') ;//baojiashowkeyword
+define('baojiashowdescription','baojiashowdescription') ;//baojiashowdescription
 define('wangkanlisttitle','wangkanlisttitle') ;//wangkanlisttitle
 define('wangkanlistkeyword','wangkanlistkeyword') ;//wangkanlistkeyword
 define('wangkanlistdescription','wangkanlistdescription') ;//wangkanlistdescription

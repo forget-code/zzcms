@@ -44,6 +44,7 @@ if ($action=="modify") {
 			echo $f_array[2];
 }else{		
 ?>
+<script language = "JavaScript" src="/js/gg.js"></script>
 <script language = "JavaScript">
 function CheckForm(){
 <?php echo $f_array[3]?>   
@@ -172,22 +173,10 @@ while($rown = mysql_fetch_array($rsn)){
             <td height="50" align="right" class="border"><?php echo str_replace("{#maximgsize}",maximgsize,$f_array[14])?> 
                     <input name="img" type="hidden" id="img" value="/image/nopic.gif" tabindex="8"></td>
             <td height="50" class="border">   
-<script type="text/javascript">
-function showtxt(){
-var sd =window.showModalDialog('/uploadimg_form.php','','dialogWidth=400px;dialogHeight=300px');
-//for chrome 
-if(sd ==undefined) {  
-sd =window.returnValue; 
-}
-if(sd!=null) {  
-document.getElementById("img").value=sd;//从子页面得到值写入母页面
-document.getElementById("showimg").innerHTML="<img src='"+sd+"' width=120>";
-}
-}
-</script>
+
 	  <table width="120" height="120" border="0" cellpadding="5" cellspacing="1" bgcolor="#cccccc">
           <tr align="center" bgcolor="#FFFFFF"> 
-            <td id="showimg" onClick="showtxt()"> <input name="Submit2" type="button"  value="<?php echo $f_array[15]?>" /></td>
+            <td id="showimg" onClick="openwindow('/uploadimg_form.php',400,300)"> <input name="Submit2" type="button"  value="<?php echo $f_array[15]?>" /></td>
           </tr>
         </table>
 			

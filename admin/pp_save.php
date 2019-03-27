@@ -17,7 +17,7 @@ $smallclass=0;
 $cpname=trim($_POST["cpname"]);
 
 $sm=trim($_POST["sm"]);
-$img=trim($_POST["img1"]);
+$img=trim($_POST["img"]);
 
 $sendtime=$_POST["sendtime"];
 $editor=trim($_POST["editor"]);

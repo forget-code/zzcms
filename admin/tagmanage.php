@@ -142,7 +142,6 @@ $action=$_REQUEST['action'];
 $action="";
 }
 
-
 if ($action=="add"){
 for($i=0; $i<count($_POST['tag']);$i++){
 	$tag=str_replace("{","",trim($_POST['tag'][$i]));
@@ -151,29 +150,8 @@ for($i=0; $i<count($_POST['tag']);$i++){
 	$sql="select * from ".$_SESSION['tabletag']." where keyword='" . $tag . "'";
 	$rs=mysql_query($sql);
 	$row=mysql_num_rows($rs);
-		if (!$row) {
+		if (!$row) {//重复的不入库
 		mysql_query("insert into ".$_SESSION['tabletag']." (keyword,url)VALUES('$tag','$url') ");
-		//start写入缓存文件
-		$sql= "select keyword,url from ".$_SESSION['tabletag']." order by xuhao asc";
-		$rs=mysql_query($sql);
-		$row=mysql_num_rows($rs);
-		if ($row){
-		$str="";
-			while ($row=mysql_fetch_array($rs)){	
-			$str=$str . $row["keyword"]."," . $row["url"].";\r\n";				
-			}
-		}else{
-		$str="暂无信息";
-		}//以上得到最新关键词写入str变量
-		if ($_SESSION['tabletag']=='zzcms_tagzs'){
-		$fpath="../cache/zskeyword.txt";
-		}elseif ($_SESSION['tabletag']=='zzcms_tagzx'){
-		$fpath="../cache/zxkeyword.txt";
-		}
-		$fp=fopen($fpath,"w+");//fopen()的其它开关请参看相关函数
-		fputs($fp,$str);//写入文件
-		fclose($fp);
-		//end		
 		}
 	}
 }	
@@ -278,27 +256,6 @@ if ($action=="modify"){
 		WriteErrMsg($ErrMsg);
 	}else{
 	mysql_query("update ".$_SESSION['tabletag']." set keyword='$tag',url='$url' where id='$id'");
-	//start写入常量文件
-		$sql= "select keyword,url from ".$_SESSION['tabletag']." order by xuhao asc";
-		$rs=mysql_query($sql);
-		$row=mysql_num_rows($rs);
-		if ($row){
-		$str="";
-			while ($row=mysql_fetch_array($rs)){	
-			$str=$str . $row["keyword"]."," . $row["url"].";\r\n";			
-			}
-		}else{
-		$str="暂无信息";
-		}//以上得到最新关键词写入str变量
-		if ($_SESSION['tabletag']=='zzcms_tagzs'){
-		$fpath="../cache/zskeyword.txt";
-		}elseif ($_SESSION['tabletag']=='zzcms_tagzx'){
-		$fpath="../cache/zxkeyword.txt";
-		}
-		$fp=fopen($fpath,"w+");//fopen()的其它开关请参看相关函数
-		fputs($fp,$str);//写入文件
-		fclose($fp);
-		//end
 	}	
 	echo "<script>location.href='?#B".$id."'</script>";
 }else{

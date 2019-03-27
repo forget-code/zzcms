@@ -1,4 +1,7 @@
-<?php
+<?php 
+//if(!isset($_SERVER['HTTP_REFERER'])){//禁止从外部直接打开
+//exit;
+//}
 $fpath="text/left.txt";
 $fcontent=file_get_contents($fpath);
 $f_array_left=explode("\n",$fcontent) ;
@@ -52,6 +55,15 @@ if (check_usergr_power('dl')=='yes'|| $usersf=='公司'){
 	echo "<li class='current1'>";
 	}
 echo "<a href='dladd.php' target='_self'>".$f_array_left[1].channeldl."</a> | <a href='dlmanage.php' target='_self'>".$f_array_left[2]."</a></li> ";
+}
+
+if (check_usergr_power('dl')=='yes'|| $usersf=='公司'){
+	if ($c_name=='baojiaadd.php'||$c_name=='baojiamanage.php'||$c_name=='baojiamodify.php'){
+	echo "<li class='current2'>";
+	}else{
+	echo "<li class='current1'>";
+	}
+echo "<a href='baojiaadd.php' target='_self'>发报价</a> | <a href='baojiamanage.php' target='_self'>管理</a></li> ";
 }
 
 if (check_usergr_power('zh')=='yes'|| $usersf=='公司'){
@@ -220,6 +232,7 @@ if ($usersf=="公司"){
 <li><a href="ztconfig_skin.php" target="_self"> <?php echo $f_array_left[31]?></a></li>
 <li><a href="ztconfig_skin_mobile.php" target="_self"><?php echo $f_array_left[32]?></a></li>
 <li><a href="ztconfig.php" target="_self"> <?php echo $f_array_left[33]?></a></li>
+<li><a href="domain_manage.php" target="_self"> 绑定顶级域名</a></li>
 </ul>
 </div>
 </div>				

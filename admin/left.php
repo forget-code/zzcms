@@ -25,7 +25,7 @@ img { float:none; vertical-align:middle; }
 //-->
 </script>
 </head>
-<BODY>
+<body>
 <table width="100%" height="100%" border="0" cellpadding="0" cellspacing="0" style="border-top:solid 1px #FFFFFF">
   <tr>
     <td valign="top" style="padding-top:10px;" class="left_color" id="menubar">
@@ -39,7 +39,7 @@ img { float:none; vertical-align:middle; }
 	  <a href="zs_manage.php" target="frmright"><?php echo channelzs?>信息管理</a> 
 	  <a href="dl_manage.php" target="frmright" ><?php echo channeldl?>信息管理</a>
 	  <a href="dl_data.php" target="frmright" ><?php echo channeldl?>信息导入</a>
-	  <a href="tagmanage.php?tabletag=zzcms_tagzs" target="frmright"><?php echo channelzs?>关键词管理</a>
+	  <a href="tagmanage.php?tabletag=zzcms_tagzs" target="frmright"><?php echo channelzs.channeldl?>关键词管理</a>
 	  <a href="pp_manage.php" target="frmright">品牌信息管理</a> 
 	<a href="job_manage.php" target="frmright">招聘信息管理</a>
 	  <a href="zh_manage.php" target="frmright"  >展会信息管理</a> 
@@ -47,6 +47,7 @@ img { float:none; vertical-align:middle; }
          <a href="pinglun_manage.php" target="frmright">资讯评论管理</a> 
          <a href="tagmanage.php?tabletag=zzcms_tagzx" target="frmright">资讯关键词管理 </a> 
 		 <a href="wangkan_manage.php" target="frmright">网刊管理</a> 
+		  <a href="baojia_manage.php" target="frmright" >报价管理</a>
 		 <a href="special_manage.php" target="frmright">专题信息管理</a> 
 		<a href="ztliuyan_manage.php" target="frmright">展厅留言管理</a>
 		<a href="usermessage.php" target="frmright">用户返馈管理</a> 
@@ -74,7 +75,7 @@ img { float:none; vertical-align:middle; }
         <a href="ad_manage.php" target="frmright">管理广告</a>
 		<a href="adclass.php" target="frmright">类别设置</a>
 		<a href="siteconfig.php?#qiangad" target="frmright">广告设置</a>
-		 <a href="adv_manage.php" target="frmright">审请的广告</a>
+		 <a href="ad_user_manage.php" target="frmright">审请的广告</a>
 		</div>
 
       <div id="left4" style="display:none"> 
@@ -145,6 +146,8 @@ img { float:none; vertical-align:middle; }
 			<a href="labelclass.php?classname=zxclass" target="frmright">资讯类别标签</a>
 			<a href="labelwangkanshow.php" target="frmright">网刊内容标签</a>
 			<a href="labelclass.php?classname=wangkanclass" target="frmright">网刊类别标签</a>
+			<a href="labelbaojiashow.php" target="frmright">报价内容标签</a>
+			<a href="labelclass.php?classname=baojiaclass" target="frmright">报价类别标签</a>
 			<a href="labelztshow.php" target="frmright">专题内容标签</a>
 			<a href="labelclass.php?classname=specialclass" target="frmright">专题类别标签</a>
 			<a href="labelzhshow.php" target="frmright">展会内容标签</a>

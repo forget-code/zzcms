@@ -105,7 +105,7 @@ $strout=str_replace("{#img}",$img,$strout);
 $strout=str_replace("{#imgs}",$imgs,$strout);
 
 $strout=str_replace("{#cpid}",$cpid,$strout);
-$strout=str_replace("{#ppname}",$ppname,$strout);
+$strout=str_replace("{#title}",$ppname,$strout);
 $strout=str_replace("{#comane}",$comane,$strout);
 $strout=str_replace("{#sendtime}",$sendtime,$strout);
 $strout=str_replace("{#hit}",$hit,$strout);

@@ -18,6 +18,7 @@ exit;
 }
 ?>
 <title></title>
+<script language = "JavaScript" src="/js/gg.js"></script>
 <script language = "JavaScript">
 function CheckForm(){
 <?php echo $f_array[0]?>
@@ -147,24 +148,11 @@ echo "</div>";
           </tr>
           <tr> 
             <td align="right" class="border" ><?php echo str_replace("{#maximgsize}",maximgsize,$f_array[8])?> 
-              <script type="text/javascript">
-function showtxt(num){
-var sd =window.showModalDialog('/uploadimg_form.php?noshuiyin=1','','dialogWidth=400px;dialogHeight=300px');
-//for chrome 
-if(sd ==undefined) {  
-sd =window.returnValue; 
-}
-if(sd!=null) {  
-document.getElementById("img"+num).value=sd;//从子页面得到值写入母页面
-document.getElementById("showimg"+num).innerHTML="<img src='"+sd+"' width=120>";
-}
-}
-
-</script> <input name="oldimg1" type="hidden" id="oldimg1" value="<?php echo $row["img"] ?>"> 
-              <input name="img1"type="hidden" id="img1" value="<?php echo $row["img"] ?>"></td>
-            <td class="border" > <table height="120" border="0" cellpadding="5" cellspacing="1" bgcolor="#cccccc">
+ <input name="oldimg" type="hidden" id="oldimg" value="<?php echo $row["img"] ?>"> 
+              <input name="img"type="hidden" id="img" value="<?php echo $row["img"] ?>"></td>
+            <td class="border" > <table height="140"  width="140" border="0" cellpadding="5" cellspacing="1" bgcolor="#cccccc">
                 <tr> 
-                  <td width="120" align="center" bgcolor="#FFFFFF" id="showimg1" onclick='showtxt(1)'> 
+                  <td align="center" bgcolor="#FFFFFF" id="showimg" onClick="openwindow('/uploadimg_form.php?noshuiyin=1',400,300)"> 
                     <?php
 				  if($row["img"]<>""){
 				  echo "<img src='".$row["img"]."' border=0 width=120 /><br>".$f_array[11];

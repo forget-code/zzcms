@@ -14,23 +14,12 @@ if(!empty($_POST['id'])){
     for($i=0; $i<count($_POST['id']);$i++){
     $id=$id.($_POST['id'][$i].',');	
 	}
-}else{//如果为空直接取前几条
-	$sql="select * from zzcms_dl where passed=1 ";
-	if (liuyanysnum!=0){
-	$liuyanysnum=liuyanysnum*3600*24;
-	$sql=$sql. " and id not in (select id from zzcms_dl where savergroupid>1 and unix_timestamp()-unix_timestamp(sendtime)<$liuyanysnum) order by id desc limit 0,50";
-	}
-	$rs = mysql_query($sql);
-	while($row= mysql_fetch_array($rs)){
-	$id=$id. $row["id"].',';
-	}
+}else{
+	$founderr=1;
+	$ErrMsg="<li>操作失败！请先选中要下载的信息</li>";
 }
 $id=substr($id,0,strlen($id)-1);//去除最后面的","
 
-if (strpos($id,',')==0){
-$founderr=1;
-$ErrMsg="<li>操作失败！至少要选中两条信息才能下载。</li>";
-}
 if (isset($_POST['FileExt'])){
 $FileExt=$_POST['FileExt'];
 }else{
@@ -39,7 +28,7 @@ $FileExt="xls";
 
 if (check_user_power("dls_download")=="no"){
 $founderr=1;
-$ErrMsg=$ErrMsg."您所在的用户组没有下载".channeldl."信息的权限！<br><input  type=button value=升级成VIP会员 onclick=\"location.href='/one/vipuser.php'\"/>";
+$ErrMsg=$ErrMsg."<li>您所在的用户组没有下载".channeldl."信息的权限！<br><input  type=button value=升级成VIP会员 onclick=\"location.href='/one/vipuser.php'\"/></li>";
 }
 //判断查看代理条数
 $rslookedlsnumber=mysql_query( "select looked_dls_number_oneday from zzcms_usergroup where groupid=(select groupid from zzcms_user where username='".$username."')");
@@ -50,7 +39,7 @@ $rown=mysql_num_rows($rslookedlsnumbers);
 if ($rown){
 	if ($rown["looked_dls_number_oneday"]+$i>$lookedlsnumber){
 	$founderr=1;
-	$ErrMsg="您所在的用户组每天只能下载 ".$lookedlsnumber." 条".channeldl."信息<br><input  type=button value=升级为高级会员 onclick=location.href='/one/vipuser.php'/>";
+	$ErrMsg="<li>您所在的用户组每天只能下载 ".$lookedlsnumber." 条".channeldl."信息<br><input  type=button value=升级为高级会员 onclick=location.href='/one/vipuser.php'/></li>";
 	}
 }
 if ($founderr==1){

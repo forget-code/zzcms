@@ -35,12 +35,13 @@ echo showmsg("不存在相关信息！");
 mysql_query("update zzcms_main set hit=hit+1 where id='$cpid'");
 $editor=$row["editor"];
 $cpmc=$row["proname"];
-$img1=$row["img"];
-$img2=$row["img2"];
-$img3=$row["img3"];
-$imgs1=getsmallimg($row["img"]);
-$imgs2=getsmallimg($row["img2"]);
-$imgs3=getsmallimg($row["img3"]);
+$imgbig=$row["img"];
+$img=getsmallimg($row["img"]);
+$array_img=getimgincontent($row["sm"],2);
+//print_r ($array_img);
+$img2=isset($array_img[0])?$array_img[0]:'/image/nopic.gif';
+$img3=isset($array_img[1])?$array_img[1]:'/image/nopic.gif';
+
 $flv=$row["flv"];
 $bigclasszm=$row["bigclasszm"];
 $smallclasszm=$row["smallclasszm"];
@@ -49,12 +50,6 @@ $smallclasszm=explode(",",$smallclasszm); //转换成数组
 $smallclasszm=$smallclasszm[0];//只取第一个小类，供显示在station中
 } 
 $smallclasszm=str_replace('"',"",$smallclasszm);//开启多选后小类两边都加了""
-if ($row["pricezs"]<>""){
-$pricezs=$row["pricezs"]; 
-}else{
-$pricezs="请留言，或来电咨询";
-}
-$pricels=$row["pricels"]; 
 $sendtime=$row["sendtime"];
 $hit=$row["hit"];
 $title=$row["title"];
@@ -64,12 +59,13 @@ $prouse=$row["prouse"];
 $sm=$row["sm"];
 $yq=$row["yq"];
 $zc=$row["zc"];
-$gg=$row["gg"];
 $province=$row["province"];
 $city=$row["city"];
 $xiancheng=$row["xiancheng"];
 $groupid=$row["groupid"];
 $skin=$row["skin"];
+
+$shuxing_value = explode("|||",$row["shuxing_value"]);
 
 $rs=mysql_query("select classname from zzcms_zsclass where classzm='".$bigclasszm."'");
 $row=mysql_fetch_array($rs);
@@ -79,6 +75,7 @@ $bigclassname=$row["classname"];
 $bigclassname="大类已删除";
 }
 
+$smallclassname='';
 if ($smallclasszm<>""){
 $rs=mysql_query("select classname from zzcms_zsclass where classzm='".$smallclasszm."'");
 $row=mysql_fetch_array($rs);
@@ -160,7 +157,12 @@ fclose($f);
 //liuyan
 $liuyan=strbetween($strout,"{liuyan}","{/liuyan}");
 $list=strbetween($liuyan,"{loop}","{/loop}");
+
+if ($bigclasszm!=''){
 $rs=mysql_query("select * from zzcms_dl_".$bigclasszm." where cpid=$cpid and passed=1 order by id desc");
+}else{
+$rs=mysql_query("select * from zzcms_dl where cpid=$cpid and passed=1 order by id desc");
+}
 $row=mysql_num_rows($rs);
 if ($row){
 $list2='';
@@ -223,12 +225,10 @@ $strout=str_replace("{#pagetitle}",$cpmc,$strout);
 }
 $strout=str_replace("{#pagekeywords}",$keywords.zsshowkeyword,$strout);
 $strout=str_replace("{#pagedescription}",$description.zsshowdescription,$strout);
-$strout=str_replace("{#img1}",$img1,$strout);
+$strout=str_replace("{#img}",$img,$strout);
 $strout=str_replace("{#img2}",$img2,$strout);
 $strout=str_replace("{#img3}",$img3,$strout);
-$strout=str_replace("{#imgs1}",$imgs1,$strout);
-$strout=str_replace("{#imgs2}",$imgs2,$strout);
-$strout=str_replace("{#imgs3}",$imgs3,$strout);
+$strout=str_replace("{#imgbig}",$imgbig,$strout);
 $strout=str_replace("{#proname}",str_replace(',','',$cpmc),$strout);
 $strout=str_replace("{#cpid}",$cpid,$strout);
 $strout=str_replace("{#prouse}",nl2br($prouse),$strout);
@@ -237,15 +237,8 @@ $strout=str_replace("{#gsjj}",$gsjj,$strout);
 $strout=str_replace("{#sendtime}",$sendtime,$strout);
 $strout=str_replace("{#hit}",$hit,$strout);
 $strout=str_replace("{#liuyannum}",liuyannum($cpid),$strout);
-$strout=str_replace("{#pricezs}",$pricezs,$strout);
 $strout=str_replace("{#flv}",showflv($flv),$strout);
-if ($pricels<>""){
-$strout=str_replace("{#pricels}",$pricels,$strout);
-}else{
-$strout=str_replace("{#pricels}","",$strout);
-}
 $strout=str_replace("{#cuest_city}",$cuest_city,$strout);
-$strout=str_replace("{#gg}",$gg,$strout);
 $strout=str_replace("{#province_company}",$province_company,$strout);
 $strout=str_replace("{#city_company}",$city_company,$strout);
 $strout=str_replace("{#xiancheng_company}",$xiancheng_company,$strout);
@@ -258,6 +251,11 @@ $strout=str_replace("{#yq}",nl2br($yq),$strout);
 $strout=str_replace("{#contact}",$contact,$strout);
 $strout=str_replace("{#editor}",$editor,$strout);
 $strout=str_replace("{#tel}",$tel,$strout);
+
+for ($i=0; $i< count($shuxing_value);$i++){
+$strout=str_replace("{#shuxing".$i."}",$shuxing_value[$i],$strout);
+}
+
 $strout=str_replace("{#sitebottom}",sitebottom(),$strout);
 $strout=str_replace("{#sitetop}",sitetop(),$strout);
 //if (strpos($strout,"{@")!==false) $strout=showlabel($strout);//先查一下，如是要没有的就不用再调用showlabel

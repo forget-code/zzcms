@@ -185,6 +185,11 @@ $(document).ready(function(){
       <td class="border" ><textarea name="content" type="hidden" id="content"></textarea> 
         <script type="text/javascript">CKEDITOR.replace('content');	</script>      </td>
     </tr>
+    <tr id="trkeywords">
+      <td align="right" class="border" >封面图片：</td>
+      <td class="border" ><input name="img" type="text" id="title2" size="50" maxlength="255" />
+        （如果内容中有图片，这里可以留空，会自动获取内容中的第一张图片）</td>
+    </tr>
     <tr id="trseo">
       <td colspan="2" class="border2" >SEO设置</td>
     </tr>

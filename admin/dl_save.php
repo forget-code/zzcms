@@ -10,16 +10,8 @@ include ("admin.php");
 <body>
 <?php
 checkadminisdo("dl");
-if (isset($_POST["page"])){
-$page=$_POST["page"];
-}else{
-$page=1;
-}
-if (isset($_POST["dlid"])){
-$id=$_POST["dlid"];
-}else{
-$id=0;
-}
+$page=isset($_POST["page"])?$_POST["page"]:1;//只从修改页传来的值
+$id=isset($_POST["dlid"])?$_POST["dlid"]:0;
 $classid=$_POST["classid"];
 $cp=$_POST["cp"];
 $province=$_POST["province"];
@@ -62,7 +54,7 @@ mysql_query("update `zzcms_dl_".$classid."` set cp='$cp',province='$province',ci
 
 }
 if ($addok){
-echo "<script>location.href='dl_manage.php?page=".$_REQUEST["page"]."'</script>";
+echo "<script>location.href='dl_manage.php?page=".$page."'</script>";
 }		
 ?>
 </body>

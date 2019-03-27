@@ -1,4 +1,5 @@
 <?php
+session_start();//为向AJAX/zx.php中传b,s值
 include("../inc/conn.php");
 include("../inc/fy.php");
 include("../inc/top.php");
@@ -43,8 +44,10 @@ setcookie("yszs",$ys,time()+3600*24*360);
 }
 
 $b = isset($_GET['b'])?$_GET['b']:"";
-$s = isset($_GET['s'])?$_GET['s']:"";
+$_SESSION['zs_b']=$b;
 
+$s = isset($_GET['s'])?$_GET['s']:"";
+$_SESSION['zs_s']=$s;
 $descriptions="";
 $keywords="";
 $titles="";
@@ -234,13 +237,19 @@ $totlenum = $row['total'];
 $offset=($page-1)*$page_size;//$page_size在上面被设为COOKIESS
 $totlepage=ceil($totlenum/$page_size);
 
-$sql="select id,proname,prouse,pricels,gg,img,province,city,xiancheng,sendtime,editor,elite,userid,comane,qq,groupid,renzheng from zzcms_main where passed=1 ";
+$sql="select id,proname,prouse,img,shuxing_value,province,city,xiancheng,sendtime,editor,elite,userid,comane,qq,groupid,renzheng from zzcms_main where passed=1 ";
 $sql=$sql.$sql2;
 $sql=$sql." order by groupid desc,elite desc,".$px." desc limit $offset,$page_size";
 $rs = mysql_query($sql); 
 $zs=strbetween($strout,"{zs}","{/zs}");
 $list_list=strbetween($strout,"{loop_list}","{/loop_list}");
 $list_window=strbetween($strout,"{loop_window}","{/loop_window}");
+if ($ys=="window"){
+$proname_num=strbetween($list_window,"{#proname:","}");
+}else{
+$proname_num=strbetween($list_list,"{#proname:","}");
+}
+
 if(!$totlenum){
 $strout=str_replace("{zs}".$zs."{/zs}","暂无信息",$strout) ;
 }else{
@@ -258,7 +267,6 @@ $list2='';
 	}
 	$list2 =str_replace("{#i}",$i,$list2) ;
 	$list2 =str_replace("{#url}",getpageurl("zs",$row["id"]),$list2) ;
-	$proname_num=strbetween($list2,"{#proname:","}");
 	$list2 =str_replace("{#proname:".$proname_num."}",cutstr($row["proname"],$proname_num),$list2) ;
 	$list2 =str_replace("{#img}",getsmallimg($row["img"]),$list2) ;
 	$list2 =str_replace("{#imgbig}" ,$row["img"],$list2) ;
@@ -287,10 +295,11 @@ $list2='';
 	}else{
 	$list2 =str_replace("{#qq}","",$list2) ;
 	}
-	
-	$list2 =str_replace("{#gg}",$row["gg"],$list2) ;
+	$shuxing_value = explode("|||",$row["shuxing_value"]);
+	for ($n=0; $n< count($shuxing_value);$n++){
+	$list2=str_replace("{#shuxing".$n."}",$shuxing_value[$n],$list2);
+	}
 	$list2 =str_replace("{#prouse}",cutstr($row["prouse"],20),$list2) ;
-	$list2 =str_replace("{#pricels}",$row["pricels"],$list2) ;
 	$list2 =str_replace("{#sendtime}",$row["sendtime"],$list2) ;
 
 	$rsn=mysql_query("select grouppic,groupname from zzcms_usergroup where groupid=".$row["groupid"]."");

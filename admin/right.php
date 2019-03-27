@@ -45,6 +45,11 @@ $rs=mysql_query($sql);
 $row=mysql_num_rows($rs);
 echo "待审注册用户 ".$row." 条 [ <a href='usermanage.php?shenhe=no'>查看</a> ]<br>";
 
+$sql="select id from zzcms_userdomain where passed=0";
+$rs=mysql_query($sql);
+$row=mysql_num_rows($rs);
+echo "待审域名绑定审请 ".$row." 条 [ <a href='domain_manage.php?shenhe=no'>查看</a> ]<br>";
+
 $sql="select id from zzcms_main where passed=0";
 $rs=mysql_query($sql);
 $row=mysql_num_rows($rs);
@@ -74,6 +79,16 @@ $sql="select id from zzcms_zx where passed=0";
 $rs=mysql_query($sql);
 $row=mysql_num_rows($rs);
 echo "待审资讯信息 ".$row." 条 [ <a href='zx_manage.php?shenhe=no'>查看</a> ]<br>";
+
+$sql="select id from zzcms_wangkan where passed=0";
+$rs=mysql_query($sql);
+$row=mysql_num_rows($rs);
+echo "待审网刊信息 ".$row." 条 [ <a href='wangkan_manage.php?shenhe=no'>查看</a> ]<br>";
+
+$sql="select id from zzcms_baojia where passed=0";
+$rs=mysql_query($sql);
+$row=mysql_num_rows($rs);
+echo "待审报价信息 ".$row." 条 [ <a href='baojia_manage.php?shenhe=no'>查看</a> ]<br>";
 
 $sql="select id from zzcms_special where passed=0";
 $rs=mysql_query($sql);

@@ -1,5 +1,6 @@
 <?php
 include("admin.php");
+include("../inc/fy.php");
 ?>
 <html>
 <head>
@@ -11,28 +12,12 @@ include("admin.php");
 <body>
 <?php
 checkadminisdo("guestbook");
-if (isset($_REQUEST["action"])){
-$action=$_REQUEST["action"];
-}else{
-$action="";
-}
 
-if( isset($_GET["page"]) && $_GET["page"]!="") {
-    $page=$_GET['page'];
-}else{
-    $page=1;
-}
+$action=isset($_REQUEST["action"])?$_REQUEST["action"]:'';
+$page=isset($_GET["page"])?$_GET["page"]:1;
+$shenhe=isset($_REQUEST["shenhe"])?$_REQUEST["shenhe"]:'';
 
-if (isset($_REQUEST["shenhe"])){
-$shenhe=$_REQUEST["shenhe"];
-}else{
-$shenhe="";
-}
-if (isset($_REQUEST["keyword"])){
-$keyword=$_REQUEST["keyword"];
-}else{
-$keyword="";
-}
+$keyword=isset($_REQUEST["keyword"])?$_REQUEST["keyword"]:'';
 
 if ($action=="pass"){
 if(!empty($_POST['id'])){
@@ -134,29 +119,7 @@ while($row = mysql_fetch_array($rs)){
     </tr>
   </table>
 </form>
-<table width="100%" border="0" cellpadding="0" cellspacing="0" class="border">
-  <tr> 
-    <td height="30" align="center">
-      页次：<strong><font color="#CC0033"><?php echo $page?></font>/<?php echo $totlepage?>　</strong> 
-      <strong><?php echo $page_size?></strong>条/页　共<strong><?php echo $totlenum ?></strong>条
-<?php
-		
-		if ($page<>1) {
-			echo "【<a href='?keyword=".$keyword."&shenhe=".$shenhe."&page=1'>首页</a>】 ";
-			echo "【<a href='?keyword=".$keyword."&shenhe=".$shenhe."&page=".($page-1)."'>上一页</a>】 ";
-		}else{
-			echo "【首页】【上一页】";
-		}
-		if ($page<>$totlepage) {
-			echo "【<a href='?keyword=".$keyword."&shenhe=".$shenhe."&page=".($page+1)."'>下一页</a>】 ";
-			echo "【<a href='?keyword=".$keyword."&shenhe=".$shenhe."&page=".$totlepage."'>尾页</a>】 ";
-		}else{
-			echo "【下一页】【尾页】";
-		}       
-	?>
-    </td>
-  </tr>
-</table>
+<div class="border center"><?php echo showpage_admin()?></div>
 <?php
 }
 mysql_close($conn);

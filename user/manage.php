@@ -12,6 +12,8 @@ $f_array=explode("|||",$fcontent) ;
 <meta http-equiv="X-UA-Compatible" content="IE=EmulateIE7" />
 <title><?php echo $f_array[0]?></title>
 <link href="style/<?php echo siteskin_usercenter?>/style.css" rel="stylesheet" type="text/css">
+<script language = "JavaScript" src="/js/gg.js"></script>
+<script src="/js/swfobject.js" type="text/javascript"></script>
 <script>
 function CheckForm(){
 <?php echo $f_array[1]?>
@@ -296,21 +298,10 @@ new PCAS('province', 'city', 'xiancheng', '<?php echo $row['province']?>', '<?ph
               <input name="img" type="hidden" id="img" value="<?php echo $row["img"]?>">
               <input name="oldimg" type="hidden" id="oldimg" value="<?php echo $row["img"]?>">
              </td>
-            <td height="50" class="border"> <script type="text/javascript">
-function openimg(){
-var sd =window.showModalDialog('/uploadimg_form.php','','dialogWidth=400px;dialogHeight=300px');
-//for chrome 
-if(sd ==undefined) {  
-sd =window.returnValue; 
-}
-if(sd!=null) {  
-document.getElementById("img").value=sd;//从子页面得到值写入母页面
-document.getElementById("showimg").innerHTML="<img src='"+sd+"' width=200>";
-}
-}
-</script> <table width="200" height="200" border="0" cellpadding="5" cellspacing="1" bgcolor="#999999">
+            <td height="50" class="border"> 
+			 <table width="140" height="140" border="0" cellpadding="5" cellspacing="1" bgcolor="#999999">
                 <tr> 
-                  <td align="center" bgcolor="#FFFFFF" id="showimg" onclick='openimg()'> 
+                  <td align="center" bgcolor="#FFFFFF" id="showimg" onClick="openwindow('/uploadimg_form.php',400,300)"> 
                     <?php
 				  if($row["img"]<>"" && $row["img"]<>"/image/nopic.gif"){
 				  echo "<img src='".$row["img"]."' border=0 width=200 /><br>".$f_array[30];
@@ -325,29 +316,6 @@ document.getElementById("showimg").innerHTML="<img src='"+sd+"' width=200>";
       
           <tr> 
             <td align="right" class="border2" ><?php echo $f_array[32]?>： 
-              <script src="/js/swfobject.js" type="text/javascript"></script>
-              <script>
-function openflv(){
-var sd =window.showModalDialog('/uploadflv_form.php','','dialogWidth=400px;dialogHeight=300px');
-//for chrome 
-if(sd ==undefined) {  
-sd =window.returnValue; 
-}
-if(sd!=null) {  
-document.getElementById("flv").value=sd;//从子页面得到值写入母页面
-	if(sd.substr(sd.length-3).toLowerCase()=='flv'){//用这个播放器无法播放网络上的SWF格式的视频
-        var s1 = new SWFObject("/image/player.swf","ply","200","200","9","#FFFFFF");
-          s1.addParam("allowfullscreen","true");
-          s1.addParam("allowscriptaccess","always");
-          s1.addParam("flashvars","file="+sd+"&autostart=true");
-          s1.write("container");
-	}else if(sd.substr(sd.length-3).toLowerCase()=='swf'){
-	var s1="<embed src='"+sd+"' quality='high' pluginspage='http://www.macromedia.com/go/getflashplayer' type='application/x-shockwave-flash' width=200 height=200></embed>";
-	document.getElementById("container").innerHTML=s1;
-	}
-}
-}
-		</script>
               <input name="flv" type="hidden" id="flv" value="<?php echo $row["flv"]?>" />
               <input name="oldflv" type="hidden" id="oldflv" value="<?php echo $row["flv"]?>">
               </td>
@@ -355,13 +323,14 @@ document.getElementById("flv").value=sd;//从子页面得到值写入母页面
 			    <?php 
 if (check_user_power("uploadflv")=="yes"){
 ?>
-			<table width="200" height="200" border="0" cellpadding="5" cellspacing="1" bgcolor="#999999">
+			<table width="140" height="140" border="0" cellpadding="5" cellspacing="1" bgcolor="#999999">
                 <tr> 
-                  <td align="center" bgcolor="#FFFFFF" id="container" onclick='openflv()'> 
+                  <td align="center" bgcolor="#FFFFFF" id="container" onClick="openwindow('/uploadflv_form.php',400,300)"> 
                     <?php
 		if($row["flv"]<>""){
 				  if (substr($row["flv"],-3)=="flv") {
 				  ?>
+				  
                     <script type="text/javascript">
           var s1 = new SWFObject("/image/player.swf","ply","200","200","9","#FFFFFF");
           s1.addParam("allowfullscreen","true");
@@ -385,9 +354,9 @@ if (check_user_power("uploadflv")=="yes"){
 			  	    <?php
 		   }else{
 		  ?>
-              <table width="200" height="200" border="0" cellpadding="5" cellspacing="1" bgcolor="#999999">
+              <table width="140" height="140" border="0" cellpadding="5" cellspacing="1" bgcolor="#999999">
                 <tr align="center" bgcolor="#FFFFFF"> 
-                  <td id="container" onclick="javascript:window.location.href='vip_add.php'"> <?php echo $f_array[35]?></td>
+                  <td onclick="javascript:window.location.href='vip_add.php'"> <?php echo $f_array[35]?></td>
                 </tr>
               </table>
 			 <?php

@@ -109,6 +109,12 @@ $row= mysql_fetch_array($rs);
           <input name="config[]" id="wangkanclass" type="checkbox" value="wangkanclass" <?php if(str_is_inarr($row["config"],'wangkanclass')=='yes') { echo"checked";}?>>
           <label for="wangkanclass">网刊类别管理</label></td>
     </tr>
+    <tr>
+      <td align="right" class="border" >报价</td>
+      <td class="border" ><input name="config[]" type="checkbox" id="baojia" value="baojia" <?php if(str_is_inarr($row["config"],'baojia')=='yes') { echo"checked";}?>>
+          <label for="baojia">报价管理 </label>
+       </td>
+    </tr>
     <tr> 
       <td align="right"  class="border">广告</td>
       <td  class="border"><input name="config[]" type="checkbox" id="adv"  value="adv" <?php if(str_is_inarr($row["config"],'adv')=='yes') { echo"checked";} ?>>

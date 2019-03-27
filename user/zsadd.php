@@ -19,6 +19,7 @@ exit;
 ?>
 <title><?php echo str_replace("{#channelzs}",channelzs,$f_array[4])?></title>
 <script language = "JavaScript" src="/js/gg.js"></script>
+<script src="/js/swfobject.js" type="text/javascript"></script> 
 <script language = "JavaScript">
 function CheckForm(){
 <?php echo $f_array[1]?>
@@ -208,14 +209,20 @@ echo "</div>";
             <td align="right" class="border2" ><?php echo $f_array[12]?></td>
             <td class="border2" ><textarea name="gnzz" cols="60" rows="4" id="gnzz" class="biaodan" style="height:auto" onclick="javascript:if (this.value=='此处不能为空') {this.value=''};this.style.backgroundColor='';" onblur="javascript:if (this.value=='此处不能为空') {this.value=''};this.style.backgroundColor='';"></textarea></td>
           </tr>
-          <tr> 
-            <td align="right" class="border" ><?php echo $f_array[13]?></td>
-            <td class="border" > <input name="gg" type="text" id="gg"  class="biaodan" size="60" maxlength="45" />            </td>
-          </tr>
-          <tr> 
-            <td align="right" class="border2" ><?php echo $f_array[14]?></td>
-            <td class="border2" > <input name="lsj" type="text" id="lsj"  class="biaodan" size="60" maxlength="45" /></td>
-          </tr>
+         
+		    <?php
+	if (shuxing_name!=''){
+	$shuxing_name = explode("|",shuxing_name);
+	for ($i=0; $i< count($shuxing_name);$i++){
+	?>
+	<tr>
+      <td align="right" class="border" ><?php echo $shuxing_name[$i]?>：</td>
+      <td class="border" ><input name="sx[]" type="text" value="" size="45" class="biaodan"></td>
+    </tr>
+	<?php
+	}
+	}
+	?>
           <tr> 
             <td align="right" class="border" ><?php echo $f_array[15]?></td>
             <td class="border" > 
@@ -294,63 +301,14 @@ new PCAS('province', 'city', 'xiancheng', '<?php echo @$_SESSION['province']?>',
           </tr>
           <tr> 
             <td align="right" class="border" ><?php echo str_replace("{#maximgsize}",maximgsize,$f_array[19])?><br /> 
-              <script src="/js/swfobject.js" type="text/javascript"></script> <script type="text/javascript">
-function showtxt(num){
-var sd =window.showModalDialog('/uploadimg_form.php','','dialogWidth=400px;dialogHeight=300px');
-//for chrome 
-if(sd ==undefined) {  
-sd =window.returnValue; 
-}
-if(sd!=null) { 
-document.getElementById("img"+num).value=sd;//从子页面得到值写入母页面
-document.getElementById("showimg"+num).innerHTML="<img src='"+sd+"' width=120>";
-}
-}
-
-function openflv(){
-var sd =window.showModalDialog('/uploadflv_form.php','','dialogWidth=400px;dialogHeight=300px');
-//for chrome 
-if(sd ==undefined) {  
-sd =window.returnValue; 
-}
-if(sd!=null) {  
-document.getElementById("flv").value=sd;//从子页面得到值写入母页面
-	if(sd.substr(sd.length-3).toLowerCase()=='flv'){//用这个播放器无法播放网络上的SWF格式的视频
-        var s1 = new SWFObject("/image/player.swf","ply","200","200","9","#FFFFFF");
-          s1.addParam("allowfullscreen","true");
-          s1.addParam("allowscriptaccess","always");
-          s1.addParam("flashvars","file="+sd+"&autostart=true");
-          s1.write("container");
-		  
-	}else if(sd.substr(sd.length-3).toLowerCase()=='swf'){
-	var s1="<embed src='"+sd+"' quality='high' pluginspage='http://www.macromedia.com/go/getflashplayer' type='application/x-shockwave-flash' width=200 height=200></embed>";
-	document.getElementById("container").innerHTML=s1+"<br/><?php echo $f_array[20]?>";
-	}
-}
-}
-</script> <input name="img1" type="hidden" id="img1" value="/image/nopic.gif"/> 
-              <input name="img2" type="hidden" id="img2" value="/image/nopic.gif"/> 
-              <input name="img3" type="hidden" id="img3" value="/image/nopic.gif"/>            </td>
-            <td class="border" > <table height="120" border="0" cellpadding="1" cellspacing="1" bgcolor="#cccccc">
+			 <input name="img" type="hidden" id="img" value="/image/nopic.gif"/> 
+                       </td>
+            <td class="border" > 
+			<table height="140" width="140"  border="0" cellpadding="5" cellspacing="1" bgcolor="#cccccc">
                 <tr align="center" bgcolor="#FFFFFF"> 
-                  <td width="120" id="showimg1" onClick="showtxt(1)" class="box"> <input name="Submit2" type="button"  value="<?php echo $f_array[21]?>" /></td>
-                      <?php
-		 if (check_user_power("uploadmoreimg")=="no"){
-?>
-                  <td width="120" onClick="javascript:window.location.href='vip_add.php'"> 
-                    <img src="../image/jx.gif" width="48" height="48" /><br />
-                      <?php echo $f_array[22]?><br /><span class='buttons'><?php echo $f_array[23]?></span></td>    
-                  <td width="120" onClick="javascript:window.location.href='vip_add.php'">
-				  <img src="../image/jx.gif" width="48" height="48" /><br />
-                      <?php echo $f_array[22]?><br /><span class='buttons'><?php echo $f_array[23]?></span></td>
-			    <?php
-		   }else{
-		  ?>	  
-				  <td width="120" id="showimg2" onClick="showtxt(2)"> <input name="Submit22" type="button"  value="<?php echo $f_array[21]?>" /></td>
-                  <td width="120" id="showimg3" onClick="showtxt(3)"> <input name="Submit23" type="button"  value="<?php echo $f_array[21]?>" /></td>
-			  <?php
-			  }
-			  ?>		  
+                  <td id="showimg" onClick="openwindow('/uploadimg_form.php',400,300)" class="box"> 
+				  <input name="Submit2" type="button"  value="<?php echo $f_array[21]?>" />
+				  </td>  
                 </tr>
               </table></td>
           </tr>
@@ -361,15 +319,15 @@ document.getElementById("flv").value=sd;//从子页面得到值写入母页面
 			    <?php
 if (check_user_power("uploadflv")=="yes"){
 ?>
-			<table width="120" height="120" border="0" cellpadding="5" cellspacing="1" bgcolor="#cccccc">
+			<table width="140" height="140" border="0" cellpadding="5" cellspacing="1" bgcolor="#cccccc">
                 <tr align="center" bgcolor="#FFFFFF"> 
-                  <td id="container" onClick="openflv()"> <input name="Submit24" type="button"  value="<?php echo $f_array[26]?>" />                  </td>
+                  <td id="container"  onClick="openwindow('/uploadflv_form.php',400,300)"> <input name="Submit24" type="button"  value="<?php echo $f_array[26]?>" /> </td>
                 </tr>
               </table>
 			    <?php
 		   }else{
 		  ?>
-		  <table width="120" height="120" border="0" cellpadding="5" cellspacing="1" bgcolor="#ccc">
+		  <table width="140" height="140" border="0" cellpadding="5" cellspacing="1" bgcolor="#ccc">
                 <tr align="center" bgcolor="#FFFFFF"> 
                   <td id="container" onClick="javascript:window.location.href='vip_add.php'"> <p><img src="../image/jx.gif" width="48" height="48" /><br />
                       <?php echo $f_array[22]?></p>

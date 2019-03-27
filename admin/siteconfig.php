@@ -8,13 +8,7 @@ include("admin.php");
 <title></title>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <link href="style.css" rel="stylesheet" type="text/css">
-<?php
-if (isset($_POST["action"])){
-$action=$_POST["action"];
-}else{
-$action="";
-}
-?>
+<script language = "JavaScript" src="/js/gg.js"></script>
 <script language="JavaScript" type="text/JavaScript">	
 function checkform(){
 //定义正则表达式部分
@@ -110,6 +104,11 @@ return false;
   </tr>
 </table>
 <?php
+if (isset($_POST["action"])){
+$action=$_POST["action"];
+}else{
+$action="";
+}
 if ($action=="saveconfig") {
 checkadminisdo("siteconfig");
 saveconfig();
@@ -138,28 +137,13 @@ function showconfig(){
     </tr>
     <tr> 
       <td align="right" class="border">网站Logo地址</td>
-      <td width="70%" class="border"> <input name="logourl" type="text" id="logourl" value="<?php echo logourl?>" size="50" maxlength="255">
+      <td width="70%" class="border"> <input name="img" type="text" id="img" value="<?php echo logourl?>" size="50" maxlength="255">
       (提示：Logo地址前面要加上网址) 
-        <script type="text/javascript">
-function openimg()
-{
-var sd =window.showModalDialog('/uploadimg_form.php?noshuiyin=1','','dialogWidth=400px;dialogHeight=300px');
-//for chrome 
-if(sd ==undefined) {  
-sd =window.returnValue; 
-}
-if(sd!=null) {  
-document.getElementById("logourl").value=sd;//从子页面得到值写入母页面
-document.getElementById("showimg").innerHTML="<img src='"+sd+"' width=200>";
-}
-}
-</script> <table border="0" cellpadding="5" cellspacing="1" bgcolor="#999999">
+ <table border="0" cellpadding="5" cellspacing="1" bgcolor="#999999">
           <tr> 
-            <td align="center" bgcolor="#FFFFFF" id="showimg" onclick='openimg()'> 
-              <?php
-				 
+            <td align="center" bgcolor="#FFFFFF" id="showimg" onClick="openwindow('/uploadimg_form.php?noshuiyin=1',400,300)"> 
+              <?php 
 				  echo "<img src='".logourl."' border=0 width=200 /><br>点击可更换图片";
-				 
 				  ?>            </td>
           </tr>
         </table></td>
@@ -207,10 +191,10 @@ document.getElementById("showimg").innerHTML="<img src='"+sd+"' width=200>";
     </tr>
     <tr> 
       <td align="right" class="border">展厅二级域名</td>
-      <td class="border"><input type="radio" name="sdomain" value="Yes" <?php if ( sdomain=="Yes" ){ echo  "checked";}?>>
-        开 
-          <input type="radio" name="sdomain" value="No" <?php if ( sdomain=="No" ){ echo  "checked";}?>>
-        关</td>
+      <td class="border"><input type="radio" name="sdomain" id="sdomainY" value="Yes" <?php if ( sdomain=="Yes" ){ echo  "checked";}?>>
+        <label for='sdomainY'>开 </label>
+          <input type="radio" name="sdomain" id="sdomainN" value="No" <?php if ( sdomain=="No" ){ echo  "checked";}?>>
+        <label for='sdomainN'>关</label></td>
     </tr>
     <tr> 
       <td align="right" class="border">伪静态</td>
@@ -297,6 +281,11 @@ document.getElementById("showimg").innerHTML="<img src='"+sd+"' width=200>";
 <label for="job"> 发招聘 
 <input name="usergr_power[]" type="checkbox" id="zt" value="zt"  <?php if(str_is_inarr(usergr_power,'zt')=='yes') { echo"checked";}?>>
 <label for="zt">显示展厅 </label></td>
+    </tr>
+    <tr>
+      <td align="right" class="border">产品更多属性设置</td>
+      <td class="border"><input name="shuxing_name" type="text" id="shuxing_name" value="<?php echo shuxing_name?>" size="50" maxlength="255">
+        （以“|”分开，前台模板中以{#shuxing0}，{#shuxing1}，{#shuxing2}...，这样的标签做调用）</td>
     </tr>
     <tr>
       <td align="right" class="border">&nbsp;</td>
@@ -650,26 +639,17 @@ closedir($dir);
 	  <input name="syurl" type="text" id="syurl" value="<?php echo syurl?>" size="50" maxlength="255">
 	  （必须为png格式的图片，地址前不能加 /）
 	   <script type="text/javascript">
-function openimg2()
-{
-var sd =window.showModalDialog('/uploadimg_form.php?noshuiyin=1','','dialogWidth=400px;dialogHeight=300px');
-//for chrome 
-if(sd ==undefined) {  
-sd =window.returnValue; 
-}
-if(sd!=null) {  
-document.getElementById("syurl").value=sd;//从子页面得到值写入母页面
-document.getElementById("syimg").innerHTML="<img src='"+sd+"' width=200>";
-}
+function valueFormOpenwindow2(value){ //子页面引用此函数传回value值,上传图片用
+//alert(value);
+document.getElementById("syurl").value=value;
+document.getElementById("syimg").innerHTML="<img src='"+value+"' width=120>";
 }
 </script>
         <table border="0" cellpadding="5" cellspacing="1" bgcolor="#999999">
           <tr>
-            <td align="center" bgcolor="#FFFFFF" id="syimg" onclick='openimg2()'><?php
-				 
-				  echo "<img src='/".syurl."' border=0 width=200 /><br>点击可更换图片";
-				 
-				  ?>            </td>
+            <td align="center" bgcolor="#FFFFFF" id="syimg" onClick="openwindow('/uploadimg_form.php?noshuiyin=1&imgid=2',400,300)">
+			<?php echo "<img src='/".syurl."' border=0 width=200 /><br>点击可更换图片";?>           
+			 </td>
           </tr>
         </table></td>
     </tr>
@@ -771,10 +751,10 @@ $usergr_power=substr($usergr_power,0,strlen($usergr_power)-1);//去除最后面�
 	$fcontent=$fcontent. "define('sqluser','".trim($_POST['sqluser'])."');//用户名\r\n";
 	$fcontent=$fcontent. "define('sqlpwd','".html_entity_decode(trim($_POST['sqlpwd']))."');//密码\r\n";//html_entity_decode针对&被转变成&amp;
 	$fcontent=$fcontent. "define('sqlhost','".trim($_POST['sqlhost'])."');//连接服务器,本机填(local)，外地填IP地址\r\n";
-	$fcontent=$fcontent. "define('zzcmsver','Powered By <a target=_blank style=font-weight:bold href=http://www.zzcms.net><font color=#FF6600 face=Arial>ZZ</font><font color=#025BAD face=Arial>CMS7.2</font></a>');//版本\r\n";
+	$fcontent=$fcontent. "define('zzcmsver','Powered By <a target=_blank style=font-weight:bold href=http://www.zzcms.net><font color=#FF6600 face=Arial>ZZ</font><font color=#025BAD face=Arial>CMS8.0</font></a>');//版本\r\n";
 	$fcontent=$fcontent. "define('sitename','". trim($_POST['sitename'])."') ;//网站名称\r\n";
 	$fcontent=$fcontent. "define('siteurl','". trim($_POST['siteurl'])."') ;//网站地址\r\n";
-	$fcontent=$fcontent. "define('logourl','". trim($_POST['logourl'])."') ;//Logo地址\r\n";
+	$fcontent=$fcontent. "define('logourl','". trim($_POST['img'])."') ;//Logo地址\r\n";
 	$fcontent=$fcontent. "define('icp','". trim($_POST['icp'])."') ;//icp备案号\r\n";
 	$fcontent=$fcontent. "define('webmasteremail','". trim($_POST['webmasteremail'])."') ;//站长信箱\r\n";
 	$fcontent=$fcontent. "define('kftel','". trim($_POST['kftel'])."') ;//联系电话\r\n";
@@ -805,7 +785,7 @@ $usergr_power=substr($usergr_power,0,strlen($usergr_power)-1);//去除最后面�
 	$fcontent=$fcontent. "define('liuyanysnum','". trim($_POST['liuyanysnum'])."'); //延时时间\r\n";	
 	
 	$fcontent=$fcontent. "define('usergr_power','". $usergr_power."') ;//个人用户权限\r\n";
-	
+	$fcontent=$fcontent. "define('shuxing_name','". CutFenGeXian(trim($_POST['shuxing_name']))."') ;//产品更多属性设置\r\n";
 	$fcontent=$fcontent. "define('wordsincomane','". CutFenGeXian(trim($_POST['wordsincomane']))."') ;//公司名称中必填行业性关键字\r\n";	
 	$fcontent=$fcontent. "define('lastwordsincomane','". CutFenGeXian(trim($_POST['lastwordsincomane']))."') ;//公司名称中必填公司类型性关键字\r\n";
 	$fcontent=$fcontent. "define('nowordsincomane','". CutFenGeXian(trim($_POST['nowordsincomane']))."') ;//公司名称中禁用关键字\r\n";	

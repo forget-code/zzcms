@@ -51,37 +51,37 @@ a{color:#333;text-decoration: none;}
 <body>
 <div class="boxitem" id="A"> 
     <ul> 
-	  	<li><a id="A2" href="#" onmouseover="javascript:doClick(this,'A','current')">网络图片</a></li>  
-        <li><a id="A1" href="#" onmouseover="javascript:doClick(this,'A','current')" class="current">本地图片</a></li>                  
+	  	<li><a id="A2" href="#" onClick="javascript:doClick(this,'A','current')">网络图片</a></li>  
+        <li><a id="A1" href="#" onClick="javascript:doClick(this,'A','current')" class="current">本地图片</a></li>                  
      </ul>
 </div> 
 
 <div class="content"> 
 <div style="display:block;" id="A_con1">
 <form action="uploadimg.php" method="post" enctype="multipart/form-data" onSubmit="return mysub()" style="padding:10px" target="doaction">
-  <div id="esave" style="position:absolute; top:0px; left:0px; z-index:10; visibility:hidden; width: 100%; height: 77px; background-color: #FFFFFF; layer-background-color: #FFFFFF; border: 1px none #000000;"> 
-  <div align="center"><br /><img src="image/loading.gif" width="24" height="24" />正在上传中...请稍候！</div>
-  </div>
-  <input type="file" name="g_fu_image[]" />
-  <input type="submit" name="Submit" value="提交" />
-  <input name="noshuiyin" type="hidden" id="noshuiyin" value="<?php echo @$_GET['noshuiyin']?>" />
+<div id="esave" style="position:absolute; top:0px; left:0px; z-index:10; visibility:hidden; width: 100%; height: 77px; background-color: #FFFFFF; layer-background-color: #FFFFFF; border: 1px none #000000;"> 
+<div align="center"><br /><img src="image/loading.gif" width="24" height="24" />正在上传中...请稍候！</div>
+</div>
+<input type="file" name="g_fu_image[]" /><input type="submit" name="Submit" value="提交" />
+<input name="noshuiyin" type="hidden" id="noshuiyin" value="<?php echo @$_GET['noshuiyin']?>" />
+<input name="imgid" type="hidden" id="imgid" value="<?php echo @$_GET['imgid']?>" />
 </form>
- </div>
-  <div style="display:none;" id="A_con2">
+</div>
+<div style="display:none;" id="A_con2">
 <form name="form1" id="form1" method="post" action="" style="padding:10px" onSubmit='checkform()'>
-      <input name="flvurl" type="text" id="flvurl" size="40" maxlength="255" />
-<input type="submit" name="Submit2" value="提交" />
+<input name="flvurl" type="text" id="flvurl" size="40" maxlength="255" /><input type="submit" name="Submit2" value="提交" />
 </form>
-		  </div>
-		</div>  
+</div>
+</div>  
 <?php
 $flvurl=@$_POST['flvurl'];
 if ($flvurl<>''){
 	$js="<script language=javascript>";
-	$js=$js."if(parent.window.opener != undefined) {  ";
-	$js=$js."parent.window.opener.returnValue ='" . $flvurl ."';";//for google chrome
-	$js=$js."}else{";
-	$js=$js."window.returnValue ='" . $flvurl ."';}";//for ie
+	if (@$_GET['imgid']==2){
+	$js=$js."parent.window.opener.valueFormOpenwindow2('" . $flvurl ."');";//读取父页面中的JS函数传回值
+	}else{
+	$js=$js."parent.window.opener.valueFormOpenwindow('" . $flvurl ."');";//读取父页面中的JS函数传回值
+	}
 	$js=$js."parent.window.close();";
 	$js=$js."</script>";
 echo $js;

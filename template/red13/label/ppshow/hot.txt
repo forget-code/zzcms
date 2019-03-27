@@ -1,1 +1,1 @@
-hot|||empty|||empty|||0|||10|||hit|||12|||0|||<ul>|||<LI><span>({#hit})</span>{#xuhao} <A href=show.php?id={#id}>{#ppname}</A></LI>|||</ul>
+hot|||empty|||empty|||0|||10|||hit|||12|||0|||<ul>|||<LI><span>({#hit})</span>{#xuhao} <A href=show.php?id={#id}>{#title}</A></LI>|||</ul>

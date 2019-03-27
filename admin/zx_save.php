@@ -1,13 +1,9 @@
 <?php
+set_time_limit(1800) ;
 include("admin.php");
-
 checkadminisdo("zx");
-if (isset($_POST["page"])){//只从修改页传来的值
-$page=$_POST["page"];
-}else{
-$page=1;
-}
 
+$page = isset($_POST['page'])?$_POST['page']:1;//只从修改页传来的值
 $bigclassid=trim($_POST["bigclassid"]);
 $rs = mysql_query("select * from zzcms_zxclass where classid=".$bigclassid.""); 
 $row= mysql_fetch_array($rs);
@@ -29,8 +25,36 @@ $title=trim($_POST["title"]);
 $link=addhttp(trim($_POST["link"]));
 $laiyuan=trim($_POST["laiyuan"]);
 $content=str_replace("'","",stripfxg(trim($_POST["content"])));
-$img=getimgincontent($content);
 
+//---保存内容中的远程图片，并替换内容中的图片地址
+$msg='';
+$imgs=getimgincontent($content,2);
+foreach ($imgs as $value) {
+	if (substr($value,0,4) == "http"){
+	$img_bendi=grabimg($value,"");//如果是远程图片保存到本地
+	if($img_bendi):$msg=$msg.  "远程图片：".$value."已保存为本地图片：".$img_bendi."<br>";else:$msg=$msg. "false";endif;
+	$img_bendi=substr($img_bendi,strpos($img_bendi,"/uploadfiles"));//在grabimg函数中$img被加了zzcmsroo。这里要去掉
+	$content=str_replace($value,$img_bendi,$content);//替换内容中的远程图片为本地图片
+	}
+}
+//---end
+$img=trim($_POST["img"]);
+if ($img==''){//放到内容下面，避免多保存一张远程图片
+$img=getimgincontent($content);
+}
+
+if ($img<>''){
+	if (substr($img,0,4) == "http"){//$img=trim($_POST["img"])的情况下，这里有可能是远程图片地址
+		$img=grabimg($img,"");//如果是远程图片保存到本地
+		if($img):$msg=$msg. "远程图片已保存到本地：".$img."<br>";else:$msg=$msg. "false";endif; 
+		$img=substr($img,strpos($img,"/uploadfiles"));//在grabimg函数中$img被加了zzcmsroo。这里要去掉 
+	}
+		
+	$imgsmall=str_replace(siteurl,"",getsmallimg($img));
+	if (file_exists(zzcmsroot.$imgsmall)===false && file_exists(zzcmsroot.$img)!==false){//小图不存在，且大图存在的情况下，生成缩略图
+	makesmallimg($img);//同grabimg一样，函数里加了zzcmsroot
+	}	
+}
 $keywords=trim($_POST["keywords"]);
 if ($keywords=="" ){
 $keywords=$title;
@@ -124,14 +148,16 @@ setcookie("zxsmallclassid",$smallclassid);
     <td><table width="100%" border="0" cellspacing="0" cellpadding="0">
         <tr>
           <td width="25%" align="center" class="border"><a href="zx_add.php">继续添加</a></td>
-          <td width="25%" align="center" class="border"><a href="zx_manage.php?b=<?php echo $_REQUEST["bigclassid"]?>&page=<?php echo $page?>">返回</a><a href="zx_manage.php?b=<?php echo $_REQUEST["bigclassid"]?>&page=<?php echo $page?>"></a></td>
+          <td width="25%" align="center" class="border"><a href="zx_manage.php?b=<?php echo $_REQUEST["bigclassid"]?>&page=<?php echo $page?>">返回</a></td>
           <td width="25%" align="center" class="border"><a href="zx_modify.php?id=<?php echo $id?>">修改</a></td>
           <td width="25%" align="center" class="border"><a href="<?php echo getpageurl("zx",$id)?>" target="_blank">预览</a></td>
         </tr>
       </table></td>
   </tr>
 </table>
-<?php
+<br>
+<?php 
+if ($msg<>'' ){echo "<div class='border'>" .$msg."</div>";}
 mysql_close($conn);
 ?>
 </body>

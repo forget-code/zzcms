@@ -19,6 +19,7 @@ exit;
 ?>
 <title></title>
 <script language = "JavaScript" src="/js/gg.js"></script>
+<script src="/js/swfobject.js" type="text/javascript"></script>
 <script language = "JavaScript">
 function CheckForm(){
 <?php echo $f_array[1]?>
@@ -232,14 +233,20 @@ echo "</div>";
             <td align="right" class="border2" ><?php echo $f_array[12]?><font color="#FF0000">&nbsp;</font></td>
             <td class="border2" > <textarea name="gnzz" cols="60" rows="4" class="biaodan" style="height:auto" id="gnzz"><?php echo $row["prouse"]?></textarea>            </td>
           </tr>
-          <tr> 
-            <td align="right" class="border" ><?php echo $f_array[13]?></td>
-            <td class="border" > <input name="gg" type="text" id="gg" class="biaodan" value="<?php echo $row["gg"]?>" size="60" maxlength="45">            </td>
-          </tr>
-          <tr> 
-            <td align="right" class="border2" ><?php echo $f_array[14]?></td>
-            <td class="border2" > <input name="lsj" type="text" id="lsj" class="biaodan"  value="<?php echo $row["pricels"] ?>" size="60" maxlength="45"></td>
-          </tr>
+		   <?php
+	if (shuxing_name!=''){
+	$shuxing_name = explode("|",shuxing_name);
+	$shuxing_value = explode("|||",$row["shuxing_value"]);
+	for ($i=0; $i< count($shuxing_name);$i++){
+	?>
+	<tr>
+      <td align="right" class="border" ><?php echo $shuxing_name[$i]?>：</td>
+      <td class="border" ><input name="sx[]" type="text" value="<?php echo @$shuxing_value[$i]?>" size="45" class="biaodan"></td>
+    </tr>
+	<?php
+	}
+	}
+	?>
           <tr> 
             <td align="right" class="border" ><?php echo $f_array[15]?></td>
             <td class="border" > 
@@ -291,9 +298,7 @@ destList.options[i] = null;
 <script src="/js/area.js"></script>
 <script type="text/javascript">
 new PCAS('province', 'city', 'xiancheng', '<?php echo $row["province"]?>', '<?php echo $row["city"]?>', '<?php echo $row["xiancheng"]?>');
-</script>
-                     
-                 </td>
+</script>                 </td>
                  
                   <td width="100" align="center" valign="top"><?php echo $f_array[17]?>
                     <select style='width:100px;height:100px' class="biaodan"  size="4" name="destList" multiple="multiple">
@@ -318,101 +323,29 @@ new PCAS('province', 'city', 'xiancheng', '<?php echo $row["province"]?>', '<?ph
           </tr>
           <tr> 
             <td align="right" class="border" ><?php echo str_replace("{#maximgsize}",maximgsize,$f_array[19])?>
-              <script src="/js/swfobject.js" type="text/javascript"></script> <script type="text/javascript">
-function showtxt(num){
-var sd =window.showModalDialog('/uploadimg_form.php','','dialogWidth=400px;dialogHeight=300px');
-//for chrome 
-if(sd ==undefined) {  
-sd =window.returnValue; 
-}
-if(sd!=null) {  
-document.getElementById("img"+num).value=sd;//从子页面得到值写入母页面
-document.getElementById("showimg"+num).innerHTML="<img src='"+sd+"' width=120>";
-}
-}
-
+<script type="text/javascript">
 function opendelimg(num){
-window.showModalDialog("delimg.php?id=<?php echo $row["id"]?>&action="+num+"",'','dialogWidth=400px;dialogHeight=300px');
-document.getElementById("img"+num).value='/image/nopic.gif';//删后设表单值，否则保存后还是老地址。
-document.getElementById("showimg"+num).innerHTML="<img src='/image/nopic.gif' width=120>";
+window.openwindow("delimg.php?id=<?php echo $row["id"]?>&action="+num+"",400,300);
+document.getElementById("img").value='/image/nopic.gif';//删后设表单值，否则保存后还是老地址。
+document.getElementById("showimg").innerHTML="<img src='/image/nopic.gif' width=120>";
 }
-
-function openflv(){
-var sd =window.showModalDialog('/uploadflv_form.php','','dialogWidth=400px;dialogHeight=300px');
-//for chrome 
-if(sd ==undefined) {  
-sd =window.returnValue; 
-}
-if(sd!=null) {  
-document.getElementById("flv").value=sd;//从子页面得到值写入母页面
-	if(sd.substr(sd.length-3).toLowerCase()=='flv'){//用这个播放器无法播放网络上的SWF格式的视频
-        var s1 = new SWFObject("/image/player.swf","ply","200","200","9","#FFFFFF");
-          s1.addParam("allowfullscreen","true");
-          s1.addParam("allowscriptaccess","always");
-          s1.addParam("flashvars","file="+sd+"&autostart=true");
-          s1.write("container");
-		  
-	}else if(sd.substr(sd.length-3).toLowerCase()=='swf'){
-	var s1="<embed src='"+sd+"' quality='high' pluginspage='http://www.macromedia.com/go/getflashplayer' type='application/x-shockwave-flash' width=200 height=200></embed>";
-	document.getElementById("container").innerHTML=s1+"<br/><?php echo $f_array[20]?>";
-	}
-}
-}
-</script> <input name="oldimg1" type="hidden" id="oldimg1" value="<?php echo $row["img"] ?>"> 
-              <input name="img1"type="hidden" id="img1" value="<?php echo $row["img"] ?>"> 
-              <input name="oldimg2" type="hidden" id="oldimg2" value="<?php echo $row["img2"] ?>" /> 
-              <input name="img2"type="hidden" id="img2" value="<?php echo $row["img2"] ?>" /> 
-              <input name="oldimg3" type="hidden" id="oldimg3" value="<?php echo $row["img3"] ?>" /> 
-              <input name="img3" type="hidden" id="img3" value="<?php echo $row["img3"] ?>" />            </td>
-            <td class="border" > <table height="120" border="0" cellpadding="10" cellspacing="1" bgcolor="#999999">
+</script> <input name="oldimg" type="hidden" id="oldimg" value="<?php echo $row["img"] ?>"> 
+              <input name="img"type="hidden" id="img" value="<?php echo $row["img"] ?>"> 
+                     </td>
+            <td class="border" >
+			 <table height="140" width="140" border="0" cellpadding="10" cellspacing="1" bgcolor="#999999">
                 <tr> 
-                  <td width="140" align="center" bgcolor="#FFFFFF" id="showimg1"> 
+                  <td  align="center" bgcolor="#FFFFFF" id="showimg"> 
                     <?php
 				 if($row["img"]<>"/image/nopic.gif"){
 				 echo "<div style='padding:10px 0'><a href='".$row["img"]."' target='_blank'><img src='".$row["img"]."' border=0 width=120 /></a></div>";
-				echo "<div onclick='showtxt(1)' style='float:left;width:50px' class='buttons'>".$f_array[45]."</div>";
+				echo "<div onClick=\"openwindow('/uploadimg_form.php',400,300)\" style='float:left;width:50px' class='buttons'>".$f_array[45]."</div>";
 				echo "<div onclick='opendelimg(1)' style='float:right;width:50px' class='buttons'>".$f_array[46]."</div>";
 				  }else{
-				  echo "<input name='Submit2' type='button'  value='".$f_array[21]."' onclick='showtxt(1)'/>";
+				  echo "<input name='Submit2' type='button'  value='".$f_array[21]."' onClick=\"openwindow('/uploadimg_form.php',400,300)\"/>";
 				  }
 				  ?>                  </td>
-				           <?php
-if (check_user_power("uploadflv")=="no"){
-?>
-                  <td width="140" align="center" bgcolor="#FFFFFF" onClick="javascript:window.location.href='vip_add.php'"> 
-                    <img src="../image/jx.gif" width="48" height="48" /><br />
-                    <?php echo $f_array[22]?><br />
-                  <span class='buttons'><?php echo $f_array[23]?></span></td>    
-                  <td width="140" align="center" bgcolor="#FFFFFF" onClick="javascript:window.location.href='vip_add.php'"> 
-                    <img src="../image/jx.gif" width="48" height="48" /><br />
-                    <?php echo $f_array[22]?><br />
-                  <span class='buttons'><?php echo $f_array[23]?></span></td>
-   <?php
-		   }else{
-		  ?>	 					  
-                  <td width="140" align="center" bgcolor="#FFFFFF" id="showimg2"> 
-                    <?php
-				  if($row["img2"]<>"/image/nopic.gif"){
-				echo "<div style='padding:10px 0'><a href='".$row["img2"]."' target='_blank'><img src='".$row["img2"]."' border=0 width=120 /></a></div>";
-				echo "<div onclick='showtxt(2)' style='float:left;width:50px' class='buttons'>".$f_array[45]."</div>";
-				echo "<div onclick='opendelimg(2)' style='float:right;width:50px' class='buttons'>".$f_array[46]."</div>";
-				  }else{
-				  echo "<input name='Submit2' type='button'  value='".$f_array[21]."' onclick='showtxt(2)'/>";
-				  }
-				  ?>                  </td>
-                  <td width="140" align="center" bgcolor="#FFFFFF" id="showimg3" > 
-                    <?php
-			if($row["img3"]<>"/image/nopic.gif"){
-				echo "<div style='padding:10px 0'><a href='".$row["img3"]."' target='_blank'><img src='".$row["img3"]."' border=0 width=120 /></a></div>";
-				echo "<div onclick='showtxt(3)' style='float:left;width:50px' class='buttons'>".$f_array[45]."</div>";
-				echo "<div onclick='opendelimg(3)' style='float:right;width:50px' class='buttons'>".$f_array[46]."</div>";
-			}else{
-				echo "<input name='Submit2' type='button'  value='".$f_array[21]."' onclick='showtxt(3)'/>";
-			}
-				  ?>                  </td>
-			  <?php
-			  }
-			  ?>	  
+				          
                 </tr>
               </table></td>
           </tr>
@@ -424,9 +357,9 @@ if (check_user_power("uploadflv")=="no"){
 			<?php
 if (check_user_power("uploadflv")=="yes"){
 ?>
-			<table width="140" height="120" border="0" cellpadding="5" cellspacing="1" bgcolor="#999999">
+			<table width="140" height="140" border="0" cellpadding="5" cellspacing="1" bgcolor="#999999">
                 <tr> 
-                  <td align="center" bgcolor="#FFFFFF" id="container" onclick='openflv()'> 
+                  <td align="center" bgcolor="#FFFFFF" id="container" onClick="openwindow('/uploadflv_form.php',400,300)"> 
                     <?php
 		if($row["flv"]<>""){
 				  if (substr($row["flv"],-3)=="flv") {
@@ -526,8 +459,7 @@ if (check_user_power("zsshow_template")=="yes"){
               <input type="radio" name="skin" value="cp" id="cp" <?php if ($row["skin"]=='cp'){ echo "checked";}  ?>/>
               <label for="cp"><?php echo $f_array[40]?></label>
               <input type="radio" name="skin" value="xm" id="xm" <?php if ($row["skin"]=='xm'){ echo "checked";}  ?>/>
-              <label for="xm"><?php echo $f_array[41]?></label>
-            </td>
+              <label for="xm"><?php echo $f_array[41]?></label>            </td>
           </tr>
 		  
 		<?php 

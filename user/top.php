@@ -1,4 +1,8 @@
 <?php
+//if(!isset($_SERVER['HTTP_REFERER'])){//禁止从外部直接打开
+//exit;
+//}
+
 $fpath="text/top.txt";
 $fcontent=file_get_contents($fpath);
 $f_array_top=explode("\n",$fcontent) ;

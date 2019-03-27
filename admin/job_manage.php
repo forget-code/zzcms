@@ -1,5 +1,6 @@
 <?php
 include("admin.php");
+include("../inc/fy.php");
 ?>
 <html>
 <head>
@@ -8,14 +9,14 @@ include("admin.php");
 <script language="JavaScript" src="/js/gg.js"></script>
 <?php
 checkadminisdo("job");
-$action=@$_REQUEST["action"];
+
+$action=isset($_REQUEST["action"])?$_REQUEST["action"]:'';
 $page=isset($_GET["page"])?$_GET["page"]:1;
-$keyword=@$_POST["keyword"] ;
-$kind=isset($_REQUEST["kind"])?$_REQUEST["kind"]:'jobname' ;
-$b=@$_REQUEST["b"] ;
-$s=@$_REQUEST["s"] ;
-$shenhe=@$_REQUEST["shenhe"];
-$showwhat=@$_REQUEST["showwhat"];
+$shenhe=isset($_REQUEST["shenhe"])?$_REQUEST["shenhe"]:'';
+$keyword=isset($_REQUEST["keyword"])?$_REQUEST["keyword"]:'';
+$kind=isset($_REQUEST["kind"])?$_REQUEST["kind"]:'jobname';
+$b=isset($_REQUEST["b"])?$_REQUEST["b"]:'';
+$showwhat=isset($_REQUEST["showwhat"])?$_REQUEST["showwhat"]:'';
 
 if ($action=="pass"){
 if(!empty($_POST['id'])){
@@ -94,10 +95,6 @@ if ($b<>"") {
 $sql2=$sql2." and bigclassid=$b ";
 }
 
-if ($s<>"") {
-$sql2=$sql2." and smallclassid=$s ";
-}
-
 if ($keyword<>"") {
 	switch ($kind){
 	case "editor";
@@ -171,28 +168,7 @@ while($row = mysql_fetch_array($rs)){
     </tr>
   </table>
 </form>
-<table width="100%" border="0" cellpadding="0" cellspacing="0" class="border">
-  <tr> 
-    <td height="30" align="center">
-	页次：<strong><font color="#CC0033"><?php echo $page?></font>/<?php echo $totlepage?>　</strong> 
-      <strong><?php echo $page_size?></strong>条/页　共<strong><?php echo $totlenum ?></strong>条
-	<?php
-		if ($page<>1) {
-			echo  "【<a href='?b=".$b."&kind=".$kind."&showwhat=".$showwhat."&keyword=".$keyword."&shenhe=".$shenhe."&page=1'>首页</a>】";
-			echo  "【<a href='?b=".$b."&kind=".$kind."&showwhat=".$showwhat."&keyword=".$keyword."&shenhe=".$shenhe."&page=".($page-1)."'>上一页</a>】";
-		}else{
-			echo  "【首页】【上一页】";
-		}
-		if ($page!=$totlepage){
-			echo  "【<a href='?b=".$b."&kind=".$kind."&showwhat=".$showwhat."&keyword=".$keyword."&shenhe=".$shenhe."&page=".($page+1)."'>下一页</a>】";
-			echo  "【<a href='?b=".$b."&kind=".$kind."&showwhat=".$showwhat."&keyword=".$keyword."&shenhe=".$shenhe."&page=".$totlepage."'>尾页</a>】";
-		}else{
-			echo  "【下一页】【尾页】";
-		}
-          
-	?> </td>
-  </tr>
-</table>
+<div class="border center"><?php echo showpage_admin()?></div>
 <?php
 }
 ?>

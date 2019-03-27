@@ -54,15 +54,11 @@ function doChange(objText, pic){
 <body>
 <div class="admintitle">修改问答信息</div>
 <?php
-if (isset($_GET["page"])){
-$page=$_GET["page"];
-}else{
-$page=1;
-}
-$id=$_REQUEST["id"];
-if ($id=="" || is_numeric($id)==false){
-showmsg('参数有误！相关信息不存在。');
-}
+$page = isset($_GET['page'])?$_GET['page']:1;
+checkid($page);
+$id = isset($_GET['id'])?$_GET['id']:0;
+checkid($id,1);
+
 $rszx = query("select * from zzcms_ask where id='$id'"); 
 $rowzx= fetch_array($rszx);
 ?>
@@ -74,7 +70,7 @@ $rowzx= fetch_array($rszx);
       <td width="88%" class="border"> 
         <?php
 
-$sql = "select * from zzcms_askclass where parentid<>0 order by xuhao asc";
+$sql = "select parentid,classid,classname from zzcms_askclass where parentid<>0 order by xuhao asc";
 $rs=query($sql);
 ?>
         <script language = "JavaScript" type="text/JavaScript">
@@ -106,7 +102,7 @@ function changelocation(locationid)
     }</script> <select name="bigclassid" onChange="changelocation(document.myform.bigclassid.options[document.myform.bigclassid.selectedIndex].value)" size="1">
           <option value="" selected="selected">请选择大类别</option>
           <?php
-	$sql = "select * from zzcms_askclass where  parentid=0 order by xuhao asc";
+	$sql = "select classid,classname from zzcms_askclass where  parentid=0 order by xuhao asc";
     $rs=query($sql);
 	while($row = fetch_array($rs)){
 	?>
@@ -115,10 +111,10 @@ function changelocation(locationid)
 				}
 				?>
         </select> <select name="smallclassid">
-          <option value="">不指定小类</option>
+          <option value="0">不指定小类</option>
           <?php
 
-$sql="select * from zzcms_askclass where parentid=" .$rowzx["bigclassid"]." order by xuhao asc";
+$sql="select classid,classname from zzcms_askclass where parentid='" .$rowzx["bigclassid"]."' order by xuhao asc";
 $rs=query($sql);
 while($row = fetch_array($rs)){
 	?>
@@ -136,7 +132,7 @@ while($row = fetch_array($rs)){
     </tr>
     <tr id="trcontent"> 
       <td width="12%" align="right" class="border">内容：</td>
-      <td class="border"> <textarea name="content" id="content" ><?php echo $rowzx["content"]?></textarea> 
+      <td class="border"> <textarea name="content" id="content" ><?php echo stripfxg($rowzx["content"])?></textarea> 
         <script type="text/javascript">CKEDITOR.replace('content');	</script> 
         <input name="id" type="hidden" id="id" value="<?php echo $rowzx["id"]?>"> 
         <input name="page" type="hidden" id="page" value="<?php echo $page?>"> </td>
@@ -164,7 +160,6 @@ while($row = fetch_array($rs)){
       <td class="border"> <input type="submit" name="Submit" value="提交"></td>
     </tr>
   </table>
-</form>
-	  
+</form>  
 </body>
 </html>

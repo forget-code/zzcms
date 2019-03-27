@@ -15,11 +15,7 @@ $f_array=explode("|||",$fcontent) ;
 <?php
 $ErrMsg="";
 $FoundErr=0;
-if (isset($_REQUEST["action"])){
-$action=$_REQUEST["action"];
-}else{
-$action="";
-}
+$action = isset($_GET['action'])?$_GET['action']:"";
 if (isset($_POST["canshu"])){
 $groupid=$_POST["canshu"];//由VIPUSER.php传来的值
 checkid($groupid);
@@ -59,7 +55,7 @@ if ($action=="modify"){
 			WriteErrMsg($ErrMsg);
 			}else{
 			query("update zzcms_user set groupid='$groupid',startdate='$startdate',enddate='$enddate',totleRMB=totleRMB-".$totleRMB." where username='" . $username ."'");			
-			query("Update zzcms_main set groupid=" . $groupid . " where editor='" . $username . "'");
+			query("Update zzcms_main set groupid='" . $groupid . "' where editor='" . $username . "'");
 			query("insert into zzcms_pay (username,dowhat,RMB,mark,sendtime)values('$username','". $f_array[3]."','$totleRMB','".$f_array[4].$startdate."-".$enddate."','".date('Y-m-d H:i:s')."')");
 			echo $f_array[5];
 			}
@@ -139,6 +135,5 @@ echo $row["groupname"];
 </html>
 <?php
 }
-
 unset ($f_array);
 ?>

@@ -10,16 +10,10 @@ include("admin.php");
 <body>
 <?php
 checkadminisdo("adminmanage");
-if (isset($_REQUEST["action"])) {
-$action=trim($_REQUEST["action"]);
-}else{
-$action="";
-}
+$action = isset($_POST['action'])?$_POST['action']:'';
 $FoundErr=0;
 $ErrMsg="";
-$admins=trim($_REQUEST["admins"]);
 if ($action=="modify"){
-$groupid=$_POST["groupid"];
 query("update zzcms_admin set groupid='$groupid' where admin='".$admins."'");
 echo "<SCRIPT language=JavaScript>alert('修改成功！');history.go(-1)</SCRIPT>";	
 }else{
@@ -31,17 +25,17 @@ $row= fetch_array($rs);
 <FORM name="form1" action="?" method="post" onSubmit="return CheckForm()">
           
   <table width="100%" border="0" align="center" cellpadding="5" cellspacing="0">
-    <TR> 
-      <TD width="20%" align="right" class="border">管理员：</TD>
-      <TD width="80%" class="border"><?php echo $admins?>
-        <input name="admins" type="hidden" value="<?php echo $admins?>"></TD>
-    </TR>
+    <tr> 
+      <td width="20%" align="right" class="border">管理员：</td>
+      <td width="80%" class="border"><?php echo $admins?>
+        <input name="admins" type="hidden" value="<?php echo $admins?>"></td>
+    </tr>
     <tr> 
       <td align="right" class="border">所属用户组：</td>
       <td class="border"> <select name="groupid">
           <?php
 	$sqln="Select * from zzcms_admingroup order by id asc";
-	$rsn = query($sqln,$conn);
+	$rsn =query($sqln,$conn);
 	$rown= num_rows($rsn);
 	if ($rown){
 		while($rown=fetch_array($rsn)){
@@ -55,12 +49,12 @@ $row= fetch_array($rs);
 		 ?>
         </select> </td>
     </tr>
-    <TR> 
-      <TD align="center" class="border">&nbsp; </TD>
-      <TD class="border"> <input name="Submit"   type="submit" id="Submit" value="保存"> 
-        <input name="action" type="hidden" id="action" value="modify"> </TD>
-    </TR>
-  </TABLE>
+    <tr> 
+      <td align="center" class="border">&nbsp; </td>
+      <td class="border"> <input name="Submit"   type="submit" id="Submit" value="保存"> 
+        <input name="action" type="hidden" id="action" value="modify"> </td>
+    </tr>
+  </table>
 </form>
 </body>
 </html>

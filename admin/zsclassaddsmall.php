@@ -7,16 +7,13 @@ include("admin.php");
 <title></title>
 <link href="style.css" rel="stylesheet" type="text/css">
 <script>
-function checkform()
-{
-  if (document.form1.classname.value=="")
-  {
+function checkform(){
+  if (document.form1.classname.value==""){
     alert("名称不能为空！");
     document.form1.classname.focus();
     return false;
   }
-    if (document.form1.classzm.value=="")
-  {
+    if (document.form1.classzm.value==""){
     alert("字母不能为空！");
     document.form1.classzm.focus();
     return false;
@@ -28,7 +25,8 @@ function checkform()
 <?php
 $FoundErr=0;
 $bigclassid=trim($_REQUEST["bigclassid"]);
-if (@$_GET["action"]=="add"){
+checkid($bigclassid);
+if (isset($_GET["action"])){
 checkadminisdo("zsclass");
 $classname=nostr(trim($_POST["classname"]));
 $classzm=nostr(strtolower(trim($_POST["classzm"])));
@@ -75,11 +73,7 @@ WriteErrMsg($ErrMsg);
 }else{
 ?>
 <form name="form1" method="post" action="?action=add" onSubmit="return checkform()"> 
-<table width="100%" border="0" cellpadding="0" cellspacing="0">
-  <tr> 
-    <td class="admintitle">添加小类</td>
-  </tr>
-</table>
+<div class="admintitle">添加小类</div>
 <script type="text/javascript" src="/js/jquery.js"></script>  
 <script type="text/javascript" language="javascript">
 $.ajaxSetup ({
@@ -96,16 +90,17 @@ $(document).ready(function(){
  <table width="100%" border="0" align="center" cellpadding="5" cellspacing="0">
     <tr> 
       <td width="18%" align="right" class="border">所属大类</td>
-      <td width="82%" class="border"> <select name="bigclassid">
+      <td width="82%" class="border"> 
+	  <select name="bigclassid">
           <?php
-	$sql="Select * From zzcms_zsclass where parentid='A'";
+	$sql="Select * From zzcms_zsclass where parentid=0";
 	$rs=query($sql);
 	
 	while($row= fetch_array($rs)){
-			if ($row['classzm']==$bigclassid){
-			echo "<option value='".$row['classzm']."' selected>".$row['classname']."</option>";
+			if ($row['classid']==$bigclassid){
+			echo "<option value='".$row['classid']."' selected>".$row['classname']."</option>";
 			}else{
-			echo "<option value='".$row['classzm']."'>".$row['classname']."</option>";
+			echo "<option value='".$row['classid']."'>".$row['classname']."</option>";
 			}
 		}
 	?>

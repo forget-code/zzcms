@@ -93,7 +93,7 @@ switch (check_user_power('set_elite')){
 case 'yes':
 if (jifen=="Yes"){
 $sqln="select totleRMB from zzcms_user where username='".$username."'";
-$rsn = query($sqln);
+$rsn =query($sqln);
 $rown = fetch_array($rsn);
 	if ($rown["totleRMB"]>=$jfpay){
 	query("update zzcms_user set totleRMB=totleRMB-$jfpay where username='".$username."'");

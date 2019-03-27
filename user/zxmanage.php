@@ -33,20 +33,12 @@ include("left.php");
 <input type="submit" name="Submit" value="<?php echo $f_array[2]?>"></form>
 </span><?php echo $f_array[0]?></div>
 <?php
-if (isset($_GET["bigclassid"])){
-$bigclassid=$_GET["bigclassid"];
-}else{
-$bigclassid="";
-}
-
-if (isset($_POST["keyword"])){ 
-$keyword=trim($_POST["keyword"]);
-}else{
-$keyword="";
-}	
+$bigclassid=isset($_GET["bigclassid"])?$_GET["bigclassid"]:"";
+$keyword=isset($_POST["keyword"])?$_POST["keyword"]:"";
 
 if( isset($_GET["page"]) && $_GET["page"]!="") {
     $page=$_GET['page'];
+	checkid($page,0);
 }else{
     $page=1;
 }
@@ -69,7 +61,7 @@ $row = fetch_array($rs);
 $totlenum = $row['total'];
 $totlepage=ceil($totlenum/$page_size);
 
-$sql="select id,bigclassid,smallclassid,bigclassname,smallclassname,title,sendtime,passed,hit from zzcms_zx where editor='".$username."' ";	
+$sql="select id,bigclassid,smallclassid,bigclassname,smallclassname,title,img,passed,hit from zzcms_zx where editor='".$username."' ";	
 $sql=$sql.$sql2;
 $sql=$sql . " order by id desc limit $offset,$page_size";
 $rs = query($sql); 
@@ -90,7 +82,7 @@ while($row = fetch_array($rs)){
             <td align="center"> 
 			<a href="?bigclassid=<?php echo $row["bigclassid"]?>"><?php echo $row["bigclassname"]?></a> 
               - <?php echo $row["smallclassname"]?>            </td>
-            <td align="center"><?php echo $row["sendtime"]?></td>
+            <td align="center" width="200"><?php echo $row["img"]?></td>
             <td align="center"> 
               <?php 
 	if ($row["passed"]==1 ){ echo $f_array[5];}else{ echo $f_array[6];}

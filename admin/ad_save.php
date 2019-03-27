@@ -11,52 +11,32 @@ include("admin.php");
 <body>
 <?php
 checkadminisdo("adv");
-if (isset($_POST["page"])){//返回列表页用
-$page=$_POST["page"];
-}else{
-$page=1;
-}
-$title=stripfxg(trim($_POST["title"]));
+$page=isset($_POST["page"])?$_POST["page"]:1;//只从修改页传来的值,返回列表页用
+checkid($page);
+$newsid=isset($_POST["newsid"])?$_POST["newsid"]:0;
+checkid($newsid,1);
+
 $title=str_replace("{","",$title);//过滤{ 如果这里填写调用标签如{#showad:4,0,yes,yes,首页第一行}就会在label中反复替换出现布局上的错乱
-$titlecolor=trim($_POST["titlecolor"]);
-
-$link=trim($_POST["link"]);
 $link=str_replace("{","",$link);
-$img=trim($_POST["img"]);
-if (isset($_POST["noimg"])){
-$img='';
-}
-$imgwidth=trim($_POST["imgwidth"]);
-if ($imgwidth==""){
-$imgwidth=0;
-}
 
-$imgheight=trim($_POST["imgheight"]);
-if ($imgheight=="") {
-$imgheight=0;
-}
+if (isset($_POST["noimg"])){$img='';}
+$imgwidth=isset($_POST["imgwidth"])?$_POST["imgwidth"]:0;
+checkid($imgwidth,1);
+$imgheight=isset($_POST["imgheight"])?$_POST["imgheight"]:0;
+checkid($imgheight,1);
 
-$username=trim($_POST["username"]);
 $bigclassname=$_POST["bigclassid"];
 $smallclassname=$_POST["smallclassid"];
-$starttime=$_POST["starttime"];
-if ($starttime=="") {
-$starttime=date('Y-m-d');
-}
-$endtime=$_POST["endtime"];
-if ($endtime==""){
-$endtime=date('Y-m-d',time()+60*60*24*365);
-}
+
+if ($starttime=="") {$starttime=date('Y-m-d');}
+if ($endtime==""){$endtime=date('Y-m-d',time()+60*60*24*365);}
 $elite=$_POST["elite"];
+checkid($elite,1);
 
 if ($_REQUEST["action"]=="add"){
 query("INSERT INTO zzcms_ad (bigclassname,smallclassname,title,titlecolor,link,img,imgwidth,imgheight,username,starttime,endtime,elite,sendtime)VALUES('$bigclassname','$smallclassname','$title','$titlecolor','$link','$img','$imgwidth','$imgheight','$username','$starttime','$endtime','$elite','".date('Y-m-d H:i:s',time()-(showadvdate+1)*60*60*24)."')");
 $newsid=insert_id();
-
 }elseif ($_REQUEST["action"]=="modify") {
-$newsid=trim($_POST["newsid"]);
-$oldimg=trim($_POST["oldimg"]);
-$nextuser=trim($_POST["nextuser"]);
 query("update zzcms_ad set bigclassname='$bigclassname',smallclassname='$smallclassname',title='$title',titlecolor='$titlecolor',link='$link',img='$img',imgwidth='$imgwidth',imgheight='$imgheight',username='$username',nextuser='$nextuser',starttime='$starttime',endtime='$endtime',elite='$elite' where id='$newsid'");	
 	if ($oldimg<>$img || $oldimg<>"/image/nopic.gif") {
 	//deloldimg();
@@ -103,3 +83,5 @@ $_SESSION["imgheight"]=$imgheight;
     </td>
   </tr>
 </table>
+</body>
+</html>

@@ -20,8 +20,8 @@ $ip=trim($_POST["ip"]);
 query("insert into zzcms_pinglun (about,content,face,username,ip,sendtime)values('$about','$content','$face','$user','$ip','".date('Y-m-d H:i:s')."')");
 showmsg('您的评论提交成功，正在审核... 感谢参与');
 }
-if (isset($_REQUEST["id"])){
-$zxid=trim($_REQUEST["id"]);
+if (isset($_GET["id"])){
+$zxid=trim($_GET["id"]);
 checkid($zxid);
 }else{
 $zxid=0;
@@ -37,7 +37,7 @@ query("update zzcms_special set hit=hit+1 where id='$zxid'");
 $bigclassid=$row["bigclassid"];
 $smallclassid=$row["smallclassid"];
 $title=$row["title"];
-$content=$row["content"];
+$content=stripfxg($row["content"],true);
 $keywords=$row["keywords"];
 $description=$row["description"];
 $laiyuan=$row["laiyuan"];

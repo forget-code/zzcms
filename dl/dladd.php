@@ -157,11 +157,11 @@ echo sitetop();
 	   <select name="classid">
           <option value="" selected>请选择类别</option>
           <?php
-		$sql="select * from zzcms_zsclass where parentid='A'";
+		$sql="select classid,classname from zzcms_zsclass where parentid=0";
 		$rs=query($sql);
 		while($row= fetch_array($rs)){
 			?>
-          <option value="<?php echo $row["classzm"]?>"<?php if (@$_SESSION['bigclassid']==$row["classzm"]){echo 'selected';}?>><?php echo $row["classname"]?></option>
+          <option value="<?php echo $row["classid"]?>"<?php if (@$_SESSION['bigclassid']==$row["classid"]){echo 'selected';}?>><?php echo $row["classname"]?></option>
           <?php
 		  }
 		  ?>
@@ -339,41 +339,22 @@ new PCAS('province', 'city', 'xiancheng', '<?php echo @$_SESSION['province']?>',
 <?php
 if (isset($_POST["action"])){
 $classid=$_POST["classid"];
-$cp=$_POST["cp"];
-$province=$_POST["province"];
 $city=$_POST["cityforadd"];
-$content=$_POST["content"];
-$dlsf=$_POST["dlsf"];
-if (isset($_POST["companyname"])){
-$companyname=$_POST["companyname"];
-}else{
-$companyname="";
-}
-if ($dlsf=="个人" ){
-$companyname="";
-}
-$truename=$_POST["truename"];
-$tel=$_POST["tel"];
-$email=$_POST["email"];
-$address=$_POST["address"];
-checkyzm($_POST["yzm"]);
+$companyname=isset($_POST["companyname"])?$_POST["companyname"]:'';
+if ($dlsf=="个人" ){$companyname="";}
 
+checkyzm($_POST["yzm"]);
 if (sendsms=="Yes"){
 	$yzm_mobile=$_POST["yzm_mobile"];
 	if(time()-intval(@$_SESSION['yzm_sendtime'])>60){showmsg('请重新获取验证码','back');}
 	if($yzm_mobile!=@$_SESSION["yzm_mobile"]){showmsg('验证码错误！','back');}
 }
 
-if(!preg_match("/^[\x7f-\xff]+$/",$truename)){
-showmsg('姓名只能用中文','back');
-}
-
-if(!preg_match("/1[3458]{1}\d{9}$/",$tel) && !preg_match('/^400(\d{3,4}){2}$/',$tel) && !preg_match('/^400(-\d{3,4}){2}$/',$tel) && !preg_match('/^(010|02\d{1}|0[3-9]\d{2})-\d{7,9}(-\d+)?$/',$tel)){//分别是手机，400电话(加-和不加两种情况都可以)，和普通电话
-showmsg('电话号码不正确','back');
-}
+checkstr($truename,'hanzi');
+checkstr($tel,'tel');
 
 if ($cp<>'' && $truename<>'' && $tel<>''){
-$isok=query("Insert into zzcms_dl(classzm,cpid,cp,province,city,content,company,companyname,dlsname,tel,address,email,sendtime,editor) values('$classid',0,'$cp','$province','$city','$content','$dlsf','$companyname','$truename','$tel','$address','$email','".date('Y-m-d H:i:s')."','".@$_COOKIE["UserName"]."')") ;
+$isok=query("Insert into zzcms_dl(classid,cpid,cp,province,city,content,company,companyname,dlsname,tel,address,email,sendtime,editor) values('$classid',0,'$cp','$province','$city','$content','$dlsf','$companyname','$truename','$tel','$address','$email','".date('Y-m-d H:i:s')."','".@$_COOKIE["UserName"]."')") ;
 }  
 if ($isok){
 echo showmsg('发布成功，审核后显示。');

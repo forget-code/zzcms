@@ -9,39 +9,34 @@ $fp="../template/".$siteskin."/wangkan.htm";
 $f = fopen($fp,'r');
 $strout = fread($f,filesize($fp));
 fclose($f);
-
 if (isset($_REQUEST["page_size"])){
 $page_size=$_REQUEST["page_size"];
 checkid($page_size);
 setcookie("page_size_wangkan",$page_size,time()+3600*24*360);
 }else{
-	if (isset($_COOKIE["page_size_wangkan"])){
-	$page_size=$_COOKIE["page_size_wangkan"];
-	}else{
-	$page_size=pagesize_qt;
-	}
+$page_size=isset($_COOKIE["page_size_wangkan"])?$_COOKIE["page_size_wangkan"]:pagesize_qt;
 }
 $b='';
-if (isset($_REQUEST['b'])){
-$b=$_REQUEST['b'];
+if (isset($_GET['b'])){
+$b=$_GET['b'];
 if ($b<>""){
 checkid($b);
 }
 }
 $bigclassname="";
 if ($b<>""){
-$sql="select * from zzcms_wangkanclass where bigclassid='$b'";
+$sql="select classname from zzcms_wangkanclass where classid='$b'";
 $rs=query($sql);
 $row=fetch_array($rs);
-$bigclassname=$row["bigclassname"];
+$bigclassname=$row["classname"];
 }
-
 $pagetitle=$bigclassname.wangkanlisttitle."-".sitename;
 $pagekeyword=$bigclassname.wangkanlistkeyword."-".sitename;
 $pagedescription=$bigclassname.wangkanlistdescription."-".sitename;
 
 if( isset($_GET["page"]) && $_GET["page"]!="") {
     $page=$_GET['page'];
+	checkid($page);
 }else{
     $page=1;
 }
@@ -51,7 +46,7 @@ $sql2='';
 if ($b<>""){
 $sql2=$sql2." and bigclassid='".$b."' ";
 }
-$rs = query($sql.$sql2); 
+$rs =query($sql.$sql2); 
 $row = fetch_array($rs);
 $totlenum = $row['total'];
 $offset=($page-1)*$page_size;//$page_size在上面被设为COOKIESS
@@ -83,7 +78,6 @@ $i=$i+1;
 $strout=str_replace("{loop}".$list."{/loop}",$list2,$strout) ;
 $strout=str_replace("{#fenyei}",showpage2("wangkan"),$strout) ;
 }
-
 $strout=str_replace("{#siteskin}",$siteskin,$strout) ;
 $strout=str_replace("{#sitename}",sitename,$strout) ;
 $strout=str_replace("{#pagetitle}",$pagetitle,$strout) ;
@@ -95,6 +89,5 @@ $strout=str_replace("{#numperpage}",showselectpage("wangkan",$page_size,$b,"",$p
 $strout=str_replace("{#sitebottom}",sitebottom(),$strout);
 $strout=str_replace("{#sitetop}",sitetop(),$strout);
 $strout=showlabel($strout);
-
 echo  $strout;
 ?>

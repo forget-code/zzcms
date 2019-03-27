@@ -71,20 +71,21 @@ include("checkaddinfo.php");
   <table width="100%" border="0" cellpadding="3" cellspacing="1">
     <tr> 
       <td width="18%" align="right" class="border"><?php echo $f_array[2]?></td>
-      <td width="82%" class="border"> <input name="cp" type="text" id="cp" class="biaodan" size="60" maxlength="60">
-	  <?php echo $f_array[20]?>      </td>
+      <td width="82%" class="border">
+	  <input name="cp" type="text" id="cp" class="biaodan" size="60" maxlength="60" onfocus="javascript:if (this.value=='只能写产品名称，不要写联系方式等内容，否则会直接被删除') {this.value=''}" value="只能写产品名称，不要写联系方式等内容，否则会直接被删除">
+	        </td>
     </tr>
     <tr> 
       <td align="right" class="border2"><?php echo $f_array[3]?></td>
       <td class="border2">
 	   <select name="classid" class="biaodan">
-          <option value="" selected><?php echo $f_array[4]?> </option>
+          <option value='0' selected><?php echo $f_array[4]?> </option>
           <?php
-		$sql="select * from zzcms_zsclass where parentid='A'";
+		$sql="select * from zzcms_zsclass where parentid=0";
 		$rs=query($sql);
 		while($row= fetch_array($rs)){
 			?>
-          <option value="<?php echo $row["classzm"]?>"<?php if (@$_SESSION['bigclassid']==$row["classzm"]){echo 'selected';}?>><?php echo $row["classname"]?></option>
+          <option value="<?php echo $row["classid"]?>"<?php if (@$_SESSION['bigclassid']==$row["classid"]){echo 'selected';}?>><?php echo $row["classname"]?></option>
           <?php
 		  }
 		  ?>
@@ -161,7 +162,8 @@ new PCAS('province', 'city', 'xiancheng', '<?php echo @$_SESSION['province']?>',
     </tr>
     <tr> 
       <td align="right" class="border2"><?php echo $f_array[8]?></td>
-      <td class="border2"> <textarea name="content" cols="60" rows="4" id="content" class="biaodan" style="height:auto"><?php echo @$_SESSION["content"]?></textarea>
+      <td class="border2">
+	  <textarea name="content" cols="60" rows="4" id="content" class="biaodan" style="height:auto" onfocus="javascript:if (this.value=='最多200字') {this.value=''}"/><?php if( isset($_SESSION["content"])){echo $_SESSION["content"];}else{echo "最多200字";}?></textarea>
       </td>
     </tr>
 	<?php

@@ -12,11 +12,7 @@ if( isset($_GET["page"]) && $_GET["page"]!="") {
 }else{
     $page=1;
 }
-if (isset($_GET["b"])){
-$b=$_GET["b"];
-}else{
-$b="";
-}
+$b=isset($_GET["b"])?$_GET["b"]:'';
 if ($b!=''){
 $f="../html/".$siteskin."/dl/".$b."/".$page.".html";
 }else{
@@ -41,14 +37,15 @@ checkid($page_size);
 }else{
 $page_size=pagesize_qt;
 }
-
 $bigclassname="";
+$bigclassid=0;
 if ($b<>""){
-$sql="select * from zzcms_zsclass where classzm='".$b."'";
+$sql="select classname,classid from zzcms_zsclass where classzm='".$b."'";
 $rs=query($sql);
-$row=fetch_array($rs);
+$row=mysqli_fetch_assoc($rs);
 if ($row){
 $bigclassname=$row["classname"];
+$bigclassid=$row["classid"];
 }
 }
 
@@ -75,39 +72,41 @@ $strout=str_replace("{#dl_sendmail_url}",$dl_sendmail_url,$strout) ;
 $strout=str_replace("{#dl_sendsms_url}",$dl_sendsms_url,$strout) ;
 $strout=str_replace("{#buttontype}",$buttontype,$strout) ;
 
-if ($b<>"") {
-	$sql="select count(*) as total from `zzcms_dl_".$b."` where passed<>0 ";
-	$sql2='';
-	if (liuyanysnum!=0){//最好是设成0，当数据量大时，查寻会变慢
-	$liuyanysnum=liuyanysnum*3600*24;
-	$sql2=$sql2. " and  not exists (select id from `zzcms_dl_".$b."` where savergroupid>1 and unix_timestamp()-unix_timestamp(sendtime)<$liuyanysnum) ";
-	}
-}else{
+
+
 	$sql="select count(*) as total from zzcms_dl where passed<>0 ";
 	$sql2='';
+	
+	if ($b<>"") {
+	$sql2=$sql2. " and classid=$bigclassid";
+	}
+	
 	if (liuyanysnum!=0){//最好是设成0，当数据量大时，查寻会变慢
 	$liuyanysnum=liuyanysnum*3600*24;
 	$sql2=$sql2. " and  not exists (select id from zzcms_dl where savergroupid>1 and unix_timestamp()-unix_timestamp(sendtime)<$liuyanysnum) ";
 	}
-}
+
 if ($province<>""){
 $sql2=$sql2." and province ='".$province."' ";
 }
 
 $strout=str_replace("{#sql}",$sql.$sql2,$strout) ;
-$rs = query($sql.$sql2); 
-$row = fetch_array($rs);
+$rs =query($sql.$sql2); 
+$row = mysqli_fetch_assoc($rs);
 $totlenum = $row['total'];
 $offset=($page-1)*$page_size;
 $totlepage=ceil($totlenum/$page_size);
-if ($b<>"") {
-$sql="select id,dlid,cp,dlsname,province,city,xiancheng,content,tel,sendtime,saver from `zzcms_dl_".$b."` where passed<>0 ";
-}else{
+
 $sql="select id,cp,dlsname,province,city,xiancheng,content,tel,sendtime,saver from zzcms_dl where passed<>0 ";
+$sql2='';
+
+if ($b<>"") {
+$sql2=" and classid=$bigclassid";
 }
+
 $sql=$sql.$sql2;
 $sql=$sql." order by id desc limit $offset,$page_size";
-$rs = query($sql); 
+$rs = query($sql,MYSQLI_STORE_RESULT);   //MYSQLI_USE_RESULT默认为MYSQLI_STORE_RESULT这种模式，全部读入到内存。
 //echo $sql;
 $dl=strbetween($strout,"{dl}","{/dl}");
 $dllist=strbetween($strout,"{loop}","{/loop}");
@@ -117,29 +116,22 @@ $strout=str_replace("{dl}".$dl."{/dl}","暂无信息",$strout) ;
 }else{
 $i=0;
 $dllist2='';
-while($row= fetch_array($rs)){
-if ($b<>''){
-$dllist2 = $dllist2. str_replace("{#id}" ,$row["dlid"],$dllist) ;
-}else{
+while($row= mysqli_fetch_assoc($rs)){
+
 $dllist2 = $dllist2. str_replace("{#id}" ,$row["id"],$dllist) ;
-}
+
 if ($i % 2==0) {
 $dllist2=str_replace("{changebgcolor}" ,"class=bgcolor1",$dllist2) ;
 }else{
 $dllist2=str_replace("{changebgcolor}" ,"class=bgcolor2",$dllist2) ;
 }
-
-if ($b<>''){
-$dllist2 = str_replace("{#cp}" ,"<a href='".getpageurl("dl",$row["dlid"])."'>".cutstr($row["cp"],8)."</a> ",$dllist2) ;
-}else{
 $dllist2 = str_replace("{#cp}" ,"<a href='".getpageurl("dl",$row["id"])."'>".cutstr($row["cp"],8)."</a> ",$dllist2) ;
-}
 
 if ($row["saver"]<>"") {
 	$rsn=query("select comane,id from zzcms_user where username='".$row["saver"]."'");
 	$r=num_rows($rsn);
 	if ($r){
-	$r=fetch_array($rsn);
+	$r=mysqli_fetch_assoc($rsn);
 	$gs="<a href='".getpageurl("zt",$r["id"])."'>".cutstr($r["comane"],6)."</a> ";
 	}else{
 	$gs="不存在该公司信息";
@@ -162,6 +154,7 @@ $dllist2 = str_replace("{#content}" ,cutstr($row["content"],16),$dllist2) ;
 $dllist2 = str_replace("{#sendtime}" ,date("Y-m-d",strtotime($row["sendtime"])),$dllist2) ;
 $i=$i+1;
 }
+//mysqli_free_result($rs);//释放记录集，经测试，会稍微拖慢几毫秒的速度
 $strout=str_replace("{loop}".$dllist."{/loop}",$dllist2,$strout) ;
 $strout=str_replace("{#fenyei}",showpage2("dl"),$strout) ;//采用showpage3倒显分页，可解决只生成新页，老页信息不变，缺点是当无大类不用缓存时大页码打开时慢，而到后面的小页码反页快。
 $strout=str_replace("{dl}","",$strout) ;
@@ -198,6 +191,7 @@ if (html_update_time!=0 ){
 }
 
 }//end if(html_update_time!=0 && file_exists($f) && time()-filemtime($f)<3600*24*30)
+//mysqli_close($conn);
 $t2 = microtime(true);
 echo '耗时'.round($t2-$t1,3).'秒';
 ?>

@@ -6,11 +6,14 @@ include("admin.php");
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <link href="style.css" rel="stylesheet" type="text/css">
 <?php
-$id=$_REQUEST["id"];
+$page = isset($_GET['page'])?$_GET['page']:1;
+checkid($page);
+
+$id=$_GET["id"];
 if ($id<>""){
 checkid($id);
 }
-$b=$_REQUEST["b"];
+$b=$_GET["b"];
 if ($b<>""){
 checkid($b);
 }
@@ -37,12 +40,11 @@ $row=fetch_array($rs);
   <table width="100%" border="0" cellspacing="0" cellpadding="5">
     <tr> 
       <td width="162" align="right" class="border">标题：</td>
-      <td width="837" class="border"> <input name="title" type="text" id="title2" value="<?php echo $row["title"]?>" size="50" maxlength="255"> 
-      </td>
+      <td class="border"> <input name="title" type="text" id="title2" value="<?php echo $row["title"]?>" size="50" maxlength="255">      </td>
     </tr>
     <tr id="trcontent"> 
       <td width="162" align="right" class="border">内容：</td>
-      <td class="border"> <textarea name="content" id="content" ><?php echo $row["content"]?></textarea> 
+      <td class="border"> <textarea name="content" id="content" ><?php echo stripfxg($row["content"])?></textarea> 
         <script type="text/javascript">CKEDITOR.replace('content');	</script> 
       </td>
     </tr>
@@ -54,12 +56,11 @@ $row=fetch_array($rs);
     <tr> 
       <td align="right" class="border"><input name="b" type="hidden" id="b" value="<?php echo $row["classid"]?>"> 
         <input name="id" type="hidden" id="id" value="<?php echo $row["id"]?>"> 
-        <input name="page" type="hidden" id="page" value="<?php echo $_REQUEST["page"]?>"> 
+        <input name="page" type="hidden" id="page" value="<?php echo $page?>"> 
       </td>
       <td class="border"><input type="submit" name="Submit" value="提交"></td>
     </tr>
   </table>
-      </form>
-	  
+  </form>	  
 </body>
 </html>

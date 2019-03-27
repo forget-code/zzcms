@@ -30,7 +30,8 @@ if (document.form1.classzm.value=="a" || document.form1.classzm.value=="A"){
 <?php
 $FoundErr=0;
 $classid=trim($_REQUEST["classid"]);
-if (@$_REQUEST["action"]=="modify"){
+checkid($classid);
+if (isset($_REQUEST["action"])){
 checkadminisdo("zsclass");
 $classname=nostr(trim($_POST["classname"]));
 $oldclassname=trim($_POST["oldclassname"]);
@@ -56,12 +57,11 @@ if ($discription==""){
 $discription=$classname;
 }
 
-if ($classid==""){
-	
+if ($classid==""){	
 echo "<script>location.href='zsclassmanage.php'</script>";
 }
 	if ($classname<>$oldclassname){
-	$sql="Select * from zzcms_zsclass where parentid='A' and classname='".$classname."' and classid !=" .$classid." ";
+	$sql="Select * from zzcms_zsclass where parentid=0 and classname='".$classname."' and classid !='" .$classid."' ";
 	$rs=query($sql);
 		$row= num_rows($rs);//返回记录数
 		if ($row){
@@ -71,7 +71,7 @@ echo "<script>location.href='zsclassmanage.php'</script>";
 	}
 	
 	if ($classzm<>$oldclasszm) {
-	$sql="Select * from zzcms_zsclass where parentid='A' and classzm='".$classzm."' and classid != " .$classid." ";
+	$sql="Select * from zzcms_zsclass where parentid=0 and classzm='".$classzm."' and classid != '" .$classid."' ";
 	$rs=query($sql);
 		$row= num_rows($rs);//返回记录数
 		if ($row){
@@ -84,42 +84,10 @@ echo "<script>location.href='zsclassmanage.php'</script>";
 	query("update zzcms_zsclass set classname='$classname',classzm='$classzm',img='$img',
 	isshow='$isshow',title='$title',keyword='$keyword',discription='$discription' where classid='$classid'");
 		
-		if ($classzm<>$oldclasszm){
-		query("update zzcms_main set bigclasszm='".$classzm."' where bigclasszm='".$oldclasszm."'");
-		query("update zzcms_dl set classzm='".$classzm."' where classzm='".$oldclasszm."'");
-		query("update zzcms_zsclass set parentid='".$classzm."' where parentid='".$oldclasszm."'");
-		query("RENAME TABLE `zzcms_dl_".$oldclasszm."` TO `zzcms_dl_".$classzm."`");
-		}
-		
-/*query("CREATE TABLE `zzcms_dl_".$classzm."` (
-  `id` int(11) NOT NULL auto_increment,
-  `dlid` int(11) default '0',
-  `cpid` int(11) default '0',
-  `cp` varchar(255) default NULL,
-  `province` varchar(50) default NULL,
-  `city` varchar(50) default NULL,
-  `xiancheng` varchar(50) default NULL,
-  `content` varchar(1000) default NULL,
-  `company` varchar(255) default NULL,
-  `companyname` varchar(255) default NULL,
-  `dlsname` varchar(255) default NULL,
-  `address` varchar(255) default NULL,
-  `tel` varchar(255) default NULL,
-  `email` varchar(255) default NULL,
-  `editor` varchar(255) default NULL,
-  `saver` varchar(255) default NULL,
-  `savergroupid` int(11) default '0',
-  `ip` varchar(255) default NULL,
-  `sendtime` datetime default NULL,
-  `hit` int(11) default '0',
-  `looked` tinyint(4) default '0',
-  `passed` tinyint(4) default '0',
-  `del` tinyint(4) default '0',
-  PRIMARY KEY  (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=1 DEFAULT CHARSET=utf8");
-query("ALTER TABLE  `zzcms_dl_".$classzm."` ADD INDEX (  `province` ,  `city` ,  `xiancheng` )") ;
-*/	
-		echo "<script>location.href='zsclassmanage.php?#B".$classzm."'</script>";
+	if ($classzm<>$oldclasszm){
+	query("update zzcms_main set bigclasszm='".$classzm."' where bigclasszm='".$oldclasszm."'");
+	}
+	echo "<script>location.href='zsclassmanage.php?#B".$classid."'</script>";
 	}
 }
 
@@ -147,10 +115,10 @@ $(document).ready(function(){
   <table width="100%" border="0" cellpadding="5" cellspacing="0">
     <tr> 
       <td width="255" align="right" class="border">大类ID</td>
-      <td width="1160" class="border"><?php echo $row["classid"]?> <input name="classid" type="hidden" id="classid" value="<?php echo $row["classid"]?>">      </td>
+      <td class="border"><?php echo $row["classid"]?> <input name="classid" type="hidden" id="classid" value="<?php echo $row["classid"]?>"></td>
     </tr>
     <tr> 
-      <td width="255" align="right" class="border">大类名称</td>
+      <td align="right" class="border">大类名称</td>
       <td class="border"> <input name="classname" type="text" id="classname" value="<?php echo $row["classname"]?>" size="60" maxlength="30"> 
         <input name="oldclassname" type="hidden" id="oldclassname" value="<?php echo $row["classname"]?>" size="60" maxlength="30"></td>
     </tr>
@@ -170,8 +138,8 @@ $(document).ready(function(){
     </tr>
     <tr> 
       <td align="right" class="border">是否显在首页显示该大类</td>
-      <td width="1160" class="border"><input name="isshow" type="checkbox" id="isshow" value="1" <?php if ($row["isshow"]==1) { echo"checked";}?>>
-        （选中为显示）</td>
+      <td class="border"><input name="isshow" type="checkbox" id="isshow" value="1" <?php if ($row["isshow"]==1) { echo"checked";}?>>
+      （选中为显示）</td>
     </tr>
     <tr> 
       <td colspan="2" class="border">SEO优化设置（如与大类名称相同，以下可以留空不填）</td>

@@ -16,32 +16,14 @@ $page_size=$_GET["page_size"];
 checkid($page_size);
 setcookie("page_size_ask",$page_size,time()+3600*24*360);
 }else{
-	if (isset($_COOKIE["page_size_ask"])){
-	$page_size=$_COOKIE["page_size_ask"];
-	}else{
-	$page_size=pagesize_qt;
-	}
+$page_size=isset($_COOKIE['page_size_ask'])?$_COOKIE['page_size_ask']:pagesize_qt;
 }
-
-if (isset($_POST['keyword'])){
-$keyword=trim($_POST['keyword']);
-}else{
-$keyword="";
-}
-
-if (isset($_GET['typeid'])){
-$typeid=trim($_GET['typeid']);
+$keyword=isset($_POST['keyword'])?$_POST['keyword']:'';
+$typeid=isset($_POST['typeid'])?$_POST['typeid']:999;
 checkid($typeid,1);
-}else{
-$typeid=999;
-}
 
-if (isset($_GET['elite'])){
-$elite=trim($_GET['elite']);
-checkid($elite);
-}else{
-$elite=0;
-}
+$elite=isset($_GET['elite'])?$_GET['elite']:0;
+checkid($elite,1);
 
 if (isset($_GET['b'])){
 $bNew=$_GET['b'];
@@ -49,11 +31,7 @@ checkid($bNew,1);
 setcookie("askb",$bNew,time()+3600*24);
 $b=$bNew;
 }else{
-	if (isset($_COOKIE['askb'])){
-	$b=$_COOKIE['askb'];
-	}else{
-	$b=0;
-	}
+$b=isset($_COOKIE['askb'])?$_COOKIE['askb']:0;
 }
 
 if (isset($_GET['s'])){
@@ -62,11 +40,7 @@ checkid($sNew,1);
 setcookie("asks",$sNew,time()+3600*24);
 $s=$sNew;
 }else{
-	if (isset($_COOKIE['asks'])){
-	$s=$_COOKIE['asks'];
-	}else{
-	$s=0;
-	}
+$s=isset($_COOKIE['asks'])?$_COOKIE['asks']:0;
 }
 $bigclassname="";
 $smallclassname="";
@@ -176,7 +150,7 @@ $sql2 = $sql2 . " and jifen>0 ";
 if ($keyword<>"") {
 $sql2=$sql2." and title like '%".$keyword."%' ";
 }
-$rs = query($sql.$sql2); 
+$rs =query($sql.$sql2); 
 $row = fetch_array($rs);
 $totlenum = $row['total'];
 $offset=($page-1)*$page_size;//$page_size在上面被设为COOKIESS 

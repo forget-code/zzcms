@@ -11,10 +11,10 @@ include("../inc/fy.php");
 </head>
 <body>
 <?php
-$action=isset($_REQUEST["action"])?$_REQUEST["action"]:'';
+$action=isset($_GET["action"])?$_GET["action"]:'';
 $page=isset($_GET["page"])?$_GET["page"]:1;
-
-$keyword=isset($_REQUEST["keyword"])?$_REQUEST["keyword"]:'';
+checkid($page);
+$keyword=isset($_POST["keyword"])?$_POST["keyword"]:'';
 
 if ($action=="del"){
 checkadminisdo("siteconfig");
@@ -32,6 +32,7 @@ echo "script lanage='javascript'>alert('操作失败！至少要选中一条信�
 	 if (strpos($id,",")>0){
 		$sql="delete from zzcms_usernoreg where id in (". $id .")";
 	}else{
+	checkid($id);
 		$sql="delete from zzcms_usernoreg where id='$id'";
 	}
 
@@ -55,12 +56,12 @@ $sql="select * from zzcms_usernoreg where id<>0 ";
 if ($keyword<>"") {
 	$sql=$sql. " and username like '%".$keyword."%' ";
 }
-$rs = query($sql,$conn); 
+$rs = query($sql); 
 $totlenum= num_rows($rs);  
 $totlepage=ceil($totlenum/$page_size);
 
 $sql=$sql . " order by id desc limit $offset,$page_size";
-$rs = query($sql,$conn); 
+$rs = query($sql); 
 if(!$totlenum){
 echo "暂无信息";
 }else{
@@ -102,13 +103,12 @@ while($row = fetch_array($rs)){
       <div class="border"> <input name="chkAll" type="checkbox" id="chkAll" onClick="CheckAll(this.form)" value="checkbox">
         <label for="chkAll" style="text-decoration: underline;cursor: hand;">全选</label> 
         <input name="submit"  type="submit" value="删除选中的信息" onClick="return ConfirmDel()"> 
-        <input name="page" type="hidden" id="page" value="<%=CurrentPage%>">
+        <input name="page" type="hidden" id="page" value="<?php echo $page?>">
 		</div>
 </form>
 <div class="border center"><?php echo showpage_admin()?></div>
 <?php
 }
-
 ?>
 </body>
 </html>

@@ -6,19 +6,15 @@ include("admin.php");
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <link href="style.css" rel="stylesheet" type="text/css">
 <?php
-if (isset($_REQUEST["action"])){
-$action=$_REQUEST["action"];
-}else{
-$action="";
-}
+$action = isset($_REQUEST['action'])?$_REQUEST['action']:"";
 if ($action=="add") {
 checkadminisdo("label");
-$title=nostr(trim($_POST["title"]));
-$title_old=trim($_POST["title_old"]);
+$title=nostr($_POST["title"]);
+$title_old=$_POST["title_old"];
 if (substr($title,-3)!='css' and substr($title,-3)!='htm'){
 showmsg('只能是htm或css这两种格式,模板名称：后面加上.htm或.css');
 }
-$start=stripfxg($_POST["start"]);//stripfxg如果有自动加反斜杠去反斜杠
+$start=stripfxg($_POST["start"],true);//stripfxg如果有自动加反斜杠去反斜杠
 $fp="../template/".siteskin."/".$title;
 $f=fopen($fp,"w+");//fopen()的其它开关请参看相关函数
 $isok=fputs($f,$start);
@@ -28,7 +24,7 @@ $title==$title_old ?$msg='修改成功':$msg='添加成功';
 }else{
 $msg="失败";
 }
-showmsg($msg,"?title=".$title);
+echo "<script>alert('".$msg."');location.href='?title=".$title."'</script>";
 }
 
 if ($action=="del"){ 

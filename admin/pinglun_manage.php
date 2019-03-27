@@ -14,15 +14,16 @@ include("../inc/fy.php");
 checkadminisdo("zxpinglun");
 
 $action=isset($_REQUEST["action"])?$_REQUEST["action"]:'';
-$page=isset($_GET["page"])?$_GET["page"]:1;
-$shenhe=isset($_REQUEST["shenhe"])?$_REQUEST["shenhe"]:'';
-
-$keyword=isset($_REQUEST["keyword"])?$_REQUEST["keyword"]:'';
+if( isset($_GET["page"]) && $_GET["page"]!="") {$page=$_GET['page'];}else{$page=1;}
+checkid($page);
+$shenhe=isset($shenhe)?$shenhe:'';
+$keyword=isset($keyword)?$keyword:'';
 
 if ($action<>""){
 if(!empty($_POST['id'])){
     for($i=0; $i<count($_POST['id']);$i++){
     $id=$_POST['id'][$i];
+	checkid($id);
 	switch ($action){
 	case "pass";
 	$sql="select passed from zzcms_pinglun where id ='$id'";
@@ -53,19 +54,23 @@ echo "<script>location.href='?keyword=".$keyword."&page=".$page."'</script>";
 <?php
 $page_size=pagesize_ht;  //每页多少条数据
 $offset=($page-1)*$page_size;
-$sql="select * from zzcms_pinglun where id<>0 ";
+$sql="select count(*) as total from zzcms_pinglun where id<>0 ";
+$sql2='';
 if ($shenhe=="no") {  		
-$sql=$sql." and passed=0 ";
+$sql2=$sql2." and passed=0 ";
 }
-
 if ($keyword<>"") {
-	$sql=$sql. " and content like '%".$keyword."%' ";
+$sql2=$sql2. " and content like '%".$keyword."%' ";
 }
-$rs = query($sql,$conn); 
-$totlenum= num_rows($rs);  
+$rs =query($sql.$sql2); 
+$row = fetch_array($rs);
+$totlenum = $row['total'];  
 $totlepage=ceil($totlenum/$page_size);
+
+$sql="select * from zzcms_pinglun where id<>0 ";
+$sql=$sql.$sql2;
 $sql=$sql . " order by id desc limit $offset,$page_size";
-$rs = query($sql,$conn); 
+$rs = query($sql); 
 if(!$totlenum){
 echo "暂无信息";
 }else{
@@ -111,14 +116,13 @@ while($row = fetch_array($rs)){
         <label for="chkAll" style="text-decoration: underline;cursor: hand;">全选</label> 
         <input type="submit" onClick="pass(this.form)" value="【取消/审核】选中的信息"> 
         <input type="submit" onClick="del(this.form)" value="删除选中的信息"> 
-        <input name="page" type="hidden" id="page" value="<%=CurrentPage%>"></td>
+        <input name="page" type="hidden" id="page" value="<?php echo $page?>"></td>
     </tr>
   </table>
 </form>
 <div class="border center"><?php echo showpage_admin()?></div>
 <?php
 }
-
 ?>
 </body>
 </html>

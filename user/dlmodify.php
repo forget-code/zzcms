@@ -61,25 +61,17 @@ include("left.php");
 </div>
 <div class="right">
 <?php
-if (isset($_REQUEST["id"])){
-$id=$_REQUEST["id"];
-}else{
-$id=0;
-}
-if (isset($_GET["page"])){
-$page=$_GET["page"];
-}else{
-$page=1;
-}
+$page = isset($_GET['page'])?$_GET['page']:1;
+checkid($page);
+$id = isset($_GET['id'])?$_GET['id']:0;
+checkid($id,1);
 
 $sql="select * from zzcms_dl where id='$id'";
 $rs = query($sql); 
 $row = fetch_array($rs);
-if ($row["editor"]<>$username) {
+if ($id<>0 && $row["editor"]<>$username) {
 markit();
-
 showmsg('非法操作！警告：你的操作已被记录！小心封你的用户及IP！');
-exit;
 }
 ?>
 <div class="content">
@@ -96,13 +88,13 @@ exit;
             <td class="border2" ><select name="classid" class="biaodan">
                 <option value="" selected="selected"><?php echo $f_array[4]?></option>
                 <?php
-		$sqln="select * from zzcms_zsclass where parentid='A'";
+		$sqln="select * from zzcms_zsclass where parentid=0";
 		$rsn=query($sqln);
 		while($rown= fetch_array($rsn)){
-		if ($rown["classzm"]==$row["classzm"]){
-			echo "<option value='".$rown['classzm']."' selected>".$rown["classname"]."</option>";
+		if ($rown["classid"]==$row["classid"]){
+			echo "<option value='".$rown['classid']."' selected>".$rown["classname"]."</option>";
 			}else{
-			echo "<option value='".$rown['classzm']."'>".$rown["classname"]."</option>";
+			echo "<option value='".$rown['classid']."'>".$rown["classname"]."</option>";
 			}
 			
 		  }
@@ -228,7 +220,6 @@ new PCAS('province', 'city', 'xiancheng', '<?php echo $row['province']?>', '<?ph
 </div>
 </div>
 <?php
-
 unset ($f_array);
 ?>
 </div>

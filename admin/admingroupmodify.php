@@ -26,13 +26,11 @@ function CheckAll(form){
 </head>
 <body>
 <?php
-if (!isset($_GET["id"])){
-showmsg('少ID参数！') ;
-}
-$id=$_GET["id"];
-//checkid($id);
+$id = isset($_GET['id'])?$_GET['id']:0;
+checkid($id,1);
+
 $sql="Select * from zzcms_admingroup where id='$id'";
-$rs = query($sql,$conn); 
+$rs = query($sql); 
 $row= num_rows($rs);
 if (!$row){
 echo "暂无信息";

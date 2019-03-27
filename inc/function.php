@@ -1,8 +1,8 @@
 <?php
-$fpath=zzcmsroot."/inc/text/function.txt";
+define('zzcmsroot2', str_replace("\\", '/', substr(dirname(__FILE__), 0, -3)));//-3截除当前目录inc
+$fpath=zzcmsroot2."inc/text/function.txt";
 $fcontent=file_get_contents($fpath);
 $f_array_fun=explode("\n",$fcontent) ;
-
 function WriteErrMsg($ErrMsg){
 global $f_array_fun;
 	$strErr="<!DOCTYPE html PUBLIC '-//W3C//DTD XHTML 1.0 Transitional//EN' 'http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd'>";//有些文件不能设文件头
@@ -24,7 +24,7 @@ function showmsg($msg,$zc_url = 'back'){
 	$strErr=$strErr."<html xmlns='http://www.w3.org/1999/xhtml' lang='zh-CN'>" ;
 	$strErr=$strErr."<meta http-equiv='Content-Type' content='text/html; charset=utf-8'>";
 	if($zc_url && $zc_url!='back' && $zc_url!='null'){
-	$strErr=$strErr.("<script>alert('$msg');self.location=\"$zc_url\";</script>");
+	$strErr=$strErr.("<script>alert('$msg');parent.location=\"$zc_url\";</script>");
 	}elseif( $zc_url=='null'){
 	$strErr=$strErr.("<script>alert(\"$msg\")</script>");
 	}else{
@@ -48,11 +48,39 @@ return $str;
 		
 function checkid($id,$classid=0,$msg=''){
 if ($id<>''){
-	if (is_numeric($id)==false){showmsg('参数有误！相关信息不存在'.$id);}
+	if (is_numeric($id)==false){showmsg('参数 '.$id.' 有误！相关信息不存在');}
 	elseif ($id>100000000){showmsg('参数超出了数字表示范围！系统不与处理。');}//因为clng最大长度为9位
 	if ($classid==0){//查大小类ID时这里设为1
-		if ($id<1){showmsg('参数有误！相关信息不存在。\r\r提示：'.$msg);}//翻页中有用
+		if ($id<1){showmsg('参数有误！相关信息不存在。\r\r提示：'.$msg);}//翻页中有用,这个提示msg在其它地方有用
 	}
+}
+}
+
+function checkstr($str,$kind,$msg='',$back_url='back'){
+if ($str<>''){
+switch ($kind){
+case "num";
+	if (is_numeric($str)==false){showmsg($msg.'必须为数字');}
+	if ($str>100000000){showmsg($msg.'超出了数字表示范围！');}//因为clng最大长度为9位
+	//if ($str<1){showmsg($msg.'不能为0');}
+break;
+case "tel";
+	if(!preg_match("/1[3458]{1}\d{9}$/",$str) && !preg_match('/^400(\d{3,4}){2}$/',$str) && !preg_match('/^400(-\d{3,4}){2}$/',$str) && !preg_match('/^(010|02\d{1}|0[3-9]\d{2})-\d{7,9}(-\d+)?$/',$str)){
+	//分别是手机，400电话(加-和不加两种情况都可以)，和普通电话
+	showmsg('电话号码不正确！',$back_url);
+	}
+break;
+case "email";
+	if(! preg_match("/^[a-zA-Z0-9_.]+@([a-zA-Z0-9_]+.)+[a-zA-Z]{2,3}$/",$str)) {
+	showmsg("Email格式不正确",$back_url);
+	}
+break;
+case "hanzi";
+	if(!preg_match("/^[\x7f-\xff]+$/",$str)){
+	showmsg($msg."只能用中文",$back_url);
+	}
+break;	
+}
 }
 }
 
@@ -93,7 +121,7 @@ function markit(){
 function admindo(){
 $adminip=getip();
           $url="http://".$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI'];
-		  $f=zzcmsroot."/admindoes.txt";
+		  $f=zzcmsroot2."admindoes.txt";
 $fp=fopen($f,"a+");//fopen()的其它开关请参看相关函数
 $str=date('Y-m-d H:i:s')."  ".$_SESSION["admin"]."  ".$adminip."  ".$url."\r\n";
 fputs($fp,$str);
@@ -215,6 +243,23 @@ case 2;return @$match[1];break;//取出所有，返回的是一个数组
 }
 }
 
+function getimg2($img) { //从getimgincontent正则后，做二次提取
+if ($img<>''){
+//$img=strtolower($img);//转小写后，导致与内容中的不对应，无法替换为本地路径的图片
+if (strpos($img,'jpg')!==false){
+$format='jpg';
+}elseif (strpos($img,'gif')!==false){
+$format='gif';
+}elseif (strpos($img,'png')!==false){
+$format='png';
+}elseif (strpos($img,'bmp')!==false){
+$format='bmp';
+}
+$end=strpos($img,$format)+3;
+return substr($img,0,$end);
+}
+}
+
 function cutstr($tempstr,$tempwid){
 if (strlen($tempstr)/3>$tempwid){
 return mb_substr($tempstr,0,$tempwid,'utf8').".";
@@ -284,8 +329,13 @@ return siteurl.str_replace(".jpeg","_small.jpeg",str_replace(".png","_small.png"
 }
 
 function makesmallimg($img){
-$imgbig=zzcmsroot.$img;	
-$imgsmall=str_replace(siteurl,"",getsmallimg($imgbig));
+$img=substr($img,0);
+$imgbig=zzcmsroot2.$img;
+
+if(!file_exists($imgbig)){
+echo "<script>alert('封面图片不存在，没有生成缩略图')</script>";
+}else{
+	$imgsmall=str_replace(siteurl,"",getsmallimg($imgbig));
 	$sImgName =$imgsmall;
 	$sImgSize=120;
 	$data=GetImageSize($imgbig);//取得GIF、JPEG、PNG或SWF图片属性，返回数组，图形的宽度[0],图形的高度[1]，文件类型[2]
@@ -318,13 +368,13 @@ $imgsmall=str_replace(siteurl,"",getsmallimg($imgbig));
 		//if ($isok){echo "生成小图片成功:".$sImgName;}	
    	}
 }
-
+}
 function grabimg($url,$filename="") {
    if($url==""):return false;endif;
    if($filename=="") {
      $ext=strrchr($url,".");
      if($ext!=".gif" && $ext!=".jpg" && $ext!=".png"&& $ext!=".bmp"):return false;endif;
-	 $filename_dir=zzcmsroot.'uploadfiles/'.date("Y-m"); //上传文件地址 采用绝对地址方便upload.php文件放在站内的任何位置 
+	 $filename_dir=zzcmsroot2.'uploadfiles/'.date("Y-m"); //上传文件地址 采用绝对地址方便upload.php文件放在站内的任何位置 
 	 if (!file_exists($filename_dir)) {
 	 @mkdir($filename_dir,0777,true);
 	 }
@@ -380,9 +430,9 @@ $numbers=isset($cs[1])?$cs[1]:10;checkid($numbers);
 $column=isset($cs[2])?$cs[2]:5;checkid($column);
 	
 if ($channel=='zs' || $channel=='dl'){
-$fpath=zzcmsroot."cache/zskeyword.txt";
+$fpath=zzcmsroot2."cache/zskeyword.txt";
 }elseif ($channel=='zx'){
-$fpath=zzcmsroot."cache/zxkeyword.txt";
+$fpath=zzcmsroot2."cache/zxkeyword.txt";
 }
 
 if (cache_update_time!=0 && file_exists($fpath)!==false && time()-filemtime($fpath)<3600*24*cache_update_time){
@@ -397,7 +447,7 @@ if (cache_update_time!=0 && file_exists($fpath)!==false && time()-filemtime($fpa
 	$row=num_rows($rs);
 	if ($row){
 	$str="";
-	$liwidth=100/$column-10;
+	$liwidth=100/$column-3;
 		while ($row=fetch_array($rs)){
 		if ($row["keyword"]==$keyword) {
 		$str=$str . "<li style='font-weight:bold;width:".$liwidth."%;display:inline-block'>";
@@ -413,9 +463,9 @@ if (cache_update_time!=0 && file_exists($fpath)!==false && time()-filemtime($fpa
 	return $str;
 		
 	if ($channel=='zs'||$channel=='dl'){
-	$fpath=zzcmsroot."cache/zskeyword.txt";
+	$fpath=zzcmsroot2."cache/zskeyword.txt";
 	}elseif ($channel=='zx'){
-	$fpath=zzcmsroot."cache/zxkeyword.txt";
+	$fpath=zzcmsroot2."cache/zxkeyword.txt";
 	}
 	if (!file_exists("../cache")) {mkdir("../cache",0777,true);}
 	$fp=fopen($fpath,"w+");//fopen()的其它开关请参看相关函数
@@ -442,7 +492,7 @@ $imgwidth=isset($cs[3])?$cs[3]:0;
 $imgheight=isset($cs[4])?$cs[4]:0;
 $titlelong=isset($cs[5])?$cs[5]:0;
 $bianhao=isset($cs[6])?$cs[6]:'';
-$fp=zzcmsroot."cache/".$siteskin."/adv_".pinyin($b)."_".pinyin($s).".htm";//广告中文类别名转换成拼音字母来给缓存文件命名
+$fp=zzcmsroot2."cache/".$siteskin."/adv_".pinyin($b)."_".pinyin($s).".htm";//广告中文类别名转换成拼音字母来给缓存文件命名
 if (cache_update_time!=0 && file_exists($fp) && filesize($fp)>10 && time()-filemtime($fp)<3600*24*cache_update_time ) {
 //按管理员设定的时间更新,//utf-8有文件头，空文件大小为3字节
 	$fso = fopen($fp,'r');
@@ -501,8 +551,8 @@ while ($row=fetch_array($rs)){
 	$str=$str."</ul>";
 }
 	if (cache_update_time!=0){
-	$fp=zzcmsroot."cache/".$siteskin."/adv_".pinyin($b)."_".pinyin($s).".htm";
-	if (!file_exists(zzcmsroot."cache/".$siteskin)) {mkdir(zzcmsroot."cache/".$siteskin,0777,true);}
+	$fp=zzcmsroot2."cache/".$siteskin."/adv_".pinyin($b)."_".pinyin($s).".htm";
+	if (!file_exists(zzcmsroot2."cache/".$siteskin)) {mkdir(zzcmsroot2."cache/".$siteskin,0777,true);}
 	$f=fopen($fp,"w+");//fopen()的其它开关请参看相关函数
 	fputs($f,$str);
 	fclose($f);
@@ -519,17 +569,21 @@ $rs=query($sql);
 $row=num_rows($rs);
 if ($row){
 echo $f_array_fun[15];
-//
 unset ($f_array_fun);
 exit;
 }
 }
 
-function stripfxg($string) {//去反斜杠 
+function stripfxg($string,$htmlspecialchars_decode=false,$nl2br=false) {//去反斜杠 
 $string=stripslashes($string);//去反斜杠,不开get_magic_quotes_gpc 的情况下，在stopsqlin中都加上了，这里要去了
+if ($htmlspecialchars_decode==true){
 $string=htmlspecialchars_decode($string);//转html实体符号
+}
+if ($nl2br==true){
+$string=nl2br($string);
+}
 return $string; 
-} 
+}
 
 function strbetween($str,$start,$end,$startadd=0) { 
 $a= strpos($str,$start)+strlen($start)+$startadd;//在起始标识$start所在位后追加数字，如取src="后的字符时，双引号无法直接表示，所以加这个startadd可以解决这种问题
@@ -665,9 +719,6 @@ function passed($table,$classid=0){
 global $username;
 	if(check_user_power('passed')=='yes'){
 	query("update `$table` set passed=1 where editor='".$username."'");
-		if ( $table=="zzcms_dl" && $classid !=''){
-		query("update `zzcms_dl_".$classid."` set passed=1 where editor='".$username."'");
-		}
 	}
 }
 function show2url($editor){
@@ -750,9 +801,9 @@ curl_close($ch);
  return $loc; 
  }
 
-function sitecount($cs){ 
+function showsitecount($cs){ 
 global $siteskin,$f_array_fun;
-$fpath=zzcmsroot."/cache/".$siteskin."/sitecount.txt";
+$fpath=zzcmsroot2."cache/".$siteskin."/sitecount.txt";
 if (cache_update_time!=0 && file_exists($fpath)!==false && time()-filemtime($fpath)<3600*24*cache_update_time){
 	return file_get_contents($fpath);
 }else{	
@@ -839,7 +890,7 @@ $totlenum = $row['total'];
 $str=$str."<li>报价<span>".$totlenum."</span></li>";
 }
 if (cache_update_time!=0){
-	$fpath=zzcmsroot."cache/".$siteskin."/sitecount.txt";
+	$fpath=zzcmsroot2."cache/".$siteskin."/sitecount.txt";
 	$fp=fopen($fpath,"w+");//fopen()的其它开关请参看相关函数
 	fputs($fp,stripfxg($str));//写入文件
 	fclose($fp);
@@ -853,7 +904,7 @@ unset ($f_array_fun);
 function showcontact($channel,$cpid,$startdate,$comane,$kind,$editor,$userid,$groupid,$somane,$sex,$phone,$qq,$email,$mobile,$fox){
 global $f_array_fun;
 checkid($groupid);
-checkid($kind);
+checkid($kind,1);//类别有为0的情况，所以第二个参数要设一下，设为1
 $contact="<div id='zscontact'>" ;
 $contact=$contact . "<ul>";
 $contact=$contact . "<li>";

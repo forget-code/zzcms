@@ -8,21 +8,16 @@ include("admin.php");
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <?php
 checkadminisdo("adminmanage");
-if (isset($_REQUEST["action"])) {
-$action=trim($_REQUEST["action"]);
-}else{
-$action="";
-}
+$action = isset($_POST['action'])?$_POST['action']:'';
 $FoundErr=0;
 $ErrMsg="";
-$admins=trim($_REQUEST["admins"]);
 if ($action=="modify"){
 	$sql="select * from zzcms_admin where admin='" . $admins . "'";
 	$rs = query($sql);
 	$row= fetch_array($rs);
-	$oldpassword=md5(trim($_POST["oldpassword"]));
-	$password=md5(trim($_POST["password"]));
-	$pwdconfirm=trim($_POST["pwdconfirm"]);
+	$oldpassword=md5($_POST["oldpassword"]);
+	$password=md5($_POST["password"]);
+	$pwdconfirm=$_POST["pwdconfirm"];
 	if ($oldpassword!=$row["pass"]) {
 	$FoundErr=1;
 	$ErrMsg=$ErrMsg . "<li>你输入的旧密码不对，没有权限修改！</li>";
@@ -63,36 +58,35 @@ if (document.form1.password.value !="" && document.form1.pwdconfirm.value !=""){
 <div class="admintitle">修改管理员密码</div>
 <FORM name="form1" action="?" method="post" onSubmit="return CheckForm()">     
   <table width="100%" border="0" align="center" cellpadding="5" cellspacing="0">
-    <TR> 
-      <TD width="494" align="right" class="border">管理员：</TD>
-      <TD width="921" class="border"><?php echo $admins?>
-        <input name="admins" type="hidden" value="<?php echo $admins?>"></TD>
-    </TR>
-    <TR> 
-      <TD width="494" align="right" class="border">旧密码：</TD>
-      <TD class="border"> <INPUT  type="password" maxLength="16" size="30" name="oldpassword">
-      </TD>
-    </TR>
-    <TR> 
-      <TD width="494" align="right" class="border">新密码：</TD>
-      <TD class="border"> <INPUT  type="password" maxLength="16" size="30" name="password">
-      </TD>
-    </TR>
-    <TR> 
-      <TD width="494" align="right" class="border">确认新密码：</TD>
-      <TD class="border"> <INPUT name="pwdconfirm"   type="password" id="pwdconfirm" size="30" maxLength="16">
-        <input name="action" type="hidden" id="action" value="modify"> </TD>
-    </TR>
-    <TR> 
-      <TD align="center" class="border">&nbsp; </TD>
-      <TD class="border"> <input name="Submit"   type="submit" id="Submit" value="保存"> 
-      </TD>
-    </TR>
-  </TABLE>
+    <tr> 
+      <td width="494" align="right" class="border">管理员：</td>
+      <td class="border"><?php echo $admins?>
+      <input name="admins" type="hidden" value="<?php echo $admins?>"></td>
+    </tr>
+    <tr> 
+      <td width="494" align="right" class="border">旧密码：</td>
+      <td class="border"> <INPUT  type="password" maxLength="16" size="30" name="oldpassword">
+      </td>
+    </tr>
+    <tr> 
+      <td width="494" align="right" class="border">新密码：</td>
+      <td class="border"> <INPUT  type="password" maxLength="16" size="30" name="password">
+      </td>
+    </tr>
+    <tr> 
+      <td width="494" align="right" class="border">确认新密码：</td>
+      <td class="border"> <INPUT name="pwdconfirm"   type="password" id="pwdconfirm" size="30" maxLength="16">
+        <input name="action" type="hidden" id="action" value="modify"> </td>
+    </tr>
+    <tr> 
+      <td align="center" class="border">&nbsp; </td>
+      <td class="border"> <input name="Submit"   type="submit" id="Submit" value="保存"> 
+      </td>
+    </tr>
+  </table>
 </form>
 </body>
 </html>
 <?php
 }
-
 ?>

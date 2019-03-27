@@ -19,19 +19,15 @@ include '../3/ucenter_api/uc_client/client.php';//集成ucenter
 <?php
 include("../inc/top2.php");
 echo sitetop();
+
+if (openuserreg=="No"){
+showmsg (openuserregwhy); 
+}
+
 checkyzm($_POST["yzm"]);
-$usersf=trim($_POST["usersf"]);
-$kind=trim($_POST["kind"]);
-$username=trim($_POST["username"]);
-$password=trim($_POST["password"]);
-$comane=trim($_POST["comane"]);
-$somane=trim($_POST["somane"]);
-$phone=trim($_POST["phone"]);
-$email=trim($_POST["email"]);
 $daohang="网站首页,招商信息,品牌信息,公司简介,资质证书,联系方式,在线留言,招聘信息";
 $founderr=0;
 if ($username!='' && $password!=''){
-
 if(! preg_match("/^[a-zA-Z0-9_]{4,15}$/",$username)){//ereg()PHP5.3以后的版本不再支持
 $founderr=1;
 $msg= "<li>用户名只能为字母和数字，字符介于4到15个！</li>";
@@ -56,24 +52,83 @@ $totlenum = $row['total'];
 	}	
 
 if ($somane!=''&& $phone!=''&& $email!=''){
-	if(!preg_match("/^[\x7f-\xff]+$/",$somane)){
-	$founderr=1;
-	$msg='<li>姓名只能用中文</li>';
-	}
-
-	if(!preg_match("/1[3458]{1}\d{9}$/",$phone) && !preg_match('/^400(\d{3,4}){2}$/',$phone) && !preg_match('/^400(-\d{3,4}){2}$/',$phone) && !preg_match('/^(010|02\d{1}|0[3-9]\d{2})-\d{7,9}(-\d+)?$/',$phone)){//分别是手机，400电话(加-和不加两种情况都可以)，和普通电话
-	$founderr=1;
-	$msg='<li>电话号码不正确！</li>';
-	}
-
-	if(! preg_match("/^[a-zA-Z0-9_.]+@([a-zA-Z0-9_]+.)+[a-zA-Z]{2,3}$/",$email)) {
-	$founderr=1;
-	$msg= "<li>Email格式不正确！</li>";
-	}
+	checkstr($somane,'hanzi','姓名');
+	checkstr($phone,'tel');
+	checkstr($email,'email');
 }else{
 $founderr=1;
 $msg= "<li>联系人、电话、E-mail为必填项！</li>";
 }	
+
+if ($comane==''){
+	$founderr=1;
+	$msg= "请输入公司名";
+}else{
+	$pass=0;
+    if (wordsincomane<>""){
+	   $word=explode("|",wordsincomane); //转换成数组,判断是不是相关行业       
+	   for ($i=0;$i<count($word);$i++){ //count取得数组中的项目数  
+			if(strpos($comane,$word[$i])!==false && strpos(substr($comane,0,4),$word[$i])==false){//汉字占两字符
+			$pass=1;
+			break;   
+        	}
+      	}
+    }else{
+	   $pass=1;//当wordsincomane=""时说明没有加任何限制,这时所有行业都可以注册,所以把PASS也设为true
+    }	
+	  
+    if ($pass==0){
+	  $founderr=1;
+	  //如果还不能阻止群发软件注册，就不提示了，直接终止程序。
+      $msg="不相关的企业不接受注册！请正确填写企业名称";  	  	
+	}
+	
+	if (lastwordsincomane<>""){
+	$istotlename=0;
+	$word=explode("|",lastwordsincomane);//判断是不是全称       
+	for ($i=0;$i<count($word);$i++){    
+             if ((strpos(substr($comane,-4),$word[$i])==0||strpos(substr($comane,-4),$word[$i])==2) && count(explode($word[$i],$comane))==2){  //关键词必须出现在最后面，且只能出现一次。 
+             $istotlename=1;   
+             break;    
+             }
+	}    
+    }else{
+	     $istotlename=1;//当lastwordsincomane=""时说明没有加任何限制,所以把istotlename也设为true
+     } 	
+	  
+	 if ($istotlename==0){
+	 $founderr=1;
+     $msg="公司名称有误，请输入贵公司的全称" ;
+	 }
+	 
+	 if (nowordsincomane<>""){
+	 $word=explode("|",nowordsincomane);
+	 for ($i=0;$i<count($word);$i++){ 
+	 	if (strpos($comane,$word[$i])>0){
+		$founderr=1;
+		$msg="公司名称有误，含有非法字符" ;
+		break ; 
+		}
+	 }
+	 }
+}	
+	if (allowrepeatreg=="No" && $usersf!='个人'){
+	$sql="select comane from zzcms_user where comane='".$comane."' ";
+	$rs = query($sql); 
+	$row= num_rows($rs);//返回记录数
+	if($row){
+	 	$founderr=1;
+	 	$msg="此名称已存在，系统不允许重复注册用户！";
+	 }
+		
+	$sql="select comane from zzcms_usernoreg where comane='".$comane."'";
+	$rs = query($sql); 
+	$row= num_rows($rs);//返回记录数
+	if($row){
+	 		$founderr=1;
+			$msg="此名称已存在，系统不允许重复注册用户！";	
+	}
+	}			
 	
 if ($founderr==1){
 WriteErrMsg($msg);

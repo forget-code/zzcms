@@ -1,26 +1,15 @@
 <?php
 //echo $_SERVER['REQUEST_URI'];
-if (isset($_REQUEST["editor"])<>"") {
-$editor=$_REQUEST["editor"];
-}else{
-$editor='';
-}
-
-if (isset($_REQUEST["id"])) {
-$id=$_REQUEST["id"];
-checkid($id);
-}else{
-$id=0;
-}
-
+$editor=isset($_REQUEST['editor'])?$_REQUEST['editor']:'';
 $editor=substr($_SERVER['HTTP_HOST'],0,strpos($_SERVER['HTTP_HOST'],'.'));//从二级域名中获取用户名
-$sql="select * from zzcms_userdomain where domain='".$_SERVER['HTTP_HOST']."' and passed=1 and del=0";//从顶级级域名中获取用户名
-$rs=query($sql);
+$rs=query("select * from zzcms_userdomain where domain='".$_SERVER['HTTP_HOST']."' and passed=1 and del=0");//从顶级级域名中获取用户名
 $row=num_rows($rs);
 if (!$row){
 	$row=fetch_array($rs);
 	$editor=$row["username"];
 }
+$id=isset($_REQUEST['id'])?$_REQUEST['id']:0;
+checkid($id,1);
 
 $channel=strtolower($_SERVER['REQUEST_URI']);
 //echo $channel;
@@ -69,7 +58,7 @@ $skin_mobile=$row["skin_mobile"];
 $tongji=$row["tongji"];
 $baidu_map=$row["baidu_map"];
 }else{
-$skin="blue1";
+$skin="tongyong";
 $tongji='';
 $baidu_map='http://j.map.baidu.com/dYCQy';
 }

@@ -73,7 +73,7 @@ include("checkaddinfo.php");
                     <legend><?php echo $f_array[4]?></legend>
                     <?php
         $sql = "select * from zzcms_jobclass where parentid='0' order by xuhao asc";
-		$rs = query($sql,$conn); 
+		$rs = query($sql); 
 		$n=0;
 		while($row= fetch_array($rs)){
 		
@@ -92,7 +92,7 @@ include("checkaddinfo.php");
                   <td> 
                     <?php
 $sql="select * from zzcms_jobclass where parentid=0 order by xuhao asc";
-$rs = query($sql,$conn); 
+$rs = query($sql); 
 $n=0;
 while($row= fetch_array($rs)){
 $n ++;
@@ -104,7 +104,7 @@ echo "<div id='E_con$n' style='display:none;'>";
 echo "<fieldset class='fieldsetstyle'><legend>".$f_array[5]."</legend>";
 
 $sqln="select * from zzcms_jobclass where parentid='$row[classid]' order by xuhao asc";
-$rsn = query($sqln,$conn); 
+$rsn =query($sqln,$conn); 
 $nn=0;
 while($rown= fetch_array($rsn)){
 $nn ++;

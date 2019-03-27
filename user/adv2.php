@@ -16,7 +16,6 @@ $f_array=explode("\n",$fcontent) ;
 <body>
 <?php
 if (qiangad=="No"){
-
 echo $f_array[1];
 exit;
 }
@@ -35,15 +34,10 @@ $rs=query("select usersf from zzcms_user where username='".$_COOKIE["UserName"].
 $row=fetch_array($rs);
 if ($row["usersf"]=="个人"){
 echo $f_array[2];
-
 exit;
 }
-if (isset($_REQUEST["action"])){
-$action=$_REQUEST["action"];
-}else{
-$action="";
-}
 
+$action = isset($_REQUEST['action'])?$_REQUEST['action']:'';
 function setAdv($ispay){
 global $f_array;
 $rs=query("select * from zzcms_main where editor='".$_COOKIE["UserName"]."'");
@@ -201,5 +195,4 @@ $n=$n+1;
 <?php
 }
 unset ($f_array);
-
 ?>

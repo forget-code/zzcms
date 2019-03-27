@@ -8,44 +8,34 @@ include("admin.php");
 <link href="style.css" rel="stylesheet" type="text/css">
 <?php
 checkadminisdo("pp");
-$cpid=trim($_POST["cpid"]);
-$bigclass=trim($_POST["bigclassid"]);
-$smallclass=trim($_POST["smallclassid"]);
-if ($smallclass=="") {
-$smallclass=0;
-}
-$cpname=trim($_POST["cpname"]);
 
-$sm=trim($_POST["sm"]);
-$img=trim($_POST["img"]);
+$page = isset($_POST['page'])?$_POST['page']:1;//只从修改页传来的值
+checkid($page);
+$cpid = isset($_POST['cpid'])?$_POST['cpid']:0;
+checkid($cpid,1);
+$passed = isset($_POST['passed'])?$_POST['passed']:0;
+checkid($passed,1);
 
-$sendtime=$_POST["sendtime"];
-$editor=trim($_POST["editor"]);
-$oldeditor=trim($_POST["oldeditor"]);
+$bigclassid = isset($_POST['bigclassid'])?$_POST['bigclassid']:0;
+$smallclassid = isset($_POST['smallclassid'])?$_POST['smallclassid']:0;
+checkid($bigclassid,1);checkid($smallclassid,1);
 
+query("update zzcms_pp set bigclassid='$bigclassid',smallclassid='$smallclassid',ppname='$cpname',sm='$sm',img='$img',sendtime='$sendtime',passed='$passed' where id='$cpid'");
 
-if(!empty($_POST['passed'])){
-$passed=$_POST['passed'][0];
-}else{
-$passed=0;
-}
-
-query("update zzcms_pp set bigclasszm='$bigclass',smallclasszm='$smallclass',ppname='$cpname',sm='$sm',img='$img',sendtime='$sendtime' where id='$cpid'");
 if ($editor<>$oldeditor) {
 $rs=query("select comane,id from zzcms_user where username='".$editor."'");
 $row = num_rows($rs);
-if ($row){
-$row = fetch_array($rs);
-$userid=$row["id"];
-$comane=$row["comane"];
-}else{
-$userid=0;
-$comane="";
+	if ($row){
+	$row = fetch_array($rs);
+	$userid=$row["id"];
+	$comane=$row["comane"];
+	}else{
+	$userid=0;
+	$comane="";
+	}
+query("update zzcms_pp set editor='$editor',userid='$userid',comane='$comane',passed='$passed' where id='$cpid'");
 }
-query("update zzcms_pp set editor='$editor',userid='$userid',comane='$comane' where id='$cpid'");
-}
-query("update zzcms_pp set passed='$passed' where id='$cpid'");
-echo "<script>location.href='pp_manage.php?keyword=".$_POST["editor"]."&page=".$_REQUEST["page"]."'</script>";
+echo "<script>location.href='pp_manage.php?page=".$page."'</script>";
 ?>
 </body>
 </html>

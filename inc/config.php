@@ -1,12 +1,13 @@
 <?php
-define('sqldb','test100');//数据库名
+define('sqldb','cp');//数据库名
 define('sqluser','root');//用户名
 define('sqlpwd','root');//密码
 define('sqlhost','localhost');//连接服务器,本机填(local)，外地填IP地址
-define('zzcmsver','Powered By <a target=_blank style=font-weight:bold href=http://www.zzcms.net><font color=#FF6600 face=Arial>ZZ</font><font color=#025BAD face=Arial>CMS8.1</font></a>');//版本
+define('sqlport','3306');//端口
+define('zzcmsver','Powered By <a target=_blank style=font-weight:bold href=http://www.zzcms.net><font color=#FF6600 face=Arial>ZZ</font><font color=#025BAD face=Arial>CMS8.2</font></a>');//版本
 define('sitename','zzcms') ;//网站名称
-define('siteurl','http://localhost:8080') ;//网站地址
-define('logourl','http://localhost:8080/image/logo.png') ;//Logo地址
+define('siteurl','http://cp.com') ;//网站地址
+define('logourl','http://cp.com/image/logo.png') ;//Logo地址
 define('icp','豫icp备07007271号') ;//icp备案号
 define('webmasteremail','357856668@qq.com') ;//站长信箱
 define('kftel','0371-86137281') ;//联系电话
@@ -21,7 +22,7 @@ define('openuserreg','Yes') ;//注册用户状态
 define('openuserregwhy','网站暂时关闭注册功能，明天开放！') ;//关闭注册用户原因
 define('isaddinfo','No') ;//是否允许未审核的用户发布信息
 define('pagesize_ht','50');//管理员后台每页显示信息数
-define('pagesize_qt','10');//前台每页显示信息数
+define('pagesize_qt','20');//前台每页显示信息数
 define('whendlsave','No') ;//当有代理或求购留言是否打开在线发邮件功能
 define('whenuserreg','No') ;//当新用户注册时是否打开在线发邮件功能
 define('whenmodifypassword','Yes') ;//当用户修改密码时是否开发在线发邮件功能
@@ -36,7 +37,7 @@ define('isshowcontact','No') ;//是否公开代理商联系方式
 define('liuyanysnum','0'); //延时时间
 define('channel','zh#wangkan#zx#pp#special#job#baojia#ask') ;//功能模块开关
 define('usergr_power','dl#wangkan#zx') ;//个人用户权限
-define('shuxing_name','包装规格|零售价格|批准文号|成份') ;//产品更多属性设置
+define('shuxing_name','') ;//产品更多属性设置
 define('wordsincomane','') ;//公司名称中必填行业性关键字
 define('lastwordsincomane','') ;//公司名称中必填公司类型性关键字
 define('nowordsincomane','a|b|c|d|e|f|g|h|i|g|k|l|m|n|o|p|q|r|s|t|u|v|w|x|w|z|A|B|C|D|E|F|G|H|I|G|K|L|M|N|O|P|Q|R|S|T|U|V|W|X|Y|Z|1|2|3|4|5|6|7|8|9|0') ;//公司名称中禁用关键字

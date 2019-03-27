@@ -13,16 +13,16 @@ $f = fopen($fp,'r');
 $strout = fread($f,filesize($fp));
 fclose($f);
 
-if (isset($_REQUEST['bigclass'])){
-$bigclass=$_REQUEST['bigclass'];
-}else{
-$bigclass='A';//空参数web.config规则不支持，这里用了0
-}
+$bigclass = isset($_REQUEST['bigclass'])?$_REQUEST['bigclass']:"A";//空参数web.config规则不支持，这里用了0
+$smallclass = isset($_REQUEST['smallclass'])?$_REQUEST['smallclass']:"A";
 
-if (isset($_REQUEST['smallclass'])){
-$smallclass=$_REQUEST['smallclass'];
-}else{
-$smallclass='A';
+if ($bigclass<>"A"){
+$sql="select * from zzcms_zsclass where classzm='".$bigclass."'";
+$rs=query($sql);
+$row=fetch_array($rs);
+if ($row){
+$bigclassid=$row["classid"];
+}
 }
 
 $pagetitle=$comane."—".channelzs."信息列表";
@@ -43,17 +43,18 @@ setcookie("page_size_zs",$page_size,time()+3600*24*360);
 }
 
 if( isset($_GET["page"]) && $_GET["page"]!="") {$page=$_GET['page'];}else{$page=1;}
+checkid($page,0);
 $list=strbetween($strout,"{loop}","{/loop}");
 
 $sql="select count(*) as total from zzcms_main where editor='".$editor."' and passed=1 ";
 $sql2='';
 if ($bigclass!='A'){
-$sql2=$sql2." and bigclasszm='".$bigclass."' ";
+$sql2=$sql2." and bigclassid='".$bigclassid."' ";
 }
 if ($smallclass<>'A'){
-$sql2=$sql2." and smallclasszm like '%".$smallclass."%' ";
+$sql2=$sql2." and smallclassid in (".$smallclassid.") ";
 }
-$rs = query($sql.$sql2);
+$rs =query($sql.$sql2);
 $row = fetch_array($rs);
 $totlenum = $row['total'];
 $offset=($page-1)*$page_size;//$page_size在上面被设为COOKIESS
@@ -80,51 +81,6 @@ $link="/sell/zsshow-".$row['id'].".htm";
 $link="zsshow.php?cpid=".$row['id'] ;
 }
 
-$rsn=query("select classname from zzcms_zsclass where classzm='".$row["bigclasszm"]."'");
-		$rown=num_rows($rsn);
-		if ($rown){
-		$rown=fetch_array($rsn);
-		$bigclassname=$rown["classname"];
-		}else{
-		$bigclassname="大类已删除";
-		}
-		
-$slb='';
-if(strpos($row["smallclasszm"],',')!==false){ 		
-$rsn=query("select classzm,classname from zzcms_zsclass where parentid='".$row["bigclasszm"]."' and classzm in(".$row['smallclasszm'].")");
-		$rown=num_rows($rsn);
-		if ($rown){
-		$slb=" - ";
-		while ($rown= fetch_array($rsn)){
-			if (whtml=="Yes"){
-			$slb=$slb." [ <a href='zs-".$id."-".$row["bigclasszm"]."-".$rown["classzm"].".htm'>".$rown["classname"]."</a> ] ";
-			}else{
-			$slb=$slb." [ <a href='/zt/zs.php?id=".$id."&bigclass=".$row["bigclasszm"]."&smallclass=".$rown["classzm"]."'>".$rown["classname"]."</a> ] ";
-			}
-		}
-		}
-
-}else{		
-$rsn=query("select classname,classzm from zzcms_zsclass where classzm='".$row["smallclasszm"]."'");
-		$rown=num_rows($rsn);
-		if ($rown){
-		$rown=fetch_array($rsn);
-			if (whtml=="Yes"){
-			$slb=" - <a href='zs-".$id."-".$row["bigclasszm"]."-".$rown["classzm"].".htm'>".$rown["classname"]."</a>";
-			}else{
-			$slb=" - <a href='/zt/zs.php?id=".$id."&bigclass=".$row["bigclasszm"]."&smallclass=".$rown["classzm"]."'>".$rown["classname"]."</a>";
-			}
-		}		
-}
-		
-if (whtml=='Yes'){
-$blb="<a href='zs-".$id."-".$row["bigclasszm"].".htm'>".$bigclassname."</a>";
-}else{
-$blb="<a href='/zt/zs.php?id=".$id."&bigclass=".$row["bigclasszm"]."'>".$bigclassname."</a>";
-}
-
-$lb=$blb.$slb;
-
 $list2 = $list2. str_replace("{#link}" ,$link,$list) ;
 $list2 =str_replace("{#img}",$row['img'],$list2) ;
 $list2 =str_replace("{#proname}",cutstr($row["proname"],8),$list2) ;
@@ -139,8 +95,7 @@ if ($prouse_long!=''){
 $list2 =str_replace("{#prouse:".$prouse_long."}",cutstr($row['prouse'],$prouse_long),$list2) ;
 }else{
 $list2 =str_replace("{#prouse}",cutstr($row['prouse'],150),$list2) ;
-}
-$list2 =str_replace("{#lb}",$lb,$list2) ;				
+}			
 
 $i=$i+1;
 }

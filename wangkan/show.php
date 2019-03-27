@@ -1,8 +1,8 @@
 <?php
 include("../inc/conn.php");
 
-if (isset($_REQUEST["id"])){
-$id=trim($_REQUEST["id"]);
+if (isset($_GET["id"])){
+$id=$_GET["id"];
 checkid($id);
 }else{
 $id=0;
@@ -17,14 +17,14 @@ preg_match_all('/<img[^>]*src\s*=\s*([\'"]?)([^\'" >]*)\1/isu', $str, $src);
 	}
 }
 //在一条记录中上传多张图片建网刊
-$sql="select id,title,img,content from zzcms_wangkan where id='$id' and passed=1"; 
+$sql="select id,title,img,content from zzcms_wangkan where id='$id'"; 
 $rs = query($sql); 
 $row= fetch_array($rs);
 if (!$row){
 showmsg('不存在相关信息！');
 }else{
 query("update zzcms_wangkan set hit=hit+1 where id='$id'");
-$content=$row["content"];
+$content=stripfxg($row["content"],true);
 $title=$row["title"];
 $str2=getImgSrcFromStr($row["content"],false);
 $large_img_dir=strbetween($str2,"/uploadfiles/","/");//获取大图片所在目录，这里只设一张图，和上传图是同一个目录同一个图片

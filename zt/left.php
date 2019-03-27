@@ -40,85 +40,80 @@ $siteleft=$siteleft. "</ul>";
 
 $siteleft=$siteleft. "</div>";
 //以下显示招商分类
-if (isset($_REQUEST['bigclass'])){
-$bigclass=$_REQUEST['bigclass'];
-}else{
-$bigclass="";
-}
+$bigclass=isset($_REQUEST['bigclass'])?$_REQUEST['bigclass']:'';
+$smallclass=isset($_REQUEST['smallclass'])?$_REQUEST['smallclass']:'';
 
-if (isset($_REQUEST['smallclass'])){
-$smallclass=$_REQUEST['smallclass'];
-}else{
-$smallclass="";
-}
+$bigclassnames="大类已删除";
+$bigclasszms="###";
+
 $siteleft=$siteleft. "<div class='titleleft'>分类".channelzs."</div>";
-
 $siteleft=$siteleft. "<div class='contentleft'>";
-$rsleft=query("select bigclasszm from zzcms_main where editor='".$editor."'and bigclasszm<>'' group by bigclasszm");
+$rsleft=query("select bigclassid from zzcms_main where editor='".$editor."'and bigclassid<>0 group by bigclassid");
 $rowleft=num_rows($rsleft);
 if ($rowleft){
 	while ($rowleft=fetch_array($rsleft)){
-		$rsb=query("select classname from zzcms_zsclass where classzm='".$rowleft["bigclasszm"]."'");
+		$rsb=query("select classname,classzm from zzcms_zsclass where classid='".$rowleft["bigclassid"]."'");
 		$rowb=num_rows($rsb);
 		if ($rowb){
 		$rowb=fetch_array($rsb);
 		$bigclassnames=cutstr($rowb["classname"],5);
-		}else{
-		$bigclassnames="大类已删除";
+		$bigclasszms=$rowb["classzm"];
 		}
 		
-		$rsb=query("select count(id) as total from zzcms_main where editor='".$editor."'and bigclasszm='".$rowleft["bigclasszm"]."'");
-		//$numb=mysql_result($rsb,0);//最新版PHP不支持
+		$rsb=query("select count(id) as total from zzcms_main where editor='".$editor."'and bigclassid='".$rowleft["bigclassid"]."'");
+		//$numb=mysql_result($rsb,0);//PHP7不支持
 		$rowb = fetch_array($rsb);
 		$numb = $rowb['total'];
 		
 		$siteleft=$siteleft."<li style='font-weight:bold'>";
-		if ($rowleft["bigclasszm"]==$bigclass){
+		if ($bigclasszms==$bigclass){
 			if (whtml=="Yes"){
-			$siteleft=$siteleft."<a href='/sell/zs-".$id."-".$rowleft["bigclasszm"].".htm' style='color:red'>".$bigclassnames."</a>";
+			$siteleft=$siteleft."<a href='/sell/zs-".$id."-".$bigclasszms.".htm' style='color:red'>".$bigclassnames."</a>";
 			}else{
-			$siteleft=$siteleft."<a href='/zt/zs.php?id=".$id."&bigclass=".$rowleft["bigclasszm"]."' style='color:red'>".$bigclassnames."</a>";
+			$siteleft=$siteleft."<a href='/zt/zs.php?id=".$id."&bigclass=".$bigclasszms."' style='color:red'>".$bigclassnames."</a>";
 			}
 		}else{
 			if (whtml=="Yes"){
-			$siteleft=$siteleft."<a href='/sell/zs-".$id."-".$rowleft["bigclasszm"].".htm'>".$bigclassnames."</a>";
+			$siteleft=$siteleft."<a href='/sell/zs-".$id."-".$bigclasszms.".htm'>".$bigclassnames."</a>";
 			}else{	
-			$siteleft=$siteleft."<a href='/zt/zs.php?id=".$id."&bigclass=".$rowleft["bigclasszm"]."'>".$bigclassnames ."</a>";
+			$siteleft=$siteleft."<a href='/zt/zs.php?id=".$id."&bigclass=".$bigclasszms."'>".$bigclassnames ."</a>";
 			}
 		}
 		$siteleft=$siteleft."&nbsp;(<span style='color:#ff6600'>".$numb."</span>)";
 		$siteleft=$siteleft."</li>";
 		
 		if (zsclass_isradio=='Yes'){
-		$rsn=query("select smallclasszm from zzcms_main where editor='".$editor."'and bigclasszm='".$rowleft["bigclasszm"]."' group by smallclasszm");
+		$rsn=query("select smallclassid from zzcms_main where editor='".$editor."'and bigclassid='".$rowleft["bigclassid"]."' group by smallclassid");
 		$rown=num_rows($rsn);
 		if ($rown){
 			while ($rown=fetch_array($rsn)){
-				$rss=query("select classname from zzcms_zsclass where classzm='".$rown["smallclasszm"]."'");
+				$rss=query("select classname,classzm from zzcms_zsclass where classid='".$rown["smallclassid"]."'");
 				$rows=num_rows($rss);
 				if ($rows){
 				$rows=fetch_array($rss);
 				$smallclassnames=$rows["classname"];
+				$smallclasszms=$rows["classzm"];
 				}else{
 				$smallclassnames="小类已删除";
+				$smallclasszms="###";
 				}
 				
-				$rss=query("select count(id) as total from zzcms_main where editor='".$editor."'and smallclasszm='".$rown["smallclasszm"]."'");
-				//$nums=mysql_result($rss,0);
+				$rss=query("select count(id) as total from zzcms_main where editor='".$editor."'and smallclassid='".$rown["smallclassid"]."'");
 				$rows = fetch_array($rss);
 				$nums = $rows['total'];
+				
 				$siteleft=$siteleft."<li style='list-style:none;'>";
-				if ($rown["smallclasszm"]==$smallclass){
+				if ($smallclasszms==$smallclass){
 					if (whtml=="Yes"){
-					$siteleft=$siteleft."<a href='/sell/zs-".$id."-".$rowleft["bigclasszm"]."-".$rown["smallclasszm"].".htm' style='color:red'>".$smallclassnames."</a>";
+					$siteleft=$siteleft."<a href='/sell/zs-".$id."-".$bigclasszms."-".$smallclasszms.".htm' style='color:red'>".$smallclassnames."</a>";
 					}else{
-					$siteleft=$siteleft."<a href='/zt/zs.php?id=".$id."&bigclass=".$rowleft["bigclasszm"]."&smallclass=".$rown["smallclasszm"]."' style='color:red'>".$smallclassnames."</a>";
+					$siteleft=$siteleft."<a href='/zt/zs.php?id=".$id."&bigclass=".$bigclasszms."&smallclass=".$smallclasszms."' style='color:red'>".$smallclassnames."</a>";
 					}
 				}else{
 					if (whtml=="Yes"){
-					$siteleft=$siteleft.  "<a href='/sell/zs-".$id."-".$rowleft["bigclasszm"]."-".$rown["smallclasszm"].".htm'>".$smallclassnames."</a>";
+					$siteleft=$siteleft.  "<a href='/sell/zs-".$id."-".$bigclasszms."-".$smallclasszms.".htm'>".$smallclassnames."</a>";
 					}else{	
-					$siteleft=$siteleft. "<a href='/zt/zs.php?id=".$id."&bigclass=".$rowleft["bigclasszm"]."&smallclass=".$rown["smallclasszm"]."'>".$smallclassnames ."</a>";
+					$siteleft=$siteleft. "<a href='/zt/zs.php?id=".$id."&bigclass=".$bigclasszms."&smallclass=".$smallclasszms."'>".$smallclassnames ."</a>";
 					}
 				}
 				$siteleft=$siteleft."&nbsp;(<span style='color:#ff6600'>".$nums."</span>)";
@@ -133,5 +128,4 @@ if ($rowleft){
 $siteleft=$siteleft. "暂无信息";
 }
 $siteleft=$siteleft. "</div>";
-
 ?>			

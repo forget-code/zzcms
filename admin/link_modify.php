@@ -6,18 +6,12 @@ include("admin.php");
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <link href="style.css" rel="stylesheet" type="text/css">
 <?php
-if (isset($_SESSION["linkclassid"])){
-$slinkclassid=$_SESSION["linkclassid"];
-}else{
-$slinkclassid="";
-}
-if (isset($_GET["page"])){
-$page=$_GET["page"];
-}else{
-$page=1;
-}
+$slinkclassid = isset($_SESSION['linkclassid'])?$_SESSION['linkclassid']:'';
+$page = isset($_GET['page'])?$_GET['page']:1;
+checkid($page);
+$id = isset($_GET['id'])?$_GET['id']:0;
+checkid($id,1);
 ?>
-
 <script language = "JavaScript">
 function CheckForm(){	  
 if (document.myform.sitename.value==""){
@@ -42,12 +36,6 @@ if (document.myform.sitename.value==""){
 <body>
 <div class="admintitle">修改友情链接信息</div>
 <?php
-$id=$_REQUEST["id"];
-if ($id<>"") {
-checkid($id);
-}else{
-$id=0;
-}
 $sql="select * from zzcms_link where id='$id'";
 $rs=query($sql);
 $row=fetch_array($rs);
@@ -58,7 +46,7 @@ $row=fetch_array($rs);
       <td align="right" class="border">所属类别：</td>
       <td class="border"> 
         <?php
-		$sqln = "select * from zzcms_linkclass order by xuhao asc";
+		$sqln = "select classid,classname from zzcms_linkclass order by xuhao asc";
 	    $rsn=query($sqln);
         $rown=num_rows($rsn);
 		if (!$rown){
@@ -66,12 +54,12 @@ $row=fetch_array($rs);
 		}else{
 		?>
 		<select name="bigclassid" id="bigclassid">
-                <option value=0 selected="selected">请选择类别</option>
-                <?php
+                <option value="0" selected="selected">请选择类别</option>
+        <?php
 		while($rown= fetch_array($rsn)){
-			?>
-                <option value="<?php echo $rown["bigclassid"]?>" <?php if ($rown["bigclassid"]==$row["bigclassid"]) { echo "selected";}?>><?php echo $rown["bigclassname"]?></option>
-                <?php
+		?>
+        <option value="<?php echo $rown["classid"]?>" <?php if ($rown["classid"]==$row["bigclassid"]) { echo "selected";}?>><?php echo $rown["classname"]?></option>
+          <?php
 		  }
 		  ?>
               </select>
@@ -95,7 +83,7 @@ $row=fetch_array($rs);
     </tr>
     <tr> 
       <td width="100" align="right" class="border">描述：</td>
-      <td class="border"> <textarea name="content" cols="50" rows="3" id="content"><?php echo $row["content"]?></textarea> 
+      <td class="border"> <textarea name="content" cols="50" rows="3" id="content"><?php echo stripfxg($row["content"])?></textarea> 
         <input name="id" type="hidden" id="id" value="<?php echo $row["id"]?>"> <input name="page" type="hidden" id="page" value="<?php echo $page?>"></td>
     </tr>
     <tr> 

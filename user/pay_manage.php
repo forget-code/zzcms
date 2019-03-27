@@ -31,6 +31,7 @@ include ("left.php");
 <?php
 if( isset($_GET["page"]) && $_GET["page"]!="") {
     $page=$_GET['page'];
+	checkid($page,0);
 }else{
     $page=1;
 }
@@ -38,12 +39,12 @@ if( isset($_GET["page"]) && $_GET["page"]!="") {
 $page_size=pagesize_ht;  //每页多少条数据
 $offset=($page-1)*$page_size;
 $sql="select * from zzcms_pay where username='".$username."'";
-$rs = query($sql,$conn); 
+$rs = query($sql); 
 $totlenum= num_rows($rs);  
 $totlepage=ceil($totlenum/$page_size);  
 
 $sql=$sql . " order by id desc limit $offset,$page_size";
-$rs = query($sql,$conn); 
+$rs = query($sql); 
 $row= num_rows($rs);//返回记录数
 if(!$row){
 echo $f_array[1];

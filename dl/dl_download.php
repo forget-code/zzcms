@@ -31,7 +31,7 @@ $founderr=1;
 $ErrMsg=$ErrMsg."<li>您所在的用户组没有下载".channeldl."信息的权限！<br><input  type=button value=升级成VIP会员 onclick=\"location.href='/one/vipuser.php'\"/></li>";
 }
 //判断查看代理条数
-$rslookedlsnumber=query( "select looked_dls_number_oneday from zzcms_usergroup where groupid=(select groupid from zzcms_user where username='".$username."')");
+$rslookedlsnumber=query("select looked_dls_number_oneday from zzcms_usergroup where groupid=(select groupid from zzcms_user where username='".$username."')");
 $rown=fetch_array($rslookedlsnumber);
 $lookedlsnumber=$rown["looked_dls_number_oneday"];
 $rslookedlsnumbers=query("select looked_dls_number_oneday from zzcms_looked_dls_number_oneday where username='".$username."' and  timestampdiff(day,sendtime,now()) < 3600*24 ");
@@ -71,7 +71,7 @@ $sql="select * from zzcms_dl where passed=1 and id in (". $id .") order by id de
 $sql="select * from zzcms_dl where passed=1  and id='$id'";
 }	
 
-$rs=query($sql,$conn);
+$rs=query($sql);
 $table="<table width=100% cellspacing=0 cellpadding=0 border=1>";
 $table=$table."<tr>";
 $table=$table."<td align=center  bgcolor=#dddddd><b>ID</b></td>";

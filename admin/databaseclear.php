@@ -64,22 +64,7 @@ if (!isset($_POST["action"])) {
               <input name="table[]" type="checkbox" id="zzcms_looked_dls_number_oneday" value="zzcms_looked_dls_number_oneday">
              <label for="zzcms_looked_dls_number_oneday"> zzcms_looked_dls_number_oneday(记录用户每天查看 <?php echo channeldl?>数的表)</label></td>
           </tr>
-          <tr>
-            <td class="border">
-			<?php 
-$str='';		
-$sql="select classname,classid,classzm from zzcms_zsclass where parentid='A' order by xuhao";
-$rs=query($sql);
-$row=num_rows($rs);
-if ($row){
-while ($row=fetch_array($rs)){
-$str=$str."<input name='table[]' type='checkbox' value='zzcms_dl_".$row["classzm"]."' id='zzcms_dl_".$row["classzm"]."'>";
-$str=$str."<label for='zzcms_dl_".$row["classzm"]."'>zzcms_dl_".$row["classzm"]."(".channeldl.$row["classname"]."类分表)</label>";	
-}
-echo $str;
-}
-			?>			</td>
-          </tr>
+         
           <tr>
             <td class="border"><input name="table[]" type="checkbox" id="zzcms_zx" value="zzcms_zx">
                 <label for="zzcms_zx">zzcms_zx(资讯表) </label>
@@ -166,7 +151,7 @@ echo $str;
           <tr> 
             <td class="border"> <input name="chkAll" type="checkbox" id="chkAll" onClick="CheckAll(this.form)" value="checkbox">
               <label for="chkAll">全选</label>
-              <input name="Submit24" type="submit" class="buttons" value="初始化数据库"> 
+              <input name="Submit24" type="submit" class="buttons" value="初始化"> 
               <input name="action" type="hidden" id="action" value="clear"> </td>
           </tr>
         </table>

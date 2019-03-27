@@ -17,15 +17,8 @@ if (str_is_inarr(usergr_power,'zt')=="no" && $usersf=='个人'){
 echo $f_array[1];
 exit;
 }
-
-if (isset($_REQUEST["action"])){
-$action=$_REQUEST["action"];
-}else{
-$action="";
-}
+$action = isset($_GET['action'])?$_GET['action']:"";
 if($action=="modify"){
-$skin=$_POST["skin"];
-
 query("update zzcms_usersetting set skin_mobile='$skin' where username='".$username."'");			
 echo $f_array[2];
 }
@@ -47,11 +40,11 @@ include("left.php");
 <div class="admintitle"><?php echo $f_array[0]?></div>
 <form name="myform" method="post" action="?action=modify"> 
 <table width="100%" border="0" cellpadding="5" cellspacing="1" class="bgcolor">
-                  <tr>        
-                    <?php 
+<tr>        
+<?php 
 $rs=query("select skin_mobile from zzcms_usersetting where username='".$username."'");
 $row=fetch_array($rs);					
-$fp=zzcmsroot."skin";	
+$fp=zzcmsroot."skin/mobile";	
 if (file_exists($fp)==false){
 WriteErrMsg($fp.'模板目录不存在');
 exit;
@@ -83,7 +76,7 @@ while(($file = readdir($dir))!=false){
 				}	
 closedir($dir);
 unset ($f_array);
-				?>
+?>
         </table>  
 </form>
 </div>

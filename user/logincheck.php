@@ -36,17 +36,17 @@ $CookieDate=0;
 }
 
 $sql="select * from zzcms_user where username='".$username."' and  password='".$password."' ";
-$rs = query($sql,$conn); 
+$rs = query($sql); 
 $row= num_rows($rs);
 if(!$row){
 	$sql="select * from zzcms_usernoreg where username='".$username."' ";
-	$rs = query($sql,$conn); 
+	$rs = query($sql); 
 	//$row= num_rows($rs);
 	$row= fetch_array($rs);
 		if(!$row){
 		//记录登录次数
 		$sqln="select * from zzcms_login_times where ip='$ip'";
-		$rsn = query($sqln); 
+		$rsn =query($sqln); 
 		$rown= num_rows($rsn);
 			if ($rown){
 				$rown= fetch_array($rsn);	
@@ -59,7 +59,7 @@ if(!$row){
 			}
 		
 		$sqln="select * from zzcms_login_times where ip='$ip'";
-		$rsn = query($sqln); 
+		$rsn =query($sqln); 
 		$rown= fetch_array($rsn);
 		$count=	$rown['count'];
 		$trytimes=trytimes-$count;
@@ -72,7 +72,7 @@ if(!$row){
 		}
 }else{
 	$sql=$sql."and lockuser=0 ";
-	$rs = query($sql,$conn); 
+	$rs = query($sql); 
 	//$row= num_rows($rs);
 	$row= fetch_array($rs);
 		if(!$row){

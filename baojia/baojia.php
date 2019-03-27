@@ -7,26 +7,17 @@ include("subbaojia.php");
 include("../label.php");
 if( isset($_GET["page"]) && $_GET["page"]!="") {
     $page=$_GET['page'];
-	checkid($page);
+	checkid($page,0);
 }else{
     $page=1;
 }
-if (isset($_GET["b"])){
-$b=$_GET["b"];
-}else{
-$b="";
-}
-
+$b = isset($_GET['b'])?$_GET['b']:"";
+$province = isset($_GET['province'])?$_GET['province']:"";
 
 $fp="../template/".$siteskin."/baojia.htm";
 $f = fopen($fp,'r');
 $strout = fread($f,filesize($fp));
 fclose($f);
-if (isset($_GET["province"])){
-$province=$_GET["province"];
-}else{
-$province="";
-}
 
 $page_size=strbetween($strout,"{#pagesize=","}");
 if ($page_size<>''){
@@ -37,11 +28,12 @@ $page_size=pagesize_qt;
 
 $bigclassname="";
 if ($b<>""){
-$sql="select * from zzcms_zsclass where classzm='".$b."'";
+$sql="select classid,classname from zzcms_zsclass where classzm='".$b."'";
 $rs=query($sql);
 $row=fetch_array($rs);
 if ($row){
 $bigclassname=$row["classname"];
+$bigclassid=$row["classid"];
 }
 }
 
@@ -56,10 +48,10 @@ $sql2=$sql2." and province ='".$province."' ";
 }
 
 if ($b<>""){
-$sql2=$sql2." and classzm ='".$b."' ";
+$sql2=$sql2." and classid ='".$bigclassid."' ";
 }
 
-$rs = query($sql.$sql2); 
+$rs =query($sql.$sql2); 
 $row = fetch_array($rs);
 $totlenum = $row['total'];
 $offset=($page-1)*$page_size;

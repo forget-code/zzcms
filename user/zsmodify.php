@@ -95,21 +95,15 @@ include("left.php");
 </div>
 <div class="right">
 <?php
-if (isset($_GET["page"])){
-$page=$_GET["page"];
-}else{
-$page=1;
-}
-if (isset($_REQUEST["id"])){
-$id=$_REQUEST["id"];
-}else{
-$id=0;
-}
+$page = isset($_GET['page'])?$_GET['page']:1;
+checkid($page);
+$id = isset($_GET['id'])?$_GET['id']:0;
+checkid($id);
 
 $sql="select * from zzcms_main where id='$id'";
 $rs = query($sql); 
 $row = fetch_array($rs);
-if ($row["editor"]<>$username) {
+if ($id!=0 && $row["editor"]<>$username) {
 markit();
 showmsg('非法操作！警告：你的操作已被记录！小心封你的用户及IP！');
 }
@@ -134,7 +128,7 @@ $(document).ready(function(){
         <table width="100%" border="0" cellpadding="3" cellspacing="1">
           <tr> 
             <td align="right" class="border" ><?php echo $f_array[5]?></td>
-            <td class="border" > <input name="name" type="text" id="name" class="biaodan" value="<?php echo $row["proname"]?>" size="60" maxlength="45" > 
+            <td class="border" > <input name="proname" type="text" id="proname" class="biaodan" value="<?php echo $row["proname"]?>" size="60" maxlength="45" > 
              <span id="quote"></span> <span id="span_szm">  <input name="szm" type="hidden" value="<?php echo $row["szm"]?>"  />
              </span> <br>
                <?php echo $f_array[7]?></td>
@@ -148,15 +142,15 @@ $(document).ready(function(){
                   <td> <fieldset class="fieldsetstyle">
                     <legend><?php echo $f_array[9]?></legend>
                     <?php
-        $sqlB = "select * from zzcms_zsclass where parentid='A' order by xuhao asc";
-		$rsB = query($sqlB,$conn); 
+        $sqlB = "select classid,classname from zzcms_zsclass where parentid=0 order by xuhao asc";
+		$rsB =query($sqlB); 
 		$n=0;
 		while($rowB= fetch_array($rsB)){
 		$n ++;
-		if ($row['bigclasszm']==$rowB['classzm']){
-		echo "<input name='bigclassid' type='radio' id='E$n'  onclick='javascript:doClick_E(this);uncheckall()' value='".$rowB['classzm']."' checked/><label for='E$n'>".$rowB['classname']."</label>";
+		if ($row['bigclassid']==$rowB['classid']){
+		echo "<input name='bigclassid' type='radio' id='E$n'  onclick='javascript:doClick_E(this);uncheckall()' value='".$rowB['classid']."' checked/><label for='E$n'>".$rowB['classname']."</label>";
 		}else{
-		echo "<input name='bigclassid' type='radio' id='E$n'  onclick='javascript:doClick_E(this);uncheckall()' value='".$rowB['classzm']."' /><label for='E$n'>".$rowB['classname']."</label>";
+		echo "<input name='bigclassid' type='radio' id='E$n'  onclick='javascript:doClick_E(this);uncheckall()' value='".$rowB['classid']."' /><label for='E$n'>".$rowB['classname']."</label>";
 		}
 		}
 			?>
@@ -165,33 +159,32 @@ $(document).ready(function(){
                 <tr> 
                   <td> 
                     <?php
-$sqlB="select * from zzcms_zsclass where parentid='A' order by xuhao asc";
-$rsB = query($sqlB,$conn); 
+$sqlB="select classid,classname from zzcms_zsclass where parentid=0 order by xuhao asc";
+$rsB =query($sqlB); 
 $n=0;
 while($rowB= fetch_array($rsB)){
 $n ++;
-if ($row["bigclasszm"]==$rowB["classzm"]) {  
+if ($row["bigclassid"]==$rowB["classid"]) {  
 echo "<div id='E_con$n' style='display:block;'>";
 }else{
 echo "<div id='E_con$n' style='display:none;'>";
 }
 echo "<fieldset class='fieldsetstyle'><legend>".$f_array[10]."</legend>";
-$sqlS="select * from zzcms_zsclass where parentid='".$rowB['classzm']."' order by xuhao asc";
-$rsS = query($sqlS,$conn); 
+$sqlS="select classid,classname from zzcms_zsclass where parentid='".$rowB['classid']."' order by xuhao asc";
+$rsS =query($sqlS); 
 $nn=0;
 while($rowS= fetch_array($rsS)){
 if (zsclass_isradio=='Yes'){
-	if ($row['smallclasszm']==$rowS['classzm']){
-	echo "<input name='smallclassid[]' id='radio$nn$n' type='radio' value='".$rowS[classzm]."' checked/>";
+	if ($row['smallclassid']==$rowS['classid']){
+	echo "<input name='smallclassid[]' id='radio$nn$n' type='radio' value='".$rowS[classid]."' checked/>";
 	}else{
-	echo "<input name='smallclassid[]' id='radio$nn$n' type='radio' value='".$rowS[classzm]."' />";
+	echo "<input name='smallclassid[]' id='radio$nn$n' type='radio' value='".$rowS[classid]."' />";
 	}
 }else{
-	//if ($row['smallclasszm']==$rowS['classzm']){
-	if (strpos($row['smallclasszm'],$rowS['classzm'])!==false && $row['bigclasszm']==$rowB['classzm']){//与招商产品中大类名相同的大类下的小类才会被勾选
-	echo "<input name='smallclassid[]' id='radio$nn$n' type='checkbox' value='".$rowS['classzm']."' onclick='javascript:ValidSelect(this)' checked/>";
+	if (strpos($row['smallclassids'],$rowS['classid'])!==false && $row['bigclassid']==$rowB['classid']){//与招商产品中大类名相同的大类下的小类才会被勾选
+	echo "<input name='smallclassid[]' id='radio$nn$n' type='checkbox' value='".$rowS['classid']."' onclick='javascript:ValidSelect(this)' checked/>";
 	}else{
-	echo "<input name='smallclassid[]' id='radio$nn$n' type='checkbox' value='".$rowS['classzm']."' onclick='javascript:ValidSelect(this)'/>";
+	echo "<input name='smallclassid[]' id='radio$nn$n' type='checkbox' value='".$rowS['classid']."' onclick='javascript:ValidSelect(this)'/>";
 	}
 }
 echo "<label for='radio$nn$n'>".$rowS['classname']."</label>";
@@ -206,7 +199,7 @@ echo "</div>";
               </table></td>
           </tr>
 		    <?php 
-		$rsn = query("select * from zzcms_zsclass_shuxing order by xuhao asc"); 
+		$rsn = query("select bigclassid,bigclassname from zzcms_zsclass_shuxing order by xuhao asc"); 
 		$rown= num_rows($rsn);
 		if ($rown){
 		  ?>
@@ -231,7 +224,7 @@ echo "</div>";
 		  ?>
           <tr> 
             <td align="right" class="border2" ><?php echo $f_array[12]?><font color="#FF0000">&nbsp;</font></td>
-            <td class="border2" > <textarea name="gnzz" cols="60" rows="4" class="biaodan" style="height:auto" id="gnzz"><?php echo $row["prouse"]?></textarea>            </td>
+            <td class="border2" > <textarea name="gnzz" cols="60" rows="4" class="biaodan" style="height:auto" id="gnzz"><?php echo stripfxg($row["prouse"])?></textarea>            </td>
           </tr>
 		   <?php
 	if (shuxing_name!=''){
@@ -250,7 +243,7 @@ echo "</div>";
           <tr> 
             <td align="right" class="border" ><?php echo $f_array[15]?></td>
             <td class="border" > 
-			<textarea name="sm" id="sm" class="biaodan" ><?php echo $row["sm"] ?></textarea> 
+			<textarea name="sm" id="sm" class="biaodan" ><?php echo stripfxg($row["sm"])?></textarea> 
              <script type="text/javascript" src="/3/ckeditor/ckeditor.js"></script>
 			  <script type="text/javascript">CKEDITOR.replace('sm');</script>			</td>
           </tr>
@@ -393,12 +386,12 @@ if (check_user_power("uploadflv")=="yes"){
           </tr>
           <tr> 
             <td align="right" valign="top" class="border2" ><?php echo $f_array[27]?></td>
-            <td class="border2" > <textarea name="zc" cols="60" rows="4" id="zc" class="biaodan" style="height:auto" ><?php echo $row["zc"] ?></textarea> 
+            <td class="border2" > <textarea name="zc" cols="60" rows="4" id="zc" class="biaodan" style="height:auto" ><?php echo stripfxg($row["zc"]) ?></textarea> 
               <div>  <?php echo $f_array[28]?> </div></td>
           </tr>
           <tr> 
             <td align="right" valign="top" class="border" ><?php echo str_replace("{#channeldl}",channeldl,$f_array[29])?></td>
-            <td class="border" > <textarea name="yq" cols="60" rows="4" id="yq" class="biaodan" style="height:auto"><?php echo $row["yq"] ?></textarea> 
+            <td class="border" > <textarea name="yq" cols="60" rows="4" id="yq" class="biaodan" style="height:auto"><?php echo stripfxg($row["yq"]) ?></textarea> 
               <div> <?php echo $f_array[30]?> </div></td>
           </tr>
           <tr> 
@@ -473,9 +466,9 @@ if (check_user_power("zsshow_template")=="yes"){
 		  
           <tr>
             <td align="center" class="border2" >&nbsp;</td>
-            <td class="border2" ><input name="ypid" type="hidden" id="ypid2" value="<?php echo $row["id"] ?>" />
-              <input name="action" type="hidden" id="action2" value="modify" />
-              <input name="page" type="hidden" id="action" value="<?php echo $page ?>" />
+            <td class="border2" ><input name="cpid" type="hidden"  value="<?php echo $row["id"] ?>" />
+              <input name="action" type="hidden"  value="modify" />
+              <input name="page" type="hidden" value="<?php echo $page ?>" />
               <input name="Submit" type="submit" class="buttons" value="<?php echo $f_array[43]?>" /></td>
           </tr>
         </table>

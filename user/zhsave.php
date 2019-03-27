@@ -17,25 +17,16 @@ if (str_is_inarr(usergr_power,'zh')=="no" && $usersf=='个人'){
 echo $f_array[0];
 exit;
 }
+$page = isset($_POST['page'])?$_POST['page']:1;//返回列表页用
+checkid($page);
+$id = isset($_POST['id'])?$_POST['id']:0;
+checkid($id);
 
-if (isset($_POST["page"])){//返回列表页用
-$page=$_POST["page"];
-}else{
-$page=1;
-}
-$bigclassid=trim($_POST["bigclassid"]);
-$title=trim($_POST["title"]);
-$address=trim($_POST["address"]);
-$timestart=trim($_POST["timestart"]);
-$timeend=trim($_POST["timeend"]);
-$content=str_replace("'","",stripfxg(trim($_POST["content"])));
-$editor=trim($_POST["editor"]);
 if ($_POST["action"]=="add" && $editor<>''){//$editor<>''防垃圾信息
 query("Insert into zzcms_zh(bigclassid,title,address,timestart,timeend,content,editor,sendtime) values('$bigclassid','$title','$address','$timestart','$timeend','$content','$editor','".date('Y-m-d H:i:s')."')") ;  
 $id=insert_id();
 		
 }elseif ($_POST["action"]=="modify"){
-$id=$_POST["id"];
 query("update zzcms_zh set bigclassid='$bigclassid',title='$title',address='$address',timestart='$timestart',timeend='$timeend',content='$content',
 editor='$editor',sendtime='".date('Y-m-d H:i:s')."' where id='$id'");
 }		
@@ -92,7 +83,9 @@ include("left.php");
       </table></td>
   </tr>
 </table>
-
+<?php
+unset ($f_array);
+?>
 </div>
 </div>
 </div>

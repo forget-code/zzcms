@@ -26,12 +26,10 @@ if (document.myform.bigclassid.value==""){
 <div class="admintitle">修改品牌信息</div>
 <?php
 checkadminisdo("pp");
-$id=$_REQUEST["id"];
-if ($id<>"") {
-checkid($id);
-}else{
-$id=0;
-}
+$page = isset($_GET['page'])?$_GET['page']:1;
+checkid($page);
+$id = isset($_GET['id'])?$_GET['id']:0;
+checkid($id,1);
 $sqlzs="select * from zzcms_pp where id='$id'";
 $rszs=query($sqlzs);
 $rowzs=fetch_array($rszs);
@@ -46,7 +44,7 @@ $rowzs=fetch_array($rszs);
       <td width="18%" align="right" class="border"> 类别 <font color="#FF0000">*</font></td>
       <td class="border"> 
         <?php
-$sql = "select * from zzcms_zsclass where parentid<>'A' order by xuhao asc";
+$sql = "select classid,parentid,classname from zzcms_zsclass where parentid<>0 order by xuhao asc";
 $rs=query($sql);
 ?>
         <script language = "JavaScript" type="text/JavaScript">
@@ -56,15 +54,14 @@ subcat = new Array();
         $count = 0;
         while($row = fetch_array($rs)){
         ?>
-subcat[<?php echo $count?>] = new Array("<?php echo trim($row["classname"])?>","<?php echo trim($row["parentid"])?>","<?php echo trim($row["classzm"])?>");
+subcat[<?php echo $count?>] = new Array("<?php echo trim($row["classname"])?>","<?php echo trim($row["parentid"])?>","<?php echo trim($row["classid"])?>");
         <?php
         $count = $count + 1;
        }
         ?>
 onecount=<?php echo $count ?>;
 
-function changelocation(locationid)
-    {
+function changelocation(locationid){
     document.myform.smallclassid.length = 1; 
     var locationid=locationid;
     var i;
@@ -76,24 +73,24 @@ function changelocation(locationid)
             }        
         }
     }</script> <select name="bigclassid" onChange="changelocation(document.myform.bigclassid.options[document.myform.bigclassid.selectedIndex].value)" size="1">
-          <option value="" selected="selected">请选择大类别</option>
+          <option value="0">请选择大类别</option>
           <?php
-	$sql = "select * from zzcms_zsclass where  parentid='A' order by xuhao asc";
+	$sql = "select classid,classname from zzcms_zsclass where  parentid=0 order by xuhao asc";
     $rs=query($sql);
 	while($row = fetch_array($rs)){
 	?>
-          <option value="<?php echo trim($row["classzm"])?>" <?php if ($row["classzm"]==$rowzs["bigclasszm"]) { echo "selected";}?>><?php echo trim($row["classname"])?></option>
+          <option value="<?php echo trim($row["classid"])?>" <?php if ($row["classid"]==$rowzs["bigclassid"]) { echo "selected";}?>><?php echo trim($row["classname"])?></option>
           <?php
 				}
 				?>
         </select> <select name="smallclassid">
-          <option value="">不指定小类</option>
+          <option value="0">不指定小类</option>
           <?php
-$sql="select * from zzcms_zsclass where parentid='" .$rowzs["bigclasszm"]."' order by xuhao asc";
+$sql="select classid,classname from zzcms_zsclass where parentid='" .$rowzs["bigclassid"]."' order by xuhao asc";
 $rs=query($sql);
 while($row = fetch_array($rs)){
 ?>
-          <option value="<?php echo $row["classzm"]?>" <?php if ($row["classzm"]==$rowzs["smallclasszm"]) { echo "selected";}?>><?php echo $row["classname"]?></option>
+          <option value="<?php echo $row["classid"]?>" <?php if ($row["classid"]==$rowzs["smallclassid"]) { echo "selected";}?>><?php echo $row["classname"]?></option>
           <?php 
 }
 ?>
@@ -128,7 +125,7 @@ while($row = fetch_array($rs)){
     </tr>
     <tr> 
       <td align="right" class="border">审核：</td>
-      <td class="border"><input name="passed[]" type="checkbox" id="passed[]" value="1"  <?php if ($rowzs["passed"]==1) { echo "checked";}?>>
+      <td class="border"><input name="passed" type="checkbox" id="passed" value="1"  <?php if ($rowzs["passed"]==1) { echo "checked";}?>>
         （选中为通过审核） </td>
     </tr>
     
@@ -136,7 +133,7 @@ while($row = fetch_array($rs)){
       <td align="center" class="border">&nbsp;</td>
       <td class="border"><input name="cpid" type="hidden" id="cpid" value="<?php echo $rowzs["id"]?>"> 
         <input name="sendtime" type="hidden" id="sendtime" value="<?php echo $rowzs["sendtime"]?>"> 
-        <input name="page" type="hidden" id="page" value="<?php echo $_GET["page"]?>"> 
+        <input name="page" type="hidden" id="page" value="<?php echo $page?>"> 
         <input type="submit" name="Submit" value="修 改"></td>
     </tr>
   </table>

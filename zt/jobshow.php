@@ -1,11 +1,7 @@
 <?php
 include("../inc/conn.php");
-if(isset($_REQUEST['cpid'])){
-$cpid=$_REQUEST['cpid'];
-checkid($cpid);
-}else{
-$cpid=0;
-}
+$cpid=isset($_GET['cpid'])?$_GET['cpid']:0;
+checkid($cpid,1);
 
 $rs=query("select * from zzcms_job where id='$cpid'");
 $row=num_rows($rs);
@@ -20,7 +16,7 @@ $province=$row['province'];
 $city=$row['city'];
 $sendtime=$row["sendtime"];
 $hit=$row["hit"];
-$sm=$row["sm"];
+$sm=stripfxg($row["sm"],false,true);
 
 include("top.php");
 include("bottom.php");
@@ -46,7 +42,7 @@ $strout=str_replace("{#province}",$province,$strout) ;
 $strout=str_replace("{#city}",$city,$strout) ;
 $strout=str_replace("{#sendtime}",$sendtime,$strout) ;
 $strout=str_replace("{#email}",$email,$strout) ;
-$strout=str_replace("{#sm}",nl2br($sm),$strout) ;
+$strout=str_replace("{#sm}",$sm,$strout) ;
 
 $strout=str_replace("{#siteskin}",siteskin,$strout) ;
 $strout=str_replace("{#sitename}",sitename,$strout) ;

@@ -12,17 +12,21 @@ include("../inc/fy.php");
 <body>
 <?php
 checkadminisdo("guestbook");
-
 $action=isset($_REQUEST["action"])?$_REQUEST["action"]:'';
-$page=isset($_GET["page"])?$_GET["page"]:1;
+if( isset($_REQUEST["page"]) && $_REQUEST["page"]!="") {
+    $page=$_REQUEST['page'];
+	checkid($page);
+}else{
+    $page=1;
+}
 $shenhe=isset($_REQUEST["shenhe"])?$_REQUEST["shenhe"]:'';
-
 $keyword=isset($_REQUEST["keyword"])?$_REQUEST["keyword"]:'';
 
 if ($action=="pass"){
 if(!empty($_POST['id'])){
     for($i=0; $i<count($_POST['id']);$i++){
     $id=$_POST['id'][$i];
+	checkid($id);
 	$sql="select passed from zzcms_guestbook where id ='$id'";
 	$rs = query($sql); 
 	$row = fetch_array($rs);
@@ -48,20 +52,23 @@ echo "<script>location.href='?keyword=".$keyword."&page=".$page."'</script>";
    <?php
 $page_size=pagesize_ht;  //每页多少条数据
 $offset=($page-1)*$page_size;
-$sql="select * from zzcms_guestbook where id<>0 ";
+$sql="select count(*) as total from zzcms_guestbook where id<>0 ";
+$sql2='';
 if ($shenhe=="no") {  		
-$sql=$sql." and passed=0 ";
+$sql2=$sql2." and passed=0 ";
 }
-
 if ($keyword<>"") {
-	$sql=$sql. " and saver like '%".$keyword."%'";
+	$sql2=$sql2. " and saver like '%".$keyword."%'";
 }
-$rs = query($sql,$conn); 
-$totlenum= num_rows($rs);  
+$rs =query($sql.$sql2); 
+$row = fetch_array($rs);
+$totlenum = $row['total']; 
 $totlepage=ceil($totlenum/$page_size);
 
+$sql="select * from zzcms_guestbook where id<>0 ";
+$sql=$sql.$sql2;
 $sql=$sql . " order by id desc limit $offset,$page_size";
-$rs = query($sql,$conn); 
+$rs = query($sql); 
 if(!$totlenum){
 echo "暂无信息";
 }else{
@@ -122,7 +129,6 @@ while($row = fetch_array($rs)){
 <div class="border center"><?php echo showpage_admin()?></div>
 <?php
 }
-
 ?>
 </body>
 </html>

@@ -14,23 +14,11 @@ $f_array=explode("\n",$fcontent) ;
 <title><?php echo $f_array[0]?></title>
 <?php
 //接收通过此页跳转页的代码
-$gotopage="";
-$canshu="";
-$b="";
-$s="";
-if (isset($_GET["gotopage"])){
-$gotopage=$_GET["gotopage"];
+$gotopage = isset($_GET['gotopage'])?$_GET['gotopage']:'';
 $gotopage=substr($gotopage,0,strpos($gotopage,".php")+4);
-}
-if (isset($_GET["canshu"])){
-$canshu=$_GET["canshu"];
-}
-if (isset($_GET["b"])){
-$b=$_GET["b"];
-}
-if (isset($_GET["s"])){
-$s=$_GET["s"];
-}
+$canshu = isset($_GET['canshu'])?$_GET['canshu']:'';
+$b = isset($_GET['b'])?$_GET['b']:0;
+$s = isset($_GET['s'])?$_GET['s']:0;
 ?>
 <form action="<?php echo $gotopage;?>" method='post' name='gotopage' target='_self' >
 <input type='hidden' name='canshu' value='<?php echo $canshu;?>' />

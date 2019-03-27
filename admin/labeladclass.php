@@ -7,26 +7,20 @@ include("admin.php");
 <link href="style.css" rel="stylesheet" type="text/css">
 <title></title>
 <?php
-if (isset($_REQUEST['action'])){
-$action=$_REQUEST['action'];
-}else{
-$action="";
-}
-
+$action = isset($_REQUEST['action'])?$_REQUEST['action']:"";
+$classname = isset($_REQUEST['classname'])?$_REQUEST['classname']:"";
 if ($action=="add") {
-checkadminisdo("label");//可查看不可修改
+checkadminisdo("label");
 $title=nostr(trim($_POST["title"]));
-$title_old=trim($_POST["title_old"]);
-$bigclassid=trim($_POST["bigclassid"]);
-$numbers=trim($_POST["numbers"]);
-$rows=trim($_POST["rows"]);
-$start=stripfxg($_POST["start"]);
-$mids=stripfxg($_POST["mids"]);
-$ends=stripfxg($_POST["ends"]);
+checkstr($numbers,'num','调用记录数');
+checkstr($column,'num','列数');
+$start=stripfxg($_POST["start"],true);
+$mids=stripfxg($_POST["mids"],true);
+$ends=stripfxg($_POST["ends"],true);
 
 $f="../template/".siteskin."/label/adclass/".$title.".txt";
 $fp=fopen($f,"w+");//fopen()的其它开关请参看相关函数
-$str=$title . "|||".$bigclassid . "|||"  . $numbers . "|||" . $rows . "|||" . $start . "|||" . $mids . "|||" . $ends;
+$str=$title . "|||".$bigclassid . "|||"  . $numbers . "|||" . $column . "|||" . $start . "|||" . $mids . "|||" . $ends;
 fputs($fp,$str);
 fclose($fp);
 $title==$title_old ?$msg='修改成功':$msg='添加成功';
@@ -35,7 +29,7 @@ echo "<script>alert('".$msg."');location.href='?labelname=".$title.".txt'</scrip
 
 if ($action=="del") {
 checkadminisdo("label");//可查看不可修改
-$f="../template/".siteskin."/label/adclass/".nostr(trim($_POST["title"])).".txt";
+$f="../template/".siteskin."/label/adclass/".nostr($_POST["title"]).".txt";
 	if (file_exists($f)){
 	unlink($f);
 	}else{
@@ -57,22 +51,7 @@ if(document.myform.title.value.search(re)==-1)  {
     alert("标签名称只能用字母，数字，_ 。且长度小于20个字符！");
 	document.myform.title.focus();
 	return false;
-  }      
-//定义正则表达式部分
-var strP=/^\d+$/;
-if(!strP.test(document.myform.numbers.value)) 
-{
-alert("只能填数字！"); 
-document.myform.numbers.focus(); 
-return false; 
-} 
-
-if(!strP.test(document.myform.rows.value)) 
-{
-alert("只能填数字！"); 
-document.myform.rows.focus(); 
-return false; 
-} 
+  }       
 }  
 </script>
 </head>
@@ -109,33 +88,16 @@ echo '文件不存在';
 	}
 closedir($dir);
 }
+$title='';$bigclassid='';$numbers='';$column='';$start='';$mids='';$ends='';	
 //读取现有标签中的内容
 if ($labelname!=''){
 $fp="../template/".siteskin."/label/adclass/".$labelname;
-$f=fopen($fp,"r+");
-$fcontent="";
-while (!feof($f))
-{
-    $fcontent=$fcontent.fgets($f);
-}
+$f=fopen($fp,"r");
+$fcontent=fread($f,filesize($fp));
 fclose($f);
 $fcontent=removeBOM($fcontent);//去除BOM信息，使修改时不用再重写标签名
 $f=explode("|||",$fcontent) ;
-$title=$f[0];
-$bigclassid=$f[1];
-$numbers=$f[2];
-$rows=$f[3];
-$start=$f[4];
-$mids=$f[5];
-$ends=$f[6];	
-}else{
-$title="";
-$bigclassid="";
-$numbers="";
-$rows="";
-$start="";
-$mids="";
-$ends="";
+$title=$f[0];$bigclassid=$f[1];$numbers=$f[2];$column=$f[3];$start=$f[4];$mids=$f[5];$ends=$f[6];	
 } 
 
 	   ?>
@@ -168,7 +130,7 @@ $ends="";
     </tr>
     <tr> 
       <td align="right" class="border" >列数：</td>
-      <td class="border" > <input name="rows" type="text" id="rows" value="<?php echo $rows?>" size="20" maxlength="255">
+      <td class="border" > <input name="column" type="text" id="column" value="<?php echo $column?>" size="20" maxlength="255">
         （分几列显示）</td>
     </tr>
     <tr> 

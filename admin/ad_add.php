@@ -8,21 +8,9 @@ include("admin.php");
 <link href="style.css" rel="stylesheet" type="text/css">
 <?php
 //checkadminisdo("adv");
-if (isset($_SESSION["link"])){
-$slink=$_SESSION["link"];
-}else{
-$slink="javascript:void(0)";
-}
-if (isset($_SESSION["imgwidth"])){
-$simgwidth=$_SESSION["imgwidth"];
-}else{
-$simgwidth=100;
-}
-if (isset($_SESSION["imgheight"])){
-$simgheight=$_SESSION["imgheight"];
-}else{
-$simgheight=100;
-}
+$slink=isset($_SESSION["link"])?$_SESSION["link"]:'javascript:void(0)';
+$simgwidth=isset($_SESSION["simgwidth"])?$_SESSION["simgwidth"]:100;
+$simgheight=isset($_SESSION["simgheight"])?$_SESSION["simgheight"]:100;
 ?>
 <script language="javascript" src="/js/timer.js"></script>	
 <script language="javascript" src="/js/gg.js"></script>
@@ -62,7 +50,7 @@ return false;
       <td width="20%" align="right" class="border">所属类别：</td>
       <td width="80%" class="border"> 
 <?php
-$sql = "select * from zzcms_adclass where parentid<>'A' order by xuhao asc";
+$sql = "select classname,parentid from zzcms_adclass where parentid<>'A' order by xuhao asc";
 $rs=query($sql);
 ?>
         <script language = "JavaScript" type="text/JavaScript">
@@ -94,7 +82,7 @@ function changelocation(locationid){
 	<select name="bigclassid" onChange="changelocation(document.myform.bigclassid.options[document.myform.bigclassid.selectedIndex].value)" size="1">
           <option value="" selected="selected">请选择大类别</option>
           <?php
-	$sql = "select * from zzcms_adclass where parentid='A' order by xuhao asc";
+	$sql = "select classname from zzcms_adclass where parentid='A' order by xuhao asc";
     $rs=query($sql);
 	while($row = fetch_array($rs)){
 	?>
@@ -106,7 +94,7 @@ function changelocation(locationid){
           <option value="">不指定小类</option>
           <?php
 if ($_SESSION["bigclassid"]!=""){
-$sql="select * from zzcms_adclass where parentid='" .$_SESSION["bigclassid"]."' order by xuhao asc";
+$sql="select classname from zzcms_adclass where parentid='" .$_SESSION["bigclassid"]."' order by xuhao asc";
 $rs=query($sql);
 while($row = fetch_array($rs)){
 	?>

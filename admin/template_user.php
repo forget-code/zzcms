@@ -6,11 +6,7 @@ include("admin.php");
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <link href="style.css" rel="stylesheet" type="text/css">
 <?php
-if (isset($_REQUEST["action"])){
-$action=$_REQUEST["action"];
-}else{
-$action="";
-}
+$action = isset($_REQUEST['action'])?$_REQUEST['action']:"";
 $ml=@$_GET['ml'];
 if ($action=="add") {
 checkadminisdo("label");
@@ -20,7 +16,7 @@ $title_old=trim($_POST["title_old"]);
 if (substr($title,-3)!='css' and substr($title,-3)!='htm'){
 showmsg('只能是htm或css这两种格式,模板名称：后面加上.htm或.css');
 }
-$start=stripfxg($_POST["start"]);//stripfxg如果有自动加反斜杠去反斜杠
+$start=stripfxg($_POST["start"],true);//stripfxg如果有自动加反斜杠去反斜杠
 $fp="../skin/".$ml."/".$title;
 $f=fopen($fp,"w+");//fopen()的其它开关请参看相关函数
 $isok=fputs($f,$start);
@@ -30,7 +26,7 @@ $title==$title_old ?$msg='修改成功':$msg='添加成功';
 }else{
 $msg="失败";
 }
-showmsg($msg,"?ml=".$ml."&title=".$title);
+echo "<script>alert('".$msg."');location.href='?ml=".$ml."&title=".$title."'</script>";
 }
 
 if ($action=="del"){ 
@@ -45,32 +41,26 @@ $f="../skin/".$ml."/".nostr(trim($_POST["title"]));
 }
 ?>
 <script language = "JavaScript">
-function ConfirmDel()
-{
+function ConfirmDel(){
    if(confirm("确定要删除吗？一旦删除将不能恢复！"))
      return true;
    else
      return false;	 
 }
-function CheckForm()
-{
+function CheckForm(){
 //创建正则表达式
 var re=/^[0-9a-zA-Z_.]{1,30}$/; //只输入数字和字母的正则
-
-if (document.myform.title.value=="")
-  {
+if (document.myform.title.value==""){
     alert("模板名称不能为空！");
 	document.myform.title.focus();
 	return false;
   }
-if(document.myform.title.value.search(re)==-1)  
-{
+if(document.myform.title.value.search(re)==-1)  {
     alert("模板名称只能用字母，数字，_ 。且长度小于20个字符！");
 	document.myform.title.focus();
 	return false;
   }
-if (document.myform.start.value=="")
-  {
+if (document.myform.start.value==""){
     alert("模板内容不能为空！");
 	document.myform.start.focus();
 	return false;
@@ -78,14 +68,8 @@ if (document.myform.start.value=="")
 }  
 </script>
 </head>
-
 <body>
-<table width="100%" border="0" align="center" cellpadding="0" cellspacing="0">
-  <tr> 
-    <td class="admintitle">模板管理</td>
-  </tr>
-</table>
-
+<div class="admintitle">模板管理</div>
 <form action="" method="post" name="myform" id="myform" onSubmit="return CheckForm();">
   <table width="100%" border="0" cellpadding="5" cellspacing="0">
     <tr> 

@@ -43,22 +43,23 @@ $img2=isset($array_img[0])?$array_img[0]:'/image/nopic.gif';
 $img3=isset($array_img[1])?$array_img[1]:'/image/nopic.gif';
 
 $flv=$row["flv"];
-$bigclasszm=$row["bigclasszm"];
-$smallclasszm=$row["smallclasszm"];
-if(strpos($smallclasszm,',')!==false){
-$smallclasszm=explode(",",$smallclasszm); //转换成数组
-$smallclasszm=$smallclasszm[0];//只取第一个小类，供显示在station中
+$bigclassid=$row["bigclassid"];
+$smallclassid=$row["smallclassid"];
+if(strpos($smallclassid,',')!==false){
+$smallclassid=explode(",",$smallclassid); //转换成数组
+$smallclassid=$smallclassid[0];//只取第一个小类，供显示在station中
 } 
-$smallclasszm=str_replace('"',"",$smallclasszm);//开启多选后小类两边都加了""
+$smallclassid=str_replace('"',"",$smallclassid);//开启多选后小类两边都加了""
+
 $sendtime=$row["sendtime"];
 $hit=$row["hit"];
 $title=$row["title"];
 $keywords=$row["keywords"];
 $description=$row["description"];
 $prouse=$row["prouse"];
-$sm=$row["sm"];
-$yq=$row["yq"];
-$zc=$row["zc"];
+$sm=stripfxg($row["sm"],true);
+$yq=stripfxg($row["yq"],false,true);
+$zc=stripfxg($row["zc"],false,true);
 $province=$row["province"];
 $city=$row["city"];
 $xiancheng=$row["xiancheng"];
@@ -67,22 +68,24 @@ $skin=$row["skin"];
 
 $shuxing_value = explode("|||",$row["shuxing_value"]);
 
-$rs=query("select classname from zzcms_zsclass where classzm='".$bigclasszm."'");
+$rs=query("select classname,classzm from zzcms_zsclass where classid='".$bigclassid."'");
 $row=fetch_array($rs);
 if ($row){
 $bigclassname=$row["classname"];
+$bigclasszm=$row["classzm"];
 }else{
 $bigclassname="大类已删除";
+$bigclasszm="###";
 }
 
 $smallclassname='';
-if ($smallclasszm<>""){
-$rs=query("select classname from zzcms_zsclass where classzm='".$smallclasszm."'");
+$smallclasszm='###';
+if ($smallclassid<>0){
+$rs=query("select classname,classzm from zzcms_zsclass where classid='".$smallclassid."'");
 $row=fetch_array($rs);
 if ($row){
 $smallclassname=$row["classname"];
-}else{
-$smallclassname="小类已删除";
+$smallclasszm=$row["classzm"];
 }
 }
 $sql="select * from zzcms_user where username='".$editor."'";
@@ -108,11 +111,13 @@ $email=$row["email"];
 $contact=showcontact("zs",$cpid,$startdate,$comane,$kind,$editor,$userid,$groupid,$somane,$sex,$phone,$qq,$email,$mobile,$fox);
 
 function liuyannum($cpid){
-if (showdlinzs=="Yes") {
 $rsdl=query("select id from zzcms_dl where cpid=$cpid and passed=1");
 $rowdl=num_rows($rsdl);
-return "<b>".$rowdl."</b> 条";
-}
+	if ($rowdl){
+	return "<b>".$rowdl."</b>";
+	}else{
+	return "0";
+	}
 }
 
 function showflv($flv){
@@ -158,11 +163,7 @@ fclose($f);
 $liuyan=strbetween($strout,"{liuyan}","{/liuyan}");
 $list=strbetween($liuyan,"{loop}","{/loop}");
 
-if ($bigclasszm!=''){
-$rs=query("select * from zzcms_dl_".$bigclasszm." where cpid=$cpid and passed=1 order by id desc");
-}else{
 $rs=query("select * from zzcms_dl where cpid=$cpid and passed=1 order by id desc");
-}
 $row=num_rows($rs);
 if ($row){
 $list2='';
@@ -185,7 +186,7 @@ $strout=str_replace("{textarea}","<textarea rows=5 cols=30 name='contents' id='c
 $strout=str_replace("{#proname}",str_replace(',','',$cpmc),$strout);
 $strout=str_replace("{#cpid}",$cpid,$strout);
 $strout=str_replace("{#fbr}",$editor,$strout);
-$strout=str_replace("{#bigclassid}",$bigclasszm,$strout);
+$strout=str_replace("{#bigclassid}",$bigclassid,$strout);
 $strout=str_replace("{#token}",$token,$strout);
 
 $companyname="";
@@ -229,14 +230,14 @@ $strout=str_replace("{#img}",$img,$strout);
 $strout=str_replace("{#img2}",$img2,$strout);
 $strout=str_replace("{#img3}",$img3,$strout);
 $strout=str_replace("{#imgbig}",$imgbig,$strout);
-$strout=str_replace("{#proname}",str_replace(',','',$cpmc),$strout);
+$strout=str_replace("{#proname}",$cpmc,$strout);
 $strout=str_replace("{#cpid}",$cpid,$strout);
-$strout=str_replace("{#prouse}",nl2br($prouse),$strout);
+$strout=str_replace("{#prouse}",$prouse,$strout);
 $strout=str_replace("{#comane}",$comane,$strout);
 $strout=str_replace("{#gsjj}",$gsjj,$strout);
 $strout=str_replace("{#sendtime}",$sendtime,$strout);
 $strout=str_replace("{#hit}",$hit,$strout);
-$strout=str_replace("{#liuyannum}",liuyannum($cpid),$strout);
+$strout=str_replace("{#dl_num}",liuyannum($cpid),$strout);
 $strout=str_replace("{#flv}",showflv($flv),$strout);
 $strout=str_replace("{#cuest_city}",$cuest_city,$strout);
 $strout=str_replace("{#province_company}",$province_company,$strout);
@@ -246,8 +247,8 @@ $strout=str_replace("{#province}",$province,$strout);
 $strout=str_replace("{#city}",$city,$strout);
 $strout=str_replace("{#xiancheng}",$xiancheng,$strout);
 $strout=str_replace("{#sm}",$sm,$strout);
-$strout=str_replace("{#zc}",nl2br($zc),$strout);
-$strout=str_replace("{#yq}",nl2br($yq),$strout);
+$strout=str_replace("{#zc}",$zc,$strout);
+$strout=str_replace("{#yq}",$yq,$strout);
 $strout=str_replace("{#contact}",$contact,$strout);
 $strout=str_replace("{#editor}",$editor,$strout);
 $strout=str_replace("{#tel}",$tel,$strout);

@@ -1,4 +1,4 @@
-// JavaScript Document
+﻿// JavaScript Document
 function showsubmenu(sid){
 whichEl = eval("submenu" + sid);
 if (whichEl.style.display == "none"){
@@ -63,6 +63,8 @@ function CheckForms(){
 	}
 	document.getElementById("tj").disabled=true; 
 	document.getElementById("tj").value ="正在提交中，请稍候...";
+	document.getElementById("tj").style.backgroundColor = '#666666';
+	document.getElementById("tj").style.border='solid 1px #666666';
 }
 
 function check_contents(){

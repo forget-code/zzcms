@@ -11,40 +11,23 @@ include("check.php");
 <link href="style/<?php echo siteskin_usercenter?>/style.css" rel="stylesheet" type="text/css">
 </head>
 <?php
-if (isset($_POST["page"])){
-$page=$_POST["page"];
-}else{
-$page=1;
-}
-if (isset($_POST["dlid"])){
-$id=$_POST["dlid"];
-}else{
-$id=0;
-}
-$classid=$_POST["classid"];
-$cp=$_POST["cp"];
-$province=$_POST["province"];
-$city=$_POST["city"];
+$page = isset($_POST['page'])?$_POST['page']:1;//返回列表页用
+checkid($page);
+$id = isset($_POST['dlid'])?$_POST['dlid']:'0';
+checkid($id,1);
 if ($city=='请选择城区')$city='';
-$xiancheng=$_POST["xiancheng"];
 if ($xiancheng=='请选择县城')$xiancheng='';
-$price=$_POST["price"];
-$danwei=$_POST["danwei"];
 $companyname=$_POST["company"];
-$truename=$_POST["truename"];
-$tel=$_POST["tel"];
-$email=$_POST["email"];
-$address=$_POST["address"];
-
 checkyzm($_POST["yzm"]);
 
 if ($_POST["action"]=="add"){
 if ($cp<>'' && $truename<>'' && $tel<>''){
-query("Insert into zzcms_baojia(classzm,cp,province,city,price,danwei,companyname,truename,tel,address,email,sendtime,editor) values('$classid','$cp','$province','$city','$price','$danwei','$companyname','$truename','$tel','$address','$email','".date('Y-m-d H:i:s')."','$username')") ;   
+$isok=query("Insert into zzcms_baojia(classid,cp,province,city,price,danwei,companyname,truename,tel,address,email,sendtime,editor) values('$classid','$cp','$province','$city','$price','$danwei','$companyname','$truename','$tel','$address','$email','".date('Y-m-d H:i:s')."','$username')") ;   
 $id=insert_id();	
 }	
 }elseif ($_POST["action"]=="modify"){
-query("update zzcms_baojia set classzm='$classid',cp='$cp',province='$province',city='$city',price='$price',danwei='$danwei',companyname='$companyname',truename='$truename',tel='$tel',address='$address',email='$email',sendtime='".date('Y-m-d H:i:s')."' where id='$id'");
+checkstr($tel,'tel');
+$isok=query("update zzcms_baojia set classid='$classid',cp='$cp',province='$province',city='$city',price='$price',danwei='$danwei',companyname='$companyname',truename='$truename',tel='$tel',address='$address',email='$email',sendtime='".date('Y-m-d H:i:s')."' where id='$id'");
 }
 $_SESSION['danwei']=$danwei;
 $_SESSION['bigclassid']=$classid;
@@ -70,7 +53,7 @@ include("left.php");
   <tr> 
     <td class="tstitle"> <?php
 	if ($_REQUEST["action"]=="add") {echo "添加"; }else{ echo"修改";}
-	echo "成功";
+	if ($isok) {echo "成功"; }else{ echo"失败";};
      ?>      </td>
   </tr>
   <tr> 

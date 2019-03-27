@@ -67,12 +67,8 @@ include("left.php");
 <?php
 $tablename="zzcms_zx";
 include("checkaddinfo.php");
-if (isset($_REQUEST["b"])){
-$b=$_REQUEST["b"];
-}
-if (isset($_REQUEST["s"])){
-$s=$_REQUEST["s"];
-}
+$b = isset($_POST['b'])?$_POST['b']:0;
+$s = isset($_POST['s'])?$_POST['s']:0;
 ?>	  
 <form action="zxsave.php" method="post" name="myform" id="myform" onSubmit="return CheckForm();">
         <table width="100%" border="0" cellpadding="3" cellspacing="1">
@@ -81,7 +77,7 @@ $s=$_REQUEST["s"];
             <td width="82%" class="border2"> 
               <?php
 
-$sql = "select * from zzcms_zxclass where parentid<>0 order by xuhao asc";
+$sql = "select classid,parentid,classname from zzcms_zxclass where parentid<>0 order by xuhao asc";
 $rs=query($sql);
 ?>
               <script language = "JavaScript" type="text/JavaScript">
@@ -110,22 +106,22 @@ function changelocation(locationid){
             }        
         }
     }</script> <select name="bigclassid" class="biaodan" onchange="changelocation(document.myform.bigclassid.options[document.myform.bigclassid.selectedIndex].value)" size="1">
-                <option value="" selected="selected"><?php echo $f_array[3]?> </option>
+                <option value="0" selected="selected"><?php echo $f_array[3]?> </option>
                 <?php
-	$sql = "select * from zzcms_zxclass where isshowforuser=1 and parentid=0 order by xuhao asc";
+	$sql = "select classid,classname from zzcms_zxclass where isshowforuser=1 and parentid=0 order by xuhao asc";
     $rs=query($sql);
 	while($row = fetch_array($rs)){
-		if ($row["classid"]==@$b){
+		if ($row["classid"]==$b){
 	?>
-	 <option value="<?php echo trim($row["classid"])?>" selected><?php echo trim($row["classname"])?></option>
+	 <option value="<?php echo $row["classid"]?>" selected><?php echo $row["classname"]?></option>
                 <?php
-		}elseif($row["classid"]==@$_SESSION["bigclassid"] && @$b==''){	
+		}elseif($row["classid"]==@$_SESSION["bigclassid"] && $b==0){	
 				?>
-		<option value="<?php echo trim($row["classid"])?>" selected><?php echo trim($row["classname"])?></option>
+		<option value="<?php echo $row["classid"]?>" selected><?php echo $row["classname"]?></option>
 		<?php 
 		}else{
 		?>
-		<option value="<?php echo trim($row["classid"])?>"><?php echo trim($row["classname"])?></option>
+		<option value="<?php echo $row["classid"]?>"><?php echo $row["classname"]?></option>
 		<?php 
 		}
 	}	
@@ -134,16 +130,16 @@ function changelocation(locationid){
 			  <select name="smallclassid"  class="biaodan">
                 <option value="0"><?php echo $f_array[4]?></option>
                 <?php
-if ($b!=''){//从index.php获取的大类值优先
-$sql="select * from zzcms_zxclass where parentid=".$b." order by xuhao asc";
+if ($b!=0){//从index.php获取的大类值优先
+$sql="select classid,classname from zzcms_zxclass where parentid='".$b."' order by xuhao asc";
 $rs=query($sql);
 while($row = fetch_array($rs)){
 				?>
 				  <option value="<?php echo $row["classid"]?>" <?php if ($row["classid"]==$s) { echo "selected";}?>><?php echo $row["classname"]?></option>
                 <?php
 	}
-}elseif($_SESSION["bigclassid"]!=''){
-$sql="select * from zzcms_zxclass where parentid=" .@$_SESSION["bigclassid"]." order by xuhao asc";
+}elseif($_SESSION["bigclassid"]!=0){
+$sql="select classid,classname from zzcms_zxclass where parentid='" .@$_SESSION["bigclassid"]."' order by xuhao asc";
 $rs=query($sql);
 	while($row = fetch_array($rs)){
 	?>
@@ -204,7 +200,7 @@ $(document).ready(function(){
             <td class="border" ><select name="groupid"  class="biaodan">
                 <option value="0"><?php echo $f_array[14]?></option>
                 <?php
-		  $rs=query("Select * from zzcms_usergroup ");
+		  $rs=query("Select groupid,groupname from zzcms_usergroup ");
 		  $row = num_rows($rs);
 		  if ($row){
 		  while($row = fetch_array($rs)){
@@ -221,8 +217,8 @@ $(document).ready(function(){
           <tr> 
             <td align="right" class="border">&nbsp;</td>
             <td class="border"> <input name="Submit" type="submit" class="buttons" value="<?php echo $f_array[16]?>">
-              <input name="editor" type="hidden" id="editor2" value="<?php echo $username?>" />
-              <input name="action" type="hidden" id="action3" value="add"></td>
+              <input name="editor" type="hidden"  value="<?php echo $username?>" />
+              <input name="action" type="hidden"  value="add"></td>
           </tr>
         </table>
 </form>

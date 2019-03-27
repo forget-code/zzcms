@@ -1,8 +1,8 @@
 <?php
 session_start();
 include("../inc/conn.php");
-$last = $_POST['last'];
-$amount = $_POST['amount'];
+$last = isset($_POST['last'])?$_POST['last']:0;
+$amount = isset($_POST['amount'])?$_POST['amount']:20;
 $b=$_SESSION['zx_b'];
 $s=$_SESSION['zx_s'];
 

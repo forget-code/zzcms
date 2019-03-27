@@ -1,10 +1,10 @@
 <?php 
+session_cache_limiter('private, must-revalidate');  //为了支持返回上一步页面回跳,//要放在session_start之前
 if(!isset($_SESSION)){session_start();} 
-error_reporting(0);
-set_time_limit(0);
-set_magic_quotes_runtime(0);
-
+//error_reporting(0);
+//set_magic_quotes_runtime(0);//5.3后已不在支持
 include '../inc/config.php';
+include 'conn.php';
 if($_POST) extract($_POST, EXTR_SKIP);//把数组中的键名直接注册为了变量。就像把$_POST[ai]直接注册为了$ai。
 if($_GET) extract($_GET, EXTR_SKIP);
 $submit = isset($_POST['submit']) ? true : false;
@@ -41,8 +41,8 @@ return $writeable;
 </head>
 <body>
 <div class="main"> 
-  <div class="head">ZZCMS(产品招商)版安装向导 </div>
-  <div class="jindu">
+<div class="head">ZZCMS(产品招商)版安装向导 </div>
+<div class="jindu">
 <li <?php if ($step==2){echo 'class=current';} ?>>检查系统运行环境 -></li>
 <li <?php if ($step==3){echo 'class=current';} ?>>检查目录/文件属性 -></li>
 <li <?php if ($step==4){echo 'class=current';} ?>>创建数据库 -></li>
@@ -62,7 +62,7 @@ switch($step) {
 			$php_pass = true;
 		}
 		$PHP_MYSQL = '';
-		if(extension_loaded('mysql')) {
+		if (extension_loaded('mysqli') || extension_loaded('mysql')) {
 			$PHP_MYSQL = '支持';
 			$mysql_pass = true;
 		} else {
@@ -94,10 +94,11 @@ switch($step) {
 			exit;
 		}
 		
-		if(!mysql_connect($db_host, $db_user, $db_pass)) dexit('无法连接到数据库服务器，请检查配置');
+		$conn=connect($db_host,$db_user,$db_pass,'',$db_port);
+		if(!$conn) dexit('无法连接到数据库服务器，请检查配置');
 		$db_name or dexit('请填写数据库名');
-		if(!mysql_select_db($db_name)) {
-			if(!mysql_query("CREATE DATABASE $db_name")) dexit('指定的数据库不存在\n\n系统尝试创建失败，请通过其他方式建立数据库');
+		if(!select_db($db_name)) {
+			if(!query("CREATE DATABASE $db_name")) dexit('指定的数据库不存在\n\n系统尝试创建失败，请通过其他方式建立数据库');
 		}
 		
 		//保存配置文件
@@ -106,6 +107,7 @@ switch($step) {
 		$str = fread($f,filesize($fp));
 		fclose($f);
 		$str=str_replace("define('sqlhost','".sqlhost."')","define('sqlhost','$db_host')",$str) ;
+		$str=str_replace("define('sqlport','".sqlport."')","define('sqlport','$db_port')",$str) ;
 		$str=str_replace("define('sqldb','".sqldb."')","define('sqldb','$db_name')",$str) ;
 		$str=str_replace("define('sqluser','".sqluser."')","define('sqluser','$db_user')",$str) ;
 		$str=str_replace("define('sqlpwd','".sqlpwd."')","define('sqlpwd','$db_pass')",$str) ;

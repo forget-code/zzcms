@@ -128,7 +128,7 @@ function changelocation(locationid){
 				}
 				?>
         </select> <select name="smallclassid">
-          <option value="">不指定小类</option>
+          <option value="0">不指定小类</option>
           <?php
 if ($_COOKIE["zxbigclassid"]!=""){
 $sql="select * from zzcms_zxclass where parentid=" .$_COOKIE["zxbigclassid"]." order by xuhao asc";

@@ -16,21 +16,12 @@ $page_size=$_GET["page_size"];
 checkid($page_size);
 setcookie("page_size_job",$page_size,time()+3600*24*360);
 }else{
-	if (isset($_COOKIE["page_size_job"])){
-	$page_size=$_COOKIE["page_size_job"];
-	}else{
-	$page_size=pagesize_qt;
-	}
+$page_size=isset($_COOKIE['page_size_job'])?$_COOKIE['page_size_job']:pagesize_qt;
 }
 
-if (isset($_GET['yiju'])){
-$yiju=$_GET['yiju'];
-}else{
-$yiju="Pname";
-}
-
+$yiju=isset($_GET['yiju'])?$_GET['yiju']:'Pname';
 if (isset($_GET['keyword'])){
-$keywordNew=nostr(trim($_GET['keyword']));
+$keywordNew=$_GET['keyword'];
 setcookie("keyword",$keywordNew,time()+3600*24);
 setcookie("b","xxx",1);
 setcookie("s","xxx",1);
@@ -40,51 +31,37 @@ setcookie("xiancheng","xxx",1);
 setcookie("p_id","xxx",1);
 setcookie("c_id","xxx",1);
 setcookie("sj","xxx",1);
-echo "<script>location.href='search.php'</script>";
+//echo "<script>location.href='search.php'<//script>";
 $keyword=$keywordNew;
 }else{
-	if (isset($_COOKIE['keyword'])){
-	$keyword=trim($_COOKIE['keyword']);
-	}else{
-	$keyword="";
-	}
+$keyword=isset($_COOKIE['keyword'])?$_COOKIE['keyword']:'';
 }
 
 if (isset($_GET['b'])){
 $bNew=$_GET['b'];
+checkid($bNew,1);
 setcookie("b",$bNew,time()+3600*24);
 setcookie("s","xxx",1);
 echo "<script>location.href='search.php'</script>";
 $b=$bNew;
 }else{
-	if (isset($_COOKIE['b'])){
-	$b=$_COOKIE['b'];
-	}else{
-	$b="";
-	}
+$b=isset($_COOKIE['b'])?$_COOKIE['b']:0;
 }
 
 if (isset($_GET['s'])){
 $sNew=$_GET['s'];
+checkid($sNew,1);
 setcookie("s",$sNew,time()+3600*24);
 $s=$sNew;
 }else{
-	if (isset($_COOKIE['s'])){
-	$s=$_COOKIE['s'];
-	}else{
-	$s="";
-	}
+$s=isset($_COOKIE['s'])?$_COOKIE['s']:0;
 }
 if (isset($_GET['province'])){
 $provinceNew=$_GET['province'];
 setcookie("province",$provinceNew,time()+3600*24);
 $province=$provinceNew;
 }else{
-	if (isset($_COOKIE['province'])){
-	$province=$_COOKIE['province'];
-	}else{
-	$province="";
-	}
+$province=isset($_COOKIE['province'])?$_COOKIE['province']:'';
 }
 
 if (isset($_GET['p_id'])){
@@ -92,11 +69,7 @@ $p_idNew=$_GET['p_id'];
 setcookie("p_id",$p_idNew,time()+3600*24);
 $p_id=$p_idNew;
 }else{
-	if (isset($_COOKIE['p_id'])){
-	$p_id=$_COOKIE['p_id'];
-	}else{
-	$p_id="";
-	}
+$p_id=isset($_COOKIE['p_id'])?$_COOKIE['p_id']:'';
 }
 
 if (isset($_GET['city'])){
@@ -104,11 +77,7 @@ $cityNew=$_GET['city'];
 setcookie("city",$cityNew,time()+3600*24);
 $city=$cityNew;
 }else{
-	if (isset($_COOKIE['city'])){
-	$city=$_COOKIE['city'];
-	}else{
-	$city="";
-	}
+$city=isset($_COOKIE['city'])?$_COOKIE['city']:'';
 }
 
 if (isset($_GET['c_id'])){
@@ -116,11 +85,7 @@ $c_idNew=$_GET['c_id'];
 setcookie("c_id",$c_idNew,time()+3600*24);
 $c_id=$c_idNew;
 }else{
-	if (isset($_COOKIE['c_id'])){
-	$c_id=$_COOKIE['c_id'];
-	}else{
-	$c_id="";
-	}
+$c_id=isset($_COOKIE['c_id'])?$_COOKIE['c_id']:'';
 }
 
 if (isset($_GET['xiancheng'])){
@@ -128,27 +93,16 @@ $xianchengNew=$_GET['xiancheng'];
 setcookie("xiancheng",$xianchengNew,time()+3600*24);
 $xiancheng=$xianchengNew;
 }else{
-	if (isset($_COOKIE['xiancheng'])){
-	$xiancheng=$_COOKIE['xiancheng'];
-	}else{
-	$xiancheng="";
-	}
+$xiancheng=isset($_COOKIE['xiancheng'])?$_COOKIE['xiancheng']:'';
 }
 
 if (isset($_GET['sj'])){
 $sjNew=$_GET['sj'];
+checkid($sjNew,1);
 setcookie("sj",$sjNew,time()+3600*24);
 $sj=$sjNew;
 }else{
-	if (isset($_COOKIE['sj'])){
-	$sj=$_COOKIE['sj'];
-	}else{
-	$sj="";
-	}
-}
-
-if ($sj<>"") {
-checkid($sj);
+$sj=isset($_COOKIE['sj'])?$_COOKIE['sj']:0;
 }
 
 if (isset($_GET['delb'])){
@@ -183,7 +137,7 @@ echo "<script>location.href='search.php'</script>";
 
 
 $bigclassname='';
-if ($b<>""){
+if ($b<>0){
 $sql="select classname from zzcms_jobclass where classid='".$b."'";
 $rs=query($sql);
 $row=fetch_array($rs);
@@ -193,7 +147,7 @@ $bigclassname=$row["classname"];
 }
 
 $smallclassname='';
-if ($s<>"") {
+if ($s<>0) {
 $sql="select classname from zzcms_jobclass where classid='".$s."'";
 $rs=query($sql);
 $row=fetch_array($rs);
@@ -208,17 +162,14 @@ $pagedescription=joblistdescription;
 
 $station=getstation($b,$bigclassname,$s,$smallclassname,"","","job");
 
-if( isset($_GET["page"]) && $_GET["page"]!="") 
-{
+if( isset($_GET["page"]) && $_GET["page"]!="") {
     $page=$_GET['page'];
 	checkid($page);
 }else{
     $page=1;
 }
 
-
-		function formbigclass()
-		{
+		function formbigclass(){
 		$str="";
         $sql = "select * from zzcms_jobclass where parentid='0'";
         $rs=query($sql);
@@ -293,15 +244,15 @@ function formxiancheng(){
 	return $str;
 }
 		
-		if ($b<>"" || $s<>"" || $province<>"" || $city<>"" || $xiancheng<>"" || $sj<>"") {
+		if ($b<>0 || $s<>0 || $province<>"" || $city<>"" || $xiancheng<>"" || $sj<>0) {
 		$selected="<tr>";
 		$selected=$selected."<td align='right'>已选条件：</td>";
 		$selected=$selected."<td class='a_selected'>";
-			if ($b<>"") {
+			if ($b<>0) {
 			$selected=$selected."<a href='?delb=Yes' >".$bigclassname."×</a>&nbsp;";
 			}
 			
-			if ($s<>""){
+			if ($s<>0){
 			$selected=$selected."<a href='?dels=Yes' >".$smallclassname."×</a>&nbsp;";
 			}
 		
@@ -317,7 +268,7 @@ function formxiancheng(){
 			$selected=$selected."<a href='?delxiancheng=Yes' title='删除已选'>".$xiancheng."×</a>&nbsp;";
 			}
 			
-			if ($sj<>"") {
+			if ($sj<>0) {
 			$selected=$selected."<a href='?delsj=Yes' >".$sj."天内的×</a>&nbsp;";
 			}
 
@@ -339,10 +290,10 @@ switch ($yiju){
 	$sql2=$sql2."and comane like '%".$keyword."%' " ; 
 	break;
 	}
-if ($b<>""){
+if ($b<>0){
 $sql2=$sql2. "and bigclassid='".$b."' ";
 }
-if ($s<>"") {
+if ($s<>0) {
 $sql2=$sql2." and smallclassid ='".$s."'  ";
 }
 
@@ -353,10 +304,10 @@ $sql2=$sql2."and city like '%".$city."%' ";
 }elseif ($province<>"") {
 $sql2=$sql2."and province like '%".$province."%' ";
 }
-if ($sj<>""){
-$sql2=$sql2." and  timestampdiff(day,sendtime,now()) < ". $sj ." " ;
+if ($sj<>0){
+$sql2=$sql2." and  timestampdiff(day,sendtime,now()) < '". $sj ."' " ;
 }
-$rs = query($sql.$sql2); 
+$rs =query($sql.$sql2); 
 $row = fetch_array($rs);
 $totlenum = $row['total'];
 $offset=($page-1)*$page_size;//$page_size在上面被设为COOKIESS
@@ -427,8 +378,6 @@ $strout=str_replace("{#formkeyword}",$keyword,$strout);
 
 $strout=str_replace("{#sitebottom}",sitebottom(),$strout);
 $strout=str_replace("{#sitetop}",sitetop(),$strout);
-
 $strout=showlabel($strout);
-
 echo  $strout;
 ?>

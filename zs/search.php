@@ -23,34 +23,22 @@ $page_size=$_GET["page_size"];
 checkid($page_size);
 setcookie("page_size_zs",$page_size,time()+3600*24*360);
 }else{
-	if (isset($_COOKIE["page_size_zs"])){
-	$page_size=$_COOKIE["page_size_zs"];
-	}else{
-	$page_size=pagesize_qt;
-	}
+$page_size=isset($_COOKIE['page_size_zs'])?$_COOKIE['page_size_zs']:pagesize_qt;
 }
 
 if (isset($_GET["ys"])){
 $ys=$_GET["ys"];
 setcookie("yszs",$ys,time()+3600*24*360);
 }else{
-	if (isset($_COOKIE["yszs"])){
-	$ys=$_COOKIE["yszs"];
-	}else{
-	$ys="list";
-	}
+$ys=isset($_COOKIE['yszs'])?$_COOKIE['yszs']:"list";
 }
-if (isset($_GET['yiju'])){
-$yiju=$_GET['yiju'];
-}else{
-$yiju="Pname";
-}
+$yiju=isset($_GET['yiju'])?$_GET['yiju']:"Pname";
 
 if (isset($_GET['keyword'])){
-$keywordNew=nostr(trim($_GET['keyword']));
+$keywordNew=$_GET['keyword'];
 setcookie("keyword",$keywordNew,time()+3600*24);
-setcookie("b","xxx",1);
-setcookie("s","xxx",1);
+setcookie("b_zs","xxx",1);
+setcookie("s_zs","xxx",1);
 setcookie("province","xxx",1);
 setcookie("city","xxx",1);
 setcookie("xiancheng","xxx",1);
@@ -59,40 +47,28 @@ setcookie("c_id","xxx",1);
 setcookie("sj","xxx",1);
 setcookie("tp","xxx",1);
 setcookie("vip","xxx",1);
-echo "<script>location.href='search.php'</script>";
+//echo "<script>location.href='search.php'<//script>";//可以不重加载
 $keyword=$keywordNew;
 }else{
-	if (isset($_COOKIE['keyword'])){
-	$keyword=trim($_COOKIE['keyword']);
-	}else{
-	$keyword='';
-	}
+$keyword=isset($_COOKIE['keyword'])?$_COOKIE['keyword']:'';
 }
 
 if (isset($_GET['b'])){
 $bNew=$_GET['b'];
-setcookie("b",$bNew,time()+3600*24);
-setcookie("s","xxx",1);
+setcookie("b_zs",$bNew,time()+3600*24);
+setcookie("s_zs","xxx",1);
 echo "<script>location.href='search.php'</script>";
 $b=$bNew;
 }else{
-	if (isset($_COOKIE['b'])){
-	$b=$_COOKIE['b'];
-	}else{
-	$b="";
-	}
+$b=isset($_COOKIE['b_zs'])?$_COOKIE['b_zs']:'';
 }
 
 if (isset($_GET['s'])){
 $sNew=$_GET['s'];
-setcookie("s",$sNew,time()+3600*24);
+setcookie("s_zs",$sNew,time()+3600*24);
 $s=$sNew;
 }else{
-	if (isset($_COOKIE['s'])){
-	$s=$_COOKIE['s'];
-	}else{
-	$s="";
-	}
+$s=isset($_COOKIE['s_zs'])?$_COOKIE['s_zs']:'';
 }
 $szm=isset($_GET['szm'])?$_GET['szm']:'';
 
@@ -101,11 +77,7 @@ $provinceNew=$_GET['province'];
 setcookie("province",$provinceNew,time()+3600*24);
 $province=$provinceNew;
 }else{
-	if (isset($_COOKIE['province'])){
-	$province=$_COOKIE['province'];
-	}else{
-	$province="";
-	}
+$province=isset($_COOKIE['province'])?$_COOKIE['province']:'';
 }
 
 if (isset($_GET['p_id'])){
@@ -113,11 +85,7 @@ $p_idNew=$_GET['p_id'];
 setcookie("p_id",$p_idNew,time()+3600*24);
 $p_id=$p_idNew;
 }else{
-	if (isset($_COOKIE['p_id'])){
-	$p_id=$_COOKIE['p_id'];
-	}else{
-	$p_id="";
-	}
+$p_id=isset($_COOKIE['p_id'])?$_COOKIE['p_id']:'';
 }
 
 if (isset($_GET['city'])){
@@ -125,11 +93,7 @@ $cityNew=$_GET['city'];
 setcookie("city",$cityNew,time()+3600*24);
 $city=$cityNew;
 }else{
-	if (isset($_COOKIE['city'])){
-	$city=$_COOKIE['city'];
-	}else{
-	$city="";
-	}
+$city=isset($_COOKIE['city'])?$_COOKIE['city']:'';
 }
 
 if (isset($_GET['c_id'])){
@@ -137,11 +101,7 @@ $c_idNew=$_GET['c_id'];
 setcookie("c_id",$c_idNew,time()+3600*24);
 $c_id=$c_idNew;
 }else{
-	if (isset($_COOKIE['c_id'])){
-	$c_id=$_COOKIE['c_id'];
-	}else{
-	$c_id="";
-	}
+$c_id=isset($_COOKIE['c_id'])?$_COOKIE['c_id']:'';
 }
 
 if (isset($_GET['xiancheng'])){
@@ -149,38 +109,24 @@ $xianchengNew=$_GET['xiancheng'];
 setcookie("xiancheng",$xianchengNew,time()+3600*24);
 $xiancheng=$xianchengNew;
 }else{
-	if (isset($_COOKIE['xiancheng'])){
-	$xiancheng=$_COOKIE['xiancheng'];
-	}else{
-	$xiancheng="";
-	}
+$xiancheng=isset($_COOKIE['xiancheng'])?$_COOKIE['xiancheng']:'';
 }
 
 if (isset($_GET['sj'])){
 $sjNew=$_GET['sj'];
+checkid($sjNew,1);
 setcookie("sj",$sjNew,time()+3600*24);
 $sj=$sjNew;
 }else{
-	if (isset($_COOKIE['sj'])){
-	$sj=$_COOKIE['sj'];
-	}else{
-	$sj='';
-	}
+$sj=isset($_COOKIE['sj'])?$_COOKIE['sj']:0;
 }
 
-if ($sj!='') {
-checkid($sj);
-}
 if (isset($_GET['tp'])){
 $tpNew=$_GET['tp'];
 setcookie("tp",$tpNew,time()+3600*24);
 $tp=$tpNew;
 }else{
-	if (isset($_COOKIE['tp'])){
-	$tp=$_COOKIE['tp'];
-	}else{
-	$tp="";
-	}
+$tp=isset($_COOKIE['tp'])?$_COOKIE['tp']:'';
 }
 
 if (isset($_GET['vip'])){
@@ -188,18 +134,14 @@ $vipNew=$_GET['vip'];
 setcookie("vip",$vipNew,time()+3600*24);
 $vip=$vipNew;
 }else{
-	if (isset($_COOKIE['vip'])){
-	$vip=$_COOKIE['vip'];
-	}else{
-	$vip="";
-	}
+$vip=isset($_COOKIE['vip'])?$_COOKIE['vip']:'';
 }
 if (isset($_GET['delb'])){
-setcookie("b","xxx",1);
+setcookie("b_zs","xxx",1);
 echo "<script>location.href='search.php'</script>";
 }
 if (isset($_GET['dels'])){
-setcookie("s","xxx",1);
+setcookie("s_zs","xxx",1);
 echo "<script>location.href='search.php'</script>";
 }
 if (isset($_GET['delprovince'])){
@@ -240,22 +182,26 @@ $pagekeyword="搜索".channelzs."信息-".sitename;
 $pagedescription="搜索".channelzs."信息-".sitename;
 
 $bigclassname="";
+$bigclassid=0;
 if ($b<>""){
-$sql="select * from zzcms_zsclass where classzm='".$b."'";
+$sql="select classname,classid from zzcms_zsclass where classzm='".$b."'";
 $rs=query($sql);
 $row=fetch_array($rs);
 if ($row){
 $bigclassname=$row["classname"];
+$bigclassid=$row["classid"];
 }
 }
 
 $smallclassname="";
+$smallclassid=0;
 if ($s<>"") {
-$sql="select * from zzcms_zsclass where classzm='".$s."'";
+$sql="select classname,classid from zzcms_zsclass where classzm='".$s."'";
 $rs=query($sql);
 $row=fetch_array($rs);
 if ($row){
 	$smallclassname=$row["classname"];
+	$smallclassid=$row["classid"];
 }
 }
 
@@ -268,7 +214,7 @@ if( isset($_GET["page"]) && $_GET["page"]!="") {
 
 		function formbigclass(){
 		$str="";
-        $sql = "select * from zzcms_zsclass where parentid='A'";
+        $sql = "select classzm,classname from zzcms_zsclass where parentid=0";
         $rs=query($sql);
 		$row=num_rows($rs);
 		if (!$row){
@@ -282,8 +228,9 @@ if( isset($_GET["page"]) && $_GET["page"]!="") {
 		}
 		
 		function formsmallclass($b){
+		if ($b!=0){
 		$str="";
-        $sql="select * from zzcms_zsclass where parentid='" .$b. "' order by xuhao asc";
+        $sql="select classzm,classname from zzcms_zsclass where parentid='" .$b. "' order by xuhao asc";
         $rs=query($sql);
 		$row=num_rows($rs);
 		if ($row){
@@ -292,6 +239,7 @@ if( isset($_GET["page"]) && $_GET["page"]!="") {
 			}
 		}	
 		return $str;
+		}
 		}	
 		
 	function formprovince(){
@@ -411,15 +359,15 @@ if ($keyword!=''){
 	break;
 	}
 }	
-if ($b<>""){
-$sql2=$sql2."and bigclasszm='".$b."' ";
+if ($bigclassid<>0){
+$sql2=$sql2."and bigclassid='".$bigclassid."' ";
 }
 
 if ($s<>"") {
 	if (zsclass_isradio=='Yes'){
-	$sql2=$sql2." and smallclasszm ='".$s."'  ";
+	$sql2=$sql2." and smallclassid ='".$smallclassid."'  ";
 	}else{
-	$sql2=$sql2." and smallclasszm like '%".$s."%' ";
+	$sql2=$sql2." and smallclassids like '%".$smallclassid."%' ";
 	}
 }
 
@@ -435,7 +383,7 @@ $sql2=$sql2."and city like '".$city."%' ";
 $sql2=$sql2."and province like '".$province."%' ";
 }
 
-if ($sj<>''){
+if ($sj<>0){
 $sql2=$sql2." and  timestampdiff(day,sendtime,now()) <= '". $sj ."' " ;
 }
 
@@ -446,7 +394,7 @@ $sql2=$sql2."and img<>'image/nopic.gif' ";
 if ($vip=="yes") {
 $sql2=$sql2." and editor in (select username from zzcms_user where groupid>1)";
 }
-$rs = query($sql.$sql2);
+$rs =query($sql.$sql2);
 $row = fetch_array($rs);
 $totlenum = $row['total'];
 $offset=($page-1)*$page_size;//$page_size在上面被设为COOKIESS 
@@ -455,6 +403,7 @@ $totlepage=ceil($totlenum/$page_size);
 $sql="select id,proname,prouse,shuxing_value,img,province,city,xiancheng,sendtime,editor,elite,userid,comane,qq,groupid,renzheng,tag from zzcms_main where passed=1 ";
 $sql=$sql.$sql2;
 $sql=$sql." order by groupid desc,elite desc,".$px." desc limit $offset,$page_size";
+//echo $sql;
 $rs = query($sql); 
 
 $zs=strbetween($strout,"{zs}","{/zs}");
@@ -556,7 +505,7 @@ $strout=str_replace("{#formbigclass}",formbigclass(),$strout);
 }else{
 $strout=str_replace("{#formbigclass}","",$strout);
 }
-$strout=str_replace("{#formsmallclass}",formsmallclass($b),$strout);
+$strout=str_replace("{#formsmallclass}",formsmallclass($bigclassid),$strout);
 if ($province=="") {
 $strout=str_replace("{#formprovince}",formprovince(),$strout);
 }else{
@@ -579,12 +528,11 @@ $strout=str_replace("{#formxiancheng}",formxiancheng(),$strout);
 $strout=str_replace("{#selected}",$selected,$strout);
 $strout=str_replace("{#formkeyword}",$keyword,$strout);
 $strout=str_replace("{#keyword}",cutstr($keyword,5),$strout);
-$strout=str_replace("{#showzsforsearch}",showzsforsearch(10,10,"id",$b,false,$keyword),$strout);
-$strout=str_replace("{#showzsorder}",showzsorder($b,$sj,10,10,$keyword),$strout);
+$strout=str_replace("{#showzsforsearch}",showzsforsearch(10,10,"id",$bigclassid,false,$keyword),$strout);
+$strout=str_replace("{#showzsorder}",showzsorder($bigclassid,$sj,10,10,$keyword),$strout);
 $strout=str_replace("{#sitebottom}",sitebottom(),$strout);
 $strout=str_replace("{#sitetop}",sitetop(),$strout);
 $strout=str_replace("{#searchbyszm}",szm(),$strout);
 $strout=showlabel($strout);
-
 echo  $strout;				
 ?>

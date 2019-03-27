@@ -1,5 +1,5 @@
 <?php
-set_time_limit(1800) ;
+//set_time_limit(1800) ;
 include("admin.php");
 checkadminisdo("zx");
 ?>
@@ -12,45 +12,42 @@ checkadminisdo("zx");
 <div id="loading" class="left-title" style="display:block">正在保存，请稍候...</div>
 <?php 
 $page = isset($_POST['page'])?$_POST['page']:1;//只从修改页传来的值
-$bigclassid=trim($_POST["bigclassid"]);
-$rs = query("select * from zzcms_zxclass where classid=".$bigclassid.""); 
+checkid($page);
+$id = isset($_POST['id'])?$_POST['id']:0;
+checkid($id,1);
+$bigclassid = isset($_POST['bigclassid'])?$_POST['bigclassid']:0;
+$smallclassid = isset($_POST['smallclassid'])?$_POST['smallclassid']:0;
+$bigclassname="";$smallclassname="";
+
+$rs = query("select classname from zzcms_zxclass where classid='".$bigclassid."'"); 
 $row= fetch_array($rs);
 $bigclassname=$row["classname"];
 
-$smallclassid=trim($_POST["smallclassid"]);
-if ($smallclassid==""){
-$smallclassid=0;
-}
 if ($smallclassid!=0){
-$rs = query("select * from zzcms_zxclass where classid=".$smallclassid.""); 
+$rs = query("select classname from zzcms_zxclass where classid='".$smallclassid."'"); 
 $row= fetch_array($rs);
 $smallclassname=$row["classname"];
-}else{
-$smallclassname="";
 }
 
-$title=trim($_POST["title"]);
-$link=addhttp(trim($_POST["link"]));
-$laiyuan=trim($_POST["laiyuan"]);
-$content=str_replace("'","",stripfxg(trim($_POST["content"])));
-
+$link=addhttp($link);
 //---保存内容中的远程图片，并替换内容中的图片地址
 $msg='';
-$imgs=getimgincontent($content,2);
+$imgs=getimgincontent(stripfxg($content,true),2);
 if (is_array($imgs)){
 foreach ($imgs as $value) {
 	if (substr($value,0,4) == "http"){
+	$value=getimg2($value);//做二次提取，过滤后面的图片样式
 	$img_bendi=grabimg($value,"");//如果是远程图片保存到本地
-	if($img_bendi):$msg=$msg.  "远程图片：".$value."已保存为本地图片：".$img_bendi."<br>";else:$msg=$msg. "false";endif;
-	$img_bendi=substr($img_bendi,strpos($img_bendi,"/uploadfiles"));//在grabimg函数中$img被加了zzcmsroo。这里要去掉
+	if($img_bendi):$msg=$msg."远程图片：".$value."已保存为本地图片：".$img_bendi."<br/>";else:$msg=$msg."远程图片：".$value."保存失败<br/>";endif;
+	$img_bendi=substr($img_bendi,strpos($img_bendi,"/uploadfiles"));//在grabimg函数中$img被加了zzcmsroo这里要去掉
 	$content=str_replace($value,$img_bendi,$content);//替换内容中的远程图片为本地图片
 	}
 }
 }
 //---end
-$img=trim($_POST["img"]);
 if ($img==''){//放到内容下面，避免多保存一张远程图片
-$img=getimgincontent($content);
+$img=getimgincontent(stripfxg($content,true));
+$img=getimg2($img);
 }
 
 if ($img<>''){
@@ -65,11 +62,9 @@ if ($img<>''){
 	makesmallimg($img);//同grabimg一样，函数里加了zzcmsroot
 	}	
 }
-$keywords=trim($_POST["keywords"]);
-if ($keywords=="" ){
-$keywords=$title;
-}
-$description=trim($_POST["description"]);
+
+if ($keywords=="" ){$keywords=$title;}
+
 if (isset($_POST["elite"])){
 $elite=$_POST["elite"];
 	if ($elite>255){
@@ -80,16 +75,11 @@ $elite=$_POST["elite"];
 }else{
 $elite=0;
 }
+checkid($elite,1);
+$jifen_info=$_POST["jifen"];
 
-$groupid=trim($_POST["groupid"]);
-$jifen_info=trim($_POST["jifen"]);
-
-if(!empty($_POST['passed'])){
-$passed=$_POST['passed'][0];
-}else{
-$passed=0;
-}
-
+$passed = isset($_POST['passed'])?$_POST['passed']:0;
+checkid($passed,1);
 if ($_REQUEST["action"]=="add"){
 //判断是不是重复信息,为了修改信息时不提示这段代码要放到添加信息的地方
 //$sql="select title,editor from zzcms_zx where title='".$title."'";
@@ -100,21 +90,14 @@ if ($_REQUEST["action"]=="add"){
 //}
 
 $isok=query("Insert into zzcms_zx(bigclassid,bigclassname,smallclassid,smallclassname,title,link,laiyuan,keywords,description,content,img,groupid,jifen,elite,passed,sendtime) values('$bigclassid','$bigclassname','$smallclassid','$smallclassname','$title','$link','$laiyuan','$keywords','$description','$content','$img','$groupid','$jifen_info','$elite','$passed','".date('Y-m-d H:i:s')."')");  
-
-$id=insert_id();
-		
+$id=insert_id();		
 }elseif ($_REQUEST["action"]=="modify"){
-$id=$_POST["id"];
 $isok=query("update zzcms_zx set bigclassid='$bigclassid',bigclassname='$bigclassname',smallclassid='$smallclassid',smallclassname='$smallclassname',title='$title',link='$link',laiyuan='$laiyuan',keywords='$keywords',description='$description',content='$content',img='$img',groupid='$groupid',jifen='$jifen_info',sendtime='".date('Y-m-d H:i:s')."',elite='$elite',passed='$passed' where id='$id'");	
 }
-
 setcookie("zxbigclassid",$bigclassid);
 setcookie("zxsmallclassid",$smallclassid);
 ?>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
+<br/>
 <table width="500" border="0" align="center" cellpadding="0" cellspacing="0">
   <tr> 
     <td align="center" class="left-title"><?php
@@ -152,7 +135,7 @@ setcookie("zxsmallclassid",$smallclassid);
     <td><table width="100%" border="0" cellspacing="0" cellpadding="0">
         <tr>
           <td width="25%" align="center" class="border"><a href="zx_add.php">继续添加</a></td>
-          <td width="25%" align="center" class="border"><a href="zx_manage.php?b=<?php echo $_REQUEST["bigclassid"]?>&page=<?php echo $page?>">返回</a></td>
+          <td width="25%" align="center" class="border"><a href="zx_manage.php?b=<?php echo $bigclassid?>&page=<?php echo $page?>">返回</a></td>
           <td width="25%" align="center" class="border"><a href="zx_modify.php?id=<?php echo $id?>">修改</a></td>
           <td width="25%" align="center" class="border"><a href="<?php echo getpageurl("zx",$id)?>" target="_blank">预览</a></td>
         </tr>
@@ -163,7 +146,6 @@ setcookie("zxsmallclassid",$smallclassid);
 <?php 
 if ($msg<>'' ){echo "<div class='border'>" .$msg."</div>";}
 echo "<script language=javascript>document.getElementById('loading').style.display='none';</script>";
-
 ?>
 </body>
 </html>

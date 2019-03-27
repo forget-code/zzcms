@@ -13,17 +13,8 @@ $f_array=explode("\n",$fcontent) ;
 <title></title>
 <link href="style/<?php echo siteskin_usercenter?>/style.css" rel="stylesheet" type="text/css">
 <?php
-if (isset($_POST["page"])){//返回列表页用
-$page=$_POST["page"];
-}else{
-$page=1;
-}
-
-$classname=trim($_POST["classname"]);
-$title=trim($_POST["title"]);
-$link=trim($_POST["link"]);
-$img=trim($_POST["img"]);
-$editor=trim($_POST["editor"]);
+$page=isset($_POST["page"])?$_POST["page"]:1;
+checkid($page);
 
 if ($_POST["action"]=="add"){
 $isok=query("Insert into zzcms_ztad(classname,title,link,img,editor,passed) values('$classname','$title','$link','$img','$editor',1)");  

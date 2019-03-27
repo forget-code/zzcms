@@ -1,7 +1,8 @@
 <?php
 if(@$step==5){
 if ($_POST['token'] != $_SESSION['token'] || $_POST['token']=='' ){    
-showmsg('非法提交','back');
+echo "<script>alert('非法提交')</script>";
+exit();
 }else{
 unset($_SESSION['token']);
 }
@@ -16,26 +17,24 @@ $admin=trim($_POST["admin"]);
 $adminpwdtrue=trim($_POST["adminpwd"]);
 $adminpwd=md5(trim($_POST["adminpwd"]));
 
-$conn=mysql_connect($db_host,$db_user,$db_pass,$db_name);
-mysql_query("CREATE DATABASE $db_name");
-mysql_query("SET NAMES 'utf8'",$conn); 
-mysql_select_db($db_name,$conn);
+$conn=connect($db_host,$db_user,$db_pass,$db_name,$db_port);
+query("CREATE DATABASE $db_name");
+query("SET NAMES 'utf8'"); 
+select_db($db_name);
 
 $get_sqls =file_get_contents("data.sql");
 $sqls = explode(";",$get_sqls);
 $cnt = count($sqls);
 for($i=0;$i<$cnt;$i++){
    $sql = $sqls[$i];
-   $result =mysql_query($sql);
+   $result =query($sql);
    if($result){
        echo "成功执行第:".$i."个查询<br>";
-   }
-   else
-    {
-       echo "导入失败:".mysql_error();
+   }else{
+       echo "导入失败:".mysqli_error();
    }
 }
-mysql_query("replace into `zzcms_admin` values('1','1','$admin','$adminpwd','0','','2013-04-12 08:46:54','','2013-04-11 15:49:15');");//写入管理员帐号
+query("replace into `zzcms_admin` values('1','1','$admin','$adminpwd','0','','2013-04-12 08:46:54','','2013-04-11 15:49:15');");//写入管理员帐号
 ?>
 </div>
 <form action="index.php" method="post" id="myform">

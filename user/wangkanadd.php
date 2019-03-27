@@ -43,19 +43,18 @@ include("left.php");
 $tablename="zzcms_wangkan";//checkaddinfo中用
 include("checkaddinfo.php");
 ?>
-<form action="wangkansave.php" method="post" name="myform" id="myform" onSubmit="return CheckForm();">
-              
+<form action="wangkansave.php" method="post" name="myform" id="myform" onSubmit="return CheckForm();">       
         <table width="100%" border="0" cellpadding="3" cellspacing="1">
           <tr> 
             <td width="15%" align="right" class="border2"><?php echo $f_array[3]?> </td>
             <td width="85%" class="border2"> <select name="bigclassid" id="bigclassid" class="biaodan">
                 <option value="" selected="selected"><?php echo $f_array[4]?></option>
                 <?php  
-		$sql="select * from zzcms_wangkanclass";
+		$sql="select classid,classname from zzcms_wangkanclass";
 		$rs=query($sql);
 		while($row= fetch_array($rs)){
 			?>
-                <option value="<?php echo $row["bigclassid"]?>" ><?php echo $row["bigclassname"]?></option>
+                <option value="<?php echo $row["classid"]?>" ><?php echo $row["classname"]?></option>
                 <?php
 		  }
 		  ?>
@@ -78,7 +77,7 @@ include("checkaddinfo.php");
           <tr> 
             <td align="right" class="border">&nbsp;</td>
             <td class="border"> <input name="Submit" type="submit" class="buttons" value="<?php echo $f_array[9]?>"> 
-              <input name="action" type="hidden" id="action3" value="add"></td>
+              <input name="action" type="hidden"  value="add"></td>
           </tr>
         </table>
 </form>
@@ -87,7 +86,6 @@ include("checkaddinfo.php");
 </div>
 </div>
 <?php
-
 unset ($f_array);
 ?>
 </body>

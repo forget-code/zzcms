@@ -19,11 +19,11 @@ switch ($channel){
 	break;
 	case "special":$sql="select classid,classname from zzcms_specialclass where isshowininfo=1 and parentid=0 order by xuhao asc";
 	break;
-	case "job":$sql="select classname,classid from zzcms_jobclass where parentid='0' order by xuhao";
+	case "job":$sql="select classname,classid from zzcms_jobclass where parentid=0 order by xuhao";
 	break;
 	case "company":$sql="select classid,classname from zzcms_userclass order by xuhao asc";
 	break;
-	default:$sql="select classname,classid,classzm from zzcms_zsclass where parentid='A' order by xuhao";
+	default:$sql="select classname,classid,classzm from zzcms_zsclass where parentid=0 order by xuhao";
 	}
 $rs=query($sql);
 $row=num_rows($rs);

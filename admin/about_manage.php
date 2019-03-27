@@ -9,19 +9,12 @@ include("admin.php");
 </head>
 <body>
 <?php
-if (isset($_REQUEST["action"])){
-$action=$_REQUEST["action"];
-}else{
-$action="";
-}
-if (isset($_REQUEST["id"])){
-$id=$_REQUEST["id"];
-}else{
-$id="";
-}
+$action=isset($_GET["action"])?$_GET["action"]:'';
+$id=isset($_POST["id"])?$_POST["id"]:0;
+checkid($id,1);
 if ($action=="del"){
 checkadminisdo("bottomlink");
-	if ($id<>"" ){
+	if ($id<>0){
 	query("delete from zzcms_about where id='$id'") ;
 	}
 	echo "<script>location.href='about_manage.php'</script>";

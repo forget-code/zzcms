@@ -33,6 +33,7 @@ include("left.php");
 <?php
 if( isset($_GET["page"]) && $_GET["page"]!="") {
     $page=$_GET['page'];
+	checkid($page,0);
 }else{
     $page=1;
 }

@@ -11,8 +11,8 @@ include("admin.php");
 <body>
 <?php
 checkadminisdo("siteconfig");
-$pagename=trim($_POST["pagename"]);
-$tablename=trim($_POST["tablename"]);
+$pagename=$_POST["pagename"];
+$tablename=$_POST["tablename"];
 $id="";
 if(!empty($_POST['id'])){
     for($i=0; $i<count($_POST['id']);$i++){
@@ -108,7 +108,7 @@ for($i=0; $i<count($_POST['id']);$i++){
 	$id=$ids[0];
 	$classzm=$ids[1];
 	query("delete from zzcms_dl where id ='$id'");
-	query("delete from zzcms_dl_".$classzm." where dlid ='$id'");
+	//query("delete from zzcms_dl_".$classzm." where dlid ='$id'");
 }
 echo "<script>location.href='".$pagename."'</script>"; 
 break;

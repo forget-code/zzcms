@@ -11,7 +11,12 @@ include("../inc/fy.php");
 <?php
 checkadminisdo("wangkan");
 $action=isset($_REQUEST["action"])?$_REQUEST["action"]:'';
-$page=isset($_GET["page"])?$_GET["page"]:1;
+if( isset($_REQUEST["page"]) && $_REQUEST["page"]!="") {
+    $page=$_REQUEST['page'];
+	checkid($page,0);
+}else{
+    $page=1;
+}
 $shenhe=isset($_REQUEST["shenhe"])?$_REQUEST["shenhe"]:'';
 
 $keyword=isset($_REQUEST["keyword"])?$_REQUEST["keyword"]:'';
@@ -65,14 +70,14 @@ echo "<script>location.href='?keyword=".$keyword."&page=".$page."'</script>";
       
     <td class="border2"> 
       <?php	
-$sql="select * from zzcms_wangkanclass order by xuhao";
+$sql="select classid,classname from zzcms_wangkanclass order by xuhao";
 $rs = query($sql); 
 while($row = fetch_array($rs)){
-echo "<a href=?b=".$row['bigclassid'].">";  
-	if ($row["bigclassid"]==$b) {
-	echo "<b>".$row["bigclassname"]."</b>";
+echo "<a href=?b=".$row['classid'].">";  
+	if ($row["classid"]==$b) {
+	echo "<b>".$row["classname"]."</b>";
 	}else{
-	echo $row["bigclassname"];
+	echo $row["classname"];
 	}
 	echo "</a> | ";  
  }
@@ -104,7 +109,7 @@ if ( $b<>"" ) {
    $sql2=$sql2." and bigclassid=".$b."";
 }
 
-$rs = query($sql.$sql2,$conn); 
+$rs =query($sql.$sql2); 
 $row = fetch_array($rs);
 $totlenum = $row['total']; 
 $totlepage=ceil($totlenum/$page_size);
@@ -112,7 +117,7 @@ $totlepage=ceil($totlenum/$page_size);
 $sql="select * from zzcms_wangkan where id<>0 ";
 $sql=$sql.$sql2;
 $sql=$sql . " order by id desc limit $offset,$page_size";
-$rs = query($sql,$conn); 
+$rs = query($sql); 
 if(!$totlenum){
 echo "暂无信息";
 }else{
@@ -150,9 +155,9 @@ while($row = fetch_array($rs)){
       <td align="center" >
 	  <?php
 	  echo "<a href=?b=".$row['bigclassid'].">"; 
-	  $rsn=query("select bigclassname from zzcms_wangkanclass where bigclassid='".$row["bigclassid"]."'");
+	  $rsn=query("select classname from zzcms_wangkanclass where classid='".$row["bigclassid"]."'");
 $rown=fetch_array($rsn);
-echo $rown["bigclassname"];
+echo $rown["classname"];
 echo "</a>";
 ?></td>
       <td align="center" > <?php if ( $row["passed"]==0 ) { echo"<font color=red>未审核</font>";}else{ echo"已审核";}?> <br>
@@ -179,7 +184,6 @@ echo "</a>";
 <div class="border center"><?php echo showpage_admin()?></div>
 <?php
 }
-
 ?>
 </body>
 </html>

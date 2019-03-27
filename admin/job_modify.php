@@ -29,12 +29,10 @@ if (document.myform.jobname.value==""){
 <div class="admintitle">修改招聘信息</div>
 <form action="job_save.php" method="post" name="myform" id="myform" onSubmit="return CheckForm();">
 <?php
-$id=$_REQUEST["id"];
-if ($id<>"") {
-checkid($id);
-}else{
-$id=0;
-}
+$page = isset($_GET['page'])?$_GET['page']:1;
+checkid($page);
+$id = isset($_GET['id'])?$_GET['id']:0;
+checkid($id,1);
 $sqlzs="select * from zzcms_job where id='$id'";
 $rszs=query($sqlzs);
 $rowzs=fetch_array($rszs);
@@ -44,7 +42,7 @@ $rowzs=fetch_array($rszs);
       <td width="18%" align="right" class="border"> 类别 <font color="#FF0000">*</font></td>
       <td width="82%" class="border"> 
         <?php
-$sql = "select * from zzcms_jobclass where parentid<>'0' order by xuhao asc";
+$sql = "select classid,parentid,classname from zzcms_jobclass where parentid<>0 order by xuhao asc";
 $rs=query($sql);
 ?>
         <script language = "JavaScript" type="text/JavaScript">
@@ -76,7 +74,7 @@ function changelocation(locationid)
     }</script> <select name="bigclassid" onChange="changelocation(document.myform.bigclassid.options[document.myform.bigclassid.selectedIndex].value)" size="1">
           <option value="" selected="selected">请选择大类别</option>
           <?php
-	$sql = "select * from zzcms_jobclass where  parentid='0' order by xuhao asc";
+	$sql = "select classid,classname from zzcms_jobclass where  parentid='0' order by xuhao asc";
     $rs=query($sql);
 	while($row = fetch_array($rs)){
 	?>
@@ -87,7 +85,7 @@ function changelocation(locationid)
         </select> <select name="smallclassid">
           <option value="0">不指定小类</option>
           <?php
-$sql="select * from zzcms_jobclass where parentid='" .$rowzs["bigclassid"]."' order by xuhao asc";
+$sql="select classid,classname from zzcms_jobclass where parentid='" .$rowzs["bigclassid"]."' order by xuhao asc";
 $rs=query($sql);
 while($row = fetch_array($rs)){
 ?>
@@ -104,7 +102,7 @@ while($row = fetch_array($rs)){
 	 
     <tr> 
       <td align="right" class="border">说明：</td>
-      <td class="border"> <textarea name="sm" cols="60" rows="3" id="sm"><?php echo $rowzs["sm"]?></textarea></td>
+      <td class="border"> <textarea name="sm" cols="60" rows="5" id="sm"><?php echo $rowzs["sm"]?></textarea></td>
     </tr>
     <tr> 
       <td align="right" class="border">发布人：</td>
@@ -113,7 +111,7 @@ while($row = fetch_array($rs)){
     </tr>
     <tr> 
       <td align="right" class="border">审核：</td>
-      <td class="border"><input name="passed[]" type="checkbox" id="passed[]" value="1"  <?php if ($rowzs["passed"]==1) { echo "checked";}?>>
+      <td class="border"><input name="passed" type="checkbox" id="passed" value="1"  <?php if ($rowzs["passed"]==1) { echo "checked";}?>>
         （选中为通过审核） </td>
     </tr>
     
@@ -121,7 +119,7 @@ while($row = fetch_array($rs)){
       <td align="center" class="border">&nbsp;</td>
       <td class="border"><input name="cpid" type="hidden" id="cpid" value="<?php echo $rowzs["id"]?>"> 
         <input name="sendtime" type="hidden" id="sendtime" value="<?php echo $rowzs["sendtime"]?>"> 
-        <input name="page" type="hidden" id="page" value="<?php echo $_GET["page"]?>"> 
+        <input name="page" type="hidden" id="page" value="<?php echo $page?>"> 
         <input type="submit" name="Submit" value="修 改"></td>
     </tr>
   </table>

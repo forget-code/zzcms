@@ -19,7 +19,7 @@ if (!$row){
 echo showmsg("不存在相关信息！");
 }else{
 query("update zzcms_baojia set hit=hit+1 where id='$dlid'");
-$bigclasszm=$row["classzm"];
+$bigclassid=$row["classid"];
 $cp=$row["cp"];
 $province=$row["province"];
 $city=$row["city"];
@@ -31,15 +31,15 @@ $truename=$row["truename"];
 $address=$row["address"];
 $tel=$row["tel"];
 
-
-$rs=query("select classname from zzcms_zsclass where classzm='".$bigclasszm."'");
+$rs=query("select classname,classzm from zzcms_zsclass where classid='".$bigclassid."'");
 $row=fetch_array($rs);
 if ($row){
 $bigclassname=$row["classname"];
+$bigclasszm=$row["classzm"];
 }else{
 $bigclassname="大类已删除";
+$bigclasszm='###';
 }
-
 
 $pagetitle=$cp."-".baojiashowtitle;
 $pagekeywords=$cp."-".baojiashowkeyword;

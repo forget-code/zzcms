@@ -199,7 +199,7 @@ $content=str_replace("'","",stripfxg(trim($_POST["content"])));
 $img=getimgincontent($content);
 
 if ($title<>''){
-$isok=query("Insert into zzcms_ask(bigclassid,bigclassname,smallclassid,smallclassname,title,content,img,jifen,editor,passed,sendtime) values('$bigclassid','$bigclassname','$smallclassid','$smallclassname','$title','$content','$img','0','未登陆用户',1,'".date('Y-m-d H:i:s')."')");  
+$isok=query("Insert into zzcms_ask(bigclassid,bigclassname,smallclassid,smallclassname,title,content,img,jifen,editor,passed,sendtime) values('$bigclassid','$bigclassname','$smallclassid','$smallclassname','$title','$content','$img','0','未登陆用户',0,'".date('Y-m-d H:i:s')."')");  
 }  
 if ($isok){
 echo showmsg('发布成功，审核后显示。');

@@ -3,7 +3,7 @@ include("../inc/conn.php");
 include("../inc/top2.php");
 include("../inc/bottom.php");
 $sql = "select * from zzcms_usergroup";
-$rs = query($sql,$conn); 
+$rs = query($sql); 
 //$row= fetch_array($rs);
 $row= num_rows($rs);//返回记录数
 if(!$row){

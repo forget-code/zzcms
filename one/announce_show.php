@@ -8,8 +8,8 @@ include("../inc/conn.php");
 <meta http-equiv="X-UA-Compatible" content="IE=EmulateIE7" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0" />
 <?php
-if (isset($_REQUEST["id"])){
-$id=$_REQUEST["id"];
+if (isset($_GET["id"])){
+$id=$_GET["id"];
 checkid($id);
 }else{
 $id=0;
@@ -28,7 +28,7 @@ $row=fetch_array($rs);
 <body>
 <div class="box">
 <div id="BoxInfoTitle" style="text-align:center"><?php echo $row["title"]?></div>
-<div id="fontzoom"><?php echo $row["content"]?></div>
+<div id="fontzoom"><?php echo stripfxg($row["content"],true)?></div>
 <div style="text-align:right"><?php echo date("Y-m-d",strtotime($row['sendtime']))?></div>
 </div>
 <div style="text-align:center">

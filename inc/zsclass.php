@@ -21,13 +21,14 @@ if (cache_update_time!=0 && file_exists($fp) && time()-filemtime($fp)<3600*24*ca
 	fclose($f);
 	return $fcontent;
 }else{
-$sql="select * from zzcms_zsclass where parentid='A' and isshow=1 order by xuhao asc limit 0,$num_b";
+$sql="select * from zzcms_zsclass where parentid=0 and isshow=1 order by xuhao asc limit 0,$num_b";
 $rs=query($sql);
 $row=num_rows($rs);
 if ($row){
 $n=1;
 $str="";
 while ($row=fetch_array($rs)){
+
 if ($style==1){
 $str=$str."<div class='zsclass' onMouseOver=\"showfilter2(zsLayer$n)\" onMouseOut=\"showfilter2(zsLayer$n)\">\n";
 $str=$str."<label>\n";
@@ -39,7 +40,7 @@ $str=$str. "<h2>";
 if ($row["img"]<>'0' && $row["img"]<>''){$str=$str. "<img src=".str_replace('{#siteskin}',$siteskin,$row["img"]).">&nbsp;";}
 $str=$str. "<a href=".getpageurl2("zs",$row["classzm"],'').">".cutstr($row["classname"],$long_b)."</a>";
 	if($showcount=='yes'){
-	$rsnumb=query("select count(*) as total from zzcms_main where bigclasszm='".$row["classzm"]."' ");//统计所属大类下的信息数
+	$rsnumb=query("select count(*) as total from zzcms_main where bigclassid='".$row["classid"]."' ");//统计所属大类下的信息数
 	$rown = fetch_array($rsnumb);
 	$totlenum = $rown['total'];
 	$str=$str. "<span>(共 <b>" .$totlenum. "</b> 条)</span>" ;
@@ -51,7 +52,7 @@ if ($style==1){//--------------style为1时左侧大类下显示小类
 	//$str=$str.showad(2,4,"no","yes","no",0,0,5,$row["classname"],"分类招商间","no");//两种方法都可以
 	$str=$str.adshow("index_zsclass",$row["classname"],"分类招商间");//在广告标签中加个名为index_zsclass的广告,这种布局更灵活，缺点：得加个自定标签，麻烦点
 	}else{
-	$rsn=query("select * from zzcms_zsclass where parentid='".$row["classzm"]."' order by xuhao asc limit 0,3");
+	$rsn=query("select * from zzcms_zsclass where parentid='".$row["classid"]."' order by xuhao asc limit 0,3");
 	$rown=num_rows($rsn);
 		$nn=1;
 		if ($rown){
@@ -71,7 +72,7 @@ $str=$str. $row["classname"]."</div>\n";//右边的小类框上面显示大类�
 }				//--------------end为1时大类下显示小类
 	
 $nn=1;
-$rsn=query("select * from zzcms_zsclass where parentid='".$row["classzm"]."' order by xuhao asc limit 0,$num_s");
+$rsn=query("select * from zzcms_zsclass where parentid='".$row["classid"]."' order by xuhao asc limit 0,$num_s");
 $rown=num_rows($rsn);
 	if ($rown){
 		while ($rown=fetch_array($rsn)){
@@ -81,9 +82,9 @@ $rown=num_rows($rsn);
 			$str=$str. "<div class='zsclass_cp'>";
 			$nnn=1;
 			if(zsclass_isradio=='No'){
-			$sqlcp="select id,proname from zzcms_main where bigclasszm='".$row["classzm"]."' and smallclasszm like '%".$rown["classzm"]."%' order by sendtime desc limit 0,$num_p";
+			$sqlcp="select id,proname from zzcms_main where bigclassid='".$row["classid"]."' and smallclassid in (".$rown['classid'].") order by sendtime desc limit 0,$num_p";
 			}else{
-			$sqlcp="select id,proname from zzcms_main where bigclasszm='".$row["classzm"]."' and smallclasszm='".$rown["classzm"]."' order by sendtime desc limit 0,$num_p";
+			$sqlcp="select id,proname from zzcms_main where bigclassid='".$row["classid"]."' and smallclassid='".$rown["classid"]."' order by sendtime desc limit 0,$num_p";
 			}
 			$rscp=query($sqlcp);
 			$rowcp=num_rows($rscp);

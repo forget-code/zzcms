@@ -32,7 +32,7 @@ if($flv<>""){
 	//$gsjj=$gsjj. "<img id='gsjjimg' src='".siteurl.$img."' onload='javascript:if(this.width>300) this.width=300;' align='left'>" ;		
 }
 
-$gsjj=$gsjj. $content;
+$gsjj=$gsjj. stripfxg($content,true);
 //$gsjj=$gsjj. nl2br($content);//²»ÓÃ±à¼©Æ÷Ê±
 $gsjj=$gsjj. "</td>";
 $gsjj=$gsjj. "</tr>";

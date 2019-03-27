@@ -55,7 +55,7 @@ $ErrMsg=$ErrMsg."<li>您所在的用户组没有打印".channeldl."信息的权�
 }
 
 //判断查看代理条数
-$rslookedlsnumber=query( "select looked_dls_number_oneday from zzcms_usergroup where groupid=(select groupid from zzcms_user where username='".$username."')");
+$rslookedlsnumber=query("select looked_dls_number_oneday from zzcms_usergroup where groupid=(select groupid from zzcms_user where username='".$username."')");
 $rown=fetch_array($rslookedlsnumber);
 $lookedlsnumber=$rown["looked_dls_number_oneday"];
 
@@ -88,7 +88,7 @@ if (strpos($id,",")>0){
 	$sql="select * from zzcms_dl where passed=1  and id=".$id." order by id desc";
 }
 	
-$rs=query($sql,$conn);
+$rs=query($sql);
 echo "<div style=text-align:center><a href='javascript:window.print()'><img src='/image/ico-dy.gif' width='18' height='17' border='0'>打印</a></div>";
 $table="<table width=100% cellspacing=0 cellpadding=0 border=0>";
 $table=$table."<tr>";

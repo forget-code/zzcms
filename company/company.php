@@ -16,11 +16,7 @@ $page_size=$_REQUEST["page_size"];
 checkid($page_size);
 setcookie("page_size_company",$page_size,time()+3600*24*360);
 }else{
-	if (isset($_COOKIE["page_size_company"])){
-	$page_size=$_COOKIE["page_size_company"];
-	}else{
-	$page_size=pagesize_qt;
-	}
+$page_size=isset($_COOKIE['page_size_company'])?$_COOKIE['page_size_company']:pagesize_qt;
 }
 
 $b=0;
@@ -55,18 +51,12 @@ $smallclassname=$row["classname"];
 }
 }
 
-if (isset($_REQUEST["province"])){
-$province=$_REQUEST["province"];
-}else{
-$province="";
-}
-
-$pagetitle=$province.companylisttitle.$bigclassname.sitename;
-$pagekeyword=$province.$bigclassname.companylistkeyword;
-$pagedescription=$province.$bigclassname.companylistdescription;
-if( isset($_GET["page"]) && $_GET["page"]!="") 
-{
+$pagetitle=companylisttitle.$bigclassname.sitename;
+$pagekeyword=$bigclassname.companylistkeyword;
+$pagedescription=$bigclassname.companylistdescription;
+if( isset($_GET["page"]) && $_GET["page"]!="") {
     $page=$_GET['page'];
+	checkid($page,0);
 }else{
     $page=1;
 }
@@ -86,7 +76,7 @@ $sql2=$sql2." and bigclassid=".$b." ";
 if ($s<>0){
 $sql2=$sql2." and smallclassid=".$s." ";
 }
-$rs = query($sql.$sql2); 
+$rs =query($sql.$sql2); 
 $row = fetch_array($rs);
 $totlenum = $row['total'];
 $offset=($page-1)*$page_size;//$page_size在上面被设为COOKIESS
@@ -144,10 +134,7 @@ $i=$i+1;
 }
 $strout=str_replace("{loop}".$clist."{/loop}",$clist2,$strout) ;
 $strout=str_replace("{#fenyei}",showpage2("company"),$strout) ;
-
 }
-
-
 $strout=str_replace("{#siteskin}",$siteskin,$strout) ;
 $strout=str_replace("{#sitename}",sitename,$strout) ;
 $strout=str_replace("{#pagetitle}",$pagetitle,$strout) ;

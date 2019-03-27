@@ -25,12 +25,10 @@ if (document.myform.title.value==""){
 <body>
 <?php
 checkadminisdo("wangkan");
-$id=$_REQUEST["id"];
-if ($id<>""){
-checkid($id);
-}else{
-$id=0;
-}
+$page = isset($_GET['page'])?$_GET['page']:1;
+checkid($page);
+$id = isset($_GET['id'])?$_GET['id']:0;
+checkid($id,1);
 ?>
 <div class="admintitle">修改网刊信息</div>
 <?php
@@ -44,7 +42,7 @@ $row=fetch_array($rs);
       <td align="right" class="border">所属类别：</td>
       <td class="border"> 
 	   <?php
-		$sqln = "select * from zzcms_wangkanclass order by xuhao asc";
+		$sqln = "select classid,classname from zzcms_wangkanclass order by xuhao asc";
 	    $rsn=query($sqln);
         $rown=num_rows($rsn);
 		if (!$rown){
@@ -52,12 +50,12 @@ $row=fetch_array($rs);
 		}else{
 		?>
 		<select name="bigclassid" id="bigclassid">
-                <option value="" selected="selected">请选择类别</option>
-                <?php
+        <option value="" selected="selected">请选择类别</option>
+         <?php
 		while($rown= fetch_array($rsn)){
 			?>
-                <option value="<?php echo $rown["bigclassid"]?>" <?php if ($rown["bigclassid"]==$row["bigclassid"]) { echo "selected";}?>><?php echo $rown["bigclassname"]?></option>
-                <?php
+        <option value="<?php echo $rown["classid"]?>" <?php if ($rown["classid"]==$row["bigclassid"]) { echo "selected";}?>><?php echo $rown["classname"]?></option>
+          <?php
 		  }
 		  ?>
               </select>
@@ -71,10 +69,10 @@ $row=fetch_array($rs);
     </tr>
     <tr> 
       <td width="100" align="right" class="border">内容：</td>
-      <td class="border"><textarea name="content" id="content" ><?php echo $row["content"]?></textarea> 
+      <td class="border"><textarea name="content" id="content" ><?php echo stripfxg($row["content"])?></textarea> 
        	<script type="text/javascript">CKEDITOR.replace('content');	</script>
         <input name="id" type="hidden" id="id" value="<?php echo $row["id"]?>">
-        <input name="page" type="hidden" id="page3" value="<?php echo $_REQUEST["page"]?>"></td>
+        <input name="page" type="hidden" id="page" value="<?php $page?>"></td>
     </tr>
     <tr> 
       <td align="right" class="border">审核：</td>
@@ -91,7 +89,6 @@ $row=fetch_array($rs);
       <td class="border"><input name="Submit" type="submit" id="Submit" value="修 改" ></td>
     </tr>
   </table>
-</form>
-	  
+</form>  
 </body>
 </html>

@@ -12,11 +12,13 @@ include("../inc/fy.php");
 checkadminisdo("dl");
 
 $action=isset($_REQUEST["action"])?$_REQUEST["action"]:'';
-$page=isset($_GET["page"])?$_GET["page"]:1;
+$page=isset($page)?$page:1;
+checkid($page);
 $shenhe=isset($_REQUEST["shenhe"])?$_REQUEST["shenhe"]:'';
 $keyword=isset($_REQUEST["keyword"])?$_REQUEST["keyword"]:'';
 $kind=isset($_REQUEST["kind"])?$_REQUEST["kind"]:'';
-$b=isset($_REQUEST["b"])?$_REQUEST["b"]:'';
+$b=isset($_REQUEST["b"])?$_REQUEST["b"]:0;
+checkid($b);
 $showwhat=isset($_REQUEST["showwhat"])?$_REQUEST["showwhat"]:'';
 
 $isread=isset($_REQUEST["isread"])?$_REQUEST["isread"]:'';
@@ -27,19 +29,16 @@ if(!empty($_POST['id'])){
     $ids=$_POST['id'][$i];
 	$ids=explode("|",$ids);
 	$id=$ids[0];
-	$classzm=$ids[1];
-	
+	$classid=$ids[1];
+	checkid($id);
 	$sql="select passed from zzcms_dl where id ='$id'";
 	$rs = query($sql); 
 	$row = fetch_array($rs);
 	if ($row['passed']=='0'){
 	query("update zzcms_dl set passed=1 where id ='$id'");
-	query("update zzcms_dl_".$classzm." set passed=1 where dlid ='$id'");
     }else{
 	query("update zzcms_dl set passed=0 where id ='$id'");
-	query("update zzcms_dl_".$classzm." set passed=0 where dlid ='$id'");
 	}
-	
 	}	
 }else{
 echo "<script lanage='javascript'>alert('操作失败！至少要选中一条信息。');history.back()</script>";
@@ -71,35 +70,33 @@ echo "<script>location.href='?keyword=".$keyword."&page=".$page."'</script>";
 </table>
   <div class="border">
   <?php	
-$sql="select * from zzcms_zsclass where parentid='A' order by xuhao";
-$rs = query($sql); 
-$row = num_rows($rs);
-if (!$row){
-echo '暂无分类';
-}else{
+$str='';
+$rs = query("select classid,classname from zzcms_zsclass where parentid=0 order by xuhao"); 
+if ($rs){//当不出错时
 while($row = fetch_array($rs)){
-echo "<a href=?b=".$row['classzm'].">";  
-	if ($row["classzm"]==$b) {
-	echo "<b>".$row["classname"]."</b>";
+	$str=$str. "<a href=?b=".$row['classid'].">";  
+	if ($row["classid"]==$b) {
+	$str=$str."<b>".$row["classname"]."</b>";
 	}else{
-	echo $row["classname"];
+	$str=$str.$row["classname"];
 	}
-	echo "</a> | ";  
- }
+	$str=$str."</a> | ";  
+}
 } 
+if ($str==""){echo '暂无分类';}else{echo $str;}
  ?>
   </div>
  
 <?php
 $page_size=pagesize_ht;  //每页多少条数据
 $offset=($page-1)*$page_size;
-$sql="select count(*) as total from zzcms_dl where id<>0 ";
+
 $sql2='';
 if ($shenhe=="no") {  		
 $sql2=$sql2." and passed=0 ";
 }
 if ($b<>"") {
-$sql2=$sql2." and classzm='".$b."' ";
+$sql2=$sql2." and classid='".$b."'";
 }
 if ($isread=="no") {
 $sql2=$sql2." and saver<>'' and looked=0";
@@ -122,8 +119,8 @@ if ($keyword<>"") {
 	$sql2=$sql2. " and cp like '%".$keyword."%'";
 	}
 }
-
-$rs = query($sql.$sql2); 
+$sql="select count(*) as total from zzcms_dl where id<>0 ";
+$rs =query($sql.$sql2); 
 $row = fetch_array($rs);
 $totlenum = $row['total'];
 $totlepage=ceil($totlenum/$page_size);
@@ -132,7 +129,7 @@ $sql="select * from zzcms_dl where id<>0 ";
 $sql=$sql.$sql2;
 $sql=$sql . " order by id desc limit $offset,$page_size";
 //$sql=$sql." and id>=(select id from zzcms_dl order by id limit $offset,1) order by id desc limit $page_size";
-$rs = query($sql,$conn); 
+$rs = query($sql); 
 if(!$totlenum){
 echo "暂无信息";
 }else{
@@ -167,13 +164,12 @@ echo "暂无信息";
 while($row = fetch_array($rs)){
 ?>
     <tr class="bgcolor1" onMouseOver="fSetBg(this)" onMouseOut="fReBg(this)"> 
-      <td align="center"> <input name="id[]" type="checkbox"  value="<?php echo $row["id"]?>|<?php echo $row["classzm"]?>">
+      <td align="center"> <input name="id[]" type="checkbox"  value="<?php echo $row["id"]?>|<?php echo $row["classid"]?>">
      </td>
-      <td><a href="?b=<?php echo $row["classzm"]?>" >
+      <td><a href="?b=<?php echo $row["classid"]?>">
 	  <?php
-			$rsn=query("select classname from zzcms_zsclass where classzm='".$row['classzm']."'");
-			$r=num_rows($rsn);
-			if ($r){
+			$rsn=query("select classname from zzcms_zsclass where classid='".$row['classid']."'");
+			if ($rsn){
 			$r=fetch_array($rsn);
 			echo $r["classname"];
 			}
@@ -223,7 +219,6 @@ while($row = fetch_array($rs)){
 <div class="border center"><?php echo showpage_admin()?></div>
 <?php
 }
-
 ?>
 </body>
 </html>

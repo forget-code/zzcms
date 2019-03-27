@@ -8,35 +8,32 @@ include("admin.php");
 <link href="style.css" rel="stylesheet" type="text/css">
 <?php
 checkadminisdo("job");
-$cpid=trim($_POST["cpid"]);
-$bigclassid=trim($_POST["bigclassid"]);
-$smallclassid = isset($_POST['smallclassid'])?$_POST['smallclassid']:'0';
+
+$page = isset($_POST['page'])?$_POST['page']:1;//只从修改页传来的值
+checkid($page);
+$cpid = isset($_POST['cpid'])?$_POST['cpid']:0;
+checkid($cpid,1);
+$passed = isset($_POST['passed'])?$_POST['passed']:0;
+checkid($passed,1);
+
+$bigclassid = isset($_POST['bigclassid'])?$_POST['bigclassid']:0;
+$smallclassid = isset($_POST['smallclassid'])?$_POST['smallclassid']:0;
+checkid($bigclassid,1);checkid($smallclassid,1);
+
 $smallclassname="未指定小类";
-if (isset($bigclassid)){
-$rs = query("select * from zzcms_jobclass where classid='$bigclassid'"); 
+if ($bigclassid!=0){
+$rs = query("select classname from zzcms_jobclass where classid='$bigclassid'"); 
 $row= fetch_array($rs);
 $bigclassname=$row["classname"];
 }
 
 if ($smallclassid !=0){
-$rs = query("select * from zzcms_jobclass where classid='$smallclassid'"); 
+$rs = query("select classname from zzcms_jobclass where classid='$smallclassid'"); 
 $row= fetch_array($rs);
 $smallclassname=$row["classname"];
 }
 
-$jobname=trim($_POST["jobname"]);
-$sm=trim($_POST["sm"]);
-$sendtime=$_POST["sendtime"];
-$editor=trim($_POST["editor"]);
-$oldeditor=trim($_POST["oldeditor"]);
-
-if(!empty($_POST['passed'])){
-$passed=$_POST['passed'][0];
-}else{
-$passed=0;
-}
-
-query("update zzcms_job set bigclassid='$bigclassid',bigclassname='$bigclassname',smallclassid='$smallclassid',smallclassname='$smallclassname',jobname='$jobname',sm='$sm',sendtime='$sendtime' where id='$cpid'");
+query("update zzcms_job set bigclassid='$bigclassid',bigclassname='$bigclassname',smallclassid='$smallclassid',smallclassname='$smallclassname',jobname='$jobname',sm='$sm',sendtime='$sendtime',passed='$passed' where id='$cpid'");
 if ($editor<>$oldeditor) {
 $rs=query("select comane,id from zzcms_user where username='".$editor."'");
 $row = num_rows($rs);
@@ -50,8 +47,8 @@ $comane="";
 }
 query("update zzcms_job set editor='$editor',userid='$userid',comane='$comane' where id='$cpid'");
 }
-query("update zzcms_job set passed='$passed' where id='$cpid'");
-echo "<script>location.href='job_manage.php?keyword=".$_POST["editor"]."&page=".$_REQUEST["page"]."'</script>";
+
+echo "<script>location.href='job_manage.php?page=".$page."'</script>";
 ?>
 </body>
 </html>

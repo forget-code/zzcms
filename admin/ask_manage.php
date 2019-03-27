@@ -11,7 +11,12 @@ include("../inc/fy.php");
 <?php
 checkadminisdo("ask");
 $action=isset($_REQUEST["action"])?$_REQUEST["action"]:'';
-$page=isset($_GET["page"])?$_GET["page"]:1;
+if( isset($_REQUEST["page"]) && $_REQUEST["page"]!="") {
+    $page=$_REQUEST['page'];
+	checkid($page,0);
+}else{
+    $page=1;
+}
 $shenhe=isset($_REQUEST["shenhe"])?$_REQUEST["shenhe"]:'';
 
 $keyword=isset($_REQUEST["keyword"])?$_REQUEST["keyword"]:'';
@@ -66,7 +71,7 @@ echo "<script>location.href='?b=".$b."&keyword=".$keyword."&page=".$page."'</scr
     <td class="border2">
  
     <?php	
-$sql="select * from zzcms_askclass where parentid=0 order by xuhao";
+$sql="select classid,classname from zzcms_askclass where parentid=0 order by xuhao";
 $rs = query($sql); 
 while($row = fetch_array($rs)){
 echo "<a href=?b=".$row['classid'].">";  
@@ -110,7 +115,7 @@ if ($keyword<>"") {
 	}
 }
 
-$rs = query($sql.$sql2,$conn); 
+$rs =query($sql.$sql2); 
 $row = fetch_array($rs);
 $totlenum = $row['total'];  
 $totlepage=ceil($totlenum/$page_size);
@@ -118,7 +123,7 @@ $totlepage=ceil($totlenum/$page_size);
 $sql="select * from zzcms_ask where id<>0 ";
 $sql=$sql.$sql2;
 $sql=$sql . " order by id desc limit $offset,$page_size";
-$rs = query($sql,$conn); 
+$rs = query($sql); 
 if(!$totlenum){
 echo "暂无信息";
 }else{
@@ -127,8 +132,7 @@ echo "暂无信息";
 <table width="100%" border="0" cellpadding="5" cellspacing="0" class="border">
     <tr> 
       <td> 
-        
-          <input name="submit4" type="submit" onClick="myform.action='?action=pass'" value="【取消/审核】选中的信息">
+        <input name="submit4" type="submit" onClick="myform.action='?action=pass'" value="【取消/审核】选中的信息">
         <input name="submit42" type="submit" onClick="myform.action='del.php';myform.target='_self';return ConfirmDel()" value="删除选中的信息"> 
         <input name="pagename" type="hidden"  value="ask_manage.php?b=<?php echo $b?>&shenhe=<?php echo $shenhe?>&page=<?php echo $page ?>"> 
         <input name="tablename" type="hidden"  value="zzcms_ask"> </td>
@@ -160,7 +164,7 @@ while($row = fetch_array($rs)){
 <?php if ($row["elite"]<>0) { echo"<font color=red>被置顶(".$row["elite"].")</font>";}?> </td>
       <td align="center">
 	    <?php 
-			  $sqln="select * from zzcms_answer where about=".$row["id"]." and passed=1 ";
+$sqln="select * from zzcms_answer where about=".$row["id"]." and passed=1 ";
 $rsn=query($sqln);
 $rown=num_rows($rsn);
 echo $rown." 回答" ;
@@ -169,7 +173,7 @@ echo $rown." 回答" ;
 	  </td>
       <td align="center" >
 	    <?php 
-			  if ($row["typeid"]==1){
+	if ($row["typeid"]==1){
 	$zhuangtai_biaozhi="<img src='/image/dui2.png' title='已解决'>";
 	}elseif ($row["typeid"]==0){
 	$zhuangtai_biaozhi="<img src='/image/wenhao.png' title='待解决'>";

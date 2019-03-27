@@ -37,7 +37,7 @@ $msg= "请输入用户名";
 	$msg= "用户名只能为字母和数字，字符介于4到15个。";
 	}else{
 	$sqlreg="select username from zzcms_usernoreg where username='".$id."'";
-	$rs = query($sqlreg);
+	$rs =query($sqlreg);
 	$row= num_rows($rs);//返回记录数
 		if($row){ 
 		$founderr=1;
@@ -45,7 +45,7 @@ $msg= "请输入用户名";
 		}
 
 	$sqlreg="select username from zzcms_user where username='".$id."'";
-	$rs = query($sqlreg);
+	$rs =query($sqlreg);
 	$row= num_rows($rs);//返回记录数
 		if($row){ 
 		$founderr=1;

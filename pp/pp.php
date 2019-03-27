@@ -16,42 +16,31 @@ $page_size=$_GET["page_size"];
 checkid($page_size);
 setcookie("page_size_pp",$page_size,time()+3600*24*360);
 }else{
-	if (isset($_COOKIE["page_size_pp"])){
-	$page_size=$_COOKIE["page_size_pp"];
-	}else{
-	$page_size=pagesize_qt;
-	}
+$page_size=isset($_COOKIE["page_size_pp"])?$_COOKIE["page_size_pp"]:pagesize_qt;
 }
 
-if (isset($_GET["b"])){
-$b=$_GET["b"];
-}else{
-$b="";
-}
-
-if (isset($_GET["s"])){
-$s=$_GET["s"];
-}else{
-$s="";
-}
+$b = isset($_GET['b'])?$_GET['b']:"";
+$s = isset($_GET['s'])?$_GET['s']:"";
 
 $bigclassname='';
 if ($b<>""){
-$sql="select classname from zzcms_zsclass where classzm='".$b."'";
+$sql="select classname,classid from zzcms_zsclass where classzm='".$b."'";
 $rs=query($sql);
 $row=fetch_array($rs);
 if ($row){
 $bigclassname=$row["classname"];
+$bigclassid=$row["classid"];
 }
 }
 
 $smallclassname='';
 if ($s<>"") {
-$sql="select classname from zzcms_zsclass where classzm='".$s."'";
+$sql="select classname,classid from zzcms_zsclass where classzm='".$s."'";
 $rs=query($sql);
 $row=fetch_array($rs);
 if ($row){
 	$smallclassname=$row["classname"];
+	$smallclassid=$row["classid"];
 	}
 }
 
@@ -62,7 +51,7 @@ $station=getstation($b,$bigclassname,$s,$smallclassname,"","","pp");
 
 if( isset($_GET["page"]) && $_GET["page"]!="") {
     $page=$_GET['page'];
-	checkid($page);
+	checkid($page,0);
 }else{
     $page=1;
 }
@@ -78,12 +67,12 @@ $list=strbetween($strout,"{loop}","{/loop}");
 $sql="select count(*) as total from zzcms_pp where passed<>0 ";
 $sql2='';
 if ($b<>""){
-$sql2=$sql2. "and bigclasszm='".$b."' ";
+$sql2=$sql2. "and bigclassid='".$bigclassid."' ";
 }
 if ($s<>"") {
-$sql2=$sql2." and smallclasszm ='".$s."'  ";
+$sql2=$sql2." and smallclassid ='".$smallclassid."'  ";
 }
-$rs = query($sql.$sql2); 
+$rs =query($sql.$sql2); 
 $row = fetch_array($rs);
 $totlenum = $row['total'];
 $offset=($page-1)*$page_size;//$page_size在上面被设为COOKIESS 
@@ -97,7 +86,6 @@ if(!$totlenum){
 $strout=str_replace("{#fenyei}","",$strout) ;
 $strout=str_replace("{loop}".$list."{/loop}","暂无信息",$strout) ;
 }else{
-
 $list2='';
 $i=0;
 $title_num=strbetween($list,"{#title:","}");
@@ -118,7 +106,6 @@ $i=$i+1;
 $strout=str_replace("{loop}".$list."{/loop}",$list2,$strout) ;
 $strout=str_replace("{#fenyei}",showpage2("pp"),$strout) ;
 }
-
 $strout=str_replace("{#siteskin}",$siteskin,$strout) ;
 $strout=str_replace("{#sitename}",sitename,$strout) ;
 $strout=str_replace("{#station}",$station,$strout) ;
@@ -129,6 +116,5 @@ $strout=str_replace("{#pagedescription}",$pagedescription,$strout);
 $strout=str_replace("{#sitebottom}",sitebottom(),$strout);
 $strout=str_replace("{#sitetop}",sitetop(),$strout);
 $strout=showlabel($strout);
-
 echo  $strout;
 ?>

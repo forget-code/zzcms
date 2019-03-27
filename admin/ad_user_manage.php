@@ -3,11 +3,13 @@ include("admin.php");
 include("../inc/fy.php");
 checkadminisdo("advtext");
 
-$action=isset($_REQUEST["action"])?$_REQUEST["action"]:'';
-$page=isset($_GET["page"])?$_GET["page"]:1;
-$keyword=isset($_REQUEST["keyword"])?$_REQUEST["keyword"]:'';
-$kind=isset($_REQUEST["kind"])?$_REQUEST["kind"]:'';
-$id=isset($_REQUEST["id"])?$_REQUEST["id"]:'';
+$action=isset($_GET["action"])?$_GET["action"]:'';
+$shenhe=isset($_GET["shenhe"])?$_GET["shenhe"]:'';
+$page=isset($_POST["page"])?$_POST["page"]:1;
+checkid($page);
+
+$keyword=isset($_GET["keyword"])?$_GET["keyword"]:'';
+$kind=isset($_POST["kind"])?$_POST["kind"]:'';
 ?>
 <html>
 <head>
@@ -20,6 +22,7 @@ if ($action=="del") {
 if(!empty($_POST['id'])){
 for($i=0; $i<count($_POST['id']);$i++){
 $id=$_POST['id'][$i];
+checkid($id);
 $sql="select * from zzcms_textadv where id='$id'";
 $rs=query($sql);
 $row=fetch_array($rs);
@@ -49,6 +52,7 @@ if ($action=="pass") {
 if(!empty($_POST['id'])){
 for($i=0; $i<count($_POST['id']);$i++){
 $id=$_POST['id'][$i];
+checkid($id);
 $sql="select * from zzcms_textadv where id='$id'";
 $rs=query($sql);
 $row=fetch_array($rs);
@@ -115,12 +119,12 @@ if ($keyword<>"") {
 	$sql=$sql. " and adv like '%".$keyword."%'";
 	}
 }
-$rs = query($sql,$conn); 
+$rs = query($sql); 
 $totlenum= num_rows($rs);  
 $totlepage=ceil($totlenum/$page_size);
 
 $sql=$sql . " order by id desc limit $offset,$page_size";
-$rs = query($sql,$conn); 
+$rs = query($sql); 
 if(!$totlenum){
 echo "暂无信息";
 }else{ 

@@ -97,13 +97,13 @@ eval("submenu" + sid + ".style.display=\"none\";");
       <td align="right" class="border">产品类别 <font color="#FF0000">*</font></td>
       <td class="border">
 	   <select name="classid">
-          <option value="" selected>请选择类别</option>
+          <option value="0" selected>请选择类别</option>
           <?php
-		$sql="select * from zzcms_zsclass where parentid='A'";
+		$sql="select * from zzcms_zsclass where parentid=0";
 		$rs=query($sql);
 		while($row= fetch_array($rs)){
 			?>
-          <option value="<?php echo $row["classzm"]?>"<?php if (@$_SESSION['bigclassid']==$row["classzm"]){echo 'selected';}?>><?php echo $row["classname"]?></option>
+          <option value="<?php echo $row["classid"]?>"<?php if (@$_SESSION['bigclassid']==$row["classid"]){echo 'selected';}?>><?php echo $row["classname"]?></option>
           <?php
 		  }
 		  ?>

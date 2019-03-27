@@ -16,35 +16,25 @@ $page_size=$_GET["page_size"];
 checkid($page_size);
 setcookie("page_size_company",$page_size,time()+3600*24*360);
 }else{
-	if (isset($_COOKIE["page_size_company"])){
-	$page_size=$_COOKIE["page_size_company"];
-	}else{
-	$page_size=pagesize_qt;
-	}
+$page_size=isset($_COOKIE['page_size_company'])?$_COOKIE['page_size_company']:pagesize_qt;
 }
 
 if (isset($_GET['b'])){
 $bNew=$_GET['b'];
+checkid($bNew,1);
 setcookie("companyb",$bNew,time()+3600*24);
 $b=$bNew;
 }else{
-	if (isset($_COOKIE['companyb'])){
-	$b=$_COOKIE['companyb'];
-	}else{
-	$b="";
-	}
+$b=isset($_COOKIE['companyb'])?$_COOKIE['companyb']:'';
 }
 
 if (isset($_GET['s'])){
 $sNew=$_GET['s'];
+checkid($sNew,1);
 setcookie("companys",$sNew,time()+3600*24);
 $s=$sNew;
 }else{
-	if (isset($_COOKIE['companys'])){
-	$s=$_COOKIE['companys'];
-	}else{
-	$s="";
-	}
+$s=isset($_COOKIE['companys'])?$_COOKIE['companys']:'';
 }
 
 if (isset($_GET['province'])){
@@ -52,11 +42,7 @@ $provinceNew=$_GET['province'];
 setcookie("companyprovince",$provinceNew,time()+3600*24);
 $province=$provinceNew;
 }else{
-	if (isset($_COOKIE['companyprovince'])){
-	$province=$_COOKIE['companyprovince'];
-	}else{
-	$province="";
-	}
+$province=isset($_COOKIE['companyprovince'])?$_COOKIE['companyprovince']:'';
 }
 
 if (isset($_GET['p_id'])){
@@ -64,11 +50,7 @@ $p_idNew=$_GET['p_id'];
 setcookie("companyp_id",$p_idNew,time()+3600*24);
 $p_id=$p_idNew;
 }else{
-	if (isset($_COOKIE['companyp_id'])){
-	$p_id=$_COOKIE['companyp_id'];
-	}else{
-	$p_id="";
-	}
+$p_id=isset($_COOKIE['companyp_id'])?$_COOKIE['companyp_id']:'';
 }
 
 if (isset($_GET['city'])){
@@ -76,11 +58,7 @@ $cityNew=$_GET['city'];
 setcookie("companycity",$cityNew,time()+3600*24);
 $city=$cityNew;
 }else{
-	if (isset($_COOKIE['companycity'])){
-	$city=$_COOKIE['companycity'];
-	}else{
-	$city="";
-	}
+$city=isset($_COOKIE['companycity'])?$_COOKIE['companycity']:'';
 }
 
 if (isset($_GET['c_id'])){
@@ -88,11 +66,7 @@ $c_idNew=$_GET['c_id'];
 setcookie("companyc_id",$c_idNew,time()+3600*24);
 $c_id=$c_idNew;
 }else{
-	if (isset($_COOKIE['companyc_id'])){
-	$c_id=$_COOKIE['companyc_id'];
-	}else{
-	$c_id="";
-	}
+$c_id=isset($_COOKIE['companyc_id'])?$_COOKIE['companyc_id']:'';
 }
 
 if (isset($_GET['xiancheng'])){
@@ -100,11 +74,7 @@ $xianchengNew=$_GET['xiancheng'];
 setcookie("companyxiancheng",$xianchengNew,time()+3600*24);
 $xiancheng=$xianchengNew;
 }else{
-	if (isset($_COOKIE['companyxiancheng'])){
-	$xiancheng=$_COOKIE['companyxiancheng'];
-	}else{
-	$xiancheng="";
-	}
+$xiancheng=isset($_COOKIE['companyxiancheng'])?$_COOKIE['companyxiancheng']:'';
 }
 
 if (isset($_GET['delb'])){
@@ -132,7 +102,8 @@ if (isset($_GET['delxiancheng'])){
 setcookie("companyxiancheng","xxx",1);
 echo "<script>location.href='search.php'</script>";
 }
-
+$bigclassname="";
+$smallclassname="";
 if ($b<>0){
 $sql="select * from zzcms_userclass where classid='$b'";
 $rs=query($sql);
@@ -140,8 +111,6 @@ $row=fetch_array($rs);
 if ($row){
 $bigclassname=$row["classname"];
 }
-}else{
-$bigclassname="";
 }
 
 if ($s<>0){
@@ -151,12 +120,9 @@ $row=fetch_array($rs);
 if ($row){
 $smallclassname=$row["classname"];
 }
-}else{
-$smallclassname="";
 }
 
-	function formbigclass()
-		{
+	function formbigclass(){
 		$str="";
         $sql = "select * from zzcms_userclass where parentid='0'";
         $rs=query($sql);
@@ -262,12 +228,10 @@ if ($b<>"" || $s<>"" || $province<>"" || $city<>"" || $xiancheng<>"" ) {
 		}
 		
 $keyword = isset($_GET['keyword'])?trim($_GET['keyword']):"";
-
 $pagetitle=$province.companylisttitle.$bigclassname.sitename;
 $pagekeyword=$province.$bigclassname.companylistkeyword;
 $pagedescription=$province.$bigclassname.companylistdescription;
-if( isset($_GET["page"]) && $_GET["page"]!="") 
-{
+if( isset($_GET["page"]) && $_GET["page"]!="") {
     $page=$_GET['page'];
 	checkid($page);
 }else{
@@ -297,7 +261,7 @@ if ($s<>"" && $s<>0) {
 $sql2=$sql2." and smallclassid='".$s."' ";
 }
 
-$rs = query($sql.$sql2); 
+$rs =query($sql.$sql2); 
 $row = fetch_array($rs);
 $totlenum = $row['total'];
 $offset=($page-1)*$page_size;//$page_size在上面被设为COOKIESS

@@ -11,18 +11,19 @@ include("../inc/fy.php");
 </head>
 <body>
 <?php
-$action=isset($_REQUEST["action"])?$_REQUEST["action"]:'';
+$action=isset($_GET["action"])?$_GET["action"]:'';
 $page=isset($_GET["page"])?$_GET["page"]:1;
-$shenhe=isset($_REQUEST["shenhe"])?$_REQUEST["shenhe"]:'';
-
-$keyword=isset($_REQUEST["keyword"])?$_REQUEST["keyword"]:'';
-$b=isset($_REQUEST["b"])?$_REQUEST["b"]:'';
-
+checkid($page);
+$shenhe=isset($_POST["shenhe"])?$_POST["shenhe"]:'';
+$keyword=isset($_POST["keyword"])?$_POST["keyword"]:'';
+$b=isset($_GET["b"])?$_GET["b"]:0;
+checkid($b,1);
 if ($action<>""){
 checkadminisdo("friendlink");
 if(!empty($_POST['id'])){
     for($i=0; $i<count($_POST['id']);$i++){
     $id=$_POST['id'][$i];
+	checkid($id);
 	switch ($action){
 	case "pass";
 	$sql="select passed from zzcms_link where id ='$id'";
@@ -86,7 +87,7 @@ $sql2=$sql2. " and bigclassid =".$b." ";
 if ($keyword<>"") {
 $sql2=$sql2. " and sitename like '%".$keyword."%' ";
 }
-$rs = query($sql.$sql2); 
+$rs =query($sql.$sql2); 
 $row = fetch_array($rs);
 $totlenum = $row['total'];    
 $totlepage=ceil($totlenum/$page_size);
@@ -125,9 +126,9 @@ while($row = fetch_array($rs)){
       <td align="center" > <input name="id[]" type="checkbox" id="id" value="<?php echo $row["id"]?>"></td>
       <td ><a href="?b=<?php echo $row["bigclassid"]?>">
 	  <?php
-	  $rsn=query("select bigclassname from zzcms_linkclass where bigclassid=".$row["bigclassid"]." ");
+	  $rsn=query("select classname from zzcms_linkclass where classid=".$row["bigclassid"]." ");
 	  $rown=fetch_array($rsn);
-	  echo $rown["bigclassname"]?></a></td>
+	  echo $rown["classname"]?></a></td>
       <td><b><?php echo $row["sitename"]?></b><br> 
         <a href="<?php echo $row["url"]?>" target="_blank"><?php echo $row["url"]?></a><br> 
         <?php if ($row["logo"]<>""){?>

@@ -56,21 +56,15 @@ include("left.php");
 </div>
 <div class="right">
 <?php
-if (isset($_GET["page"])){
-$page=$_GET["page"];
-}else{
-$page=1;
-}
-if (isset($_REQUEST["id"])){
-$id=$_REQUEST["id"];
-}else{
-$id=0;
-}
+$page = isset($_GET['page'])?$_GET['page']:1;
+checkid($page);
+$id = isset($_GET['id'])?$_GET['id']:0;
+checkid($id,1);
 
 $sql="select * from zzcms_job where id='$id'";
 $rs = query($sql); 
 $row = fetch_array($rs);
-if ($row["editor"]<>$username) {
+if ($id!=0 && $row["editor"]<>$username) {
 markit();
 showmsg('非法操作！警告：你的操作已被记录！小心封你的用户及IP！');
 }
@@ -88,8 +82,8 @@ showmsg('非法操作！警告：你的操作已被记录！小心封你的用�
                   <td> <fieldset class="fieldsetstyle">
                     <legend><?php echo $f_array[4]?></legend>
                     <?php
-        $sqlB = "select * from zzcms_jobclass where parentid='0' order by xuhao asc";
-		$rsB = query($sqlB,$conn); 
+        $sqlB = "select classid,classname from zzcms_jobclass where parentid='0' order by xuhao asc";
+		$rsB =query($sqlB); 
 		$n=0;
 		while($rowB= fetch_array($rsB)){
 		$n ++;
@@ -105,8 +99,8 @@ showmsg('非法操作！警告：你的操作已被记录！小心封你的用�
                 <tr> 
                   <td> 
                     <?php
-$sqlB="select * from zzcms_jobclass where parentid='0' order by xuhao asc";
-$rsB = query($sqlB,$conn); 
+$sqlB="select classid,classname from zzcms_jobclass where parentid='0' order by xuhao asc";
+$rsB =query($sqlB); 
 $n=0;
 while($rowB= fetch_array($rsB)){
 $n ++;
@@ -117,7 +111,7 @@ echo "<div id='E_con$n' style='display:none;'>";
 }
 echo "<fieldset class='fieldsetstyle'><legend>".$f_array[5]."</legend>";
 $sqlS="select * from zzcms_jobclass where parentid='$rowB[classid]' order by xuhao asc";
-$rsS = query($sqlS,$conn); 
+$rsS =query($sqlS,$conn); 
 $nn=0;
 while($rowS= fetch_array($rsS)){
 $nn ++;
@@ -146,7 +140,7 @@ echo "</div>";
 		   
           <tr> 
             <td align="right" class="border" ><?php echo $f_array[7]?></td>
-            <td class="border" > <textarea name="sm" cols="60" rows="4" id="sm" class="biaodan" style="height:auto"><?php echo $row["sm"] ?></textarea></td>
+            <td class="border" > <textarea name="sm" cols="60" rows="4" id="sm" class="biaodan" style="height:auto"><?php echo stripfxg($row["sm"]) ?></textarea></td>
           </tr>
           <tr> 
             <td align="right" class="border"><?php echo $f_array[8]?></td>
@@ -164,7 +158,7 @@ new PCAS('province', 'city', 'xiancheng', '<?php echo $row['province']?>', '<?ph
 		  
           <tr> 
             <td align="center" class="border2" >&nbsp;</td>
-            <td class="border2" > <input name="ypid" type="hidden" id="ypid2" value="<?php echo $row["id"] ?>"> 
+            <td class="border2" > <input name="ypid" type="hidden" id="ypid" value="<?php echo $row["id"] ?>"> 
               <input name="action" type="hidden" id="action2" value="modify"> 
               <input name="page" type="hidden" id="action" value="<?php echo $page ?>"> 
               <input name="Submit" type="submit" class="buttons" value="<?php echo $f_array[9]?>"></td>

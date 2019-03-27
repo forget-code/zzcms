@@ -56,7 +56,7 @@ function changelocation(locationid)
       <select name="b"  id="b" onchange="changelocation(document.myform.b.options[document.myform.b.selectedIndex].value)" style="width:180px" class="biaodan">
         <option value="" selected="selected">请选择大类</option>
         <?php
-	$sql = "select * from zzcms_zsclass where  parentid='A' order by xuhao asc";
+	$sql = "select * from zzcms_zsclass where  parentid=0 order by xuhao asc";
     $rs=query($sql);
 	while($row = fetch_array($rs)){
 	?>

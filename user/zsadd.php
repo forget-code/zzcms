@@ -124,7 +124,7 @@ $(document).ready(function(){
         <table width="100%" border="0" cellpadding="3" cellspacing="1">
           <tr> 
             <td width="20%" align="right" class="border2" > <?php echo $f_array[5]?></td>
-            <td class="border2" > <input name="name" type="text" id="name" class="biaodan" onclick="javascript:if (this.value=='<?php echo $f_array[6]?>') {this.value=''};this.style.backgroundColor='';" onblur="javascript:if (this.value=='<?php echo $f_array[6]?>') {this.value=''};this.style.backgroundColor='';" size="60" maxlength="45" /><span id="quote"></span> 
+            <td class="border2" > <input name="proname" type="text" id="proname" class="biaodan" onclick="javascript:if (this.value=='<?php echo $f_array[6]?>') {this.value=''};this.style.backgroundColor='';" onblur="javascript:if (this.value=='<?php echo $f_array[6]?>') {this.value=''};this.style.backgroundColor='';" size="60" maxlength="45" /><span id="quote"></span> 
              <span id="span_szm">  <input name="szm" type="hidden"  /></span>
               <?php echo $f_array[7]?></td>
           </tr>
@@ -136,15 +136,15 @@ $(document).ready(function(){
                   <td> <fieldset class="fieldsetstyle">
                     <legend><?php echo $f_array[9]?></legend>
                     <?php
-        $sql = "select * from zzcms_zsclass where parentid='A' order by xuhao asc";
-		$rs = query($sql,$conn); 
+        $sql = "select * from zzcms_zsclass where parentid=0 order by xuhao asc";
+		$rs = query($sql); 
 		$n=0;
 		while($row= fetch_array($rs)){
 		$n ++;
-		if (@$_SESSION['bigclassid']==$row['classzm']){
-		echo "<input name='bigclassid' type='radio' id='E$n'  onclick='javascript:doClick_E(this);uncheckall()' value='$row[classzm]' checked/><label for='E$n'>$row[classname]</label>";
+		if (@$_SESSION['bigclassid']==$row['classid']){
+		echo "<input name='bigclassid' type='radio' id='E$n'  onclick='javascript:doClick_E(this);uncheckall()' value='$row[classid]' checked/><label for='E$n'>$row[classname]</label>";
 		}else{
-		echo "<input name='bigclassid' type='radio' id='E$n'  onclick='javascript:doClick_E(this);uncheckall()' value='$row[classzm]'/><label for='E$n'>$row[classname]</label>";
+		echo "<input name='bigclassid' type='radio' id='E$n'  onclick='javascript:doClick_E(this);uncheckall()' value='$row[classid]'/><label for='E$n'>$row[classname]</label>";
 		}
 		
 	}
@@ -154,26 +154,26 @@ $(document).ready(function(){
                 <tr> 
                   <td> 
                     <?php
-$sql="select * from zzcms_zsclass where parentid='A' order by xuhao asc";
-$rs = query($sql,$conn); 
+$sql="select * from zzcms_zsclass where parentid=0 order by xuhao asc";
+$rs = query($sql); 
 $n=0;
 while($row= fetch_array($rs)){
 $n ++;
-if (@$_SESSION['bigclassid']==$row["classzm"]) {  
+if (@$_SESSION['bigclassid']==$row["classid"]) {  
 echo "<div id='E_con$n' style='display:block;'>";
 }else{
 echo "<div id='E_con$n' style='display:none;'>";
 }
 echo "<fieldset class='fieldsetstyle'><legend>".$f_array[10]."</legend>";
 
-$sqln="select * from zzcms_zsclass where parentid='$row[classzm]' order by xuhao asc";
-$rsn = query($sqln,$conn); 
+$sqln="select * from zzcms_zsclass where parentid='$row[classid]' order by xuhao asc";
+$rsn =query($sqln); 
 $nn=0;
 while($rown= fetch_array($rsn)){
 if (zsclass_isradio=='Yes'){
-echo "<input name='smallclassid[]' id='radio$nn$n' type='radio' value='$rown[classzm]' />";
+echo "<input name='smallclassid[]' id='radio$nn$n' type='radio' value='$rown[classid]' />";
 }else{
-echo "<input name='smallclassid[]' id='radio$nn$n' type='checkbox' value='$rown[classzm]' onclick='javascript:ValidSelect(this)'/>";
+echo "<input name='smallclassid[]' id='radio$nn$n' type='checkbox' value='$rown[classid]' onclick='javascript:ValidSelect(this)'/>";
 }
 echo "<label for='radio$nn$n'>$rown[classname]</label>";
 $nn ++;	

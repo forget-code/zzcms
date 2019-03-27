@@ -67,3 +67,6 @@ a:hover {color: #ff0000;text-decoration: underline;}
 .biaodan {background: url(image/biaodanbg.png) no-repeat 0 center;border:0;height:40px;line-height:40px;width:280px;padding:0 10px;outline:none;color:#333}
 .btn {FONT-SIZE: 16px; background: url(image/buttonbg.png) no-repeat 0 center;CURSOR: hand; COLOR: black;border:0;height:40px;line-height:35px;width:90px;color:#ccc;
 text-align:center;font-family: "微软雅黑"}
+.divcp{zoom: 1; overflow:auto;}
+.divcp li {float:left;width:47%;margin:10px;}
+.bigbigword{font-family: "黑体";font-size: 28px;}

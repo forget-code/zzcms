@@ -10,27 +10,17 @@ checkadminisdo("userreg");
 <link href="style.css" rel="stylesheet" type="text/css">
 <?php
 $go=0;
-if (isset($_REQUEST['action'])){
-$action=$_REQUEST['action'];
-}else{
-$action="";
-}
-
-if (isset($_REQUEST['id'])){
-$id=$_REQUEST['id'];
-}else{
-$id=1;
-}
-checkid($id);
+$action=isset($_REQUEST['action'])?$_REQUEST['action']:'';
+$id=isset($_REQUEST['id'])?$_REQUEST['id']:0;
+checkid($id,1);
 
 if ($action=="savedata" ){
-	$saveas=trim($_REQUEST["saveas"]);
-	$domain=trim($_POST["domain"]);
+	$saveas=$_GET["saveas"];
 	if ($saveas=="add"){
 	query("insert into zzcms_userdomain (username,domain)VALUES('$username','$domain') ");
 	$go=1;
 	}elseif ($saveas=="modify"){
-	query("update zzcms_userdomain set domain='$domain' where id=". $_POST['id']." ");
+	query("update zzcms_userdomain set domain='$domain' where id='". $id."' ");
 	$go=1;
 	}
 }

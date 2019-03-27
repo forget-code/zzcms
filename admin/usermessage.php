@@ -123,9 +123,9 @@ query("update zzcms_usermessage set reply='$reply',replytime='".date('Y-m-d H:i:
 }
 
 checkadminisdo("sendmessage");
-if( isset($_GET["page"]) && $_GET["page"]!="") 
-{
+if( isset($_GET["page"]) && $_GET["page"]!="") {
     $page=$_GET['page'];
+	checkid($page,0);
 }else{
     $page=1;
 }
@@ -142,11 +142,11 @@ $sql="select * from zzcms_usermessage ";
 if ($reply=='no'){
 $sql=$sql."where reply is null ";
 }
-$rs = query($sql,$conn); 
+$rs = query($sql); 
 $totlenum= num_rows($rs);  
 $totlepage=ceil($totlenum/$page_size);		
 $sql=$sql . " order by id desc limit $offset,$page_size";
-$rs = query($sql,$conn); 
+$rs = query($sql); 
 if(!$totlenum){
 echo "暂无信息";
 }else{
@@ -163,13 +163,13 @@ while($row = fetch_array($rs)){
     <tr class="bgcolor1" onMouseOver="fSetBg(this)" onMouseOut="fReBg(this)"> 
       <td>
 	  <div style="border:solid 1px #dddddd;padding:5px;margin-bottom:5px">
-	  <span style="float:right"><?php echo $row["sendtime"]?></span>内容：<?php echo $row["content"]?>
+	  <span style="float:right"><?php echo $row["sendtime"]?></span>内容：<?php echo stripfxg($row["content"],false,true)?>
 	  </div>
 	  <div style="border:solid 1px #dddddd;padding:5px">
 	  <?php 
 	  if ($row["reply"]<>''){
 	  ?>
-	  <span style="float:right"><?php echo $row["replytime"]?></span><a href='?step=2&id=<?php echo $row["id"]?>&content=<?php echo $row["content"]?>' style="color:green">回复：<?php echo $row["reply"]?></a>
+	  <span style="float:right"><?php echo $row["replytime"]?></span><a href='?step=2&id=<?php echo $row["id"]?>&content=<?php echo $row["content"]?>' style="color:green">回复：<?php echo stripfxg($row["reply"],false,true)?></a>
 	  
 	  </div>
 	  <?php 

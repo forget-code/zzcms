@@ -10,11 +10,17 @@ include("../inc/fy.php");
 <?php
 checkadminisdo("pp");
 $action=isset($_REQUEST["action"])?$_REQUEST["action"]:'';
-$page=isset($_GET["page"])?$_GET["page"]:1;
+if( isset($_REQUEST["page"]) && $_REQUEST["page"]!="") {
+    $page=$_REQUEST['page'];
+	checkid($page,0);
+}else{
+    $page=1;
+}
 $keyword=isset($_REQUEST["keyword"])?$_REQUEST["keyword"]:'';
 $kind=isset($_REQUEST["kind"])?$_REQUEST["kind"]:'ppname' ;
 $shenhe=isset($_REQUEST["shenhe"])?$_REQUEST["shenhe"]:'';
-$b=isset($_REQUEST["b"])?$_REQUEST["b"]:'';
+$b=isset($_REQUEST["b"])?$_REQUEST["b"]:0;
+checkid($b);
 
 if ($action=="pass"){
 if(!empty($_POST['id'])){
@@ -57,15 +63,15 @@ echo "<script>location.href='?keyword=".$keyword."&page=".$page."'</script>";
         <tr>
           <td>
     <?php	
-$sql="select * from zzcms_zsclass where parentid='A' order by xuhao";
+$sql="select * from zzcms_zsclass where parentid=0 order by xuhao";
 $rs = query($sql); 
 $row = num_rows($rs);
 if (!$row){
 echo '暂无分类';
 }else{
 while($row = fetch_array($rs)){
-echo "<a href=?b=".$row['classzm'].">";  
-	if ($row["classzm"]==$b) {
+echo "<a href=?b=".$row['classid'].">";  
+	if ($row["classid"]==$b) {
 	echo "<b>".$row["classname"]."</b>";
 	}else{
 	echo $row["classname"];
@@ -90,7 +96,7 @@ $sql2=$sql2." and passed=0 ";
 }
 
 if ($b<>"") {
-$sql2=$sql2." and bigclasszm='".$b."' ";
+$sql2=$sql2." and bigclassid=".$b;
 }
 
 if ($keyword<>"") {
@@ -106,7 +112,7 @@ if ($keyword<>"") {
 	}
 }
 
-$rs = query($sql.$sql2,$conn); 
+$rs =query($sql.$sql2); 
 $row = fetch_array($rs);
 $totlenum = $row['total'];  
 $totlepage=ceil($totlenum/$page_size);
@@ -114,7 +120,7 @@ $totlepage=ceil($totlenum/$page_size);
 $sql="select * from zzcms_pp where id<>0 ";
 $sql=$sql.$sql2;
 $sql=$sql . " order by id desc limit $offset,$page_size";
-$rs = query($sql,$conn); 
+$rs = query($sql); 
 if(!$totlenum){
 echo "暂无信息";
 }else{
@@ -147,7 +153,7 @@ while($row = fetch_array($rs)){
       <td align="center" class="docolor"> <input name="id[]" type="checkbox" id="id2" value="<?php echo $row["id"]?>"></td>
       <td align="center" ><a href="<?php echo $row["img"]?>" target="_blank"><img src="<?php echo getsmallimg($row['img'])?>" width="60"></a></td>
       <td align="center" ><a href="<?php echo getpageurl("pp",$row["id"]) ?>" target="_blank"><?php  echo $row["ppname"]?></a></td>
-      <td align="center"><a href="?b=<?php echo $row["bigclasszm"]?>" ><?php echo $row["bigclasszm"]?></a></td>
+      <td align="center"><a href="?b=<?php echo $row["bigclassid"]?>" ><?php echo $row["bigclassid"]?></a></td>
       <td align="center"><a href="usermanage.php?keyword=<?php echo $row["editor"]?>" ><?php echo $row["editor"]?></a><br>userid:<?php echo $row["userid"]?></td>
       <td align="center" title="<?php echo $row["sendtime"]?>"><?php echo date("Y-m-d",strtotime($row["sendtime"]))?></td>
       <td align="center">

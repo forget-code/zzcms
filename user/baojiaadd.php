@@ -32,7 +32,7 @@ document.myform.price.focus();
 return false; 
 }
 if (document.myform.truename.value==""){alert("请填写真实姓名！");document.myform.truename.focus();return false;}  
-if (document.myform.tel.value==""){alert("请填写代联系电话！");document.myform.tel.focus();return false;}  
+if (document.myform.tel.value==""){alert("请填写联系电话！");document.myform.tel.focus();return false;}  
 if (document.myform.yzm.value==""){alert("请输入验证问题的答案！");document.myform.yzm.focus();return false;}
 }
 </SCRIPT>
@@ -66,13 +66,13 @@ include("checkaddinfo.php");
       <td align="right" class="border2">类别<font color="#FF0000">（必填）</font>：</td>
       <td class="border2">
 	   <select name="classid" class="biaodan">
-          <option value="" selected>请选择类别 </option>
+          <option value="0" selected>请选择类别 </option>
           <?php
-		$sql="select * from zzcms_zsclass where parentid='A'";
+		$sql="select * from zzcms_zsclass where parentid=0";
 		$rs=query($sql);
 		while($row= fetch_array($rs)){
 			?>
-          <option value="<?php echo $row["classzm"]?>"<?php if (@$_SESSION['bigclassid']==$row["classzm"]){echo 'selected';}?>><?php echo $row["classname"]?></option>
+          <option value="<?php echo $row["classid"]?>"<?php if (@$_SESSION['bigclassid']==$row["classid"]){echo 'selected';}?>><?php echo $row["classname"]?></option>
           <?php
 		  }
 		  ?>
@@ -146,7 +146,6 @@ new PCAS('province', 'city', 'xiancheng', '<?php echo @$_SESSION['province']?>',
 </div>
 </div>
 <?php
-
 session_write_close();
 ?>
 </body>

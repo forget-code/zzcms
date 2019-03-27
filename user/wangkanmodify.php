@@ -34,21 +34,15 @@ include("left.php");
 <div class="content">
 <div class="admintitle"><?php echo $f_array[1]?> </div>
 <?php
-if (isset($_GET["page"])){
-$page=$_GET["page"];
-}else{
-$page=1;
-}
+$page = isset($_GET['page'])?$_GET['page']:1;
+checkid($page);
+$id = isset($_GET['id'])?$_GET['id']:0;
+checkid($id,1);
 
-if (isset($_REQUEST["id"])){
-$id=$_REQUEST["id"];
-}else{
-$id=0;
-}
 $sqlzh="select * from zzcms_wangkan where id='$id'";
-$rszh = query($sqlzh); 
+$rszh =query($sqlzh); 
 $rowzh = fetch_array($rszh);
-if ($rowzh["editor"]<>$username) {
+if ($id!=0 && $rowzh["editor"]<>$username) {
 markit();
 showmsg('非法操作！警告：你的操作已被记录！小心封你的用户及IP！');
 }
@@ -60,13 +54,12 @@ showmsg('非法操作！警告：你的操作已被记录！小心封你的用�
             <td width="85%" class="border2"> <select name="bigclassid" id="bigclassid" class="biaodan">
                 <option value="" selected="selected"><?php echo $f_array[3]?></option>
                 <?php
-		  
 		$sql="select * from zzcms_wangkanclass";
 		$rs=query($sql);
 		while($row= fetch_array($rs)){
 			?>
-                <option value="<?php echo $row["bigclassid"]?>"  <?php if ($row["bigclassid"]==$rowzh["bigclassid"]) { echo "selected";}?> ><?php echo $row["bigclassname"]?></option>
-                <?php
+       <option value="<?php echo $row["classid"]?>"  <?php if ($row["classid"]==$rowzh["bigclassid"]) { echo "selected";}?> ><?php echo $row["classname"]?></option>
+          <?php
 		  }
 		  ?>
               </select></td>
@@ -77,7 +70,7 @@ showmsg('非法操作！警告：你的操作已被记录！小心封你的用�
           </tr>
           <tr> 
             <td align="right" class="border2" ><?php echo $f_array[7]?></td>
-            <td class="border2" > <textarea    name="content" id="content" class="biaodan" style="height:auto"><?php echo $rowzh["content"]?></textarea> 
+            <td class="border2" > <textarea    name="content" id="content" class="biaodan" style="height:auto"><?php echo stripfxg($rowzh["content"])?></textarea> 
               <script type="text/javascript">
 				CKEDITOR.replace('content');	
 			</script>            </td>
@@ -97,7 +90,6 @@ showmsg('非法操作！警告：你的操作已被记录！小心封你的用�
 </div>
 </div>
 <?php
-
 unset ($f_array);
 ?>
 </body>

@@ -33,11 +33,7 @@ if (document.form1.bigclassname.value==""){
 <body>
 <?php
 checkadminisdo("userclass");
-if (isset($_REQUEST['dowhat'])){
-$dowhat=$_REQUEST['dowhat'];
-}else{
-$dowhat="";
-}
+$dowhat=isset($_REQUEST['dowhat'])?$_REQUEST['dowhat']:'';
 switch ($dowhat){
 case "addtag";
 addtag();
@@ -49,17 +45,12 @@ default;
 showtag();
 }
 function showtag(){
-if (isset($_REQUEST['action'])){
-$action=$_REQUEST['action'];
-}else{
-$action="";
-}
-
+$action=isset($_REQUEST['action'])?$_REQUEST['action']:'';
 if ($action=="px") {
 $sql="Select * From ".$_SESSION['tablename']."";
 $rs=query($sql);
 while ($row=fetch_array($rs)){
-$xuhao=$_POST["xuhao".$row["bigclassid"].""];//表单名称是动态显示的，并于FORM里的名称相同。
+$xuhao=$_POST["xuhao".$row["classid"].""];//表单名称是动态显示的，并于FORM里的名称相同。
 	   if (trim($xuhao) == "" || is_numeric($xuhao) == false) {
 	       $xuhao = 0;
 	   }elseif ($xuhao < 0){
@@ -67,27 +58,22 @@ $xuhao=$_POST["xuhao".$row["bigclassid"].""];//表单名称是动态显示的，
 	   }else{
 	       $xuhao = $xuhao;
 	   }
-query("update ".$_SESSION['tablename']." set xuhao='$xuhao' where bigclassid=".$row['bigclassid']."");
+query("update ".$_SESSION['tablename']." set xuhao='$xuhao' where classid='".$row['classid']."'");
 }
 }
 if ($action=="del"){
 checkadminisdo("siteconfig");
 $bigclassid=trim($_REQUEST["bigclassid"]);
+checkid($bigclassid);
 if ($bigclassid<>""){
-	$sql="delete from ".$_SESSION['tablename']." where bigclassid=" .$bigclassid. " ";
+	$sql="delete from ".$_SESSION['tablename']." where classid='" .$bigclassid. "' ";
 	query($sql);
 }    
 echo "<script>location.href='?'</script>";
 }
 ?>
 <div class="admintitle">类别管理</div> 
-<table width="100%" border="0" cellpadding="5" cellspacing="0">
-  <tr> 
-    <td align="center" class="border">
-      <input name="submit3" type="submit" class="buttons" onClick="javascript:location.href='?dowhat=addtag'" value="添加">
-      </td>
-  </tr>
-</table>
+<div align="center" class="center border"><input name="submit3" type="submit" class="buttons" onClick="javascript:location.href='?dowhat=addtag'" value="添加"></div>
 	<?php
 	$sql="Select * From ".$_SESSION['tablename']." order by xuhao asc";
 	$rs=query($sql);
@@ -109,12 +95,12 @@ echo "<script>location.href='?'</script>";
 	while ($row=fetch_array($rs)){
 ?>
      <tr class="bgcolor1" onMouseOver="fSetBg(this)" onMouseOut="fReBg(this)">  
-      <td><?php echo $row["bigclassid"]?><a name="B<?php echo $row["bigclassid"]?>"></a></td>
-      <td><?php echo $row["bigclassname"]?></td>
-      <td><input name="<?php echo "xuhao".$row["bigclassid"]?>" type="text" id="<?php echo "xuhao".$row["bigclassid"]?>" value="<?php echo $row["xuhao"]?>" size="4" maxlength="4"> 
+      <td><?php echo $row["classid"]?><a name="B<?php echo $row["classid"]?>"></a></td>
+      <td><?php echo $row["classname"]?></td>
+      <td><input name="<?php echo "xuhao".$row["classid"]?>" type="text" id="<?php echo "xuhao".$row["classid"]?>" value="<?php echo $row["xuhao"]?>" size="4" maxlength="4"> 
        <input type="submit" name="Submit" value="更新序号"></td>
-      <td class="docolor"> <a href="?dowhat=modifytag&bigclassid=<?php echo $row["bigclassid"]?>">修改名称</a> 
-        | <a href="?action=del&bigclassid=<?php echo $row["bigclassid"]?>" onClick="return ConfirmDelBig();">删除</a></td>
+      <td class="docolor"> <a href="?dowhat=modifytag&bigclassid=<?php echo $row["classid"]?>">修改名称</a> 
+        | <a href="?action=del&bigclassid=<?php echo $row["classid"]?>" onClick="return ConfirmDelBig();">删除</a></td>
     </tr>
     <?php
 	}
@@ -126,32 +112,23 @@ echo "<script>location.href='?'</script>";
 }
 
 function addtag(){
-if (isset($_REQUEST['action'])){
-$action=$_REQUEST['action'];
-}else{
-$action="";
-}
-
+$action=isset($_REQUEST['action'])?$_REQUEST['action']:'';
 if ($action=="add"){
     for($i=0; $i<count($_POST['bigclassname']);$i++){
     $bigclassname=($_POST['bigclassname'][$i]);
 		if ($bigclassname!=''){
-		$sql="select * from ".$_SESSION['tablename']." where bigclassname='" . $bigclassname . "'";
+		$sql="select * from ".$_SESSION['tablename']." where classname='" . $bigclassname . "'";
 		$rs=query($sql);
 		$row=num_rows($rs);
 			if (!$row) {
-			query("insert into ".$_SESSION['tablename']." (bigclassname)VALUES('$bigclassname') ");
+			query("insert into ".$_SESSION['tablename']." (classname)VALUES('$bigclassname') ");
 			}
 		}
 	}	
     echo "<script>location.href='?'</script>";		
 }else{	
 ?>
-<table width="100%" border="0" cellpadding="0" cellspacing="0">
-  <tr> 
-    <td class="admintitle">添加类别</td>
-  </tr>
-</table>
+<div class="admintitle">添加类别</div>
 <form name="form1" method="post" action="?dowhat=addtag" onSubmit="return CheckForm();">
   <table width="100%" border="0" cellpadding="5" cellspacing="0" class="border">
     <tr> 
@@ -198,16 +175,17 @@ TemO.appendChild(newline);
 
 function modifytag(){
 $action = isset($_REQUEST['action']) ? $_REQUEST['action']:''; 
-$bigclassid = isset($_REQUEST['bigclassid']) ? $_REQUEST['bigclassid']:''; 
-$bigclassname = isset($_POST['bigclassname']) ? trim($_POST['bigclassname']):''; 
-$oldbigclassname = isset($_POST['oldbigclassname'])?trim($_POST['oldbigclassname']):''; 
+$bigclassid = isset($_REQUEST['bigclassid']) ? $_REQUEST['bigclassid']:0; 
+checkid($bigclassid);
+$bigclassname = isset($_POST['bigclassname']) ? $_POST['bigclassname']:''; 
+$oldbigclassname = isset($_POST['oldbigclassname'])?$_POST['oldbigclassname']:''; 
 
-if ($bigclassid==""){
+if ($bigclassid==0){
 echo "<script>location.href='?'</script>";
 }
 
 if ($action=="modify"){
-	$sql="Select * from ".$_SESSION['tablename']." where bigclassid=" . $bigclassid."";
+	$sql="Select * from ".$_SESSION['tablename']." where classid='" . $bigclassid."'";
 	$rs=query($sql);
 	$row=num_rows($rs);
 	if (!$row){
@@ -215,7 +193,7 @@ if ($action=="modify"){
 		$ErrMsg="<li>不存在！</li>";
 		WriteErrMsg($ErrMsg);
 	}else{
-	query("update ".$_SESSION['tablename']." set bigclassname='$bigclassname' where bigclassid=". $bigclassid." ");
+	query("update ".$_SESSION['tablename']." set classname='$bigclassname' where classid='". $bigclassid."' ");
 	if ($_SESSION['tablename']=='zzcms_adclass' && $bigclassname!=$oldbigclassname){
 	query("update zzcms_ad set bigclassname='$bigclassname' where bigclassname='$oldbigclassname' ");
 	}
@@ -223,25 +201,21 @@ if ($action=="modify"){
 	}	
 	echo "<script>location.href='?#B".$bigclassid."'</script>";
 }else{
-$sql="Select * from ".$_SESSION['tablename']." where bigclassid=".$bigclassid."";
+$sql="Select * from ".$_SESSION['tablename']." where classid='".$bigclassid."'";
 $rs=query($sql);
 $row=fetch_array($rs);
 ?>
-<table width="100%" border="0" cellpadding="0" cellspacing="0">
-  <tr> 
-    <td class="admintitle">修改类别</td>
-  </tr>
-</table>
+<div class="admintitle">修改类别</div>
 <form name="form1" method="post" action="?dowhat=modifytag" onSubmit="return CheckForm();">
   <table width="100%" border="0" cellpadding="5" cellspacing="0" class="border">
     <tr> 
       <td width="30%" align="right">类别名称：</td>
-      <td width="70%"> <input name="bigclassname" type="text" id="bigclassname" value="<?php echo $row["bigclassname"]?>" size="50" maxlength="50">
-      <input name="oldbigclassname" type="hidden" id="oldbigclassname" value="<?php echo $row["bigclassname"]?>" size="50" maxlength="50"></td>
+      <td width="70%"> <input name="bigclassname" type="text" id="bigclassname" value="<?php echo $row["classname"]?>" size="50" maxlength="50">
+      <input name="oldbigclassname" type="hidden" id="oldbigclassname" value="<?php echo $row["classname"]?>" size="50" maxlength="50"></td>
     </tr>
     <tr> 
       <td>&nbsp;</td>
-      <td><input name="bigclassid" type="hidden" id="bigclassid" value="<?php echo $row["bigclassid"]?>"> 
+      <td><input name="bigclassid" type="hidden" id="bigclassid" value="<?php echo $row["classid"]?>"> 
         <input name="action" type="hidden" id="action" value="modify"> <input name="save" type="submit" id="save" value=" 修改 "> 
       </td>
     </tr>

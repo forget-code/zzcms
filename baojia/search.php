@@ -31,28 +31,21 @@ setcookie("city","xxx",1);
 setcookie("xiancheng","xxx",1);
 setcookie("p_id","xxx",1);
 setcookie("c_id","xxx",1);
-echo "<script>location.href='search.php'</script>";
+//echo "<script>location.href='search.php'<//script>";
 $keyword=$keywordNew;
 }else{
-	if (isset($_COOKIE['keyword'])){
-	$keyword=trim($_COOKIE['keyword']);
-	}else{
-	$keyword="";
-	}
+$keyword=isset($_COOKIE['keyword'])?$_COOKIE['keyword']:'';
 }
 
 if (isset($_GET['b'])){
 $bNew=$_GET['b'];
+checkid($b,1);
 setcookie("b",$bNew,time()+3600*24);
 setcookie("s","xxx",1);
 echo "<script>location.href='search.php'</script>";
 $b=$bNew;
 }else{
-	if (isset($_COOKIE['b'])){
-	$b=$_COOKIE['b'];
-	}else{
-	$b="";
-	}
+$b=isset($_COOKIE['b'])?$_COOKIE['b']:'';
 }
 
 if (isset($_GET['province'])){
@@ -66,11 +59,7 @@ $province=$provinceNew;
 	echo "<script>location.href='search.php'</script>";
 	}
 }else{
-	if (isset($_COOKIE['province'])){
-	$province=$_COOKIE['province'];
-	}else{
-	$province="";
-	}
+$province=isset($_COOKIE['province'])?$_COOKIE['province']:'';
 }
 
 if (isset($_GET['p_id'])){
@@ -78,11 +67,7 @@ $p_idNew=$_GET['p_id'];
 setcookie("p_id",$p_idNew,time()+3600*24);
 $p_id=$p_idNew;
 }else{
-	if (isset($_COOKIE['p_id'])){
-	$p_id=$_COOKIE['p_id'];
-	}else{
-	$p_id="";
-	}
+$p_id=isset($_COOKIE['p_id'])?$_COOKIE['p_id']:'';
 }
 
 if (isset($_GET['city'])){
@@ -90,11 +75,7 @@ $cityNew=$_GET['city'];
 setcookie("city",$cityNew,time()+3600*24);
 $city=$cityNew;
 }else{
-	if (isset($_COOKIE['city'])){
-	$city=$_COOKIE['city'];
-	}else{
-	$city="";
-	}
+$city=isset($_COOKIE['city'])?$_COOKIE['city']:'';
 }
 
 if (isset($_GET['c_id'])){
@@ -102,11 +83,7 @@ $c_idNew=$_GET['c_id'];
 setcookie("c_id",$c_idNew,time()+3600*24);
 $c_id=$c_idNew;
 }else{
-	if (isset($_COOKIE['c_id'])){
-	$c_id=$_COOKIE['c_id'];
-	}else{
-	$c_id="";
-	}
+$c_id=isset($_COOKIE['c_id'])?$_COOKIE['c_id']:'';
 }
 
 if (isset($_GET['xiancheng'])){
@@ -114,11 +91,7 @@ $xianchengNew=$_GET['xiancheng'];
 setcookie("xiancheng",$xianchengNew,time()+3600*24);
 $xiancheng=$xianchengNew;
 }else{
-	if (isset($_COOKIE['xiancheng'])){
-	$xiancheng=$_COOKIE['xiancheng'];
-	}else{
-	$xiancheng="";
-	}
+$xiancheng=isset($_COOKIE['xiancheng'])?$_COOKIE['xiancheng']:'';
 }
 
 if (isset($_GET['delb'])){
@@ -145,15 +118,16 @@ setcookie("xiancheng","xxx",1);
 echo "<script>location.href='search.php'</script>";
 }
 
+$bigclassname="";
+$bigclassid=0;
 if ($b<>""){
-$sql="select * from zzcms_zsclass where classzm='".$b."'";
+$sql="select classname,classid from zzcms_zsclass where classzm='".$b."'";
 $rs=query($sql);
 $row=fetch_array($rs);
 	if ($row){
 	$bigclassname=$row["classname"];
+	$bigclassid=$row["classid"];
 	}
-}else{
-$bigclassname="";
 }
 
 $pagetitle=$province.$bigclassname.baojialisttitle."-".sitename;
@@ -168,7 +142,7 @@ if( isset($_GET["page"]) && $_GET["page"]!="") {
 }
 function formbigclass(){
 		$str="";
-        $sql = "select * from zzcms_zsclass where parentid='A'";
+        $sql = "select classzm,classname from zzcms_zsclass where parentid=0";
         $rs=query($sql);
 		$row=num_rows($rs);
 		if (!$row){
@@ -277,6 +251,10 @@ $sql2='';
 if ($keyword<>"" && $keyword<>"输入".channeldl."产品名称") {
 $sql2=$sql2." and cp like '%".$keyword."%' ";
 }
+if ($b<>""){
+$sql2=$sql2. "and classid='".$bigclassid."' ";
+}
+
 if ($province<>"") {
 $sql2=$sql2." and province = '".$province."' ";
 }
@@ -286,11 +264,11 @@ $sql2=$sql2." and city ='".$city."' ";
 if ($xiancheng<>"" ){
 $sql2=$sql2." and xiancheng like '".$xiancheng."%' ";
 }
-//echo $sql;
+
 $dl=strbetween($strout,"{baojia}","{/baojia}");
 $dllist=strbetween($strout,"{loop}","{/loop}");
-
-$rs = query($sql.$sql2); 
+//echo $sql.$sql2;
+$rs =query($sql.$sql2); 
 $row = fetch_array($rs);
 $totlenum = $row['total'];
 $offset=($page-1)*$page_size;//$page_size在上面被设为COOKIESS
@@ -362,6 +340,5 @@ $strout=str_replace("{#dllist}",$dllist,$strout);
 $strout=str_replace("{#sitebottom}",sitebottom(),$strout);
 $strout=str_replace("{#sitetop}",sitetop(),$strout);
 $strout=showlabel($strout);
-
 echo  $strout;
 ?>

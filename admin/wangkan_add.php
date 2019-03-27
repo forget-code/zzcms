@@ -24,11 +24,7 @@ if (document.myform.title.value==""){
 <body>
 <?php
 checkadminisdo("wangkan");
-if (isset($_SESSION["wkclassid"])){
-$swkclassid=$_SESSION["wkclassid"];
-}else{
-$swkclassid="";
-}
+$swkclassid=isset($_SESSION["wkclassid"])?$_SESSION["wkclassid"]:"";
 ?>
 <div class="admintitle">发布网刊信息</div>
 <form action="wangkan_save.php?action=add" method="post" name="myform" target="_self" id="myform" onSubmit="return CheckForm();">      
@@ -38,7 +34,7 @@ $swkclassid="";
       <td class="border"> 
 	   
         <?php
-		$sql = "select * from zzcms_wangkanclass order by xuhao asc";
+		$sql = "select classid,classname from zzcms_wangkanclass order by xuhao asc";
 	    $rs=query($sql);
         $row=num_rows($rs);
 		if (!$row){
@@ -50,8 +46,8 @@ $swkclassid="";
                 <?php
 		while($row= fetch_array($rs)){
 			?>
-                <option value="<?php echo $row["bigclassid"]?>" <?php if ($row["bigclassid"]==$swkclassid) { echo "selected";}?>><?php echo $row["bigclassname"]?></option>
-                <?php
+        <option value="<?php echo $row["classid"]?>" <?php if ($row["classid"]==$swkclassid) { echo "selected";}?>><?php echo $row["classname"]?></option>
+          <?php
 		  }
 		  ?>
               </select>
@@ -78,7 +74,6 @@ $swkclassid="";
       <td class="border" ><input type="submit" name="Submit" value="发 布" ></td>
     </tr>
   </table>
-</form>
-	  
+</form>  
 </body>
 </html>

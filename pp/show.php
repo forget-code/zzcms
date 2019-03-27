@@ -5,8 +5,8 @@ include("subpp.php");
 include("../inc/top.php");
 include("../inc/bottom.php");
 include("../label.php");
-if (isset($_REQUEST["id"])){
-$cpid=trim($_REQUEST["id"]);
+if (isset($_GET["id"])){
+$cpid=trim($_GET["id"]);
 checkid($cpid);
 }else{
 $cpid=0;
@@ -24,29 +24,30 @@ $ppname=$row["ppname"];
 $img=$row["img"];
 $imgs="<img src='".getsmallimg($row["img"])."' onload='resizeimg(70,70,this)'>";
 
-$bigclassid=$row["bigclasszm"];
-$smallclassid=$row["smallclasszm"];
+$bigclassid=$row["bigclassid"];
+$smallclassid=$row["smallclassid"];
 $sendtime=$row["sendtime"];
 $hit=$row["hit"];
 $sm=$row["sm"];
 $comane=$row["comane"];
 
-
-$rs=query("select classname from zzcms_zsclass where classzm='".$bigclassid."'");
+$bigclassname="大类已删除";
+$bigclasszm='###';
+$smallclassname="小类已删除";
+$smallclasszm='###';
+$rs=query("select classname,classzm from zzcms_zsclass where classid='".$bigclassid."'");
 $row=fetch_array($rs);
 if ($row){
 $bigclassname=$row["classname"];
-}else{
-$bigclassname="大类已删除";
+$bigclasszm=$row["classzm"];
 }
-$smallclassname='';
+
 if ($smallclassid<>0){
-$rs=query("select classname from zzcms_zsclass where classzm='".$smallclassid."'");
+$rs=query("select classname,classzm from zzcms_zsclass where classid='".$smallclassid."'");
 $row=fetch_array($rs);
 if ($row){
 $smallclassname=$row["classname"];
-}else{
-$smallclassname="小类已删除";
+$smallclasszm=$row["classzm"];
 }
 }
 
@@ -96,7 +97,7 @@ $strout=str_replace("{#editor}",$editor,$strout);
 
 $strout=str_replace("{#siteskin}",$siteskin,$strout) ;
 $strout=str_replace("{#sitename}",sitename,$strout) ;
-$strout=str_replace("{#station}",getstation($bigclassid,$bigclassname,$smallclassid,$smallclassname,"","","pp"),$strout) ;
+$strout=str_replace("{#station}",getstation($bigclasszm,$bigclassname,$smallclasszm,$smallclassname,"","","pp"),$strout) ;
 
 $strout=str_replace("{#pagetitle}",$ppname,$strout);
 $strout=str_replace("{#pagekeywords}",$ppname.ppshowkeyword,$strout);

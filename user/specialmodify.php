@@ -62,21 +62,15 @@ include("left.php");
 <div class="content">
 <div class="admintitle"><?php echo $f_array[1]?></div>
 <?php
-if (isset($_GET["page"])){
-$page=$_GET["page"];
-}else{
-$page=1;
-}
+$page = isset($_GET['page'])?$_GET['page']:1;
+checkid($page);
+$id = isset($_GET['id'])?$_GET['id']:0;
+checkid($id,1);
 
-if (isset($_REQUEST["id"])){
-$id=$_REQUEST["id"];
-}else{
-$id=0;
-}
 $sqlzx="select * from zzcms_special where id='$id'";
-$rszx = query($sqlzx); 
+$rszx =query($sqlzx); 
 $rowzx = fetch_array($rszx);
-if ($rowzx["editor"]<>$username) {
+if ($id!=0 && $rowzx["editor"]<>$username) {
 markit();
 showmsg('非法操作！警告：你的操作已被记录！小心封你的用户及IP！');
 }
@@ -87,8 +81,7 @@ showmsg('非法操作！警告：你的操作已被记录！小心封你的用�
             <td width="18%" align="right" class="border2"><?php echo $f_array[2]?></td>
             <td width="82%" class="border2"> 
               <?php
-
-$sql = "select * from zzcms_specialclass where parentid<>0 order by xuhao asc";
+$sql = "select parentid,classid,classname from zzcms_specialclass where parentid<>0 order by xuhao asc";
 $rs=query($sql);
 ?>
 <script language = "JavaScript" type="text/JavaScript">
@@ -132,7 +125,7 @@ function changelocation(locationid)
                 <option value="0"><?php echo $f_array[4]?></option>
                 <?php
 
-$sql="select * from zzcms_specialclass where parentid=" .$rowzx["bigclassid"]." order by xuhao asc";
+$sql="select * from zzcms_specialclass where parentid='" .$rowzx["bigclassid"]."' order by xuhao asc";
 $rs=query($sql);
 while($row = fetch_array($rs)){
 ?>
@@ -170,7 +163,7 @@ while($row = fetch_array($rs)){
           </tr>
           <tr id="trcontent"> 
             <td align="right" class="border2" ><?php echo $f_array[9]?></td>
-            <td class="border2" > <textarea name="content" type="hidden" id="content"><?php echo $rowzx["content"]?></textarea> 
+            <td class="border2" > <textarea name="content" type="hidden" id="content"><?php echo stripfxg($rowzx["content"])?></textarea> 
               <script type="text/javascript">CKEDITOR.replace('content');	</script>            </td>
           </tr>
           <tr id="trseo">
@@ -218,10 +211,10 @@ while($row = fetch_array($rs)){
     </tr>
             <td align="right" class="border2">&nbsp;</td>
             <td class="border2"> <input name="Submit" type="submit" class="buttons" value="<?php echo $f_array[25]?>">
-              <input name="id" type="hidden" id="ypid2" value="<?php echo $rowzx["id"] ?>" /> 
-              <input name="editor" type="hidden" id="editor2" value="<?php echo $username?>" />
-              <input name="page" type="hidden" id="action" value="<?php echo $page?>" />
-              <input name="action" type="hidden" id="action2" value="modify" /></td>
+              <input name="id" type="hidden" id="id" value="<?php echo $rowzx["id"] ?>" /> 
+              <input name="editor" type="hidden" id="editor" value="<?php echo $username?>" />
+              <input name="page" type="hidden" id="page" value="<?php echo $page?>" />
+              <input name="action" type="hidden" id="action" value="modify" /></td>
           </tr>
         </table>
 </form>
@@ -232,6 +225,5 @@ while($row = fetch_array($rs)){
 </body>
 </html>
 <?php
-
 unset ($f_array);
 ?>

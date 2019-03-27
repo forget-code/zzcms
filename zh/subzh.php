@@ -22,7 +22,7 @@ return $str;
 function bigclass($b){
 $str="";
 $n=1;
-$sql="select bigclassname,bigclassid from zzcms_zhclass  order by xuhao";
+$sql="select classname,classid from zzcms_zhclass  order by xuhao";
 $rs=query($sql);
 $row=num_rows($rs);
 if (!$row){
@@ -31,10 +31,10 @@ $str="暂无分类";
 
 while ($row=fetch_array($rs)){
 $str=$str."<li>";
-	if($row['bigclassid']==$b){
-	$str=$str."<a href='".getpageurl2("zh",$row["bigclassid"],"")."' class='current'>".$row["bigclassname"]."</a>";
+	if($row['classid']==$b){
+	$str=$str."<a href='".getpageurl2("zh",$row["classid"],"")."' class='current'>".$row["classname"]."</a>";
 	}else{
-	$str=$str."<a href='".getpageurl2("zh",$row["bigclassid"],"")."'>".$row["bigclassname"]."</a>";
+	$str=$str."<a href='".getpageurl2("zh",$row["classid"],"")."'>".$row["classname"]."</a>";
 	}
 	$str=$str."</li>";
 $n=$n+1;		

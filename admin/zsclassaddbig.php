@@ -29,11 +29,7 @@ if (document.form1.classname.value==""){
 <body>
 <?php
 $FoundErr=0;
-if (isset($_REQUEST['action'])){
-$action=$_REQUEST['action'];
-}else{
-$action="";
-}
+$action=isset($_REQUEST['action'])?$_REQUEST['action']:'';
 if ($action=="add"){
 checkadminisdo("zsclass");
 $classname=nostr(trim($_POST["classname"]));
@@ -69,39 +65,12 @@ $discription=$classname;
 		
 		}else{
 		$sql="insert into zzcms_zsclass (parentid,classname,classzm,img,isshow,title,keyword,discription) values
-		('A','$classname','$classzm','img','$isshow','$title','$keyword','$discription')";
+		(0,'$classname','$classzm','$img','$isshow','$title','$keyword','$discription')";
 		$isok=query($sql);
 		$rs=query("select * from zzcms_zsclass where classname='".$classname."'");
 		$row= fetch_array($rs);
 		$bcid=$row["classid"];
-				
-query("CREATE TABLE `zzcms_dl_".$classzm."` (
-  `id` int(11) NOT NULL auto_increment,
-  `dlid` int(11) default '0',
-  `cpid` int(11) default '0',
-  `cp` varchar(255) default NULL,
-  `province` varchar(50) default NULL,
-  `city` varchar(50) default NULL,
-  `xiancheng` varchar(50) default NULL,
-  `content` varchar(1000) default NULL,
-  `company` varchar(255) default NULL,
-  `companyname` varchar(255) default NULL,
-  `dlsname` varchar(255) default NULL,
-  `address` varchar(255) default NULL,
-  `tel` varchar(255) default NULL,
-  `email` varchar(255) default NULL,
-  `editor` varchar(255) default NULL,
-  `saver` varchar(255) default NULL,
-  `savergroupid` int(11) default '0',
-  `ip` varchar(255) default NULL,
-  `sendtime` datetime default NULL,
-  `hit` int(11) default '0',
-  `looked` tinyint(4) default '0',
-  `passed` tinyint(4) default '0',
-  `del` tinyint(4) default '0',
-  PRIMARY KEY  (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=1 DEFAULT CHARSET=utf8");
-query("ALTER TABLE  `zzcms_dl_".$classzm."` ADD INDEX (  `province` ,  `city` ,  `xiancheng` )") ;
+
 if ($isok){$msg="成功";}else{$msg="失败";}
 echo "<script>alert('".$msg."');location.href='zsclassaddbig.php'</script>";
 //echo "<script>location.href='zsclassmanage.php?#B".$bcid."'<//script>";

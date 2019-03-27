@@ -31,14 +31,14 @@ $groupname=trim($_GET["groupname"]);
 $id=trim($_GET["id"]);
 if  ($groupname<>""){
 	$sql="delete from zzcms_admingroup where groupname='" . $groupname . "'";
-	query($sql,$conn);
+	query($sql);
 }
  
 echo  "<script>location.href='admingroupmanage.php'</script>";
 }
 
 $sql="Select * From zzcms_admingroup";
-$rs = query($sql,$conn); 
+$rs = query($sql); 
 ?>
 <table width="100%" border="0" cellpadding="5" cellspacing="1" >
   <tr> 

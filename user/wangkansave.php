@@ -17,25 +17,18 @@ if (str_is_inarr(usergr_power,'wangkan')=="no" && $usersf=='个人'){
 echo $f_array[0];
 exit;
 }
+$page = isset($_POST['page'])?$_POST['page']:1;//返回列表页用
+checkid($page);
+$id = isset($_POST['id'])?$_POST['id']:0;
+checkid($id);
 
-if (isset($_POST["page"])){//返回列表页用
-$page=$_POST["page"];
-}else{
-$page=1;
-}
-$bigclassid=trim($_POST["bigclassid"]);
-$title=trim($_POST["title"]);
-$content=str_replace("'","",stripfxg(trim($_POST["content"])));
-$img=getimgincontent($content);
-$editor=trim($_POST["editor"]);
+$img=getimgincontent(stripfxg($content,true));
 if ($_POST["action"]=="add" && $editor<>''){//$editor<>''防垃圾信息
 query("Insert into zzcms_wangkan(bigclassid,title,content,img,editor,sendtime) values('$bigclassid','$title','$content','$img','$editor','".date('Y-m-d H:i:s')."')") ;  
-$id=insert_id();
-		
+$id=insert_id();	
 }elseif ($_POST["action"]=="modify"){
-$id=$_POST["id"];
 query("update zzcms_wangkan set bigclassid='$bigclassid',title='$title',content='$content',img='$img',
-editor='$editor',sendtime='".date('Y-m-d H:i:s')."' where id='$id'");
+editor='$editor',sendtime='".date('Y-m-d H:i:s')."',passed=0 where id='$id'");
 }		
 passed("zzcms_wangkan");
 ?>
@@ -82,7 +75,9 @@ include("left.php");
       </table></td>
   </tr>
 </table>
-
+<?php
+unset ($f_array);
+?>
 </div>
 </div>
 </div>

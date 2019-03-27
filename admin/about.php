@@ -7,24 +7,19 @@ include("admin.php");
 <link href="style.css" rel="stylesheet" type="text/css">
 <?php
 $go=0;
-if (isset($_REQUEST['action'])){
-$action=$_REQUEST['action'];
-}else{
-$action="";
-}
+$action=isset($_GET["action"])?$_GET["action"]:'';
+$id=isset($_REQUEST["id"])?$_REQUEST["id"]:0;
+checkid($id,1);
 
 if ($action=="savedata" ){
 checkadminisdo("bottomlink");
-	$saveas=trim($_REQUEST["saveas"]);
-	$title=trim($_POST["title"]);
-	$content=stripfxg(rtrim($_POST["info_content"]));
-	$link=trim($_POST["link"]);
+	
 	if ($saveas=="add"){
 	query("insert into zzcms_about (title,content)VALUES('$title','$content') ");
 	$go=1;
 	//echo "<script>location.href='about_manage.php'<//script>";	
 	}elseif ($saveas=="modify"){
-	query("update zzcms_about set title='$title',content='$content',link='$link' where id=". $_POST['id']." ");
+	query("update zzcms_about set title='$title',content='$content',link='$link' where id='". $id."' ");
 	$go=1;
 	//echo "<script>location.href='about_manage.php'<//script>";
 	}
@@ -55,12 +50,12 @@ if ($action=="add") {
     </tr>
     <tr> 
       <td align="right" class="border">内容</td>
-      <td class="border"> <textarea name="info_content" id="info_content" ></textarea> 
-       	<script type="text/javascript">CKEDITOR.replace('info_content');	</script>
+      <td class="border"> <textarea name="content" id="content" ></textarea> 
+       	<script type="text/javascript">CKEDITOR.replace('content');	</script>
       </td>
     </tr>
     <tr> 
-      <td align="right" class="border"><input name="link" type="hidden" id="link3" value=""></td>
+      <td align="right" class="border"><input name="link" type="hidden" value=""></td>
       <td class="border"> 
         <input type="submit" name="Submit" value="提 交" ></td>
     </tr>
@@ -69,7 +64,7 @@ if ($action=="add") {
 <?php
 }
 if ($action=="modify") {
-$sql="select * from zzcms_about where id=".$_REQUEST["id"]."";
+$sql="select * from zzcms_about where id='".$id."'";
 $rs=query($sql);
 $row=fetch_array($rs);
 ?>
@@ -82,16 +77,16 @@ $row=fetch_array($rs);
     </tr>
     <tr> 
       <td align="right" class="border">内容</td>
-      <td class="border"> <textarea name="info_content" id="info_content" ><?php echo $row["content"]?></textarea> 
-	  	<script type="text/javascript">CKEDITOR.replace('info_content');	</script>
+      <td class="border"> <textarea name="content" id="content" ><?php echo stripfxg($row["content"])?></textarea> 
+	  	<script type="text/javascript">CKEDITOR.replace('content');	</script>
         </td>
     </tr>
     <tr> 
       <td align="right" class="border">链接地址：</td>
-      <td class="border"><input name="link" type="text" id="link" value="<?php if ($row["link"]<>"") { echo $row["link"]; }else{ echo "/one/siteinfo.php?id=".$row["id"]."";}?>"> </td>
+      <td class="border"><input name="link" type="text"  value="<?php if ($row["link"]<>"") { echo $row["link"]; }else{ echo "/one/siteinfo.php?id=".$row["id"]."";}?>"> </td>
     </tr>
     <tr>
-      <td align="right" class="border"><input name="id" type="hidden" id="id2" value="<?php echo $row["id"]?>"></td>
+      <td align="right" class="border"><input name="id" type="hidden"  value="<?php echo $row["id"]?>"></td>
       <td class="border">
 <input type="submit" name="Submit2" value="提 交"></td>
     </tr>

@@ -72,8 +72,6 @@ img{vertical-align:bottom;vertical-align:middle;vertical-align:top;border:0}
 .zsclass label:hover{background: url(image/bigclassbg.gif) no-repeat 0 0;background-color:#fff;color:}
 .zsclass h2{font-size:14px;font-weight:bold}
 .zsclass h2 span{font-size:12px;font-weight:normal}
-.zsclass h2 img{width:20px}
-.zsclass .ico_size img{width:30px}
 .zsclass_zhankai{width:50%;float:left;}/*展开的样式*/
 .zsclass_zhankai h2{font-size:16px;}
 .zsclass_zhankai h2 a{color:#FF6600}

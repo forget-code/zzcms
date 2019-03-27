@@ -14,37 +14,31 @@ include("check.php");
 if (str_is_inarr(usergr_power,'job')=="no" && $usersf=='个人'){
 showmsg('个人用户没有此权限');
 }
-if (isset($_REQUEST["page"])){ 
-$page=$_REQUEST["page"];
-}else{
-$page=1;
-}
-$bigclassid=trim($_POST["bigclassid"]);
+$page = isset($_POST['page'])?$_POST['page']:1;//返回列表页用
+checkid($page);
+$cpid=isset($_POST["ypid"])?$_POST["ypid"]:0;
+checkid($cpid);
+
+$bigclassid = isset($_POST['bigclassid'])?$_POST['bigclassid']:'0';
 $smallclassid = isset($_POST['smallclassid'])?$_POST['smallclassid']:'0';
 $smallclassname="未指定小类";
-if (isset($bigclassid)){
-$rs = query("select * from zzcms_jobclass where classid='$bigclassid'"); 
+if ($bigclassid!=0){
+$rs = query("select classname from zzcms_jobclass where classid='$bigclassid'"); 
 $row= fetch_array($rs);
 $bigclassname=$row["classname"];
 }
 
 if ($smallclassid !=0){
-$rs = query("select * from zzcms_jobclass where classid='$smallclassid'"); 
+$rs = query("select classname from zzcms_jobclass where classid='$smallclassid'"); 
 $row= fetch_array($rs);
 $smallclassname=$row["classname"];
 }
 
-$cp_name=$_POST["jobname"];
-$sm=$_POST["sm"];
-$province=$_POST["province"];
-$city=$_POST["city"];
-$xiancheng=$_POST["xiancheng"];
 $rs=query("select comane,id from zzcms_user where username='".$username."'");
 $row=fetch_array($rs);
 $comane=$row["comane"];
 $userid=$row["id"];
 
-$cpid=isset($_POST["ypid"])?$_POST["ypid"]:0;
 //判断大小类是否一致，修改产品时有用
 if ($smallclassid<>0){ 
 $sql="select * from zzcms_jobclass where parentid='".$bigclassid."' and  classid='".$smallclassid."'";
@@ -57,14 +51,14 @@ echo"<script>alert('请选择小类');location.href='jobmodify.php?id=".$cpid."'
 
 //判断是不是重复信息
 if ($_REQUEST["action"]=="add" ){
-$sql="select * from zzcms_job where jobname='".$cp_name."' and editor='".$username."' ";
+$sql="select * from zzcms_job where jobname='".$jobname."' and editor='".$username."' ";
 $rs=query($sql);
 $row=num_rows($rs);
 if ($row){
 showmsg('您已发布过这条信息，请不要发布重复的信息！','jobmanage.php');
 }
 }elseif($_REQUEST["action"]=="modify"){
-$sql="select * from zzcms_job where jobname='".$cp_name."' and editor='".$username."' and id<>".$cpid." ";
+$sql="select * from zzcms_job where jobname='".$jobname."' and editor='".$username."' and id<>'".$cpid."' ";
 $rs=query($sql);
 $row=num_rows($rs);
 if ($row){
@@ -73,11 +67,10 @@ showmsg('您已发布过这条信息，请不要发布重复的信息！','jobma
 }
   
 if ($_POST["action"]=="add"){
-$isok=query("Insert into zzcms_job(jobname,bigclassid,bigclassname,smallclassid,smallclassname,sm,province,city,xiancheng,sendtime,editor,userid,comane) values('$cp_name','$bigclassid','$bigclassname','$smallclassid','$smallclassname','$sm','$province','$city','$xiancheng','".date('Y-m-d H:i:s')."','$username','$userid','$comane')") ;  
+$isok=query("Insert into zzcms_job(jobname,bigclassid,bigclassname,smallclassid,smallclassname,sm,province,city,xiancheng,sendtime,editor,userid,comane) values('$jobname','$bigclassid','$bigclassname','$smallclassid','$smallclassname','$sm','$province','$city','$xiancheng','".date('Y-m-d H:i:s')."','$username','$userid','$comane')") ;  
 $cpid=insert_id();		
 }elseif ($_POST["action"]=="modify"){
-
-$isok=query("update zzcms_job set jobname='$cp_name',bigclassid='$bigclassid',bigclassname='$bigclassname',smallclassid='$smallclassid',smallclassname='$smallclassname',sm='$sm',
+$isok=query("update zzcms_job set jobname='$jobname',bigclassid='$bigclassid',bigclassname='$bigclassname',smallclassid='$smallclassid',smallclassname='$smallclassname',sm='$sm',
 province='$province',city='$city',xiancheng='$xiancheng',sendtime='".date('Y-m-d H:i:s')."',
 editor='$username',userid='$userid',comane='$comane',passed=0 where id='$cpid'");
 }
@@ -115,7 +108,7 @@ include("left.php");
     <td  class="border3"><table width="100%" border="0" cellspacing="0" cellpadding="3">
       <tr bgcolor="#FFFFFF">
         <td width="25%" align="right" bgcolor="#FFFFFF"><strong>名称：</strong></td>
-        <td width="75%"><?php echo $cp_name?></td>
+        <td width="75%"><?php echo $jobname?></td>
       </tr>
     </table>
       <table width="100%" border="0" cellpadding="5" cellspacing="1"  class="bgcolor">

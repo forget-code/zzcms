@@ -7,16 +7,13 @@ include ("admin.php");
 <title></title>
 <?php
 checkadminisdo("dl");
-$id=$_REQUEST["id"];
-if ($id<>""){
-checkid($id);
-}else{
-$id=0;
-}
+$page = isset($_GET['page'])?$_GET['page']:1;
+checkid($page);
+$id = isset($_GET['id'])?$_GET['id']:0;
+checkid($id,1);
 $sql="select * from zzcms_dl where id='$id'";
 $rs=query($sql);
 $row=fetch_array($rs);
-
 ?>
 <script language = "JavaScript">
 function CheckForm(){
@@ -85,7 +82,7 @@ eval("submenu" + sid + ".style.display=\"none\";");
       <td align="right" class="border">产品类别 <font color="#FF0000">*</font></td>
       <td class="border"> 
 	   <?php
-		$sqln = "select * from zzcms_zsclass where parentid='A' order by xuhao asc";
+		$sqln = "select classid,classname from zzcms_zsclass where parentid=0 order by xuhao asc";
 	    $rsn=query($sqln);
         $rown=num_rows($rsn);
 		if (!$rown){
@@ -93,11 +90,11 @@ eval("submenu" + sid + ".style.display=\"none\";");
 		}else{
 		?>
 		<select name="classid" id="classid">
-                <option value="" selected="selected">请选择类别</option>
+                <option value="0" selected="selected">请选择类别</option>
                 <?php
 		while($rown= fetch_array($rsn)){
 			?>
-                <option value="<?php echo $rown["classzm"]?>" <?php if ($rown["classzm"]==$row["classzm"]) { echo "selected";}?>><?php echo $rown["classname"]?></option>
+                <option value="<?php echo $rown["classid"]?>" <?php if ($rown["classid"]==$row["classid"]) { echo "selected";}?>><?php echo $rown["classname"]?></option>
                 <?php
 		  }
 		  ?>
@@ -177,9 +174,9 @@ new PCAS('province', 'city', 'xiancheng', '<?php echo $row['province']?>', '<?ph
     <tr> 
       <td width="130" align="right" class="border">内容：</td>
       <td class="border"> 
-        <textarea name="content" cols="45" rows="6" id="content"><?php echo $row["content"]?></textarea> 
-        <input name="dlid" type="hidden" id="dlid" value="<?php echo $row["id"]?>">
-        <input name="page" type="hidden" id="page" value="<?php echo $_REQUEST["page"]?>">      </td>
+        <textarea name="content" cols="45" rows="6" id="content"><?php echo stripfxg($row["content"])?></textarea> 
+        <input name="id" type="hidden" id="dlid" value="<?php echo $row["id"]?>">
+        <input name="page" type="hidden" id="page" value="<?php echo $page?>">      </td>
     </tr>
     <tr> 
       <td align="right" class="border"><?php echo channeldl?>身份：</td>
@@ -211,7 +208,7 @@ new PCAS('province', 'city', 'xiancheng', '<?php echo $row['province']?>', '<?ph
     </tr>
     <tr>
       <td align="right" class="border">审核：</td>
-      <td class="border"><input name="passed[]" type="checkbox" id="passed[]" value="1"  <?php if ($row["passed"]==1) { echo "checked";}?>>
+      <td class="border"><input name="passed" type="checkbox" id="passed" value="1"  <?php if ($row["passed"]==1) { echo "checked";}?>>
         （选中为通过审核） </td>
     </tr>
     <tr> 

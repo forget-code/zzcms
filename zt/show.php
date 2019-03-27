@@ -28,11 +28,12 @@ if ($showad_inzt=="yes") {
 	}
 }
 $linkliuyan=siteurl."/zt/show.php?id=".$id."#dl_liuyan";//转为PHP页，解决二级域名无法直接留言，验证码无法跨域
+
 $zslist=strbetween($strout,"{zsloop}","{/zsloop}");
 $rs=query("select * from zzcms_main where editor='$editor' and passed=1 order by xuhao desc limit 0,12");
 $row=num_rows($rs);
 if ($row){
-$n=0;
+$i=0;
 $zslist2='';
 while($row=fetch_array($rs)){
 if (sdomain=="Yes"){
@@ -69,8 +70,11 @@ $zslist2 =str_replace("{#prouse}",cutstr($row['prouse'],150),$zslist2) ;
 $zslist2 =str_replace("{#editor}",$row['editor'],$zslist2) ;	
 $zslist2 =str_replace("{#linkliuyan}",$linkliuyan,$zslist2) ;
 
-$n=$n+1;
-($n % 6==0)?$tr="<tr>":$tr="";
+$i=$i+1;
+//$rownum=strbetween($strout,"{tr=","}");
+$rownum=6;
+($i % $rownum==0)?$tr="<tr>":$tr="";
+//$zslist2 =str_replace("{tr=".$rownum."}",$tr,$zslist2) ;
 $zslist2 =str_replace("{tr}",$tr,$zslist2) ;
 }
 $strout=str_replace("{zsloop}".$zslist."{/zsloop}",$zslist2,$strout) ;
@@ -204,7 +208,7 @@ if($flv<>""){//可以只给VIP会员传视频的权限
 //用户可以从编缉器中传了	
 }	
 
-$gsjj=$gsjj.  $content;
+$gsjj=$gsjj. stripfxg($content,true);
 //$gsjj=$gsjj.  nl2br($content);//不用编缉器时
 $gsjj=$gsjj. "</td>";
 $gsjj=$gsjj. "</tr>";

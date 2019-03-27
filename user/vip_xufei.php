@@ -15,11 +15,7 @@ $f_array=explode("|||",$fcontent) ;
 <?php
 $ErrMsg="";
 $FoundErr=0;
-if (isset($_REQUEST["action"])){
-$action=$_REQUEST["action"];
-}else{
-$action="";
-}
+$action = isset($_GET['action'])?$_GET['action']:"";
 $rs=query("Select * from zzcms_usergroup where groupid=(select groupid from zzcms_user where username='".$username."')");
 $row=fetch_array($rs);
 $groupname=$row["groupname"];
@@ -121,6 +117,5 @@ include("left.php");
 </html>
 <?php
 }
-
 unset ($f_array);
 ?>

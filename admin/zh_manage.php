@@ -11,9 +11,13 @@ include("../inc/fy.php");
 <?php
 checkadminisdo("zh");
 $action=isset($_REQUEST["action"])?$_REQUEST["action"]:'';
-$page=isset($_GET["page"])?$_GET["page"]:1;
+if( isset($_REQUEST["page"]) && $_REQUEST["page"]!="") {
+    $page=$_REQUEST['page'];
+	checkid($page);
+}else{
+    $page=1;
+}
 $shenhe=isset($_REQUEST["shenhe"])?$_REQUEST["shenhe"]:'';
-
 $keyword=isset($_REQUEST["keyword"])?$_REQUEST["keyword"]:'';
 $kind=isset($_REQUEST["kind"])?$_REQUEST["kind"]:'title';
 $b=isset($_REQUEST["b"])?$_REQUEST["b"]:'';
@@ -22,6 +26,7 @@ if ($action=="pass"){
 if(!empty($_POST['id'])){
     for($i=0; $i<count($_POST['id']);$i++){
     $id=$_POST['id'][$i];
+	checkid($id);
 	$sql="select passed from zzcms_zh where id ='$id'";
 	$rs = query($sql); 
 	$row = fetch_array($rs);
@@ -65,14 +70,14 @@ echo "<script>location.href='?keyword=".$keyword."&page=".$page."'</script>";
       
     <td class="border2"> 
       <?php	
-$sql="select * from zzcms_zhclass order by xuhao";
+$sql="select classid,classname from zzcms_zhclass order by xuhao";
 $rs = query($sql); 
 while($row = fetch_array($rs)){
-echo "<a href=?b=".$row['bigclassid'].">";  
-	if ($row["bigclassid"]==$b) {
-	echo "<b>".$row["bigclassname"]."</b>";
+echo "<a href=?b=".$row['classid'].">";  
+	if ($row["classid"]==$b) {
+	echo "<b>".$row["classname"]."</b>";
 	}else{
-	echo $row["bigclassname"];
+	echo $row["classname"];
 	}
 	echo "</a> | ";  
  }
@@ -104,7 +109,7 @@ if ( $b<>"" ) {
    $sql2=$sql2." and bigclassid=".$b."";
 }
 
-$rs = query($sql.$sql2,$conn); 
+$rs =query($sql.$sql2); 
 $row = fetch_array($rs);
 $totlenum = $row['total']; 
 $totlepage=ceil($totlenum/$page_size);
@@ -112,7 +117,7 @@ $totlepage=ceil($totlenum/$page_size);
 $sql="select * from zzcms_zh where id<>0 ";
 $sql=$sql.$sql2;
 $sql=$sql . " order by id desc limit $offset,$page_size";
-$rs = query($sql,$conn); 
+$rs = query($sql); 
 if(!$totlenum){
 echo "暂无信息";
 }else{
@@ -150,9 +155,9 @@ while($row = fetch_array($rs)){
       <td align="center" >
 	  <?php
 	  echo "<a href=?b=".$row['bigclassid'].">"; 
-	  $rsn=query("select bigclassname from zzcms_zhclass where bigclassid='".$row["bigclassid"]."'");
+	  $rsn=query("select classname from zzcms_zhclass where classid='".$row["bigclassid"]."'");
 $rown=fetch_array($rsn);
-echo $rown["bigclassname"];
+echo $rown["classname"];
 echo "</a>";
 ?></td>
       <td align="center" > <?php if ( $row["passed"]==0 ) { echo"<font color=red>未审核</font>";}else{ echo"已审核";}?> <br>

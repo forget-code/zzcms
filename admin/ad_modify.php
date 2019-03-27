@@ -46,17 +46,11 @@ return   true;
 <div class="admintitle">修改广告</div>
 <?php
 //checkadminisdo("adv");
-if (isset($_GET["page"])){
-$page=$_GET["page"];
-}else{
-$page=1;
-}
-$id=$_REQUEST["id"];
-if ($id<>"") {
-checkid($id);
-}else{
-$id=0;
-}
+$page = isset($_GET['page'])?$_GET['page']:1;
+checkid($page);
+$id = isset($_GET['id'])?$_GET['id']:0;
+checkid($id,1);
+
 $sql="select * from zzcms_ad where id='$id'";
 $rs=query($sql);
 $row=fetch_array($rs);
@@ -67,7 +61,7 @@ $row=fetch_array($rs);
       <td width="19%" align="right" class="border">所属类别：</td>
       <td width="81%" class="border"> 
        <?php
-$sqln = "select * from zzcms_adclass where parentid<>'A' order by xuhao asc";
+$sqln = "select classname,parentid from zzcms_adclass where parentid<>'A' order by xuhao asc";
 $rsn=query($sqln);
 ?>
         <script language = "JavaScript" type="text/JavaScript">
@@ -99,7 +93,7 @@ function changelocation(locationid)
     }</script> <select name="bigclassid" onChange="changelocation(document.myform.bigclassid.options[document.myform.bigclassid.selectedIndex].value)" size="1">
           <option value="" selected="selected">请选择大类别</option>
           <?php
-	$sqln = "select * from zzcms_adclass where  parentid='A' order by xuhao asc";
+	$sqln = "select classname from zzcms_adclass where  parentid='A' order by xuhao asc";
     $rsn=query($sqln);
 	while($rown = fetch_array($rsn)){
 	?>
@@ -111,7 +105,7 @@ function changelocation(locationid)
           <option value="">不指定小类</option>
           <?php
 
-$sqln="select * from zzcms_adclass where parentid='" .$row["bigclassname"]."' order by xuhao asc";
+$sqln="select classname from zzcms_adclass where parentid='" .$row["bigclassname"]."' order by xuhao asc";
 $rsn=query($sqln);
 while($rown = fetch_array($rsn)){
 	?>
@@ -178,7 +172,7 @@ while($rown = fetch_array($rsn)){
             </td>
           </tr>
         </table>
-        <input name='noimg[]' type='checkbox' id="noimg[]" value='1' />
+        <input name='noimg' type='checkbox' id="noimg" value='1' />
         选中可改为文字广告</td>
     </tr>
     <tr> 
@@ -226,6 +220,5 @@ while($rown = fetch_array($rsn)){
     </tr>
   </table>
 </form>
-
 </body>
 </html>

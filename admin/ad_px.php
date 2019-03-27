@@ -92,7 +92,7 @@ if ($s<>"") {
 $sql=$sql." and smallclassname='".$s."' ";
 }
 $sql=$sql . " order by xuhao asc, id asc ";
-$rs = query($sql,$conn);
+$rs = query($sql);
 $row= num_rows($rs);  
 if(!$row){
 echo "暂无信息";

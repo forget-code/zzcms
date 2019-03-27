@@ -9,40 +9,25 @@
 <body>
 <?php
 checkadminisdo("advtext");
-if (isset($_REQUEST["id"])){
-$id=$_REQUEST["id"];
-checkid($id);
-}else{
-$id=0;
-}
-if (isset($_REQUEST["action"])){
-$action=$_REQUEST["action"];
-}else{
-$action="";
-}
-if (isset($_REQUEST["page"])){
-$page=$_REQUEST["page"];
-}else{
-$page=1;
-}
-if ($action=="modify"){
-$adv=trim($_POST["adv"]);
-$advlink=trim($_POST["advlink"]);
-$img=trim($_POST["img"]);
-$oldimg=$_POST["oldimg"];
+$action = isset($_POST['action'])?$_POST['action']:'';
+$page = isset($_GET['page'])?$_GET['page']:1;
+checkid($page);
+$id = isset($_GET['id'])?$_GET['id']:0;
+checkid($id,1);
 
+if ($action=="modify"){
 query("update zzcms_textadv set adv='$adv',advlink='$advlink',img='$img',passed=1 where id='$id'");
 $rs=query("select * from zzcms_textadv where id='$id'");
 $row=fetch_array($rs);
 $advusername=$row["username"];
-query("update zzcms_ad set title='$adv',link='$advlink',img='$img' where username=".$advusername."");//如果抢占了广告位了，同时更改
+query("update zzcms_ad set title='$adv',link='$advlink',img='$img' where username='".$advusername."'");//如果抢占了广告位了，同时更改
 	if ($oldimg<>$img && $oldimg<>"/image/nopic.gif" ){
 	$f="../".$oldimg;
 		if (file_exists($f)){
 		unlink($f);		
 		}
 	}
-	echo "<script>alert('修改成功');window.location.href='adv_manage.php?page=".$page."'</script>";
+	echo "<script>alert('修改成功');window.location.href='ad_user_manage.php?page=".$page."'</script>";
 }
 ?>
 <div class="admintitle">修改用户审请的文字广告</div>

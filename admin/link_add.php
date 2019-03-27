@@ -1,17 +1,11 @@
 <?php 
 include ("admin.php");
+$sbigclassid = isset($_SESSION['bigclassid'])?$_SESSION['bigclassid']:'';
 ?>
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <link href="style.css" rel="stylesheet" type="text/css">
-<?php
-if (isset($_SESSION["bigclassid"])){
-$sbigclassid=$_SESSION["bigclassid"];
-}else{
-$sbigclassid="";
-}
-?>
 <script language = "JavaScript">	
 function CheckForm(){	  
 if (document.myform.sitename.value==""){
@@ -41,7 +35,7 @@ if (document.myform.sitename.value==""){
       <td align="right" class="border">所属类别：</td>
       <td class="border"> 
         <?php
-		$sql = "select * from zzcms_linkclass order by xuhao asc";
+		$sql = "select classid,classname from zzcms_linkclass order by xuhao asc";
 	    $rs=query($sql);
         $row=num_rows($rs);
 		if (!$row){
@@ -53,7 +47,7 @@ if (document.myform.sitename.value==""){
                 <?php
 		while($row= fetch_array($rs)){
 			?>
-                <option value="<?php echo $row["bigclassid"]?>" <?php if ($row["bigclassid"]==$sbigclassid) { echo "selected";}?>><?php echo $row["bigclassname"]?></option>
+                <option value="<?php echo $row["classid"]?>" <?php if ($row["classid"]==$sbigclassid) { echo "selected";}?>><?php echo $row["classname"]?></option>
                 <?php
 		  }
 		  ?>

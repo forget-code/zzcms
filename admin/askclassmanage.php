@@ -59,11 +59,7 @@ showclass();
 }
 
 function showclass(){
-if (isset($_REQUEST['action'])){
-$action=$_REQUEST['action'];
-}else{
-$action="";
-}
+$action=isset($_REQUEST['action'])?$_REQUEST['action']:'';
 if ($action=="px") {
 checkadminisdo("askclass");
 $sql="Select * From zzcms_askclass where parentid=0";
@@ -101,8 +97,7 @@ $bigclassid=trim($_GET["bigclassid"]);
 if ($bigclassid<>"") {
 	query("delete from zzcms_askclass where parentid=" . $bigclassid. "");
 	query("delete from zzcms_askclass where classid=" . $bigclassid. "");
-}
-//      
+}    
 echo "<script>location.href='?'</script>";
 }
 
@@ -111,19 +106,12 @@ checkadminisdo("askclass");
 $smallclassid=trim($_GET["smallclassid"]);
 if ($smallclassid<>"") {
 	query("delete from zzcms_askclass where classid=" . $smallclassid. "");
-}
-//      
+}   
 echo "<script>location.href='?#B".$_REQUEST["bigclassid"]."'</script>";
 }
 ?>
 <div class="admintitle">问答类别设置</div>
-<table width="100%" border="0" cellspacing="0" cellpadding="5">
-  <tr>
-    <td align="center" class="border">
-      <input name="submit3" type="submit" class="buttons" onClick="javascript:location.href='?dowhat=addbigclass'" value="添加大类">
-   </td>
-  </tr>
-</table>
+<div class="center border"><input name="submit3" type="submit" class="buttons" onClick="javascript:location.href='?dowhat=addbigclass'" value="添加大类"></div>
 <?php
 $sql="Select * From zzcms_askclass where parentid=0 order by xuhao";
 $rs=query($sql);
@@ -194,36 +182,19 @@ echo "暂无分类信息";
   </table>
 </form>
 <?php
-}
-//	  
+}	  
 }
 
 function addbigclass(){
-if (isset($_REQUEST['action'])){
-$action=$_REQUEST['action'];
-}else{
-$action="";
-}
+$action=isset($_REQUEST['action'])?$_REQUEST['action']:'';
 $FoundErr=0;
 $ErrMsg="";
 
 if ($action=="add"){
-
 for($i=0; $i<count($_POST['classname']);$i++){
 	$classname=($_POST['classname'][$i]);
-
-	if(!empty($_POST['isshowforuser'])){
-	$isshowforuser=$_POST['isshowforuser'][$i];
-	}else{
-	$isshowforuser=0;
-	}
-
-	if(!empty($_POST['isshowininfo'])){
-	$isshowininfo=$_POST['isshowininfo'][$i];
-	}else{
-	$isshowininfo=0;
-	}
-
+	$isshowforuser=isset($_POST['isshowforuser'])?$_POST['isshowforuser'][$i]:0;
+	$isshowininfo=isset($_POST['isshowininfo'])?$_POST['isshowininfo'][$i]:0;
 	if ($classname!=''){
 	$sql="Select * From zzcms_askclass Where classname='" . $classname . "'";
 	$rs=query($sql);
@@ -306,35 +277,22 @@ TemO.appendChild(newline);
 </form>
 <?php
 }
-//
 }
 
 function addsmallclass(){
-if (isset($_REQUEST['action'])){
-$action=$_REQUEST['action'];
-}else{
-$action="";
-}
+$action=isset($_REQUEST['action'])?$_REQUEST['action']:'';
 $bigclassid=trim($_REQUEST["bigclassid"]);
+checkid($bigclassid);
 $FoundErr=0;
 $ErrMsg="";
 
 if ($action=="add") {
     for($i=0; $i<count($_POST['classname']);$i++){
     $classname=($_POST['classname'][$i]);
-	if(!empty($_POST['isshowforuser'])){
-	$isshowforuser=$_POST['isshowforuser'][$i];
-	}else{
-	$isshowforuser=0;
-	}
-
-	if(!empty($_POST['isshowininfo'])){
-	$isshowininfo=$_POST['isshowininfo'][$i];
-	}else{
-	$isshowininfo=0;
-	}
+	$isshowforuser=isset($_POST['isshowforuser'])?$_POST['isshowforuser'][$i]:0;
+	$isshowininfo=isset($_POST['isshowininfo'])?$_POST['isshowininfo'][$i]:0;
 	if ($classname!=''){
-	$sql="Select * From zzcms_askclass Where parentid=" . $bigclassid . " AND classname='" . $classname . "'";
+	$sql="Select * From zzcms_askclass Where parentid='" . $bigclassid . "' AND classname='" . $classname . "'";
 	$rs=query($sql);
 	$row=num_rows($rs);
 		if (!$row) {
@@ -437,57 +395,33 @@ TemO.appendChild(newline);
 </form>
 <?php
 }
-//
 }
 
 function modifybigclass(){
-if (isset($_REQUEST['action'])){
-$action=$_REQUEST['action'];
-}else{
-$action="";
-}
-if (isset($_REQUEST['classid'])){
-$classid=trim($_REQUEST['classid']);
-}else{
-$classid="";
-}
+$action=isset($_REQUEST['action'])?$_REQUEST['action']:'';
+$classid=isset($_REQUEST['classid'])?$_REQUEST['classid']:0;
+checkid($classid,1);
 $FoundErr=0;
 $ErrMsg="";
-if ($classid==""){
-//
+if ($classid==0){
 echo "<script>location.href='?'</script>";
 }
 
 if ($action=="modify"){
 $classname=trim($_POST["classname"]);
 $oldclassname=trim($_POST["oldclassname"]);
-if(!empty($_POST['isshowforuser'])){
-$isshowforuser=$_POST['isshowforuser'][0];
-}else{
-$isshowforuser=0;
-}
-
-if(!empty($_POST['isshowininfo'])){
-$isshowininfo=$_POST['isshowininfo'][0];
-}else{
-$isshowininfo=0;
-}
+$isshowforuser=isset($_POST['isshowforuser'])?$_POST['isshowforuser'][0]:0;
+$isshowininfo=isset($_POST['isshowininfo'])?$_POST['isshowininfo'][0]:0;
 
 $title=trim($_POST["title"]);
-if ($title=="") {
-$title=$classname;
-}
+if ($title=="") {$title=$classname;}
 
 $keyword=trim($_POST["keyword"]);
-if ($keyword=="") {
-$keyword=$classname;
-}
+if ($keyword=="") {$keyword=$classname;}
 
 $discription=trim($_POST["discription"]);
-if ($discription==""){
-$discription=$classname;
-}
-	$sql="Select * from zzcms_askclass where classid=" .$classid."";
+if ($discription==""){$discription=$classname;}
+	$sql="Select * from zzcms_askclass where classid='" .$classid."'";
 	$rs=query($sql);
 	$row=num_rows($rs);
 	if (!$row){
@@ -520,7 +454,7 @@ $discription=$classname;
 if ($FoundErr==1){
 WriteErrMsg($ErrMsg);
 }else{
-$sql="Select * from zzcms_askclass where classid=" .$classid."";
+$sql="Select * from zzcms_askclass where classid='" .$classid."'";
 $rs=query($sql);
 $row=fetch_array($rs);
 ?>
@@ -573,60 +507,37 @@ $row=fetch_array($rs);
 </form>
 <?php
 }
-//
 }
 
 function modifysmallclass(){
-if (isset($_REQUEST['action'])){
-$action=$_REQUEST['action'];
-}else{
-$action="";
-}
-if (isset($_REQUEST['classid'])){
-$classid=trim($_REQUEST['classid']);
-}else{
-$classid="";
-}
+$action=isset($_REQUEST['action'])?$_REQUEST['action']:'';
+$classid=isset($_REQUEST['classid'])?$_REQUEST['classid']:0;
+checkid($classid,1);
 $FoundErr=0;
 $ErrMsg="";
-if ($classid==""){
-
+if ($classid==0){
 echo "<script>location.href='?'</script>";
 }
 
 if ($action=="modify"){
 $bigclassid=trim($_POST["bigclassid"]);
+checkid($bigclassid);
 $oldbigclassid=trim($_POST["oldbigclassid"]);
 $classname=trim($_POST["classname"]);
 $oldclassname=trim($_POST["oldclassname"]);
 
-if(!empty($_POST['isshowforuser'])){
-$isshowforuser=$_POST['isshowforuser'][0];
-}else{
-$isshowforuser=0;
-}
-
-if(!empty($_POST['isshowininfo'])){
-$isshowininfo=$_POST['isshowininfo'][0];
-}else{
-$isshowininfo=0;
-}
+$isshowforuser=isset($_POST['isshowforuser'])?$_POST['isshowforuser'][0]:0;
+$isshowininfo=isset($_POST['isshowininfo'])?$_POST['isshowininfo'][0]:0;
 
 $title=trim($_POST["title"]);
-if ($title=="") {
-$title=$classname;
-}
+if ($title=="") {$title=$classname;}
 
 $keyword=trim($_POST["keyword"]);
-if ($keyword=="") {
-$keyword=$classname;
-}
+if ($keyword=="") {$keyword=$classname;}
 
 $discription=trim($_POST["discription"]);
-if ($discription==""){
-$discription=$classname;
-}
-	$sql="Select * from zzcms_askclass where classid=" .$classid."";
+if ($discription==""){$discription=$classname;}
+	$sql="Select * from zzcms_askclass where classid='" .$classid."'";
 	$rs=query($sql);
 	$row=num_rows($rs);
 	if (!$row){
@@ -635,7 +546,7 @@ $discription=$classname;
 	}
 	
 	if ($classname<>$oldclassname || $bigclassid<>$oldbigclassid) {
-	$sqln="Select * from zzcms_askclass where parentid=".$bigclassid." and classname='".$classname."'";
+	$sqln="Select * from zzcms_askclass where parentid='".$bigclassid."' and classname='".$classname."'";
 	$rsn=query($sqln);
 	$rown=num_rows($rsn);
 	if ($rown){
@@ -647,11 +558,11 @@ $discription=$classname;
 	if ($FoundErr==0) {
 	query("update zzcms_askclass set parentid='$bigclassid',classname='$classname',isshowforuser='$isshowforuser',isshowininfo='$isshowininfo',title='$title',keyword='$keyword',discription='$discription' where classid=" .$classid."");
 			if ($bigclassid<>$oldbigclassid) {//小类别改变所属大类情况下
-				query("Update zzcms_special set bigclassid=" . $bigclassid . " where bigclassid=" . $oldbigclassid . " and smallclassid=" . $classid . " ");
-				query("Update zzcms_special set bigclassname=(select classname from zzcms_askclass where classid=".$bigclassid.") where bigclassid=" . $bigclassid . " and smallclassid=" . $classid . " ");	
+				query("Update zzcms_special set bigclassid='" . $bigclassid . "' where bigclassid=" . $oldbigclassid . " and smallclassid='" . $classid . "' ");
+				query("Update zzcms_special set bigclassname=(select classname from zzcms_askclass where classid='".$bigclassid."') where bigclassid='" . $bigclassid . "' and smallclassid='" . $classid . "' ");	
 			}
 			if ($classname<>$oldclassname) {//小类名改变的情况下
-				query("Update zzcms_special set smallclassname='" . $classname . "'  where bigclassid=" . $bigclassid . " and smallclassid=" . $classid . " ");
+				query("Update zzcms_special set smallclassname='" . $classname . "'  where bigclassid='" . $bigclassid . "' and smallclassid='" . $classid . "' ");
 			}
 			//
 			echo "<script>location.href='?#S".$classid."'</script>";
@@ -661,7 +572,7 @@ $discription=$classname;
 if ($FoundErr==1){
 WriteErrMsg($ErrMsg);
 }else{
-$sql="Select * from zzcms_askclass where classid=".$classid."";
+$sql="Select * from zzcms_askclass where classid='".$classid."'";
 $rs=query($sql);
 $row=fetch_array($rs);
 ?>
@@ -737,7 +648,6 @@ $row=fetch_array($rs);
 </form>
 <?php
 }
-//
 }
 ?>
 </body>

@@ -16,18 +16,9 @@ $page_size=$_GET["page_size"];
 checkid($page_size);
 setcookie("page_size_zt",$page_size,time()+3600*24*360);
 }else{
-	if (isset($_COOKIE["page_size_zt"])){
-	$page_size=$_COOKIE["page_size_zt"];
-	}else{
-	$page_size=pagesize_qt;
-	}
+$page_size=isset($_COOKIE["page_size_zt"])?$_COOKIE["page_size_zt"]:pagesize_qt;
 }
-
-if (isset($_POST['keyword'])){
-$keyword=trim($_POST['keyword']);
-}else{
-$keyword="";
-}
+$keyword=isset($_POST["keyword"])?$_POST["keyword"]:'';
 
 if (isset($_GET['b'])){
 $bNew=$_GET['b'];
@@ -35,11 +26,7 @@ checkid($bNew,1);
 setcookie("ztb",$bNew,time()+3600*24);
 $b=$bNew;
 }else{
-	if (isset($_COOKIE['ztb'])){
-	$b=$_COOKIE['ztb'];
-	}else{
-	$b=0;
-	}
+$b=isset($_COOKIE["ztb"])?$_COOKIE["ztb"]:0;
 }
 
 if (isset($_GET['s'])){
@@ -48,11 +35,7 @@ checkid($sNew,1);
 setcookie("zts",$sNew,time()+3600*24);
 $s=$sNew;
 }else{
-	if (isset($_COOKIE['zts'])){
-	$s=$_COOKIE['zts'];
-	}else{
-	$s=0;
-	}
+$s=isset($_COOKIE["zts"])?$_COOKIE["zts"]:0;
 }
 $bigclassname="";
 $smallclassname="";
@@ -99,8 +82,7 @@ function formbigclass(){
 		return $str;
 		}
 		
-		function formsmallclass($b)
-		{
+		function formsmallclass($b){
 		if ($b<>0){
 		$str="";
         $sql="select * from zzcms_specialclass where parentid='".$b."' order by xuhao asc";
@@ -130,8 +112,7 @@ if ($b<>0 || $s<>0 ) {
 		}else{
 		$selected="";
 		}
-if( isset($_GET["page"]) && $_GET["page"]!="") 
-{
+if( isset($_GET["page"]) && $_GET["page"]!="") {
     $page=$_GET['page'];
 	checkid($page);
 }else{
@@ -142,15 +123,15 @@ $list=strbetween($strout,"{loop}","{/loop}");
 $sql="select count(*) as total from zzcms_special where passed<>0 ";
 $sql2='';
 if ($b<>0){
-$sql2=$sql2." and bigclassid=".$b." ";
+$sql2=$sql2." and bigclassid='".$b."' ";
 }
 if ($s<>0 ) {
-$sql2=$sql2." and smallclassid=".$s." ";
+$sql2=$sql2." and smallclassid='".$s."' ";
 }
 if ($keyword<>"") {
 $sql2=$sql2." and title like '%".$keyword."%' ";
 }
-$rs = query($sql.$sql2); 
+$rs =query($sql.$sql2); 
 $row = fetch_array($rs);
 $totlenum = $row['total'];
 $offset=($page-1)*$page_size;//$page_size在上面被设为COOKIESS
@@ -178,7 +159,6 @@ $listimg="[热门]&nbsp;";
 }else{
 $listimg="";
 }
-
 if ($row["link"]<>""){
 $link=$row["link"];
 }else{
@@ -187,7 +167,6 @@ $link=getpageurl("special",$row["id"]);
 if ($row["img"]<>"") {
 	$shuxing="<font color='#FF6600'>(图)</font>";
 }	
-
 $list2 = $list2. str_replace("{#link}",$link,$list) ;
 $list2 =str_replace("{#title}",cutstr($row["title"],30),$list2) ;
 $list2 =str_replace("{#sendtime}",date("y-m-d",strtotime($row["sendtime"])),$list2) ;
@@ -198,7 +177,6 @@ $i=$i+1;
 $strout=str_replace("{loop}".$list."{/loop}",$list2,$strout) ;
 $strout=str_replace("{#fenyei}",showpage1("special"),$strout) ;
 }
-
 $strout=str_replace("{#siteskin}",$siteskin,$strout) ;
 $strout=str_replace("{#sitename}",sitename,$strout) ;
 $strout=str_replace("{#station}",getstation(0,"",0,"","",$keyword,"special"),$strout) ;
@@ -216,6 +194,5 @@ $strout=str_replace("{#selected}",$selected,$strout);
 $strout=str_replace("{#sitebottom}",sitebottom(),$strout);
 $strout=str_replace("{#sitetop}",sitetop(),$strout);
 $strout=showlabel($strout);
-
 echo $strout;	
 ?>

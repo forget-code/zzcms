@@ -15,11 +15,7 @@ $page_size=$_GET["page_size"];
 checkid($page_size);
 setcookie("page_size_dl",$page_size,time()+3600*24*360);
 }else{
-	if (isset($_COOKIE["page_size_dl"])){
-	$page_size=$_COOKIE["page_size_dl"];
-	}else{
-	$page_size=pagesize_qt;
-	}
+$page_size=isset($_COOKIE['page_size_dl'])?$_COOKIE['page_size_dl']:pagesize_qt;
 }
 
 if (isset($_GET['keyword'])){
@@ -32,14 +28,10 @@ setcookie("city","xxx",1);
 setcookie("xiancheng","xxx",1);
 setcookie("p_id","xxx",1);
 setcookie("c_id","xxx",1);
-echo "<script>location.href='search.php'</script>";
+//echo "<script>location.href='search.php'<//script>";
 $keyword=$keywordNew;
 }else{
-	if (isset($_COOKIE['keyword'])){
-	$keyword=trim($_COOKIE['keyword']);
-	}else{
-	$keyword="";
-	}
+$keyword=isset($_COOKIE['keyword'])?$_COOKIE['keyword']:'';
 }
 
 if (isset($_GET['b'])){
@@ -49,11 +41,7 @@ setcookie("s","xxx",1);
 echo "<script>location.href='search.php'</script>";
 $b=$bNew;
 }else{
-	if (isset($_COOKIE['b'])){
-	$b=$_COOKIE['b'];
-	}else{
-	$b="";
-	}
+$b=isset($_COOKIE['b'])?$_COOKIE['b']:'';
 }
 
 if (isset($_GET['province'])){
@@ -67,11 +55,7 @@ $province=$provinceNew;
 	echo "<script>location.href='search.php'</script>";
 	}
 }else{
-	if (isset($_COOKIE['province'])){
-	$province=$_COOKIE['province'];
-	}else{
-	$province="";
-	}
+$province=isset($_COOKIE['province'])?$_COOKIE['province']:'';
 }
 
 if (isset($_GET['p_id'])){
@@ -79,11 +63,7 @@ $p_idNew=$_GET['p_id'];
 setcookie("p_id",$p_idNew,time()+3600*24);
 $p_id=$p_idNew;
 }else{
-	if (isset($_COOKIE['p_id'])){
-	$p_id=$_COOKIE['p_id'];
-	}else{
-	$p_id="";
-	}
+$p_id=isset($_COOKIE['p_id'])?$_COOKIE['p_id']:'';
 }
 
 if (isset($_GET['city'])){
@@ -91,11 +71,7 @@ $cityNew=$_GET['city'];
 setcookie("city",$cityNew,time()+3600*24);
 $city=$cityNew;
 }else{
-	if (isset($_COOKIE['city'])){
-	$city=$_COOKIE['city'];
-	}else{
-	$city="";
-	}
+$city=isset($_COOKIE['city'])?$_COOKIE['city']:'';
 }
 
 if (isset($_GET['c_id'])){
@@ -103,11 +79,7 @@ $c_idNew=$_GET['c_id'];
 setcookie("c_id",$c_idNew,time()+3600*24);
 $c_id=$c_idNew;
 }else{
-	if (isset($_COOKIE['c_id'])){
-	$c_id=$_COOKIE['c_id'];
-	}else{
-	$c_id="";
-	}
+$c_id=isset($_COOKIE['c_id'])?$_COOKIE['c_id']:'';
 }
 
 if (isset($_GET['xiancheng'])){
@@ -115,11 +87,7 @@ $xianchengNew=$_GET['xiancheng'];
 setcookie("xiancheng",$xianchengNew,time()+3600*24);
 $xiancheng=$xianchengNew;
 }else{
-	if (isset($_COOKIE['xiancheng'])){
-	$xiancheng=$_COOKIE['xiancheng'];
-	}else{
-	$xiancheng="";
-	}
+$xiancheng=isset($_COOKIE['xiancheng'])?$_COOKIE['xiancheng']:'';
 }
 
 if (isset($_GET['delb'])){
@@ -146,15 +114,16 @@ setcookie("xiancheng","xxx",1);
 echo "<script>location.href='search.php'</script>";
 }
 
+$bigclassname="";
+$bigclassid=0;
 if ($b<>""){
-$sql="select * from zzcms_zsclass where classzm='".$b."'";
+$sql="select classname,classid from zzcms_zsclass where classzm='".$b."'";
 $rs=query($sql);
 $row=fetch_array($rs);
 	if ($row){
 	$bigclassname=$row["classname"];
+	$bigclassid=$row["classid"];
 	}
-}else{
-$bigclassname="";
 }
 
 $pagetitle=$province.$bigclassname.dllisttitle."-".sitename;
@@ -167,10 +136,9 @@ if( isset($_GET["page"]) && $_GET["page"]!="") {
 }else{
     $page=1;
 }
-function formbigclass()
-		{
+function formbigclass(){
 		$str="";
-        $sql = "select * from zzcms_zsclass where parentid='A'";
+        $sql = "select * from zzcms_zsclass where parentid=0";
         $rs=query($sql);
 		$row=num_rows($rs);
 		if (!$row){
@@ -293,7 +261,7 @@ $showselectpage=$showselectpage . "</select>";
 $strout=str_replace("{#showselectpage}",$showselectpage,$strout) ;
 
 if ($b<>"") {
-	$sql="select count(*) as total from `zzcms_dl_".$b."` where passed<>0 ";
+	$sql="select count(*) as total from zzcms_dl where classid=$bigclassid ";
 }else{
 	$sql="select count(*) as total from zzcms_dl where passed<>0 ";
 }
@@ -316,13 +284,13 @@ $strout=str_replace("{#sql}",$sql.$sql2,$strout) ;
 $dl=strbetween($strout,"{dl}","{/dl}");
 $dllist=strbetween($strout,"{loop}","{/loop}");
 
-$rs = query($sql.$sql2); 
+$rs =query($sql.$sql2); 
 $row = fetch_array($rs);
 $totlenum = $row['total'];
 $offset=($page-1)*$page_size;//$page_size在上面被设为COOKIESS
 $totlepage=ceil($totlenum/$page_size);
 if ($b<>"") {
-$sql="select dlid,cp,dlsname,province,city,xiancheng,content,tel,sendtime,saver from `zzcms_dl_".$b."` where passed=1 ";
+$sql="select id,cp,dlsname,province,city,xiancheng,content,tel,sendtime,saver from zzcms_dl where classid=$bigclassid ";
 }else{
 $sql="select id,cp,dlsname,province,city,xiancheng,content,tel,sendtime,saver from zzcms_dl where passed=1 ";
 }
@@ -335,24 +303,13 @@ $strout=str_replace("{dl}".$dl."{/dl}","暂无信息",$strout) ;
 $i=0;
 $dllist2='';
 while($row= fetch_array($rs)){
-if ($b<>''){
-$dllist2 = $dllist2. str_replace("{#id}" ,$row["dlid"],$dllist) ;
-}else{
 $dllist2 = $dllist2. str_replace("{#id}" ,$row["id"],$dllist) ;
-}
-
 if ($i % 2==0) {
 $dllist2=str_replace("{changebgcolor}" ,"class=bgcolor1",$dllist2) ;
 }else{
 $dllist2=str_replace("{changebgcolor}" ,"class=bgcolor2",$dllist2) ;
 }
-
-if ($b<>''){
-$dllist2 = str_replace("{#cp}" ,"<a href='".getpageurl("dl",$row["dlid"])."'>".cutstr($row["cp"],8)."</a> ",$dllist2) ;
-}else{
 $dllist2 = str_replace("{#cp}" ,"<a href='".getpageurl("dl",$row["id"])."'>".cutstr($row["cp"],8)."</a> ",$dllist2) ;
-}
-
 if ($row["saver"]<>"") {
 	$rsn=query("select comane,id from zzcms_user where username='".$row["saver"]."'");
 	$r=num_rows($rsn);

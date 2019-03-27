@@ -34,19 +34,14 @@ include("left.php");
 <div class="content">
 <div class="admintitle"><?php echo $f_array[1]?> </div>
 <?php
-if (isset($_GET["id"])){
-$id=$_GET["id"];
+$id = isset($_GET['id'])?$_GET['id']:0;
 checkid($id);
-}else{
-$id=0;
-}
 
 $sql="select * from zzcms_licence where id='$id'";
 $rs = query($sql); 
 $row = fetch_array($rs);
-if ($row["editor"]<>$username) {
+if ($id!=0 && $row["editor"]<>$username) {
 markit();
-
 showmsg('非法操作！警告：你的操作已被记录！小心封你的用户及IP！');
 }
 ?>
@@ -92,7 +87,6 @@ showmsg('非法操作！警告：你的操作已被记录！小心封你的用�
 </div>
 </div>
 <?php
-
 unset ($f_array);
 ?> 
 </body>

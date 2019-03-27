@@ -1,11 +1,7 @@
 <?php
 include("../inc/conn.php");
-if(isset($_REQUEST['newsid'])){
-$newsid=$_REQUEST['newsid'];
-checkid($newsid);
-}else{
-$newsid=0;
-}
+$newsid=isset($_GET['newsid'])?$_GET['newsid']:0;
+checkid($newsid,1);
 
 $rs=query("select * from zzcms_zx where id='$newsid'");
 $row=num_rows($rs);

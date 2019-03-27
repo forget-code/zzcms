@@ -2,7 +2,7 @@
 function bigclass($b){
 $str="";
 $n=1;
-$sql="select classname,classid,classzm from zzcms_zsclass where parentid='A' order by xuhao";
+$sql="select classname,classid,classzm from zzcms_zsclass where parentid=0 order by xuhao";
 $rs=query($sql);
 $row=num_rows($rs);
 if (!$row){
@@ -24,8 +24,8 @@ return $str;
 }
 
 function showdl($style,$num,$strnum,$b,$editor,$saver,$keyword,$cpid){
-	if ($b!='') {
-	$sql="select * from `zzcms_dl_".$b."` where passed=1 ";
+	if ($b!="") {
+	$sql="select * from zzcms_dl where passed=1 and classid=$b";
 	}else{
 	$sql="select * from zzcms_dl where passed=1 ";
 	}

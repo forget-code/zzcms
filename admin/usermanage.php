@@ -9,21 +9,22 @@ include("admin.php");
 <script language="JavaScript" src="/js/gg.js"></script>
 </head>
 <?php
-$action=isset($_REQUEST["action"])?$_REQUEST["action"]:'';
+$action=isset($_GET["action"])?$_GET["action"]:'';
 $page=isset($_GET["page"])?$_GET["page"]:1;
-$shenhe=isset($_REQUEST["shenhe"])?$_REQUEST["shenhe"]:'';
-
-$keyword=isset($_REQUEST["keyword"])?$_REQUEST["keyword"]:'';
-$kind=isset($_REQUEST["kind"])?$_REQUEST["kind"]:'username';
+checkid($page);
+$shenhe=isset($_GET["shenhe"])?$_GET["shenhe"]:'';
+$keyword=isset($_POST["keyword"])?$_POST["keyword"]:'';
+$kind=isset($_POST["kind"])?$_POST["kind"]:'username';
 
 $px=isset($_GET["px"])?$_GET["px"]:'id';
-$usersf=isset($_REQUEST["usersf"])?$_REQUEST["usersf"]:'';
+$usersf=isset($_GET["usersf"])?$_GET["usersf"]:'';
 
 if ($action=="pass"){
 checkadminisdo("userreg");//本页涉及到用户密码信息，验证权限放在开始的地方
 if(!empty($_POST['id'])){
     for($i=0; $i<count($_POST['id']);$i++){
     $id=$_POST['id'][$i];
+	checkid($id);
 	$sql="select passed from zzcms_user where id ='$id'";
 	$rs = query($sql); 
 	$row = fetch_array($rs);
@@ -36,11 +37,11 @@ if(!empty($_POST['id'])){
 }else{
 echo "<script>alert('操作失败！至少要选中一条信息。');history.back()</script>";
 }
-echo "<script>location.href='?keyword=".$keyword."&page=".$page."'</script>";	
+echo "<script>location.href='?keyword=".$keyword."&kind=".$kind."&page=".$page."'</script>";	
 }
 ?>
 <body>
-<div class="admintitle">本站用户管理</div>
+<div class="admintitle">用户管理</div>
 <form name="form1" method="post" action="?">
   <table width="100%" border="0" cellpadding="5" cellspacing="0">
     <tr> 
@@ -114,7 +115,7 @@ switch ($usersf){
 	$sql2=$sql2. " and elite>0";
 	break;
 	}
-$rs = query($sql.$sql2); 
+$rs =query($sql.$sql2); 
 $row = fetch_array($rs);
 $totlenum = $row['total'];   
 $totlepage=ceil($totlenum/$page_size);
@@ -240,16 +241,16 @@ while($row = fetch_array($rs)){
     <td height="30" align="center">	页次：<strong><font color="#CC0033"><?php echo $page?></font>/<?php echo $totlepage?>　</strong> 
       <strong><?php echo $page_size?></strong>条/页　共<strong><?php echo $totlenum ?></strong>条
 <?php
-		
+		$cs="px=".$px."&usersf=".$usersf."&kind=".$kind."&keyword=".$keyword."&shenhe=".$shenhe;
 		if ($page<>1) {
-			echo "【<a href='?px=".$px."&usersf=".$usersf."&kind=".$kind."&keyword=".$keyword."&shenhe=".$shenhe."&page=1'>首页</a>】 ";
-			echo "【<a href='?px=".$px."&usersf=".$usersf."&kind=".$kind."&keyword=".$keyword."&shenhe=".$shenhe."&page=".($page-1)."'>上一页</a>】 ";
+			echo "【<a href='?".$cs."&page=1'>首页</a>】 ";
+			echo "【<a href='?".$cs."&page=".($page-1)."'>上一页</a>】 ";
 		}else{
 			echo "【首页】【上一页】";
 		}
 		if ($page<>$totlepage) {
-			echo "【<a href='?px=".$px."&usersf=".$usersf."&kind=".$kind."&keyword=".$keyword."&shenhe=".$shenhe."&page=".($page+1)."'>下一页</a>】 ";
-			echo "【<a href='?px=".$px."&usersf=".$usersf."&kind=".$kind."&keyword=".$keyword."&shenhe=".$shenhe."&page=".$totlepage."'>尾页</a>】 ";
+			echo "【<a href='?".$cs."&page=".($page+1)."'>下一页</a>】 ";
+			echo "【<a href='?".$cs."&page=".$totlepage."'>尾页</a>】 ";
 		}else{
 			echo "【下一页】【尾页】";
 		}       
@@ -259,7 +260,6 @@ while($row = fetch_array($rs)){
 </table>
 <?php
 }
-
 ?>
 </body>
 </html>

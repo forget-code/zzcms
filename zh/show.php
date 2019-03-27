@@ -4,13 +4,12 @@ include("../inc/top.php");
 include("../inc/bottom.php");
 include("subzh.php");
 include("../label.php");
-if (isset($_REQUEST["id"])){
-$zhid=trim($_REQUEST["id"]);
+if (isset($_GET["id"])){
+$zhid=trim($_GET["id"]);
 checkid($zhid);
 }else{
 $zhid=0;
 }
-
 $sql="select * from zzcms_zh where id='$zhid'";
 $rs=query($sql);
 $row=fetch_array($rs);
@@ -27,13 +26,13 @@ $id=$row["id"];
 $address=$row["address"];
 $timestart=date("Y-m-d",strtotime($row["timestart"]));
 $timeend=date("Y-m-d",strtotime($row["timeend"]));
-$content=$row["content"];
+$content=stripfxg($row["content"],true);
 
 
-$rs=query("select bigclassname from zzcms_zhclass where bigclassid='".$bigclassid."'");
+$rs=query("select classname from zzcms_zhclass where classid='".$bigclassid."'");
 $row=fetch_array($rs);
 if ($row){
-$bigclassname=$row["bigclassname"];
+$bigclassname=$row["classname"];
 }else{
 $bigclassname="大类已删除";
 }

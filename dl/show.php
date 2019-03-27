@@ -46,7 +46,7 @@ echo showmsg("不存在相关信息！");
 query("update zzcms_dl set hit=hit+1 where id='$dlid'");
 $saver=$row["saver"];
 $cpid=$row["cpid"];
-$bigclasszm=$row["classzm"];
+$bigclassid=$row["classid"];
 $cp=$row["cp"];
 $city=$row["city"];
 $sendtime=$row["sendtime"];
@@ -60,14 +60,15 @@ $woyaodl="<div><a href='".getpageurl("zs",$cpid)."#dl_liuyan' style='color:red'>
 $woyaodl="";
 }
 
-$rs=query("select classname from zzcms_zsclass where classzm='".$bigclasszm."'");
+$rs=query("select classname,classzm from zzcms_zsclass where classid='".$bigclassid."'");
 $row=fetch_array($rs);
 if ($row){
 $bigclassname=$row["classname"];
+$bigclasszm=$row["classzm"];
 }else{
 $bigclassname="大类已删除";
+$bigclasszm="###";
 }
-
 
 $pagetitle=$cp."-".dlshowtitle;
 $pagekeywords=$cp."-".dlshowkeyword;

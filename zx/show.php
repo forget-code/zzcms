@@ -9,19 +9,19 @@ include("../label.php");
 if (@$_REQUEST["action"]=="addpinglun"){
 checkyzm($_POST["yzm"]);
 
-$about=trim($_POST["about"]);
-$content=substr(trim($_POST["content"]),0,200);
+$about=$_POST["about"];
+$content=substr($_POST["content"],0,200);
 $face=@$_POST["face"];
-$user=trim($_POST["user"]);
+$user=$_POST["user"];
 if ($user==''){
 $user='未登录用户';
 }
-$ip=trim($_POST["ip"]);
+$ip=$_POST["ip"];
 query("insert into zzcms_pinglun (about,content,face,username,ip,sendtime)values('$about','$content','$face','$user','$ip','".date('Y-m-d H:i:s')."')");
 showmsg('您的评论提交成功，正在审核... 感谢参与');
 }
-if (isset($_REQUEST["id"])){
-$zxid=trim($_REQUEST["id"]);
+if (isset($_GET["id"])){
+$zxid=$_GET["id"];
 checkid($zxid);
 }else{
 $zxid=0;
@@ -37,7 +37,7 @@ query("update zzcms_zx set hit=hit+1 where id='$zxid'");
 $bigclassid=$row["bigclassid"];
 $smallclassid=$row["smallclassid"];
 $title=$row["title"];
-$content=$row["content"];
+$content=stripfxg($row["content"],true);
 $keywords=$row["keywords"];
 $description=$row["description"];
 $laiyuan=$row["laiyuan"];

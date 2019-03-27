@@ -14,64 +14,43 @@ $f_array=explode("|||",$fcontent) ;
 <title></title>
 <link href="style/<?php echo siteskin_usercenter?>/style.css" rel="stylesheet" type="text/css">
 <?php
-if (isset($_POST["page"])){//返回列表页用
-$page=$_POST["page"];
-}else{
-$page=1;
-}
-if (isset($_POST["bigclassid"])){
-$bigclassid=trim($_POST["bigclassid"]);
-}else{
-$bigclassid=0;
-}
-$bigclassname="";
+$page = isset($_POST['page'])?$_POST['page']:1;//返回列表页用
+checkid($page);
+$id = isset($_POST['id'])?$_POST['id']:0;
+checkid($id,1);
+$bigclassid = isset($_POST['bigclassid'])?$_POST['bigclassid']:0;
+$smallclassid = isset($_POST['smallclassid'])?$_POST['smallclassid']:0;
+$bigclassname="";$smallclassname="";
+
 if ($bigclassid!=0){
-$bigclassid=trim($_POST["bigclassid"]);
-$rs = query("select * from zzcms_zxclass where classid='$bigclassid'"); 
+$rs = query("select classname from zzcms_zxclass where classid='$bigclassid'"); 
 $row= fetch_array($rs);
 $bigclassname=$row["classname"];
 }
 
-if (isset($_POST["smallclassid"])){
-$smallclassid=trim($_POST["smallclassid"]);
-}else{
-$smallclassid=0;
-}
-$smallclassname="";
 if ($smallclassid!=0){
-$rs = query("select * from zzcms_zxclass where classid='$smallclassid'"); 
+$rs = query("select classname from zzcms_zxclass where classid='$smallclassid'"); 
 $row= fetch_array($rs);
 $smallclassname=$row["classname"];
 }
 
-$title=trim($_POST["title"]);
-$link=addhttp(trim($_POST["link"]));
-$laiyuan=trim($_POST["laiyuan"]);
-$content=str_replace("'","",stripfxg(trim($_POST["content"])));
-$img=getimgincontent($content);
+$link=addhttp($link);
+$img=getimgincontent(stripfxg($content,true));
+$img=getimg2($img);
+if ($keywords=="" ){$keywords=$title;}
 
-$editor=trim($_POST["editor"]);
-$keywords=trim($_POST["keywords"]);
-if ($keywords=="" ){
-$keywords=$title;
-}
-$description=trim($_POST["description"]);
-$groupid=trim($_POST["groupid"]);
-$jifen=trim($_POST["jifen"]);
 if ($_POST["action"]=="add"){
 //判断是不是重复信息,为了修改信息时不提示这段代码要放到添加信息的地方
 $sql="select title,editor from zzcms_zx where title='".$title."'";
 $rs = query($sql); 
 $row= num_rows($rs); 
 if ($row){
-
 echo $f_array[0];
 }
 
 $isok=query("Insert into zzcms_zx(bigclassid,bigclassname,smallclassid,smallclassname,title,link,laiyuan,keywords,description,groupid,jifen,content,img,editor,sendtime) values('$bigclassid','$bigclassname','$smallclassid','$smallclassname','$title','$link','$laiyuan','$keywords','$description','$groupid','$jifen','$content','$img','$editor','".date('Y-m-d H:i:s')."')");  
 $id=insert_id();		
 }elseif ($_POST["action"]=="modify"){
-$id=$_POST["id"];
 $isok=query("update zzcms_zx set bigclassid='$bigclassid',bigclassname='$bigclassname',smallclassid='$smallclassid',smallclassname='$smallclassname',title='$title',link='$link',laiyuan='$laiyuan',
 keywords='$keywords',description='$description',groupid='$groupid',jifen='$jifen',content='$content',img='$img',editor='$editor',
 sendtime='".date('Y-m-d H:i:s')."',passed=0 where id='$id'");	
@@ -121,7 +100,6 @@ include("left.php");
   </tr>
 </table>
 <?php
-
 session_write_close();
 ?>
 </div>

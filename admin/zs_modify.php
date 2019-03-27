@@ -38,8 +38,7 @@ if (document.myform.bigclassid.value==""){
   }
 }
 function doClick_E(o){
-	 var id;
-	 var e;
+	 var id,e;
 	 for(var i=1;i<=document.myform.bigclassid.length;i++){
 	   id ="E"+i;
 	   e = document.getElementById("E_con"+i);
@@ -59,12 +58,11 @@ function doClick_E(o){
 <div class="admintitle">修改<?php echo channelzs?>信息</div>
 <?php
 checkadminisdo("zs");
-$id=$_REQUEST["id"];
-if ($id<>"") {
-checkid($id);
-}else{
-$id=0;
-}
+$page=isset($_GET["page"])?$_GET["page"]:1;
+checkid($page);
+$id=isset($_GET["id"])?$_GET["id"]:0;
+checkid($id,1);
+
 $sql="select * from zzcms_main where id='$id'";
 $rs=query($sql);
 $row=fetch_array($rs);
@@ -86,15 +84,15 @@ $row=fetch_array($rs);
                   <td> <fieldset>
                     <legend>请选择所属大类</legend>
                     <?php
-        $sqlB = "select * from zzcms_zsclass where parentid='A' order by xuhao asc";
-		$rsB = query($sqlB,$conn); 
+        $sqlB = "select classid,classname from zzcms_zsclass where parentid=0 order by xuhao asc";
+		$rsB =query($sqlB); 
 		$n=0;
 		while($rowB= fetch_array($rsB)){
 		$n ++;
-		if ($row['bigclasszm']==$rowB['classzm']){
-		echo "<input name='bigclassid' type='radio' id='E$n'  onclick='javascript:doClick_E(this);uncheckall()' value='".$rowB['classzm']."' checked/><label for='E$n'>".$rowB['classname']."</label>";
+		if ($row['bigclassid']==$rowB['classid']){
+		echo "<input name='bigclassid' type='radio' id='E$n'  onclick='javascript:doClick_E(this);uncheckall()' value='".$rowB['classid']."' checked/><label for='E$n'>".$rowB['classname']."</label>";
 		}else{
-		echo "<input name='bigclassid' type='radio' id='E$n'  onclick='javascript:doClick_E(this);uncheckall()' value='".$rowB['classzm']."' /><label for='E$n'>".$rowB['classname']."</label>";
+		echo "<input name='bigclassid' type='radio' id='E$n'  onclick='javascript:doClick_E(this);uncheckall()' value='".$rowB['classid']."' /><label for='E$n'>".$rowB['classname']."</label>";
 		}
 		}
 			?>
@@ -103,32 +101,32 @@ $row=fetch_array($rs);
                 <tr> 
                   <td> 
                     <?php
-$sqlB="select * from zzcms_zsclass where parentid='A' order by xuhao asc";
-$rsB = query($sqlB,$conn); 
+$sqlB="select classid,classname from zzcms_zsclass where parentid=0 order by xuhao asc";
+$rsB =query($sqlB); 
 $n=0;
 while($rowB= fetch_array($rsB)){
 $n ++;
-if ($row["bigclasszm"]==$rowB["classzm"]) {  
+if ($row["bigclassid"]==$rowB["classid"]) {  
 echo "<div id='E_con$n' style='display:block;'>";
 }else{
 echo "<div id='E_con$n' style='display:none;'>";
 }
 echo "<fieldset><legend>请选择所属小类</legend>";
-$sqlS="select * from zzcms_zsclass where parentid='".$rowB['classzm']."' order by xuhao asc";
-$rsS = query($sqlS,$conn); 
+$sqlS="select classid,classname from zzcms_zsclass where parentid='".$rowB['classid']."' order by xuhao asc";
+$rsS =query($sqlS); 
 $nn=0;
 while($rowS= fetch_array($rsS)){
 if (zsclass_isradio=='Yes'){
-	if ($row['smallclasszm']==$rowS['classzm']){
-	echo "<input name='smallclassid[]' id='radio$nn$n' type='radio' value='".$rowS['classzm']."' checked/>";
+	if ($row['smallclassid']==$rowS['classid']){
+	echo "<input name='smallclassid[]' id='radio$nn$n' type='radio' value='".$rowS['classid']."' checked/>";
 	}else{
-	echo "<input name='smallclassid[]' id='radio$nn$n' type='radio' value='".$rowS['classzm']."' />";
+	echo "<input name='smallclassid[]' id='radio$nn$n' type='radio' value='".$rowS['classid']."' />";
 	}
 }else{
-	if (strpos($row['smallclasszm'],$rowS['classzm'])!==false && $row['bigclasszm']==$rowB['classzm']){
-	echo "<input name='smallclassid[]' id='radio$nn$n' type='checkbox' value='".$rowS['classzm']."' checked/>";
+	if (strpos($row['smallclassids'],$rowS['classid'])!==false && $row['bigclassid']==$rowB['classid']){
+	echo "<input name='smallclassid[]' id='radio$nn$n' type='checkbox' value='".$rowS['classid']."' checked/>";
 	}else{
-	echo "<input name='smallclassid[]' id='radio$nn$n' type='checkbox' value='".$rowS['classzm']."' />";
+	echo "<input name='smallclassid[]' id='radio$nn$n' type='checkbox' value='".$rowS['classid']."' />";
 	}
 }
 echo "<label for='radio$nn$n'>".$rowS['classname']."</label>";
@@ -143,7 +141,7 @@ echo "</div>";
               </table>		 </td>
     </tr>
 	   <?php 
-		  $rsn = query("select * from zzcms_zsclass_shuxing order by xuhao asc"); 
+		$rsn = query("select * from zzcms_zsclass_shuxing order by xuhao asc"); 
 		$rown= num_rows($rsn);
 		if ($rown){
 		  ?>
@@ -168,7 +166,7 @@ echo "</div>";
 		  ?>
     <tr> 
       <td align="right" class="border">产品特点<font color="#FF0000"> *</font></td>
-      <td class="border"> <textarea name="prouse" cols="60" rows="3" id="prouse"><?php echo $row["prouse"]?></textarea>      </td>
+      <td class="border"> <textarea name="prouse" cols="60" rows="3" id="prouse"><?php echo stripfxg($row["prouse"])?></textarea>      </td>
     </tr>
     <?php
 	if (shuxing_name!=''){
@@ -187,7 +185,7 @@ echo "</div>";
     <tr> 
       <td align="right" class="border">产品说明：</td>
       <td class="border"> 
-	  <textarea name="sm" id="sm"><?php echo $row["sm"] ?></textarea> 
+	  <textarea name="sm" id="sm"><?php echo stripfxg($row["sm"]) ?></textarea> 
              <script type="text/javascript" src="/3/ckeditor/ckeditor.js"></script>
 			  <script type="text/javascript">CKEDITOR.replace('sm');</script>	  </td>
     </tr>
@@ -213,11 +211,11 @@ echo "</div>";
     </tr>
     <tr> 
       <td align="right" class="border">可提供的支持：</td>
-      <td class="border"> <textarea name="zc" cols="60" rows="3" id="zc"><?php echo $row["zc"]?></textarea>      </td>
+      <td class="border"> <textarea name="zc" cols="60" rows="3" id="zc"><?php echo stripfxg($row["zc"])?></textarea>      </td>
     </tr>
     <tr> 
       <td align="right" class="border">对<?php echo channeldl?>商的要求：</td>
-      <td class="border"> <textarea name="yq" cols="60" rows="3" id="yq"><?php echo $row["yq"]?></textarea>      </td>
+      <td class="border"> <textarea name="yq" cols="60" rows="3" id="yq"><?php echo stripfxg($row["yq"])?></textarea>      </td>
     </tr>
     <tr> 
       <td align="right" class="border">发布人：</td>
@@ -243,7 +241,7 @@ echo "</div>";
     </tr>
     <tr>
       <td align="right" class="border" >关键词（keywords）</td>
-      <td class="border" ><input name="keyword" type="text" id="keyword" value="<?php echo $row["keywords"] ?>" size="60" maxlength="255">
+      <td class="border" ><input name="keywords" type="text" id="keywords" value="<?php echo $row["keywords"] ?>" size="60" maxlength="255">
         (多个关键词以“,”隔开)</td>
     </tr>
     <tr>
@@ -270,17 +268,19 @@ echo "</div>";
     <tr> 
       <td align="right" class="border">搜索热门词：</td>
       <td class="border"><input name="tag" type="text" id="tag" value="<?php echo $row["tag"]?>" size="45">
-        (多个词可用,隔开) </td>
+        (多个词可用 , 隔开) </td>
     </tr>
     <tr> 
       <td align="center" class="border">&nbsp;</td>
       <td class="border"><input name="cpid" type="hidden" id="cpid" value="<?php echo $row["id"]?>"> 
-        <input name="sendtime" type="hidden" id="sendtime" value="<?php echo $row["sendtime"]?>"> 
-        <input name="page" type="hidden" id="page" value="<?php echo $_GET["page"]?>"> 
-        <input type="submit" name="Submit" value="修 改"></td>
+        <input type="submit" name="Submit" value="修 改">
+		<input name="sendtime" type="hidden" id="sendtime" value="<?php echo $row["sendtime"]?>"> 
+        <input name="page" type="hidden" id="page" value="<?php echo $page?>"> 
+		<input name="kind" type="hidden" id="kind" value="<?php echo $_GET["kind"]?>"> 
+		<input name="keyword" type="hidden" id="keyword" value="<?php echo $_GET["keyword"]?>"> 
+		</td>
     </tr>
   </table>
 </form>
-
 </body>
 </html>

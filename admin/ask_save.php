@@ -1,5 +1,4 @@
 <?php
-set_time_limit(1800) ;
 include("admin.php");
 checkadminisdo("ask");
 ?>
@@ -12,25 +11,37 @@ checkadminisdo("ask");
 <div id="loading" class="left-title" style="display:block">正在保存，请稍候...</div>
 <?php 
 $page = isset($_POST['page'])?$_POST['page']:1;//只从修改页传来的值
-$bigclassid=trim($_POST["bigclassid"]);
-$rs = query("select * from zzcms_askclass where classid=".$bigclassid.""); 
+checkid($page);
+$id = isset($_POST['id'])?$_POST['id']:0;
+checkid($id,1);
+$passed=isset($_POST["passed"])?$_POST["passed"]:0;
+checkid($passed,1);
+
+if (isset($_POST["elite"])){
+$elite=$_POST["elite"];
+	if ($elite>255){
+	$elite=255;
+	}elseif ($elite<0){
+	$elite=0;
+	}
+}else{
+$elite=0;
+}
+checkid($elite,1);
+
+$bigclassid = isset($_POST['bigclassid'])?$_POST['bigclassid']:0;
+$smallclassid = isset($_POST['smallclassid'])?$_POST['smallclassid']:0;
+
+$smallclassname='';
+$rs = query("select * from zzcms_askclass where classid='".$bigclassid."'"); 
 $row= fetch_array($rs);
 $bigclassname=$row["classname"];
 
-$smallclassid=trim($_POST["smallclassid"]);
-if ($smallclassid==""){
-$smallclassid=0;
-}
 if ($smallclassid!=0){
-$rs = query("select * from zzcms_askclass where classid=".$smallclassid.""); 
+$rs = query("select * from zzcms_askclass where classid='".$smallclassid."'"); 
 $row= fetch_array($rs);
 $smallclassname=$row["classname"];
-}else{
-$smallclassname="";
 }
-
-$title=trim($_POST["title"]);
-$content=str_replace("'","",stripfxg(trim($_POST["content"])));
 
 //---保存内容中的远程图片，并替换内容中的图片地址
 $msg='';
@@ -38,6 +49,7 @@ $imgs=getimgincontent($content,2);
 if (is_array($imgs)){
 foreach ($imgs as $value) {
 	if (substr($value,0,4) == "http"){
+	$value=getimg2($value);//做二次提取，过滤后面的图片样式
 	$img_bendi=grabimg($value,"");//如果是远程图片保存到本地
 	if($img_bendi):$msg=$msg.  "远程图片：".$value."已保存为本地图片：".$img_bendi."<br>";else:$msg=$msg. "false";endif;
 	$img_bendi=substr($img_bendi,strpos($img_bendi,"/uploadfiles"));//在grabimg函数中$img被加了zzcmsroo。这里要去掉
@@ -46,9 +58,10 @@ foreach ($imgs as $value) {
 }
 }
 //---end
-$img=trim($_POST["img"]);
+$img=$_POST["img"];
 if ($img==''){//放到内容下面，避免多保存一张远程图片
-$img=getimgincontent($content);
+$img=getimgincontent(stripfxg($content,true));
+$img=getimg2($img);
 }
 
 if ($img<>''){
@@ -64,23 +77,6 @@ if ($img<>''){
 	}	
 }
 
-if (isset($_POST["elite"])){
-$elite=$_POST["elite"];
-	if ($elite>255){
-	$elite=255;
-	}elseif ($elite<0){
-	$elite=0;
-	}
-}else{
-$elite=0;
-}
-
-if(!empty($_POST['passed'])){
-$passed=$_POST['passed'][0];
-}else{
-$passed=0;
-}
-
 if ($_REQUEST["action"]=="add"){
 //判断是不是重复信息,为了修改信息时不提示这段代码要放到添加信息的地方
 //$sql="select title,editor from zzcms_zx where title='".$title."'";
@@ -89,13 +85,9 @@ if ($_REQUEST["action"]=="add"){
 //if ($row){
 //showmsg('此信息已存在，请不要发布重复的信息！','zx_add.php');
 //}
-
 $isok=query("Insert into zzcms_ask(bigclassid,bigclassname,smallclassid,smallclassname,title,content,img,elite,passed,sendtime) values('$bigclassid','$bigclassname','$smallclassid','$smallclassname','$title','$content','$img','$elite','$passed','".date('Y-m-d H:i:s')."')");  
-
-$id=insert_id();
-		
+$id=insert_id();	
 }elseif ($_REQUEST["action"]=="modify"){
-$id=$_POST["id"];
 $isok=query("update zzcms_ask set bigclassid='$bigclassid',bigclassname='$bigclassname',smallclassid='$smallclassid',smallclassname='$smallclassname',title='$title',content='$content',img='$img',sendtime='".date('Y-m-d H:i:s')."',elite='$elite',passed='$passed' where id='$id'");	
 }
 
@@ -143,7 +135,7 @@ setcookie("asksmallclassid",$smallclassid);
     <td><table width="100%" border="0" cellspacing="0" cellpadding="0">
         <tr>
           <td width="25%" align="center" class="border"><a href="ask_add.php">继续添加</a></td>
-          <td width="25%" align="center" class="border"><a href="ask_manage.php?b=<?php echo $_REQUEST["bigclassid"]?>&page=<?php echo $page?>">返回</a></td>
+          <td width="25%" align="center" class="border"><a href="ask_manage.php?b=<?php echo $bigclassid?>&page=<?php echo $page?>">返回</a></td>
           <td width="25%" align="center" class="border"><a href="ask_modify.php?id=<?php echo $id?>">修改</a></td>
           <td width="25%" align="center" class="border"><a href="<?php echo getpageurl("ask",$id)?>" target="_blank">预览</a></td>
         </tr>
@@ -154,7 +146,6 @@ setcookie("asksmallclassid",$smallclassid);
 <?php 
 if ($msg<>'' ){echo "<div class='border'>" .$msg."</div>";}
 echo "<script language=javascript>document.getElementById('loading').style.display='none';</script>";
-
 ?>
 </body>
 </html>

@@ -13,19 +13,14 @@ $f_array=explode("\n",$fcontent) ;
 <title><?php echo channeldl.$f_array[0]?></title>
 <link href="style/<?php echo siteskin_usercenter?>/style.css" rel="stylesheet" type="text/css">
 <?php
-$id=trim($_REQUEST["id"]);
-if ($id<>""){
-checkid($id);
-}else{
-$id=0;
-}
-
+$id = isset($_GET['id'])?$_GET['id']:0;
+checkid($id,1);
 ?>
 </head>
 <body>
 <?php
 $sql="select * from zzcms_dl where id='$id'";
-$rs=query($sql,$conn);
+$rs=query($sql);
 $row=num_rows($rs);
 if (!$row){
 echo $f_array[1];
@@ -72,9 +67,8 @@ exit;
 }
 ?>
 	    
-		<div class="content"> 
-		<div class="admintitle"> <?php echo channeldl.$f_array[8]?></div> 
-      
+<div class="content"> 
+<div class="admintitle"> <?php echo channeldl.$f_array[8]?></div> 
   <table width="100%" border="0" cellpadding="5" cellspacing="1" class="bgcolor">
     <tr> 
           <td width="22%" align="right" class="bgcolor1"><?php echo $f_array[9]?></td>
@@ -106,12 +100,7 @@ exit;
 				    if ($looked==1) {
 					echo showlx($dlsname,$company,$companyname,$tel,$email);
 					}
-					if (isset($_POST["action"])){
-					$action=$_POST["action"];
-					}else{
-					$action="";
-					}
-					
+					$action = isset($_GET['action'])?$_GET['action']:"";
 					if ($action=="" && $looked==0) {?>
             		<div class="box">
 					<form name="form1" method="post" action="">

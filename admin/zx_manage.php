@@ -11,18 +11,19 @@ include("../inc/fy.php");
 <?php
 checkadminisdo("zx");
 $action=isset($_REQUEST["action"])?$_REQUEST["action"]:'';
-$page=isset($_GET["page"])?$_GET["page"]:1;
-$shenhe=isset($_REQUEST["shenhe"])?$_REQUEST["shenhe"]:'';
-
-$keyword=isset($_REQUEST["keyword"])?$_REQUEST["keyword"]:'';
-$kind=isset($_REQUEST["kind"])?$_REQUEST["kind"]:'title';
-$b=isset($_REQUEST["b"])?$_REQUEST["b"]:'';
-$s=isset($_REQUEST["s"])?$_REQUEST["s"]:'';
+if( isset($_GET["page"]) && $_GET["page"]!="") {$page=$_GET['page'];}else{$page=1;}
+checkid($page);
+$shenhe=isset($shenhe)?$shenhe:'';
+$keyword=isset($keyword)?$keyword:'';
+$kind=isset($kind)?$kind:'title';
+$b=isset($b)?$b:0;
+$s=isset($s)?$s:0;
 
 if ($action=="pass"){
 if(!empty($_POST['id'])){
     for($i=0; $i<count($_POST['id']);$i++){
     $id=$_POST['id'][$i];
+	checkid($id);
 	$sql="select passed from zzcms_zx where id ='$id'";
 	$rs = query($sql); 
 	$row = fetch_array($rs);
@@ -66,7 +67,7 @@ echo "<script>location.href='?b=".$b."&keyword=".$keyword."&page=".$page."'</scr
     <td class="border2">
  
     <?php	
-$sql="select * from zzcms_zxclass where parentid=0 order by xuhao";
+$sql="select classid,classname from zzcms_zxclass where parentid=0 order by xuhao";
 $rs = query($sql); 
 while($row = fetch_array($rs)){
 echo "<a href=?b=".$row['classid'].">";  
@@ -90,10 +91,10 @@ $sql2='';
 if ($shenhe=="no") {  		
 $sql2=$sql2." and passed=0 ";
 }
-if ($b<>"") {
+if ($b<>0) {
 $sql2=$sql2." and bigclassid='".$b."' ";
 }
-if ($s<>"") {
+if ($s<>0) {
 $sql=$sql." and smallclassid='".$s."' ";
 }
 
@@ -110,7 +111,7 @@ if ($keyword<>"") {
 	}
 }
 
-$rs = query($sql.$sql2,$conn); 
+$rs =query($sql.$sql2); 
 $row = fetch_array($rs);
 $totlenum = $row['total'];  
 $totlepage=ceil($totlenum/$page_size);
@@ -118,7 +119,7 @@ $totlepage=ceil($totlenum/$page_size);
 $sql="select * from zzcms_zx where id<>0 ";
 $sql=$sql.$sql2;
 $sql=$sql . " order by id desc limit $offset,$page_size";
-$rs = query($sql,$conn); 
+$rs = query($sql); 
 if(!$totlenum){
 echo "暂无信息";
 }else{

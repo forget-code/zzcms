@@ -1,40 +1,33 @@
 <?php
 include("admin.php");
 checkadminisdo("special");
-if (isset($_POST["page"])){//只从修改页传来的值
-$page=$_POST["page"];
-}else{
-$page=1;
-}
 
-$bigclassid=trim($_POST["bigclassid"]);
-$rs = query("select * from zzcms_specialclass where classid=".$bigclassid.""); 
+$page = isset($_POST['page'])?$_POST['page']:1;//只从修改页传来的值
+checkid($page);
+$id = isset($_POST['id'])?$_POST['id']:0;
+checkid($id,1);
+$passed = isset($_POST['passed'])?$_POST['passed']:0;
+checkid($passed,1);
+
+$bigclassid = isset($_POST['bigclassid'])?$_POST['bigclassid']:0;
+$smallclassid = isset($_POST['smallclassid'])?$_POST['smallclassid']:0;
+checkid($bigclassid,1);checkid($smallclassid,1);
+
+$bigclassname="";$smallclassname="";
+$rs = query("select * from zzcms_specialclass where classid='".$bigclassid."'"); 
 $row= fetch_array($rs);
 $bigclassname=$row["classname"];
 
-$smallclassid=trim($_POST["smallclassid"]);
-if ($smallclassid==""){
-$smallclassid=0;
-}
 if ($smallclassid!=0){
-$rs = query("select * from zzcms_specialclass where classid=".$smallclassid.""); 
+$rs = query("select * from zzcms_specialclass where classid='".$smallclassid."'"); 
 $row= fetch_array($rs);
 $smallclassname=$row["classname"];
-}else{
-$smallclassname="";
 }
+$link=addhttp($link);
+$img=getimgincontent(stripfxg($content,true));
+$img=getimg2($img);
+if ($keywords=="" ){$keywords=$title;}
 
-$title=trim($_POST["title"]);
-$link=addhttp(trim($_POST["link"]));
-$laiyuan=trim($_POST["laiyuan"]);
-$content=str_replace("'","",stripfxg(trim($_POST["content"])));
-$img=getimgincontent($content);
-
-$keywords=trim($_POST["keywords"]);
-if ($keywords=="" ){
-$keywords=$title;
-}
-$description=trim($_POST["description"]);
 if (isset($_POST["elite"])){
 $elite=$_POST["elite"];
 	if ($elite>255){
@@ -45,15 +38,8 @@ $elite=$_POST["elite"];
 }else{
 $elite=0;
 }
-
-$groupid=trim($_POST["groupid"]);
+checkid($elite,1);
 $jifen_info=trim($_POST["jifen"]);
-
-if(!empty($_POST['passed'])){
-$passed=$_POST['passed'][0];
-}else{
-$passed=0;
-}
 
 if ($_REQUEST["action"]=="add"){
 //判断是不是重复信息,为了修改信息时不提示这段代码要放到添加信息的地方
@@ -65,11 +51,8 @@ if ($_REQUEST["action"]=="add"){
 //}
 
 $isok=query("Insert into zzcms_special(bigclassid,bigclassname,smallclassid,smallclassname,title,link,laiyuan,keywords,description,content,img,groupid,jifen,elite,passed,sendtime) values('$bigclassid','$bigclassname','$smallclassid','$smallclassname','$title','$link','$laiyuan','$keywords','$description','$content','$img','$groupid','$jifen_info','$elite','$passed','".date('Y-m-d H:i:s')."')");  
-
-$id=insert_id();
-		
+$id=insert_id();	
 }elseif ($_REQUEST["action"]=="modify"){
-$id=$_POST["id"];
 $isok=query("update zzcms_special set bigclassid='$bigclassid',bigclassname='$bigclassname',smallclassid='$smallclassid',smallclassname='$smallclassname',title='$title',link='$link',laiyuan='$laiyuan',keywords='$keywords',description='$description',content='$content',img='$img',groupid='$groupid',jifen='$jifen_info',sendtime='".date('Y-m-d H:i:s')."',elite='$elite',passed='$passed' where id='$id'");	
 }
 

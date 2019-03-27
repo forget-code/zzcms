@@ -2,7 +2,7 @@
 function bigclass($b){
 $str="";
 $n=1;
-$sql="select classname,classid,classzm from zzcms_zsclass where parentid='A' order by xuhao";
+$sql="select classname,classid,classzm from zzcms_zsclass where parentid=0 order by xuhao";
 $rs=query($sql);
 $row=num_rows($rs);
 if (!$row){

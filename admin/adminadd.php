@@ -16,7 +16,7 @@ if ($action=="add"){
 	$groupid=$_POST["groupid"];
 	
 	$sql="select admin from zzcms_admin where admin='".$admins."'";
-	$rs = query($sql,$conn);
+	$rs = query($sql);
 	$row= num_rows($rs);//返回记录数
 	if($row){ 
 	$founderr=1;
@@ -27,7 +27,7 @@ if ($action=="add"){
 		WriteErrMsg($ErrMsg);
 		}else{
 		$sql="insert into zzcms_admin (admin,pass,groupid) values ('$admins','$passs','$groupid')";
-		query($sql,$conn);
+		query($sql);
 		echo "<script>location.href='adminlist.php'</script>";	
 		}
 }else{
@@ -64,7 +64,7 @@ return false;
 	   <select name="groupid" id="groupid">
           <?php
     $sql="Select * from zzcms_admingroup order by id asc";
-    $rs = query($sql,$conn); 
+    $rs = query($sql); 
 	while($row= fetch_array($rs)){
 	echo "<option value='".$row["id"]."'>".$row["groupname"]."</option>";
 	}

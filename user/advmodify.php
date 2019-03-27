@@ -32,21 +32,15 @@ include("left.php");
 <div class="content">
 <div class="admintitle"><?php echo $f_array[1]?> </div>
 <?php
-if (isset($_GET["page"])){
-$page=$_GET["page"];
-}else{
-$page=1;
-}
+$page = isset($_GET['page'])?$_GET['page']:1;
+checkid($page);
+$id = isset($_GET['id'])?$_GET['id']:0;
+checkid($id);
 
-if (isset($_REQUEST["id"])){
-$id=$_REQUEST["id"];
-}else{
-$id=0;
-}
 $sqlzx="select * from zzcms_ztad where id='$id'";
-$rszx = query($sqlzx); 
+$rszx =query($sqlzx); 
 $rowzx = fetch_array($rszx);
-if ($rowzx["editor"]<>$username) {
+if ($id!=0 && $rowzx["editor"]<>$username) {
 markit();
 echo $f_array[2];
 exit;
@@ -101,10 +95,10 @@ exit;
           </tr>
             <td align="right" class="border2">&nbsp;</td>
             <td class="border2"> <input name="Submit" type="submit" class="buttons" value="<?php echo $f_array[10]?>">
-              <input name="id" type="hidden" id="ypid2" value="<?php echo $rowzx["id"] ?>" /> 
-              <input name="editor" type="hidden" id="editor2" value="<?php echo $username?>" />
-              <input name="page" type="hidden" id="action" value="<?php echo $page?>" />
-              <input name="action" type="hidden" id="action2" value="modify" /></td>
+              <input name="id" type="hidden" id="id" value="<?php echo $rowzx["id"] ?>" /> 
+              <input name="editor" type="hidden" id="editor" value="<?php echo $username?>" />
+              <input name="page" type="hidden" id="page" value="<?php echo $page?>" />
+              <input name="action" type="hidden" id="action" value="modify" /></td>
           </tr>
         </table>
 </form>
@@ -114,7 +108,6 @@ exit;
 </div>
 </div>
 <?php
-
 unset ($f_array);
 ?>
 </body>

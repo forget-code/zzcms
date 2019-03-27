@@ -9,8 +9,7 @@ include ("admin.php");
 <script language="javascript" src="/js/timer.js"></script>
 <script language = "JavaScript">
 function CheckForm(){
-if (document.myform.bigclassid.value=="")
-  {
+if (document.myform.bigclassid.value==""){
     alert("请选择展会类型！");
 	document.myform.bigclassid.focus();
 	return false;
@@ -41,11 +40,7 @@ if (document.myform.title.value==""){
 <body>
 <?php
 checkadminisdo("zh");
-if (isset($_SESSION["zhclassid"])){
-$szhclassid=$_SESSION["zhclassid"];
-}else{
-$szhclassid="";
-}
+$szhclassid=isset($_SESSION["zhclassid"])?$_SESSION["zhclassid"]:'';
 ?>
 <div class="admintitle">发布展会信息</div>
 <form action="zh_save.php?action=add" method="post" name="myform" target="_self" id="myform" onSubmit="return CheckForm();">        
@@ -54,7 +49,7 @@ $szhclassid="";
       <td align="right" class="border">所属类别：</td>
       <td class="border">   
         <?php
-		$sql = "select * from zzcms_zhclass order by xuhao asc";
+		$sql = "select classid,classname from zzcms_zhclass order by xuhao asc";
 	    $rs=query($sql);
         $row=num_rows($rs);
 		if (!$row){
@@ -66,7 +61,7 @@ $szhclassid="";
                 <?php
 		while($row= fetch_array($rs)){
 			?>
-                <option value="<?php echo $row["bigclassid"]?>" <?php if ($row["bigclassid"]==$szhclassid) { echo "selected";}?>><?php echo $row["bigclassname"]?></option>
+                <option value="<?php echo $row["classid"]?>" <?php if ($row["classid"]==$szhclassid) { echo "selected";}?>><?php echo $row["classname"]?></option>
                 <?php
 		  }
 		  ?>
@@ -107,7 +102,6 @@ $szhclassid="";
       <td class="border" ><input type="submit" name="Submit" value="发 布" ></td>
     </tr>
   </table>
-      </form>
-	  
+      </form>  
 </body>
 </html>

@@ -18,28 +18,19 @@ if (str_is_inarr(usergr_power,'pp')=="no" && $usersf=='个人'){
 echo $f_array[0];
 exit;
 }
-
-if (isset($_REQUEST["page"])){ 
-$page=$_REQUEST["page"];
-}else{
-$page=1;
-}
-$bigclassid=trim($_POST["bigclassid"]);
-$smallclassid=trim($_POST["smallclassid"]);
-$cp_name=$_POST["name"];
-$sm=$_POST["sm"];
-$img=$_POST["img"];
-
+$page = isset($_POST['cpid'])?$_POST['cpid']:1;//返回列表页用
+checkid($page);
+$cpid = isset($_POST['cpid'])?$_POST['cpid']:'0';
+checkid($cpid,1);
+$proname=$_POST["proname"];
 $rs=query("select comane,id from zzcms_user where username='".$username."'");
 $row=fetch_array($rs);
 $comane=$row["comane"];
 $userid=$row["id"];
 
-
-$cpid=isset($_POST["ypid"])?$_POST["ypid"]:'0';
 //判断大小类是否一致，修改产品时有用
-if ($smallclassid<>""){ 
-$sql="select * from zzcms_zsclass where parentid='".$bigclassid."' and  classzm='".$smallclassid."'";
+if ($smallclassid<>0){ 
+$sql="select * from zzcms_zsclass where parentid='".$bigclassid."' and  classid='".$smallclassid."'";
 $rs=query($sql);
 $row=fetch_array($rs);
 if (!$row){
@@ -50,7 +41,7 @@ echo"<script>location.href='ppmodify.php?id=".$cpid."'</script>";
 
 //判断是不是重复信息
 if ($_REQUEST["action"]=="add" ){
-$sql="select * from zzcms_pp where ppname='".$cp_name."' and editor='".$username."' ";
+$sql="select * from zzcms_pp where ppname='".$proname."' and editor='".$username."' ";
 $rs=query($sql);
 $row=num_rows($rs);
 if ($row){
@@ -58,7 +49,7 @@ echo $f_array[2];
 exit;
 }
 }elseif($_REQUEST["action"]=="modify"){
-$sql="select * from zzcms_pp where ppname='".$cp_name."' and editor='".$username."' and id<>".$cpid." ";
+$sql="select * from zzcms_pp where ppname='".$proname."' and editor='".$username."' and id<>'".$cpid."' ";
 $rs=query($sql);
 $row=num_rows($rs);
 if ($row){
@@ -67,14 +58,12 @@ exit;
 }
 }
 
-
 if ($_POST["action"]=="add"){
-$isok=query("Insert into zzcms_pp(ppname,bigclasszm,smallclasszm,sm,img,sendtime,editor,userid,comane) values('$cp_name','$bigclassid','$smallclassid','$sm','$img','".date('Y-m-d H:i:s')."','$username','$userid','$comane')") ;  
+$isok=query("Insert into zzcms_pp(ppname,bigclassid,smallclassid,sm,img,sendtime,editor,userid,comane) values('$proname','$bigclassid','$smallclassid','$sm','$img','".date('Y-m-d H:i:s')."','$username','$userid','$comane')") ;
 $cpid=insert_id();		
 }elseif ($_POST["action"]=="modify"){
 $oldimg=trim($_POST["oldimg"]);
-
-$isok=query("update zzcms_pp set ppname='$cp_name',bigclasszm='$bigclassid',smallclasszm='$smallclassid',sm='$sm',img='$img',sendtime='".date('Y-m-d H:i:s')."',editor='$username',userid='$userid',comane='$comane',passed=0 where id='$cpid'");
+$isok=query("update zzcms_pp set ppname='$proname',bigclassid='$bigclassid',smallclassid='$smallclassid',sm='$sm',img='$img',sendtime='".date('Y-m-d H:i:s')."',editor='$username',userid='$userid',comane='$comane',passed=0 where id='$cpid'");
 
 	if ($oldimg<>$img && $oldimg<>"image/nopic.gif") {
 	//deloldimg
@@ -119,7 +108,7 @@ include("left.php");
     <td  class="border3"><table width="100%" border="0" cellspacing="0" cellpadding="5">
       <tr bgcolor="#FFFFFF">
         <td width="25%" align="right" bgcolor="#FFFFFF"><strong><?php echo $f_array[5]?></strong></td>
-        <td width="75%"><?php echo $cp_name?></td>
+        <td width="75%"><?php echo $proname?></td>
       </tr>
     </table>
     <table width="100%" border="0" cellpadding="5" cellspacing="1" class="bgcolor">

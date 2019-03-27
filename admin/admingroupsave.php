@@ -10,8 +10,9 @@ include("admin.php");
 <?php
 checkadminisdo("admingroup");
 $action=$_POST["action"];
+$id = isset($_POST['id'])?$_POST['id']:0;
+checkid($id,1);
 $FoundErr=0;
-$groupname=trim($_POST["groupname"]);
 
 $config="";
 if (isset($_POST['config'])){
@@ -21,7 +22,7 @@ $config=substr($config,0,strlen($config)-1);//去除最后面的"#"
 
 if ($action=="add"){	
 	$sql="Select * From zzcms_admingroup where groupname='".$groupname."'";	
-	$rs = query($sql,$conn);
+	$rs = query($sql);
 	$row= num_rows($rs);//返回记录数
 	if($row){ 
 			$FoundErr=1;
@@ -29,11 +30,10 @@ if ($action=="add"){
 			WriteErrMsg($ErrMsg);
 	}else{
 	$sql="insert into zzcms_admingroup (groupname,config)values('$groupname','$config')";
-	query($sql,$conn);
+	query($sql);
 	echo "<script>location.href='admingroupmanage.php'</script>";
 	}
 }elseif($action=="modify"){
-$id=$_POST["id"];
 $sql="update zzcms_admingroup set groupname='$groupname',config='$config' where id='$id'";
 $isok=query($sql);
 
@@ -42,9 +42,7 @@ echo "<script>alert('修改成功');location.href='admingroupmanage.php'</script
 }else{
 echo "<script>alert('修改失败');location.href='admingroupmanage.php'</script>";
 }
-
 }
-mysql_close($conn)
 ?>
 </body>
 </html>

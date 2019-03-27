@@ -17,7 +17,7 @@ $pass=trim($_POST["pass"]);
 $pass=md5($pass);
 
 $ip=getip();
-define('trytimes',5);//可尝试登录次数
+define('trytimes',50);//可尝试登录次数
 define('jgsj',15*60);//间隔时间，秒
 $sql="select * from zzcms_login_times where ip='$ip' and count>='".trytimes."' and unix_timestamp()-unix_timestamp(sendtime)<".jgsj." ";
 $rs = query($sql); 
@@ -35,7 +35,7 @@ $sql = "select * from zzcms_admin where admin='" .$admin. "' And pass='". $pass 
 if (!$row){
 //记录登录次数
 	$sqln="select * from zzcms_login_times where ip='$ip'";
-	$rsn = query($sqln); 
+	$rsn =query($sqln); 
 	$rown= num_rows($rsn);
 		if ($rown){
 			$rown= fetch_array($rsn);	
@@ -47,7 +47,7 @@ if (!$row){
 		query("INSERT INTO zzcms_login_times (count,sendtime,ip)VALUES(1,'".date('Y-m-d H:i:s')."','$ip')");
 		}
 	$sqln="select * from zzcms_login_times where ip='$ip'";
-	$rsn = query($sqln); 
+	$rsn =query($sqln); 
 	$rown= fetch_array($rsn);
 	$count=	$rown['count'];
 	$trytimes=trytimes-$count;

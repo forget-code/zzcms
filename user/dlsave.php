@@ -14,49 +14,23 @@ $f_array=explode("|||",$fcontent) ;
 <link href="style/<?php echo siteskin_usercenter?>/style.css" rel="stylesheet" type="text/css">
 </head>
 <?php
-if (isset($_POST["page"])){
-$page=$_POST["page"];
-}else{
-$page=1;
-}
-if (isset($_POST["dlid"])){
-$id=$_POST["dlid"];
-}else{
-$id=0;
-}
-$classid=$_POST["classid"];
-$cp=$_POST["cp"];
-$province=$_POST["province"];
-$city=$_POST["city"];
-$xiancheng=$_POST["cityforadd"];
-$content=$_POST["content"];
-$dlsf=$_POST["dlsf"];
-if (isset($_POST["companyname"])){
-$companyname=$_POST["companyname"];
-}else{
-$companyname="";
-}
-if ($dlsf=="个人" ){
-$companyname="";
-}
-$truename=$_POST["truename"];
-$tel=$_POST["tel"];
-$email=$_POST["email"];
-$address=$_POST["address"];
+$page = isset($_POST['page'])?$_POST['page']:1;//返回列表页用
+checkid($page);
+$id = isset($_POST['dlid'])?$_POST['dlid']:'0';
+checkid($id,1);//允许为0
 
+$xiancheng=$_POST["cityforadd"];
+$companyname = isset($_POST['companyname'])?$_POST['companyname']:'';
+if ($dlsf=="个人" ){$companyname="";}
 checkyzm($_POST["yzm"]);
 
 if ($_POST["action"]=="add"){
 if ($cp<>'' && $truename<>'' && $tel<>''){
-query("Insert into zzcms_dl(classzm,cpid,cp,province,city,content,company,companyname,dlsname,tel,address,email,sendtime,editor) values('$classid',0,'$cp','$province','$city','$content','$dlsf','$companyname','$truename','$tel','$address','$email','".date('Y-m-d H:i:s')."','$username')") ;  
+$isok=query("Insert into zzcms_dl(classid,cpid,cp,province,city,content,company,companyname,dlsname,tel,address,email,sendtime,editor) values('$classid',0,'$cp','$province','$city','$content','$dlsf','$companyname','$truename','$tel','$address','$email','".date('Y-m-d H:i:s')."','$username')") ;  
 $id=insert_id();	
-query("Insert into `zzcms_dl_".$classid."`(dlid,cpid,cp,province,city,content,company,companyname,dlsname,tel,address,email,sendtime,editor) values('$id',0,'$cp','$province','$city','$content','$dlsf','$companyname','$truename','$tel','$address','$email','".date('Y-m-d H:i:s')."','$username')") ; 
 }	
 }elseif ($_POST["action"]=="modify"){
-query("update zzcms_dl set classzm='$classid',cp='$cp',province='$province',city='$city',content='$content',company='$dlsf',companyname='$companyname',dlsname='$truename',tel='$tel',address='$address',email='$email',sendtime='".date('Y-m-d H:i:s')."' where id='$id'");
-
-query("update `zzcms_dl_".$classid."` set cp='$cp',province='$province',city='$city',content='$content',company='$dlsf',companyname='$companyname',dlsname='$truename',tel='$tel',address='$address',email='$email',sendtime='".date('Y-m-d H:i:s')."' where dlid='$id'");
-
+$isok=query("update zzcms_dl set classid='$classid',cp='$cp',province='$province',city='$city',content='$content',company='$dlsf',companyname='$companyname',dlsname='$truename',tel='$tel',address='$address',email='$email',sendtime='".date('Y-m-d H:i:s')."' where id='$id'");
 }
 $_SESSION['content']=$content;
 $_SESSION['bigclassid']=$classid;
@@ -82,7 +56,8 @@ include("left.php");
   <tr> 
     <td class="tstitle"> <?php
 	if ($_REQUEST["action"]=="add") {echo $f_array[0]; }else{ echo $f_array[1];}
-	echo $f_array[2];
+	if ($isok) {echo $f_array[2]; }else{ echo $f_array[9];}
+	
      ?>      </td>
   </tr>
   <tr> 
@@ -107,7 +82,6 @@ include("left.php");
   </tr>
 </table>
 <?php
-
 session_write_close();
 ?>
 </div>

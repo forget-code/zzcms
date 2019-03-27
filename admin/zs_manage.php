@@ -10,17 +10,24 @@ include("../inc/fy.php");
 <?php
 checkadminisdo("zs");
 $action=isset($_REQUEST["action"])?$_REQUEST["action"]:'';
-$page=isset($_GET["page"])?$_GET["page"]:1;
+if( isset($_REQUEST["page"]) && $_REQUEST["page"]!="") {
+    $page=$_REQUEST['page'];
+	checkid($page);
+}else{
+    $page=1;
+}
 $shenhe=isset($_REQUEST["shenhe"])?$_REQUEST["shenhe"]:'';
 $keyword=isset($_REQUEST["keyword"])?$_REQUEST["keyword"]:'';
 $kind=isset($_REQUEST["kind"])?$_REQUEST["kind"]:'editor';
-$b=isset($_REQUEST["b"])?$_REQUEST["b"]:'';
+$b=isset($_REQUEST["b"])?$_REQUEST["b"]:0;
+checkid($b);
 $showwhat=isset($_REQUEST["showwhat"])?$_REQUEST["showwhat"]:'';
 
 if ($action=="pass"){
 if(!empty($_POST['id'])){
     for($i=0; $i<count($_POST['id']);$i++){
     $id=$_POST['id'][$i];
+	checkid($id);
 	$sql="select passed from zzcms_main where id ='$id'";
 	$rs = query($sql); 
 	$row = fetch_array($rs);
@@ -43,14 +50,11 @@ echo "<script>location.href='?keyword=".$keyword."&page=".$page."'</script>";
   <tr> 
     <td class="border">
 <form name="form1" method="post" action="?">
-        <input type="radio" name="kind" value="editor" <?php if ($kind=="editor") { echo "checked";}?>>
-        按发布人 
-        <input type="radio" name="kind" value="proname" <?php if ($kind=="proname") { echo "checked";}?>>
-        按产品名称 
+        <label><input type="radio" name="kind" value="editor" <?php if ($kind=="editor") { echo "checked";}?>>按发布人</label>
+        <label><input type="radio" name="kind" value="proname" <?php if ($kind=="proname") { echo "checked";}?>>按产品名称</label>
         <input name="keyword" type="text" id="keyword" size="25" value="<?php echo  $keyword?>">
         <input type="submit" name="Submit" value="查寻">
-        <a href="?showwhat=elite">固顶的信息</a> <a href="?showwhat=vip">VIP会员的信息</a> 
-         
+        <a href="?showwhat=elite">固顶的信息</a> <a href="?showwhat=vip">VIP会员的信息</a>    
       </form>
 		</td>
     </tr>
@@ -60,15 +64,15 @@ echo "<script>location.href='?keyword=".$keyword."&page=".$page."'</script>";
         <tr>
           <td>
     <?php	
-$sql="select * from zzcms_zsclass where parentid='A' order by xuhao";
+$sql="select classid,classname from zzcms_zsclass where parentid=0 order by xuhao";
 $rs = query($sql); 
 $row = num_rows($rs);
 if (!$row){
 echo '暂无分类';
 }else{
 while($row = fetch_array($rs)){
-echo "<a href=?b=".$row['classzm'].">";  
-	if ($row["classzm"]==$b) {
+echo "<a href=?b=".$row['classid'].">";  
+	if ($row["classid"]==$b) {
 	echo "<b>".$row["classname"]."</b>";
 	}else{
 	echo $row["classname"];
@@ -92,8 +96,8 @@ if ($shenhe=="no") {
 $sql2=$sql2." and passed=0 ";
 }
 
-if ($b<>"") {
-$sql2=$sql2." and bigclasszm='".$b."' ";
+if ($b<>0) {
+$sql2=$sql2." and bigclassid='".$b."'";
 }
 
 if ($keyword<>"") {
@@ -117,15 +121,15 @@ if ($showwhat=="vip" ){
 	$sql2=$sql2." and editor in(select username from zzcms_user where groupid>1) ";
 }
 
-$rs = query($sql.$sql2,$conn); 
-$row = fetch_array($rs);
+$rs =query($sql.$sql2); 
+$row =fetch_array($rs);
 $totlenum = $row['total'];
 $totlepage=ceil($totlenum/$page_size);
 
 $sql="select * from zzcms_main where id<>0 ";
 $sql=$sql.$sql2;
 $sql=$sql . " order by id desc limit $offset,$page_size";
-$rs = query($sql,$conn); 
+$rs = query($sql); 
 if(!$totlenum){
 echo "暂无信息";
 }else{
@@ -158,21 +162,21 @@ while($row = fetch_array($rs)){
       <td align="center" ><a href="<?php echo getpageurl("zs",$row["id"]) ?>" target="_blank"><?php  echo $row["proname"]?></a></td>
       <td align="center">
 	  <?php
-	$sqln="select classname from zzcms_zsclass where classzm='".$row["bigclasszm"]."' ";
-	$rsn = query($sqln); 
+	$sqln="select classname from zzcms_zsclass where classid='".$row["bigclassid"]."' ";
+	$rsn =query($sqln); 
 	$rown = fetch_array($rsn);
-	echo "<a href='?b=".$row["bigclasszm"]."' >".$rown["classname"]."</a>";
-	if (strpos($row["smallclasszm"],",")>0){
-	$sqln="select classname from zzcms_zsclass where parentid='".$row["bigclasszm"]."' and classzm in (".$row["smallclasszm"].") ";
-	$rsn = query($sqln);
+	echo "<a href='?b=".$row["bigclassid"]."' >".$rown["classname"]."</a>";
+	if (strpos($row["smallclassids"],",")>0){
+	$sqln="select classname from zzcms_zsclass where parentid='".$row["bigclassid"]."' and classid in (".$row["smallclassids"].") ";
+	$rsn =query($sqln);
 	echo "<br/> ";
 	while($rown = fetch_array($rsn)){
 	echo " [".$rown["classname"]."]";
 	}
 	}else{
-	$sqln="select classname from zzcms_zsclass where classzm='".$row["smallclasszm"]."' ";
-	$rsn = query($sqln); 
-	$rown = fetch_array($rsn);
+	$sqln="select classname from zzcms_zsclass where classid='".$row["smallclassid"]."' ";
+	$rsn =query($sqln); 
+	$rown =fetch_array($rsn);
 	echo "<br/>".$rown["classname"];
 	}
 	  ?>
@@ -183,7 +187,8 @@ while($row = fetch_array($rs)){
       <td align="center" title="<?php echo $row["sendtime"]?>"><?php echo date("Y-m-d",strtotime($row["sendtime"]))?></td>
       <td align="center">
 	   <?php if ($row["passed"]==1) { echo "已审核";} else {echo "<font color=red>未审核</font>";}?>      </td>
-      <td align="center" class="docolor"><a href="zs_modify.php?id=<?php echo $row["id"] ?>&page=<?php echo $page ?>">修改</a></td> 
+      <td align="center" class="docolor">
+	  <a href="zs_modify.php?id=<?php echo $row["id"] ?>&page=<?php echo $page ?>&kind=<?php echo $kind ?>&keyword=<?php echo $keyword ?>">修改</a></td> 
       
     </tr>
  <?php

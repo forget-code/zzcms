@@ -14,26 +14,15 @@ $page_size=$_GET["page_size"];
 checkid($page_size);
 setcookie("page_size_zt",$page_size,time()+3600*24*360);
 }else{
-	if (isset($_COOKIE["page_size_zt"])){
-	$page_size=$_COOKIE["page_size_zt"];
-	}else{
-	$page_size=pagesize_qt;
-	}
+$page_size=isset($_COOKIE["page_size_zt"])?$_COOKIE["page_size_zt"]:pagesize_qt;
 }
 
-if (isset($_GET['b'])){
-$b=$_GET['b'];
+$b=isset($_GET["b"])?$_GET["b"]:0;
 checkid($b,1);
-}else{
-$b=0;
-}
 
-if (isset($_GET['s'])){
-$s=$_GET['s'];
+$s=isset($_GET["s"])?$_GET["s"]:0;
 checkid($s,1);
-}else{
-$s=0;
-}
+
 $bigclassname="";
 $classtitle="";
 $classkeyword="";
@@ -65,8 +54,7 @@ $pagetitle=$classtitle;
 $pagekeyword=$classkeyword;
 $pagedescription=$classdiscription;
 
-if( isset($_GET["page"]) && $_GET["page"]!="") 
-{
+if( isset($_GET["page"]) && $_GET["page"]!="") {
     $page=$_GET['page'];
 	checkid($page);
 }else{
@@ -75,13 +63,13 @@ if( isset($_GET["page"]) && $_GET["page"]!="")
 $list=strbetween($strout,"{loop}","{/loop}");
 $sql="select count(*) as total from zzcms_special where passed<>0 ";
 $sql2='';
-if ($b<>'') {
+if ($b<>0) {
 $sql2=$sql2." and bigclassid='".$b."' ";
 }
-if ($s<>'') {
+if ($s<>0) {
 $sql2=$sql2." and smallclassid='".$s."' ";
 }
-$rs = query($sql.$sql2); 
+$rs =query($sql.$sql2); 
 $row = fetch_array($rs);
 $totlenum = $row['total'];
 $offset=($page-1)*$page_size;//$page_size在上面被设为COOKIESS
@@ -100,7 +88,6 @@ $shuxing="";
 $i=0;
 
 while($row= fetch_array($rs)){
-
 if ($row["elite"]>0) {
 $listimg="<font color=red>[置顶]</font>&nbsp;";
 }elseif (time()-strtotime($row["sendtime"])<3600*24){
@@ -144,6 +131,5 @@ $strout=str_replace("{#smallclass}",smallclass(10,$b,$s),$strout);
 $strout=str_replace("{#sitebottom}",sitebottom(),$strout);
 $strout=str_replace("{#sitetop}",sitetop(),$strout);
 $strout=showlabel($strout);
-
 echo  $strout;
 ?>

@@ -14,7 +14,7 @@ $rs=query("Select * From zzcms_about where id='$info_id'" ) ;
 $row=num_rows($rs);
 if ($row){
 $row=fetch_array($rs);
-$content=$row["content"];
+$content=stripfxg($row["content"],true);
 $title=$row["title"];
 }else{
 $content="暂无信息";

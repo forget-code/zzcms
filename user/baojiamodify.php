@@ -32,7 +32,7 @@ document.myform.price.focus();
 return false; 
 }
 if (document.myform.truename.value==""){alert("请填写真实姓名！");document.myform.truename.focus();return false;}  
-if (document.myform.tel.value==""){alert("请填写代联系电话！");document.myform.tel.focus();return false;}  
+if (document.myform.tel.value==""){alert("请填写联系电话！");document.myform.tel.focus();return false;}  
 if (document.myform.yzm.value==""){alert("请输入验证问题的答案！");document.myform.yzm.focus();return false;} 
 }
 </script> 
@@ -50,25 +50,17 @@ include("left.php");
 </div>
 <div class="right">
 <?php
-if (isset($_REQUEST["id"])){
-$id=$_REQUEST["id"];
-}else{
-$id=0;
-}
-if (isset($_GET["page"])){
-$page=$_GET["page"];
-}else{
-$page=1;
-}
+$page = isset($_GET['page'])?$_GET['page']:1;
+checkid($page);
+$id = isset($_GET['id'])?$_GET['id']:0;
+checkid($id,1);
 
 $sql="select * from zzcms_baojia where id='$id'";
 $rs = query($sql); 
 $row = fetch_array($rs);
-if ($row["editor"]<>$username) {
+if ($id!=0 && $row["editor"]<>$username) {
 markit();
-
 showmsg('非法操作！警告：你的操作已被记录！小心封你的用户及IP！');
-exit;
 }
 ?>
 <div class="content">
@@ -83,18 +75,17 @@ exit;
           <tr> 
             <td align="right" valign="top" class="border2" >类别<font color="#FF0000">（必填）</font>：</td>
             <td class="border2" ><select name="classid" class="biaodan">
-                <option value="" selected="selected">请选择类别</option>
+                <option value="0" selected="selected">请选择类别</option>
                 <?php
-		$sqln="select * from zzcms_zsclass where parentid='A'";
+		$sqln="select classid,classname from zzcms_zsclass where parentid=0";
 		$rsn=query($sqln);
 		while($rown= fetch_array($rsn)){
-		if ($rown["classzm"]==$row["classzm"]){
-			echo "<option value='".$rown['classzm']."' selected>".$rown["classname"]."</option>";
+			if ($rown["classid"]==$row["classid"]){
+			echo "<option value='".$rown['classid']."' selected>".$rown["classname"]."</option>";
 			}else{
-			echo "<option value='".$rown['classzm']."'>".$rown["classname"]."</option>";
-			}
-			
-		  }
+			echo "<option value='".$rown['classid']."'>".$rown["classname"]."</option>";
+			}	
+		 }
 		  ?>
               </select></td>
           </tr>
@@ -126,7 +117,7 @@ new PCAS('province', 'city', 'xiancheng', '<?php echo $row['province']?>', '<?ph
           </tr>
           <tr> 
             <td align="right" class="border2">真实姓名<font color="#FF0000">（必填）</font>：</td>
-            <td class="border2"> <input name="truename" type="text" id="truename" class="biaodan" value="<?php echo $row["dlsname"]?>" size="45" maxlength="255" /></td>
+            <td class="border2"> <input name="truename" type="text" id="truename" class="biaodan" value="<?php echo $row["truename"]?>" size="45" maxlength="255" /></td>
           </tr>
           <tr> 
             <td align="right" class="border">电话<font color="#FF0000">（必填）</font>：</td>
@@ -149,9 +140,8 @@ new PCAS('province', 'city', 'xiancheng', '<?php echo $row['province']?>', '<?ph
             <td align="center" class="border2" >&nbsp;</td>
             <td class="border2" > <input name="dlid" type="hidden" value="<?php echo $row["id"] ?>"> 
 			
-              <input name="action" type="hidden" id="action2" value="modify"> 
-              <input name="page" type="hidden" id="action" value="<?php echo $page ?>"> 
-			  
+              <input name="action" type="hidden" id="action" value="modify"> 
+              <input name="page" type="hidden" id="page" value="<?php echo $page ?>"> 
               <input name="Submit" type="submit" class="buttons" value="修改"></td>
           </tr>
         </table>

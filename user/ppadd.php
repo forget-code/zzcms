@@ -67,7 +67,7 @@ include("checkaddinfo.php");
         <table width="100%" border="0" cellpadding="3" cellspacing="1">
           <tr> 
             <td width="20%" align="right" class="border2" ><?php echo $f_array[2]?></td>
-            <td class="border2" > <input name="name" type="text" id="name" class="biaodan" onclick="javascript:if (this.value=='<?php echo $f_array[3]?>') {this.value=''};this.style.backgroundColor='';" onblur="javascript:if (this.value=='<?php echo $f_array[3]?>') {this.value=''};this.style.backgroundColor='';" size="60" maxlength="45" /></td>
+            <td class="border2" > <input name="proname" type="text" id="proname" class="biaodan" onclick="javascript:if (this.value=='<?php echo $f_array[3]?>') {this.value=''};this.style.backgroundColor='';" onblur="javascript:if (this.value=='<?php echo $f_array[3]?>') {this.value=''};this.style.backgroundColor='';" size="60" maxlength="45" /></td>
           </tr>
           <tr> 
             <td align="right" valign="top" class="border"><?php echo $f_array[4]?></td>
@@ -77,16 +77,16 @@ include("checkaddinfo.php");
                   <td> <fieldset class="fieldsetstyle">
                     <legend><?php echo $f_array[5]?></legend>
                     <?php
-        $sql = "select * from zzcms_zsclass where parentid='A' order by xuhao asc";
-		$rs = query($sql,$conn); 
+        $sql = "select * from zzcms_zsclass where parentid=0 order by xuhao asc";
+		$rs = query($sql); 
 		$n=0;
 		while($row= fetch_array($rs)){
 		
 		$n ++;
-		if (@$_SESSION['bigclassid']==$row['classzm']){
-		echo "<input name='bigclassid' type='radio' id='E$n'  onclick='javascript:doClick_E(this)' value='$row[classzm]' checked/><label for='E$n'>$row[classname]</label>";
+		if (@$_SESSION['bigclassid']==$row['classid']){
+		echo "<input name='bigclassid' type='radio' id='E$n'  onclick='javascript:doClick_E(this)' value='$row[classid]' checked/><label for='E$n'>$row[classname]</label>";
 		}else{
-		echo "<input name='bigclassid' type='radio' id='E$n'  onclick='javascript:doClick_E(this)' value='$row[classzm]'/><label for='E$n'>$row[classname]</label>";
+		echo "<input name='bigclassid' type='radio' id='E$n'  onclick='javascript:doClick_E(this)' value='$row[classid]'/><label for='E$n'>$row[classname]</label>";
 		}
 		
 	}
@@ -96,24 +96,24 @@ include("checkaddinfo.php");
                 <tr> 
                   <td> 
                     <?php
-$sql="select * from zzcms_zsclass where parentid='A' order by xuhao asc";
-$rs = query($sql,$conn); 
+$sql="select * from zzcms_zsclass where parentid=0 order by xuhao asc";
+$rs = query($sql); 
 $n=0;
 while($row= fetch_array($rs)){
 $n ++;
-if (@$_SESSION['bigclassid']==$row["classzm"]) {  
+if (@$_SESSION['bigclassid']==$row["classid"]) {  
 echo "<div id='E_con$n' style='display:block;'>";
 }else{
 echo "<div id='E_con$n' style='display:none;'>";
 }
 echo "<fieldset class='fieldsetstyle'><legend>".$f_array[6]."</legend>";
 
-$sqln="select * from zzcms_zsclass where parentid='$row[classzm]' order by xuhao asc";
-$rsn = query($sqln,$conn); 
+$sqln="select * from zzcms_zsclass where parentid='$row[classid]' order by xuhao asc";
+$rsn =query($sqln); 
 $nn=0;
 while($rown= fetch_array($rsn)){
 $nn ++;
-echo "<input name='smallclassid' id='radio$nn$n' type='radio' value='$rown[classzm]' />";
+echo "<input name='smallclassid' id='radio$nn$n' type='radio' value='$rown[classid]' />";
 echo "<label for='radio$nn$n'>$rown[classname]</label>";
 	if ($nn % 6==0) {
 	echo "<br/>";

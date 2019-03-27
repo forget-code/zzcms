@@ -17,7 +17,6 @@ $f_array=explode("|||",$fcontent) ;
 function CheckForm(){
 <?php echo $f_array[0]?> 
 } 
-  
 </script>
 </head>
 <body>
@@ -33,23 +32,17 @@ include("left.php");
 </div>
 <div class="right">
 <div class="content">
-      <div class="admintitle"><?php echo $f_array[1]?></div>
+<div class="admintitle"><?php echo $f_array[1]?></div>
 <?php
-if (isset($_GET["page"])){
-$page=$_GET["page"];
-}else{
-$page=1;
-}
+$page = isset($_GET['page'])?$_GET['page']:1;
+checkid($page);
+$id = isset($_GET['id'])?$_GET['id']:0;
+checkid($id,1);
 
-if (isset($_REQUEST["id"])){
-$id=$_REQUEST["id"];
-}else{
-$id=0;
-}
 $sqlzx="select * from zzcms_ask where id='$id'";
-$rszx = query($sqlzx); 
+$rszx =query($sqlzx); 
 $rowzx = fetch_array($rszx);
-if ($rowzx["editor"]<>$username) {
+if ($id<>0 && $rowzx["editor"]<>$username) {
 markit();
 showmsg('非法操作！警告：你的操作已被记录！小心封你的用户及IP！');
 }
@@ -105,7 +98,7 @@ function changelocation(locationid)
                 <option value="0"><?php echo $f_array[4]?></option>
                 <?php
 
-$sql="select * from zzcms_askclass where parentid=" .$rowzx["bigclassid"]." order by xuhao asc";
+$sql="select classid,classname from zzcms_askclass where parentid='" .$rowzx["bigclassid"]."' order by xuhao asc";
 $rs=query($sql);
 while($row = fetch_array($rs)){
 ?>
@@ -158,7 +151,6 @@ while($row = fetch_array($rs)){
 </div>
 </div>
 <?php
-
 unset ($f_array);
 ?>
 </body>

@@ -56,26 +56,21 @@ function doChange(objText, pic){
 <body>
 <div class="admintitle">修改专题信息</div>
 <?php
-if (isset($_GET["page"])){
-$page=$_GET["page"];
-}else{
-$page=1;
-}
-$id=$_REQUEST["id"];
-if ($id=="" || is_numeric($id)==false){
-showerror(3);
-}
+$page = isset($_GET['page'])?$_GET['page']:1;
+checkid($page);
+$id = isset($_GET['id'])?$_GET['id']:0;
+checkid($id,1);
+
 $rszx = query("select * from zzcms_special where id='$id'"); 
 $rowzx= fetch_array($rszx);
 ?>
-<form action="special_save.php?action=modify" method="post" name="myform" id="myform" onSubmit="return CheckForm();">
-        
+<form action="special_save.php?action=modify" method="post" name="myform" id="myform" onSubmit="return CheckForm();">     
   <table width="100%" border="0" cellspacing="0" cellpadding="5">
     <tr> 
       <td width="12%" align="right" class="border">所属类别：</td>
       <td width="88%" class="border"> 
         <?php
-$sql = "select * from zzcms_specialclass where parentid<>0 order by xuhao asc";
+$sql = "select classid,parentid,classname from zzcms_specialclass where parentid<>0 order by xuhao asc";
 $rs=query($sql);
 ?>
         <script language = "JavaScript" type="text/JavaScript">
@@ -104,9 +99,9 @@ function changelocation(locationid){
             }        
         }
     }</script> <select name="bigclassid" onChange="changelocation(document.myform.bigclassid.options[document.myform.bigclassid.selectedIndex].value)" size="1">
-          <option value="" selected="selected">请选择大类别</option>
+          <option value="0" selected="selected">请选择大类别</option>
           <?php
-	$sql = "select * from zzcms_specialclass where  parentid=0 order by xuhao asc";
+	$sql = "select classid,classname from zzcms_specialclass where  parentid=0 order by xuhao asc";
     $rs=query($sql);
 	while($row = fetch_array($rs)){
 	?>
@@ -115,10 +110,9 @@ function changelocation(locationid){
 				}
 				?>
         </select> <select name="smallclassid">
-          <option value="">不指定小类</option>
+          <option value="0">不指定小类</option>
           <?php
-
-$sql="select * from zzcms_specialclass where parentid=" .$rowzx["bigclassid"]." order by xuhao asc";
+$sql="select classid,classname from zzcms_specialclass where parentid='" .$rowzx["bigclassid"]."' order by xuhao asc";
 $rs=query($sql);
 while($row = fetch_array($rs)){
 	?>
@@ -154,18 +148,18 @@ while($row = fetch_array($rs)){
     </tr>
     <tr id="trkeywords">
       <td align="right" class="border" >关键词（keywords）</td>
-      <td class="border" ><input name="keywords" type="text" id="title2" value="<?php echo $rowzx["keywords"]?>" size="50" maxlength="255"></td>
+      <td class="border" ><input name="keywords" type="text"  value="<?php echo $rowzx["keywords"]?>" size="50" maxlength="255"></td>
     </tr>
     <tr id="trkeywords">
       <td align="right" class="border" >描述（description）</td>
-      <td class="border" ><input name="description" type="text" id="title2" value="<?php echo $rowzx["description"]?>" size="50" maxlength="255"></td>
+      <td class="border" ><input name="description" type="text"  value="<?php echo $rowzx["description"]?>" size="50" maxlength="255"></td>
     </tr>
     <tr id="trkeywords">
       <td colspan="2" class="border2" >属性设置</td>
     </tr>
     <tr>
       <td align="right" class="border">审核：</td>
-      <td class="border"><input name="passed[]" type="checkbox" id="passed[]" value="1"  <?php if ($rowzx["passed"]==1) { echo "checked";}?>>
+      <td class="border"><input name="passed" type="checkbox" id="passed" value="1"  <?php if ($rowzx["passed"]==1) { echo "checked";}?>>
         （选中为通过审核） </td>
     </tr>
     <tr> 
@@ -178,7 +172,7 @@ while($row = fetch_array($rs)){
       <td class="border" > <select name="groupid">
           <option value="0">全部用户</option>
           <?php
-		  $rs=query("Select * from zzcms_usergroup ");
+		  $rs=query("Select groupid,groupname from zzcms_usergroup ");
 		  $row = num_rows($rs);
 		  if ($row){
 		  while($row = fetch_array($rs)){

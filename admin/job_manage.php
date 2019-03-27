@@ -10,18 +10,21 @@ include("../inc/fy.php");
 <?php
 checkadminisdo("job");
 
-$action=isset($_REQUEST["action"])?$_REQUEST["action"]:'';
-$page=isset($_GET["page"])?$_GET["page"]:1;
-$shenhe=isset($_REQUEST["shenhe"])?$_REQUEST["shenhe"]:'';
-$keyword=isset($_REQUEST["keyword"])?$_REQUEST["keyword"]:'';
-$kind=isset($_REQUEST["kind"])?$_REQUEST["kind"]:'jobname';
-$b=isset($_REQUEST["b"])?$_REQUEST["b"]:'';
-$showwhat=isset($_REQUEST["showwhat"])?$_REQUEST["showwhat"]:'';
+$action=isset($action)?$action:'';
+$page=isset($_REQUEST["page"])?$_REQUEST["page"]:1;
+checkid($page);
+$shenhe=isset($shenhe)?$shenhe:'';
+$keyword=isset($keyword)?$keyword:'';
+$kind=isset($kind)?$kind:'jobname';
+$b=isset($b)?$b:0;
+checkid($b,1);
+$showwhat=isset($showwhat)?$showwhat:'';
 
 if ($action=="pass"){
 if(!empty($_POST['id'])){
     for($i=0; $i<count($_POST['id']);$i++){
     $id=$_POST['id'][$i];
+	checkid($id);
 	$sql="select passed from zzcms_job where id ='$id'";
 	$rs = query($sql); 
 	$row = fetch_array($rs);
@@ -59,7 +62,7 @@ echo "<script>location.href='?keyword=".$keyword."&page=".$page."'</script>";
         <tr>
           <td>
     <?php	
-$sql="select * from zzcms_jobclass where parentid='0' order by xuhao";
+$sql="select classid,classname from zzcms_jobclass where parentid='0' order by xuhao";
 $rs = query($sql); 
 $row = num_rows($rs);
 if (!$row){
@@ -91,8 +94,8 @@ if ($shenhe=="no") {
 $sql2=$sql2." and passed=0 ";
 }
 
-if ($b<>"") {
-$sql2=$sql2." and bigclassid=$b ";
+if ($b<>0) {
+$sql2=$sql2." and bigclassid='$b' ";
 }
 
 if ($keyword<>"") {
@@ -108,14 +111,14 @@ if ($keyword<>"") {
 	}
 }
 
-$rs = query($sql.$sql2,$conn); 
+$rs =query($sql.$sql2); 
 $row = fetch_array($rs);
 $totlenum = $row['total'];
 $totlepage=ceil($totlenum/$page_size);
 $sql="select * from zzcms_job where id<>0 ";
 $sql=$sql.$sql2;
 $sql=$sql . " order by id desc limit $offset,$page_size";
-$rs = query($sql,$conn); 
+$rs = query($sql); 
 if(!$totlenum){
 echo "暂无信息";
 }else{

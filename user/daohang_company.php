@@ -14,25 +14,8 @@ $f_array=explode("|||",$fcontent) ;
 <link href="style/<?php echo siteskin_usercenter?>/style.css" rel="stylesheet" type="text/css">
 <?php
 //本页用于初次注册本站的公司用户来完善公司信息（公司简介及公司形象图片信息）
-	if (isset($_REQUEST['action'])){
-	$action=$_REQUEST['action'];
-	}else{
-	$action="";
-	}	
+$action = isset($_GET['action'])?$_GET['action']:"";	
 if ($action=="modify") {
-			$province=trim($_POST["province"]);
-			$city=trim($_POST["city"]);
-			$xiancheng=trim($_POST["xiancheng"]);
-			$b=trim($_POST["b"]);
-			$s=trim($_POST["s"]);		
-			$address=$_POST["address"];
-			$homepage=$_POST["homepage"];
-			$content=stripfxg(rtrim($_POST["content"]));
-			$oldcontent=rtrim($_POST["oldcontent"]);
-			$img=$_POST["img"];
-			$sex=$_POST["sex"];
-			$mobile=$_POST["mobile"];
-			$qq=$_POST["qq"];
 			query("update zzcms_user set bigclassid='$b',smallclassid='$s',content='$content',img='$img',
 			province='$province',city='$city',xiancheng='$xiancheng',sex='$sex',mobile='$mobile',address='$address',qq='$qq',
 			homepage='$homepage' where username='".$username."'");
@@ -106,7 +89,7 @@ new PCAS('province', 'city', 'xiancheng', '<?php echo $row['province']?>', '<?ph
             <td align="right" class="border"><?php echo $f_array[10]?></td>
             <td class="border">
 			<?php
-$sqln = "select * from zzcms_userclass where parentid<>'0' order by xuhao asc";
+$sqln = "select classid,parentid,classname from zzcms_userclass where parentid<>'0' order by xuhao asc";
 $rsn=query($sqln);
 ?>
 <script language = "JavaScript" type="text/JavaScript">
@@ -136,7 +119,7 @@ function changelocation(locationid){
       <select name="b" size="1" id="b" class="biaodan" onchange="changelocation(document.myform.b.options[document.myform.b.selectedIndex].value)">
         <option value="" selected="selected"><?php echo $f_array[11]?></option>
         <?php
-	$sqln = "select * from zzcms_userclass where  parentid='0' order by xuhao asc";
+	$sqln = "select classid,classname from zzcms_userclass where  parentid='0' order by xuhao asc";
     $rsn=query($sqln);
 	while($rown = fetch_array($rsn)){
 	?>
@@ -161,10 +144,10 @@ while($rown = fetch_array($rsn)){
           </tr>
           <tr> 
            <td width="17%" align="right" class="border2">
-		   <?php echo $f_array[13]?><input name="oldcontent" type="hidden" id="oldcontent" value="<?php echo $row["content"]?>">
+		   <?php echo $f_array[13]?><input name="oldcontent" type="hidden" id="oldcontent" value="<?php echo stripfxg($row["content"])?>">
 		   </td>
             <td width="83%" class="border2"> 
-              <textarea name="content" id="content"><?php echo $row["content"]?></textarea> 
+              <textarea name="content" id="content"><?php echo stripfxg($row["content"])?></textarea> 
 			   <script type="text/javascript" src="/3/ckeditor/ckeditor.js"></script>
 			  <script type="text/javascript">CKEDITOR.replace('content');</script> 
             </td>
@@ -214,6 +197,5 @@ while($rown = fetch_array($rsn)){
 </html>
 <?php
 }
-
 unset ($f_array);
 ?>

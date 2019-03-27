@@ -17,15 +17,8 @@ if (str_is_inarr(usergr_power,'zt')=="no" && $usersf=='个人'){
 echo $f_array[1];
 exit;
 }
-
-if (isset($_REQUEST["action"])){
-$action=$_REQUEST["action"];
-}else{
-$action="";
-}
+$action = isset($_GET['action'])?$_GET['action']:"";
 if($action=="modify"){
-$skin=$_POST["skin"];
-
 query("update zzcms_usersetting set skin='$skin' where username='".$username."'");			
 echo $f_array[2];
 }

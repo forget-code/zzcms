@@ -8,16 +8,13 @@ include("admin.php");
 <link href="style.css" rel="stylesheet" type="text/css">
 <script language="JavaScript" src="/js/gg.js"></script>
 <?php
-//checkadminisdo("adminmanage");改密码要用此页，所以在DEL时判断
-if (isset($_REQUEST["action"])){
-$action=$_REQUEST["action"];
-}else{
-$action="";
-}
+$action = isset($_GET['action'])?$_GET['action']:"";
+$id = isset($_GET['id'])?$_GET['id']:0;
+checkid($id,1);
 
 if ($action=="del" ){
 checkadminisdo("adminmanage");
-query("delete from zzcms_admin where id='".$_GET["id"]."'");
+query("delete from zzcms_admin where id='".$id."'");
 echo  "<script>alert('删除成功');location.href='?'</script>";
 }
 $sql="select * from zzcms_admin order by id desc";
@@ -77,8 +74,7 @@ echo "<span style='color:#666666' title='至少要保留1个“超级管理员�
 	  </td>
   </tr>
   <?php 
-  }
-    
+  }   
    ?>
 </table>
 </body>

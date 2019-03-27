@@ -45,12 +45,6 @@ include("left.php");
 <?php
 $tablename="zzcms_ask";
 include("checkaddinfo.php");
-if (isset($_REQUEST["b"])){
-$b=$_REQUEST["b"];
-}
-if (isset($_REQUEST["s"])){
-$s=$_REQUEST["s"];
-}
 ?>	  
 <form action="asksave.php" method="post" name="myform" id="myform" onSubmit="return CheckForm();">
         <table width="100%" border="0" cellpadding="3" cellspacing="1">
@@ -93,35 +87,17 @@ function changelocation(locationid){
 	$sql = "select * from zzcms_askclass where isshowforuser=1 and parentid=0 order by xuhao asc";
     $rs=query($sql);
 	while($row = fetch_array($rs)){
-		if ($row["classid"]==@$b){
-	?>
-	 <option value="<?php echo trim($row["classid"])?>" selected><?php echo trim($row["classname"])?></option>
-                <?php
-		}elseif($row["classid"]==@$_SESSION["bigclassid"] && @$b==''){	
-				?>
-		<option value="<?php echo trim($row["classid"])?>" selected><?php echo trim($row["classname"])?></option>
-		<?php 
-		}else{
 		?>
 		<option value="<?php echo trim($row["classid"])?>"><?php echo trim($row["classname"])?></option>
-		<?php 
-		}
+	<?php 
 	}	
-		?>		
+	?>		
               </select> 
 			  <select name="smallclassid"  class="biaodan">
                 <option value="0"><?php echo $f_array[4]?></option>
                 <?php
-if ($b!=''){//从index.php获取的大类值优先
-$sql="select * from zzcms_askclass where parentid=".$b." order by xuhao asc";
-$rs=query($sql);
-while($row = fetch_array($rs)){
-				?>
-				  <option value="<?php echo $row["classid"]?>" <?php if ($row["classid"]==$s) { echo "selected";}?>><?php echo $row["classname"]?></option>
-                <?php
-	}
-}elseif($_SESSION["bigclassid"]!=''){
-$sql="select * from zzcms_askclass where parentid=" .@$_SESSION["bigclassid"]." order by xuhao asc";
+if($_SESSION["bigclassid"]!=0){
+$sql="select * from zzcms_askclass where parentid='" .$_SESSION["bigclassid"]."' order by xuhao asc";
 $rs=query($sql);
 	while($row = fetch_array($rs)){
 	?>

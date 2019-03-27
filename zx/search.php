@@ -13,21 +13,12 @@ fclose($f);
 
 if (isset($_GET["page_size"])){
 $page_size=$_GET["page_size"];
-checkid($page_size);
+checkid($page_size,1);
 setcookie("page_size_zx",$page_size,time()+3600*24*360);
 }else{
-	if (isset($_COOKIE["page_size_zx"])){
-	$page_size=$_COOKIE["page_size_zx"];
-	}else{
-	$page_size=pagesize_qt;
-	}
+$page_size=isset($_COOKIE['page_size_zx'])?$_COOKIE['page_size_zx']:pagesize_qt;
 }
-
-if (isset($_POST['keyword'])){
-$keyword=trim($_POST['keyword']);
-}else{
-$keyword="";
-}
+$keyword=isset($_POST['keyword'])?$_POST['keyword']:'';
 
 if (isset($_GET['b'])){
 $bNew=$_GET['b'];
@@ -35,11 +26,7 @@ checkid($bNew,1);
 setcookie("zxb",$bNew,time()+3600*24);
 $b=$bNew;
 }else{
-	if (isset($_COOKIE['zxb'])){
-	$b=$_COOKIE['zxb'];
-	}else{
-	$b=0;
-	}
+$b=isset($_COOKIE['zxb'])?$_COOKIE['zxb']:0;
 }
 
 if (isset($_GET['s'])){
@@ -48,11 +35,7 @@ checkid($sNew,1);
 setcookie("zxs",$sNew,time()+3600*24);
 $s=$sNew;
 }else{
-	if (isset($_COOKIE['zxs'])){
-	$s=$_COOKIE['zxs'];
-	}else{
-	$s=0;
-	}
+$s=isset($_COOKIE['zxs'])?$_COOKIE['zxs']:0;
 }
 $bigclassname="";
 $smallclassname="";
@@ -99,8 +82,7 @@ function formbigclass(){
 		return $str;
 		}
 		
-		function formsmallclass($b)
-		{
+		function formsmallclass($b){
 		if ($b<>0){
 		$str="";
         $sql="select * from zzcms_zxclass where parentid='".$b."' order by xuhao asc";
@@ -130,8 +112,7 @@ if ($b<>0 || $s<>0 ) {
 		}else{
 		$selected="";
 		}
-if( isset($_GET["page"]) && $_GET["page"]!="") 
-{
+if( isset($_GET["page"]) && $_GET["page"]!="") {
     $page=$_GET['page'];
 	checkid($page);
 }else{
@@ -152,7 +133,7 @@ $sql2=$sql2." and smallclassid='".$s."' ";
 if ($keyword<>"") {
 $sql2=$sql2." and title like '%".$keyword."%' ";
 }
-$rs = query($sql.$sql2); 
+$rs =query($sql.$sql2); 
 $row = fetch_array($rs);
 $totlenum = $row['total'];
 $offset=($page-1)*$page_size;//$page_size在上面被设为COOKIESS 
@@ -221,5 +202,5 @@ $strout=showlabel($strout);
 
 echo $strout;
 $t2 = microtime(true);
-echo '耗时'.round($t2-$t1,3).'秒';	
+//echo '耗时'.round($t2-$t1,3).'秒';	
 ?>

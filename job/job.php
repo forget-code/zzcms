@@ -16,25 +16,11 @@ $page_size=$_GET["page_size"];
 checkid($page_size);
 setcookie("page_size_job",$page_size,time()+3600*24*360);
 }else{
-	if (isset($_COOKIE["page_size_job"])){
-	$page_size=$_COOKIE["page_size_job"];
-	}else{
-	$page_size=pagesize_qt;
-	}
+$page_size=isset($_COOKIE["page_size_job"])?$_COOKIE["page_size_job"]:pagesize_qt;
 }
 
-if (isset($_GET["b"])){
-$b=$_GET["b"];
-}else{
-$b="";
-}
-
-if (isset($_GET["s"])){
-$s=$_GET["s"];
-}else{
-$s="";
-}
-
+$b=isset($_GET["b"])?$_GET["b"]:'';
+$s=isset($_GET["s"])?$_GET["s"]:'';
 
 $bigclassname='';
 if ($b<>""){
@@ -59,11 +45,8 @@ if ($row){
 $pagetitle=joblisttitle;
 $pagekeyword=joblistkeyword;
 $pagedescription=joblistdescription;
-
 $station=getstation($b,$bigclassname,$s,$smallclassname,"","","job");
-
-if( isset($_GET["page"]) && $_GET["page"]!="") 
-{
+if( isset($_GET["page"]) && $_GET["page"]!="") {
     $page=$_GET['page'];
 	checkid($page);
 }else{
@@ -85,7 +68,7 @@ $sql2=$sql2. "and bigclassid='".$b."' ";
 if ($s<>"") {
 $sql2=$sql2." and smallclassid ='".$s."'  ";
 }
-$rs = query($sql.$sql2); 
+$rs =query($sql.$sql2); 
 $row = fetch_array($rs);
 $totlenum = $row['total'];
 $offset=($page-1)*$page_size;//$page_size在上面被设为COOKIESS
@@ -127,6 +110,5 @@ $strout=str_replace("{#pagedescription}",$pagedescription,$strout);
 $strout=str_replace("{#sitebottom}",sitebottom(),$strout);
 $strout=str_replace("{#sitetop}",sitetop(),$strout);
 $strout=showlabel($strout);
-
 echo  $strout;
 ?>

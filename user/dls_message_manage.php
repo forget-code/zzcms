@@ -36,11 +36,7 @@ include("left.php");
 </div>
 <div class="right">
 <?php
-if (isset($_POST["lxr"])){ 
-$lxr=trim($_POST["lxr"]);
-}else{
-$lxr="";
-}
+$lxr = isset($_POST['lxr'])?$_POST['lxr']:"";
 ?>
 <div class="content">
 <div class="admintitle">
@@ -54,6 +50,7 @@ $lxr="";
 <?php
 if( isset($_GET["page"]) && $_GET["page"]!="") {
     $page=$_GET['page'];
+	checkid($page);
 }else{
     $page=1;
 }
@@ -69,7 +66,7 @@ if ($lxr<>"") {
 $sql2=$sql2."and name like '%".$lxr."%' ";
 }
 
-$rs = query($sql.$sql2); 
+$rs =query($sql.$sql2); 
 $row = fetch_array($rs);
 $totlenum = $row['total'];
 $totlepage=ceil($totlenum/$page_size);
@@ -126,7 +123,6 @@ while($row = fetch_array($rs)){
   </form>
 <?php
 }
-
 unset ($f_array);
 ?>
 </div>

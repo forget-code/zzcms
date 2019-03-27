@@ -12,14 +12,20 @@ include("../inc/fy.php");
 <body>
 <?php
 $action=isset($_REQUEST["action"])?$_REQUEST["action"]:'';
-$page=isset($_GET["page"])?$_GET["page"]:1;
+if( isset($_REQUEST["page"]) && $_REQUEST["page"]!="") {
+    $page=$_REQUEST['page'];
+	checkid($page);
+}else{
+    $page=1;
+}
 $keyword=isset($_REQUEST["keyword"])?$_REQUEST["keyword"]:'';
-$b=isset($_REQUEST["b"])?$_REQUEST["b"]:'';
-
+$b=isset($_REQUEST["b"])?$_REQUEST["b"]:0;
+checkid($b,1);
 if ($action=="elite"){
 if(!empty($_POST['id'])){
     for($i=0; $i<count($_POST['id']);$i++){
     $id=$_POST['id'][$i];
+	checkid($id);
 	$sql="select elite from zzcms_help where id ='$id'";
 	$rs = query($sql); 
 	$row = fetch_array($rs);
@@ -60,16 +66,16 @@ echo "<script>location.href='?b=".$b."&keyword=".$keyword."&page=".$page."'</scr
 <?php
 $page_size=pagesize_ht;  //每页多少条数据
 $offset=($page-1)*$page_size;
-$sql="select * from zzcms_help where classid=".$b." ";
+$sql="select * from zzcms_help where classid='".$b."' ";
 if ($keyword<>"") {  		
 $sql=$sql." and  title like '%".$keyword."%' ";
 }
-$rs = query($sql,$conn); 
+$rs = query($sql); 
 $totlenum= num_rows($rs);  
 $totlepage=ceil($totlenum/$page_size);
 
 $sql=$sql . " order by id desc limit $offset,$page_size";
-$rs = query($sql,$conn); 
+$rs = query($sql); 
 if(!$totlenum){
 echo "暂无信息";
 }else{
@@ -118,7 +124,6 @@ while($row = fetch_array($rs)){
 <div class="border center"><?php echo showpage_admin()?></div>
 <?php
 }
-
 ?>
 </body>
 </html>

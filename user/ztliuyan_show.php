@@ -24,7 +24,7 @@ $id=0;
 <body>
 <?php
 $sql="select * from zzcms_guestbook where id='$id'";
-$rs=query($sql,$conn);
+$rs=query($sql);
 $row=num_rows($rs);
 if (!$row){
 echo  $f_array[1];

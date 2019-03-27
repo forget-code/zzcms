@@ -1,5 +1,5 @@
 <?php
-function showcookieszs($cs){
+function showcookiezs($cs){
 $str="";
 $cs=explode(",",$cs); //传入的$cs是一个整体字符串,转成数组
 $column=isset($cs[0])?$cs[0]:3;
@@ -47,7 +47,7 @@ return $str;
 function bigclass($b,$url=1){
 $str="";
 $n=1;
-$sql="select classname,classid,classzm from zzcms_zsclass where parentid='A' order by xuhao";
+$sql="select classname,classid,classzm from zzcms_zsclass where parentid=0 order by xuhao";
 $rs=query($sql);
 $row=num_rows($rs);
 if (!$row){
@@ -63,6 +63,43 @@ $str="暂无分类";
 	$str=$str."</li>\n";
 	$n=$n+1;		
 	}
+}
+return $str;
+}
+
+function showzssmallclass($b,$s,$column,$num){
+if ($b<>""){
+$rs=query("select classid from zzcms_zsclass where classzm='".$b."'");
+$row=fetch_array($rs);
+if ($row){
+$bigclassid=$row["classid"];
+}
+}
+
+$str="";
+$n=1;
+if ($num<>""){
+$sql="select classname,classid,classzm from zzcms_zsclass where parentid='". $bigclassid ."' order by xuhao limit 0,$num";
+}else{
+$sql="select classname,classid,classzm from zzcms_zsclass where parentid='". $bigclassid ."' order by xuhao";
+}
+$rs=query($sql);
+$row=num_rows($rs);
+if (!$row){
+$str="暂无分类";
+}else{
+while ($row=fetch_array($rs)){
+	$str=$str."<li>";
+	if($row['classzm']==$s){
+	$str=$str. "<a href='".getpageurl2("zs",$b,$row["classzm"])."' class='current'>";	
+	}else{
+	$str=$str. "<a href='".getpageurl2("zs",$b,$row["classzm"])."'>";
+	}
+	$str=$str.$row["classname"]."</a>";
+	$str=$str."</li>";
+$n=$n+1;		
+}
+if ($num<>""){$str=$str. "<li><a href='".getpageurl2("zs",$b,"")."'>更多...</a></li>";}
 }
 return $str;
 }
@@ -91,42 +128,12 @@ $str="";//为空时不要输出内容
 return $str;
 }
 
-
-function showzssmallclass($b,$s,$column,$num){
-$str="";
-$n=1;
-if ($num<>""){
-$sql="select classname,classid,classzm from zzcms_zsclass where parentid='". $b ."' order by xuhao limit 0,$num";
-}else{
-$sql="select classname,classid,classzm from zzcms_zsclass where parentid='". $b ."' order by xuhao";
-}
-$rs=query($sql);
-$row=num_rows($rs);
-if (!$row){
-$str="暂无分类";
-}else{
-while ($row=fetch_array($rs)){
-	$str=$str."<li>";
-	if($row['classzm']==$s){
-	$str=$str. "<a href='".getpageurl2("zs",$b,$row["classzm"])."' class='current'>";	
-	}else{
-	$str=$str. "<a href='".getpageurl2("zs",$b,$row["classzm"])."'>";
-	}
-	$str=$str.$row["classname"]."</a>";
-	$str=$str."</li>";
-$n=$n+1;		
-}
-if ($num<>""){$str=$str. "<li><a href='".getpageurl2("zs",$b,"")."'>更多...</a></li>";}
-}
-return $str;
-}
-
-function showzsforsearch($num,$strnum,$order,$classname,$showtime,$keyword){
+function showzsforsearch($num,$strnum,$order,$bigclassid,$showtime,$keyword){
 $n=1;
 $str="";
 	$sql="select id,proname,sendtime,passed,elite,hit,city,comane,userid from zzcms_main where passed=1 ";
-	if ($classname<>"") {
-	$sql=$sql. "and bigclasszm='$classname' ";
+	if ($bigclassid<>0) {
+	$sql=$sql. "and bigclassid='$bigclassid' ";
 	}
 		
 	if ($keyword<>"") {
@@ -178,7 +185,7 @@ $n=1;
 $str="";
 $sql="select cpid from zzcms_dl where passed=1 and cpid<>0 ";
 if ($classid<>"") {
-$sql=$sql. " and classzm='$classid' ";
+$sql=$sql. " and classid='$classid' ";
 }
 
 if ($sj<>"") {

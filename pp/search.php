@@ -10,60 +10,42 @@ $fp="../template/".$siteskin."/pp_search.htm";
 $f = fopen($fp,'r');
 $strout = fread($f,filesize($fp));
 fclose($f);
-
-if (isset($_GET['yiju'])){
-$yiju=$_GET['yiju'];
-}else{
-$yiju="Pname";
-}
-
+$yiju = isset($_GET['yiju'])?$_GET['yiju']:"Pname";
 if (isset($_GET['keyword'])){
-$keywordNew=nostr(trim($_GET['keyword']));
+$keywordNew=$_GET['keyword'];
 setcookie("keyword",$keywordNew,time()+3600*24);
-setcookie("b","xxx",1);
-setcookie("s","xxx",1);
-echo "<script>location.href='search.php'</script>";
+setcookie("b_pp","xxx",1);
+setcookie("s_pp","xxx",1);
+//echo "<script>location.href='search.php'<//script>";
 $keyword=$keywordNew;
 }else{
-	if (isset($_COOKIE['keyword'])){
-	$keyword=trim($_COOKIE['keyword']);
-	}else{
-	$keyword="";
-	}
+$keyword=isset($_COOKIE['keyword'])?$_COOKIE['keyword']:'';
 }
 
 if (isset($_GET['b'])){
 $bNew=$_GET['b'];
-setcookie("b",$bNew,time()+3600*24);
-setcookie("s","xxx",1);
+setcookie("b_pp",$bNew,time()+3600*24);
+setcookie("s_pp","xxx",1);
 echo "<script>location.href='search.php'</script>";
 $b=$bNew;
 }else{
-	if (isset($_COOKIE['b'])){
-	$b=$_COOKIE['b'];
-	}else{
-	$b="";
-	}
+$b=isset($_COOKIE['b_pp'])?$_COOKIE['b_pp']:'';
 }
 
 if (isset($_GET['s'])){
 $sNew=$_GET['s'];
-setcookie("s",$sNew,time()+3600*24);
+setcookie("s_pp",$sNew,time()+3600*24);
 $s=$sNew;
 }else{
-	if (isset($_COOKIE['zss'])){
-	$s=$_COOKIE['s'];
-	}else{
-	$s="";
-	}
+$s=isset($_COOKIE['s_pp'])?$_COOKIE['s_pp']:'';
 }
 
 if (isset($_GET['delb'])){
-setcookie("b","xxx",1);
+setcookie("b_pp","xxx",1);
 echo "<script>location.href='search.php'</script>";
 }
 if (isset($_GET['dels'])){
-setcookie("s","xxx",1);
+setcookie("s_pp","xxx",1);
 echo "<script>location.href='search.php'</script>";
 }
 
@@ -72,36 +54,34 @@ $page_size=$_GET["page_size"];
 checkid($page_size);
 setcookie("page_size_pp",$page_size,time()+3600*24*360);
 }else{
-	if (isset($_COOKIE["page_size_pp"])){
-	$page_size=$_COOKIE["page_size_pp"];
-	}else{
-	$page_size=pagesize_qt;
-	}
+$page_size=isset($_COOKIE['page_size_pp'])?$_COOKIE['page_size_pp']:pagesize_qt;
 }
 
 $bigclassname='';
 if ($b<>""){
-$sql="select classname from zzcms_zsclass where classzm='".$b."'";
+$sql="select classname,classid from zzcms_zsclass where classzm='".$b."'";
 $rs=query($sql);
 $row=fetch_array($rs);
 if ($row){
 $bigclassname=$row["classname"];
+$bigclassid=$row["classid"];
 }
 }
 
 $smallclassname='';
 if ($s<>"") {
-$sql="select classname from zzcms_zsclass where classzm='".$s."'";
+$sql="select classname,classid from zzcms_zsclass where classzm='".$s."'";
 $rs=query($sql);
 $row=fetch_array($rs);
 if ($row){
 	$smallclassname=$row["classname"];
+	$smallclassid=$row["classid"];
 	}
 }
 
 function formbigclass(){
 		$str="";
-        $sql = "select * from zzcms_zsclass where parentid='A'";
+        $sql = "select * from zzcms_zsclass where parentid=0";
         $rs=query($sql);
 		$row=num_rows($rs);
 		if (!$row){
@@ -115,6 +95,7 @@ function formbigclass(){
 		}
 		
 		function formsmallclass($b){
+		if ($b<>0){
 		$str="";
         $sql="select * from zzcms_zsclass where parentid='" .$b. "' order by xuhao asc";
         $rs=query($sql);
@@ -125,6 +106,7 @@ function formbigclass(){
 			}
 		}	
 		return $str;
+		}
 		}
 		
 if ($b<>"" || $s<>"") {
@@ -153,7 +135,7 @@ $station=getstation($b,$bigclassname,$s,$smallclassname,"","","pp");
 
 if( isset($_GET["page"]) && $_GET["page"]!="") {
     $page=$_GET['page'];
-	checkid($page);
+	checkid($page,0);
 }else{
     $page=1;
 }
@@ -161,22 +143,25 @@ if( isset($_GET["page"]) && $_GET["page"]!="") {
 $list=strbetween($strout,"{loop}","{/loop}");
 $sql="select count(*) as total from zzcms_pp where passed<>0 ";	
 $sql2='';
-switch ($yiju){
+
+if ($keyword<>"" && $keyword<>"输入品牌名") {
+	switch ($yiju){
 	case "Pname";
-	$sql2=$sql2. " and ppname like '%".$keyword."%' ";//加括号,否则后面的条件无效
+	$sql2=$sql2. "and ppname like '%".$keyword."%' ";//加括号,否则后面的条件无效
 	break;
 	case "Pcompany";
 	$sql2=$sql2."and comane like '%".$keyword."%' " ; 
 	break;
 	}
+}
 
 if ($b<>""){
-$sql2=$sql2. "and bigclasszm='".$b."' ";
+$sql2=$sql2. "and bigclassid='".$bigclassid."' ";
 }
 if ($s<>"") {
-$sql2=$sql2." and smallclasszm ='".$s."'  ";
+$sql2=$sql2."and smallclassid ='".$smallclassid."'  ";
 }
-$rs = query($sql.$sql2); 
+$rs =query($sql.$sql2); 
 $row = fetch_array($rs);
 $totlenum = $row['total'];
 $offset=($page-1)*$page_size;//$page_size在上面被设为COOKIESS
@@ -185,6 +170,7 @@ $totlepage=ceil($totlenum/$page_size);
 $sql="select * from zzcms_pp where passed=1 ";
 $sql=$sql.$sql2;	
 $sql=$sql." order by id desc limit $offset,$page_size";
+//echo $sql;
 $rs = query($sql); 
 if(!$totlenum){
 $strout=str_replace("{#fenyei}","",$strout) ;
@@ -225,7 +211,7 @@ $strout=str_replace("{#formbigclass}",formbigclass(),$strout);
 }else{
 $strout=str_replace("{#formbigclass}","",$strout);
 }
-$strout=str_replace("{#formsmallclass}",formsmallclass($b),$strout);
+$strout=str_replace("{#formsmallclass}",formsmallclass($bigclassid),$strout);
 $strout=str_replace("{#selected}",$selected,$strout);
 $strout=str_replace("{#formkeyword}",$keyword,$strout);
 

@@ -12,17 +12,24 @@ include("../inc/fy.php");
 checkadminisdo("baojia");
 
 $action=isset($_REQUEST["action"])?$_REQUEST["action"]:'';
-$page=isset($_GET["page"])?$_GET["page"]:1;
+if( isset($_REQUEST["page"]) && $_REQUEST["page"]!="") {
+    $page=$_REQUEST['page'];
+	checkid($page);
+}else{
+    $page=1;
+}
 $shenhe=isset($_REQUEST["shenhe"])?$_REQUEST["shenhe"]:'';
 $keyword=isset($_REQUEST["keyword"])?$_REQUEST["keyword"]:'';
 $kind=isset($_REQUEST["kind"])?$_REQUEST["kind"]:'';
-$b=isset($_REQUEST["b"])?$_REQUEST["b"]:'';
+$b=isset($_REQUEST["b"])?$_REQUEST["b"]:0;
+checkid($b);
 $showwhat=isset($_REQUEST["showwhat"])?$_REQUEST["showwhat"]:'';
 
 if ($action=="pass"){
 if(!empty($_POST['id'])){
     for($i=0; $i<count($_POST['id']);$i++){
 	$id=$_POST['id'][$i];
+	checkid($id);
 	$sql="select passed from zzcms_baojia where id ='$id'";
 	$rs = query($sql); 
 	$row = fetch_array($rs);
@@ -56,15 +63,15 @@ echo "<script>location.href='?keyword=".$keyword."&page=".$page."'</script>";
 </div>
   <div class="border2">
   <?php	
-$sql="select * from zzcms_zsclass where parentid='A' order by xuhao";
+$sql="select classid,classname from zzcms_zsclass where parentid=0 order by xuhao";
 $rs = query($sql); 
 $row = num_rows($rs);
 if (!$row){
 echo '暂无分类';
 }else{
 while($row = fetch_array($rs)){
-echo "<a href=?b=".$row['classzm'].">";  
-	if ($row["classzm"]==$b) {
+echo "<a href=?b=".$row['classid'].">";  
+	if ($row["classid"]==$b) {
 	echo "<b>".$row["classname"]."</b>";
 	}else{
 	echo $row["classname"];
@@ -84,7 +91,7 @@ if ($shenhe=="no") {
 $sql2=$sql2." and passed=0 ";
 }
 if ($b<>"") {
-$sql2=$sql2." and classzm='".$b."' ";
+$sql2=$sql2." and classid=".$b;
 }
 
 if ($keyword<>"") {
@@ -103,7 +110,7 @@ if ($keyword<>"") {
 	}
 }
 
-$rs = query($sql.$sql2); 
+$rs =query($sql.$sql2); 
 $row = fetch_array($rs);
 $totlenum = $row['total'];
 $totlepage=ceil($totlenum/$page_size);
@@ -112,7 +119,7 @@ $sql="select * from zzcms_baojia where id<>0 ";
 $sql=$sql.$sql2;
 $sql=$sql . " order by id desc limit $offset,$page_size";
 //$sql=$sql." and id>=(select id from zzcms_baojia order by id limit $offset,1) order by id desc limit $page_size";
-$rs = query($sql,$conn); 
+$rs = query($sql); 
 if(!$totlenum){
 echo "暂无信息";
 }else{
@@ -145,11 +152,10 @@ while($row = fetch_array($rs)){
 ?>
     <tr class="bgcolor1" onMouseOver="fSetBg(this)" onMouseOut="fReBg(this)"> 
       <td align="center"> <input name="id[]" type="checkbox"  value="<?php echo $row["id"]?>">     </td>
-      <td><a href="?b=<?php echo $row["classzm"]?>" >
+      <td><a href="?b=<?php echo $row["classid"]?>" >
 	  <?php
-			$rsn=query("select classname from zzcms_zsclass where classzm='".$row['classzm']."'");
-			$r=num_rows($rsn);
-			if ($r){
+			$rsn=query("select classname from zzcms_zsclass where classid='".$row['classid']."'");
+			if ($rsn){
 			$r=fetch_array($rsn);
 			echo $r["classname"];
 			}
@@ -158,7 +164,7 @@ while($row = fetch_array($rs)){
       <td><a href="<?php echo getpageurl("baojia",$row["id"])?>" target="_blank"><?php echo $row["cp"] ?></a></td>
       <td><?php echo $row["price"] ?></td>
       <td><?php echo $row["province"].$row["city"]?></td>
-      <td><?php echo $row["dlsname"]?></td>
+      <td><?php echo $row["truename"]?></td>
       <td><?php echo $row["tel"]?></td>
       <td><?php if ($row["editor"]<>''){ echo  $row["editor"];}else{ echo '未登录用户';}?></td>
       <td><?php echo $row["sendtime"]?></td>
@@ -184,7 +190,6 @@ while($row = fetch_array($rs)){
 <div class="border center"><?php echo showpage_admin()?></div>
 <?php
 }
-
 ?>
 </body>
 </html>

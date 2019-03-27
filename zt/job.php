@@ -1,5 +1,6 @@
 ﻿<?php
 include("../inc/conn.php");
+include("../inc/fy.php");
 include("top.php");
 include("bottom.php");
 include("left.php");
@@ -13,11 +14,7 @@ $f = fopen($fp,'r');
 $strout = fread($f,filesize($fp));
 fclose($f);
 
-if (isset($_REQUEST['bigclass'])){
-$bigclass=$_REQUEST['bigclass'];
-}else{
-$bigclass="";
-}
+$bigclass=isset($_REQUEST['bigclass'])?$_REQUEST['bigclass']:"";
 
 $pagetitle=$comane."—招聘";
 $pagekeywords=$comane."—招聘";
@@ -36,9 +33,9 @@ setcookie("page_size_job",$page_size,time()+3600*24*360);
 	}
 }
 
-if( isset($_GET["page"]) && $_GET["page"]!="") 
-{
+if( isset($_GET["page"]) && $_GET["page"]!="") {
     $page=$_GET['page'];
+	checkid($page,0);
 }else{
     $page=1;
 }
@@ -74,59 +71,11 @@ $list2 =str_replace("{#sendtime}",$row["sendtime"],$list2) ;
 $list2 =str_replace("{#sm}",cutstr(nohtml($row['sm']),200),$list2) ;				
 $i=$i+1;
 }
-$fenyei='';
-if ($page<>1) {
-		if (whtml=="Yes") {
-			$fenyei=$fenyei. "<a href='/jobs/job-".$id."-".($page-1).".htm'>上一页</a>";
-			}else{
-			$fenyei=$fenyei. "<a href='?id=".$id."&page=".($page-1)."'>上一页</a>";
-		}
-}
-	for($a=1; $a<=$totlepage;$a++){
-		if (whtml=="Yes") {
-			if ($page==$a) {
-			$fenyei=$fenyei. "<span>".$a."</span>";
-			}else{
-			$fenyei=$fenyei. "<a href='/jobs/job-".$id."-".$a.".htm'>".$a."</a>";
-			}
-		}else{
-			if ($page==$a) {
-			$fenyei=$fenyei. "<span>".$a."</span>";
-			}else{
-			$fenyei=$fenyei. "<a href='?id=".$id."&page=".$a."' >".$a."</a>";
-			}
-		}
-	}
-if ($page<>$totlepage) {
-			if (whtml=="Yes") {
-			$fenyei=$fenyei. "<a href='/jobs/job-".$id."-".($page+1).".htm'>下一页</a> ";
-			}else{
-			$fenyei=$fenyei. "<a href='?id=".$id."&page=".($page+1)."'>下一页</a> ";
-			}
-}
-if ($totlepage>1){
-$fenyei=$fenyei. "<select name='select' onChange=if(this.options[this.selectedIndex].value!=''){location=this.options[this.selectedIndex].value;}>";
-for($a=1; $a<=$totlepage;$a++){
-			if (whtml=="Yes") {
-				if ($a==$page) {
-				$fenyei=$fenyei. "<option value='/jobs/job-".$id."-".$a.".htm' selected>第".$a."页</option>";
-				}else{
-				$fenyei=$fenyei. "<option value='/jobs/job-".$id."-".$a.".htm'>第".$a."页</option>";
-				}
-			}else{
-				if ($a==$page) {
-				$fenyei=$fenyei. "<option value='?id=".$id."&page=".$a."' selected>第".$a."页</option>";
-				}else{
-				$fenyei=$fenyei. "<option value='?id=".$id."&page=".$a."' >第".$a."页</option>";
-				}
-			}
-}
-$fenyei=$fenyei. " </select>";
-}
+
 $strout=str_replace("{loop}".$list."{/loop}",$list2,$strout) ;
 $strout=str_replace("{job}","",$strout) ;
 $strout=str_replace("{/job}","",$strout) ;
-$strout=str_replace("{#fenyei}",$fenyei,$strout) ;
+$strout=str_replace("{#fenyei}",showpage_zt("jobs","job"),$strout) ;
 }
 
 $strout=str_replace("{#siteskin}",siteskin,$strout) ;

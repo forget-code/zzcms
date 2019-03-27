@@ -14,6 +14,7 @@ $f_array=explode("|||",$fcontent) ;
 <link href="style/<?php echo siteskin_usercenter?>/style.css" rel="stylesheet" type="text/css">
 <?php
 if( isset($_GET["page"]) && $_GET["page"]!="") {$page=$_GET['page'];}else{$page=1;}
+checkid($page,0);
 $title=trim($_POST["title"]);	
 $img=trim($_POST["img"]);
 if ($_GET["action"]=="add"){

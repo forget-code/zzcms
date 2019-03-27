@@ -1,17 +1,15 @@
 <?php
 if(@$step==4){
 if ($_POST['token'] != $_SESSION['token'] || $_POST['token']=='' ){    
-echo "非法提交".$_POST['token']."<br>".$_SESSION['token'];
+//echo "非法提交".$_POST['token']."<br>".$_SESSION['token'];
+echo "非法提交";
 exit();
-//}else{
-//unset($_SESSION['token']);
 }
 ?>
 <script type="text/javascript">
 function check() {
 //创建正则表达式
 var re=/^[A-Za-z0-9\\-_-]*$/;
-
 	if (document.myform.db_host.value==''){
 		alert('请填写数据库服务器');
 		document.myform.db_host.focus();
@@ -78,6 +76,11 @@ var re=/^[A-Za-z0-9\\-_-]*$/;
         <td align="right">数据库服务器</td>
         <td width="69%" align="left"><input name="db_host" type="text" id="db_host" value="localhost" style="width:150px"/>
           通常为localhost或服务器IP地址</td>
+      </tr>
+      <tr>
+        <td align="right">端口</td>
+        <td align="left"><input name="db_port" type="text" id="db_port" value="3306" style="width:150px"/>
+          默认为3306</td>
       </tr>
       <tr> 
         <td align="right">数据库用户名</td>

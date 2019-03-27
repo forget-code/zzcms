@@ -51,7 +51,6 @@ if(!empty($_POST['id'])){
 
 if (!isset($id) || $id==""){
 echo $f_array[2];
-
 exit;
 }
  	if (strpos($id,",")>0){
@@ -83,16 +82,15 @@ while ($row=fetch_array($rs)){
           <td width="34%" height="30" class="x"><?php echo  $f_array[5].$row['tel'].$f_array[6].$row['email']?></td>
           <td width="20%" height="30" class="x"> <?php echo $row['sendtime']?></td>
         </tr>
-        <?php
+<?php
 $i++;
 }
 ?>
       </table>
       
-      <?php
+<?php
 }	
-
- ?>
+?>
     </td>
   </tr>
 </table>

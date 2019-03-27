@@ -54,23 +54,17 @@ include("left.php");
 </div>
 <div class="right">
 <div class="content">
-      <div class="admintitle"><?php echo $f_array[1]?></div>
+<div class="admintitle"><?php echo $f_array[1]?></div>
 <?php
-if (isset($_GET["page"])){
-$page=$_GET["page"];
-}else{
-$page=1;
-}
+$page = isset($_GET['page'])?$_GET['page']:1;
+checkid($page);
+$id = isset($_GET['id'])?$_GET['id']:0;
+checkid($id,1);
 
-if (isset($_REQUEST["id"])){
-$id=$_REQUEST["id"];
-}else{
-$id=0;
-}
 $sqlzx="select * from zzcms_zx where id='$id'";
-$rszx = query($sqlzx); 
+$rszx =query($sqlzx); 
 $rowzx = fetch_array($rszx);
-if ($rowzx["editor"]<>$username) {
+if ($id<>0 && $rowzx["editor"]<>$username) {
 markit();
 showmsg('非法操作！警告：你的操作已被记录！小心封你的用户及IP！');
 }
@@ -81,8 +75,7 @@ showmsg('非法操作！警告：你的操作已被记录！小心封你的用�
             <td width="18%" align="right" class="border2"><?php echo $f_array[2]?></td>
             <td width="82%" class="border2"> 
               <?php
-
-$sql = "select * from zzcms_zxclass where parentid<>0 order by xuhao asc";
+$sql = "select parentid,classid,classname from zzcms_zxclass where parentid<>0 order by xuhao asc";
 $rs=query($sql);
 ?>
 <script language = "JavaScript" type="text/JavaScript">
@@ -112,9 +105,9 @@ function changelocation(locationid)
             }        
         }
     }</script> <select name="bigclassid" class="biaodan" onchange="changelocation(document.myform.bigclassid.options[document.myform.bigclassid.selectedIndex].value)" size="1">
-                <option value="" selected="selected"><?php echo $f_array[3]?></option>
+                <option value="0" selected="selected"><?php echo $f_array[3]?></option>
                 <?php
-	$sql = "select * from zzcms_zxclass where isshowforuser=1 and parentid=0 order by xuhao asc";
+	$sql = "select classid,classname from zzcms_zxclass where isshowforuser=1 and parentid=0 order by xuhao asc";
     $rs=query($sql);
 	while($row = fetch_array($rs)){
 	?>
@@ -125,8 +118,7 @@ function changelocation(locationid)
               </select> <select name="smallclassid" class="biaodan">
                 <option value="0"><?php echo $f_array[4]?></option>
                 <?php
-
-$sql="select * from zzcms_zxclass where parentid=" .$rowzx["bigclassid"]." order by xuhao asc";
+$sql="select classid,classname from zzcms_zxclass where parentid='" .$rowzx["bigclassid"]."' order by xuhao asc";
 $rs=query($sql);
 while($row = fetch_array($rs)){
 ?>
@@ -164,7 +156,7 @@ while($row = fetch_array($rs)){
           </tr>
           <tr id="trcontent"> 
             <td align="right" class="border2" ><?php echo $f_array[9]?></td>
-            <td class="border2" > <textarea name="content" type="hidden" id="content"><?php echo $rowzx["content"]?></textarea> 
+            <td class="border2" > <textarea name="content" type="hidden" id="content"><?php echo stripfxg($rowzx["content"])?></textarea> 
               <script type="text/javascript">CKEDITOR.replace('content');	</script>            </td>
           </tr>
           <tr id="trseo">
@@ -185,7 +177,7 @@ while($row = fetch_array($rs)){
       <td class="border" > <select name="groupid" class="biaodan">
           <option value="0"><?php echo $f_array[14]?></option>
           <?php
-		  $rs=query("Select * from zzcms_usergroup ");
+		  $rs=query("Select groupid,groupname from zzcms_usergroup ");
 		  $row = num_rows($rs);
 		  if ($row){
 		  while($row = fetch_array($rs)){
@@ -224,7 +216,6 @@ while($row = fetch_array($rs)){
 </div>
 </div>
 <?php
-
 unset ($f_array);
 ?>
 </body>

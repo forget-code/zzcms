@@ -124,12 +124,13 @@ function showconfig(){
       <td colspan="2" class="admintitle2"><a name="SiteInfo" id="SiteInfo"></a>网站基本信息设置</td>
     </tr>
     <tr> 
-      <td width="30%" align="right" class="border">网站名称</td>
-      <td width="70%" class="border"> <input name="sitename" type="text" id="sitename" value="<?php echo sitename?>" size="50" maxlength="255"> 
+      <td width="20%" align="right" class="border">网站名称</td>
+      <td width="80%" class="border"> <input name="sitename" type="text" id="sitename" value="<?php echo sitename?>" size="50" maxlength="255"> 
         <input name="sqldb" type="hidden" id="sqldb" value="<?php echo sqldb?>"> 
         <input name="sqluser" type="hidden" id="sqluser" value="<?php echo sqluser?>"> 
         <input name="sqlpwd" type="hidden" id="sqlpwd" value="<?php echo sqlpwd?>"> 
-        <input name="sqlhost" type="hidden" id="sqlhost" value="<?php echo sqlhost?>"></td>
+        <input name="sqlhost" type="hidden" id="sqlhost" value="<?php echo sqlhost?>">
+		<input name="sqlport" type="hidden" id="sqlport" value="<?php echo sqlport?>">	  </td>
     </tr>
     <tr> 
       <td align="right" class="border">网站地址</td>
@@ -776,8 +777,9 @@ $channel=substr($channel,0,strlen($channel)-1);//去除最后面的"#"
 	$fcontent=$fcontent. "define('sqldb','".trim($_POST['sqldb'])."');//数据库名\r\n";
 	$fcontent=$fcontent. "define('sqluser','".trim($_POST['sqluser'])."');//用户名\r\n";
 	$fcontent=$fcontent. "define('sqlpwd','".html_entity_decode(trim($_POST['sqlpwd']))."');//密码\r\n";//html_entity_decode针对&被转变成&amp;
-	$fcontent=$fcontent. "define('sqlhost','".trim($_POST['sqlhost'])."');//连接服务器,本机填(local)，外地填IP地址\r\n";
-	$fcontent=$fcontent. "define('zzcmsver','Powered By <a target=_blank style=font-weight:bold href=http://www.zzcms.net><font color=#FF6600 face=Arial>ZZ</font><font color=#025BAD face=Arial>CMS8.1</font></a>');//版本\r\n";
+	$fcontent=$fcontent. "define('sqlhost','".trim($_POST['sqlhost'])."');//连接服务器,本机填localhost，外地填IP地址\r\n";
+	$fcontent=$fcontent. "define('sqlport','".trim($_POST['sqlport'])."');//端口（默认为:3306）\r\n";
+	$fcontent=$fcontent. "define('zzcmsver','Powered By <a target=_blank style=font-weight:bold href=http://www.zzcms.net><font color=#FF6600 face=Arial>ZZ</font><font color=#025BAD face=Arial>CMS8.2</font></a>');//版本\r\n";
 	$fcontent=$fcontent. "define('sitename','". trim($_POST['sitename'])."') ;//网站名称\r\n";
 	$fcontent=$fcontent. "define('siteurl','". trim($_POST['siteurl'])."') ;//网站地址\r\n";
 	$fcontent=$fcontent. "define('logourl','". trim($_POST['img'])."') ;//Logo地址\r\n";
@@ -786,7 +788,7 @@ $channel=substr($channel,0,strlen($channel)-1);//去除最后面的"#"
 	$fcontent=$fcontent. "define('kftel','". trim($_POST['kftel'])."') ;//联系电话\r\n";
 	$fcontent=$fcontent. "define('kfmobile','". trim($_POST['kfmobile'])."') ;//手机\r\n";
 	$fcontent=$fcontent. "define('kfqq','". trim($_POST['kfqq'])."') ;//QQ\r\n";
-	$fcontent=$fcontent. "define('sitecount','". str_replace('"','',str_replace("'",'',stripfxg(trim($_POST['sitecount']))))."') ;//网站统计代码\r\n";
+	$fcontent=$fcontent. "define('sitecount','". str_replace('"','',str_replace("'",'',stripfxg($_POST['sitecount'],true)))."') ;//网站统计代码\r\n";
 	//$fcontent=$fcontent. "define('sitecount','". htmlspecialchars_decode(trim($_POST['sitecount']))."') ;//网站统计代码\r\n";
 	$fcontent=$fcontent. "define('channelzs','". trim($_POST['channelzs'])."') ;//招商显示为\r\n";
 	$fcontent=$fcontent. "define('channeldl','". trim($_POST['channeldl'])."') ;//代理显示为\r\n";

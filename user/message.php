@@ -34,14 +34,15 @@ include("left.php");
 <div class="admintitle"><?php echo $f_array[1]?></div>
 <?php	  
 if( isset($_GET["page"]) && $_GET["page"]!="") {$page=$_GET['page'];}else{$page=1;}
+checkid($page,0);
 $page_size=pagesize_ht;  //每页多少条数据
 $offset=($page-1)*$page_size;
 $sql="select * from zzcms_usermessage where editor='".$username."' ";
-$rs = query($sql,$conn); 
+$rs = query($sql); 
 $totlenum= num_rows($rs);  
 $totlepage=ceil($totlenum/$page_size);		
 $sql=$sql . " order by id desc limit $offset,$page_size";
-$rs = query($sql,$conn); 
+$rs = query($sql); 
 if(!$totlenum){
 echo $f_array[2];
 }else{
@@ -57,7 +58,7 @@ while($row = fetch_array($rs)){
 ?>
     <tr class="bgcolor1" onMouseOver="fSetBg(this)" onMouseOut="fReBg(this)"> 
       <td>
-	  <div style="border-bottom:dotted 1px #b4cced;"><span style="float:right"><?php echo $row["sendtime"]?></span><?php echo $f_array[5].$row["content"]?></div>
+	  <div style="border-bottom:dotted 1px #b4cced;"><span style="float:right"><?php echo $row["sendtime"]?></span><?php echo stripfxg($row["content"],false,true)?></div>
 	  <div style="color:green">
 	  <?php 
 	  if ($row["reply"]<>''){
@@ -89,7 +90,7 @@ while($row = fetch_array($rs)){
 }
 ?>
   <div class="admintitle"><?php echo $f_array[10]?></div>
-  <form action="?" method="post" name="myform2" id="myform2" onSubmit="return CheckForm()">
+  <form action="?" method="post" name="myform2" id="myform2" onsubmit="return CheckForm()" >
         <table width="100%" border="0" cellpadding="3" cellspacing="1">
           <tr id="trcontent"> 
             <td width="15%" align="right" class="border" ><?php echo $f_array[11]?></td>
@@ -117,8 +118,16 @@ $row= num_rows($rs);
 if ($row){
 echo $f_array[13];
 }else{
-query("Insert into zzcms_usermessage(content,editor,sendtime) values('$content','$editor','".date('Y-m-d H:i:s')."')"); 
-echo "<script lanage='javascript'>location.replace('message.php')</script>"; 
+	$sql="select sendtime from zzcms_usermessage where editor='".$editor."' order by id desc limit 1";
+	$rs = query($sql); 
+	$row= fetch_array($rs); 
+	$second=time()-strtotime($row['sendtime']);
+	if ($second<60){//
+	echo $f_array[14];
+	}else{
+	query("Insert into zzcms_usermessage(content,editor,sendtime) values('$content','$editor','".date('Y-m-d H:i:s')."')"); 
+	echo "<script lanage='javascript'>location.replace('message.php')</script>"; 
+	}
 }
 }
 

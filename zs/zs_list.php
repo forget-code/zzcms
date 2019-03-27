@@ -16,42 +16,29 @@ $px=$_GET["px"];
 	}
 setcookie("pxzs",$px,time()+3600*24*360);
 }else{
-	if (isset($_COOKIE["pxzs"])){
-	$px=$_COOKIE["pxzs"];
-	}else{
-	$px="sendtime";
-	}
+$px=isset($_COOKIE['pxzs'])?$_COOKIE['pxzs']:"sendtime";
 }
 if (isset($_GET["page_size"])){
 $page_size=$_GET["page_size"];
 checkid($page_size);
 setcookie("page_size_zs",$page_size,time()+3600*24*360);
 }else{
-	if (isset($_COOKIE["page_size_zs"])){
-	$page_size=$_COOKIE["page_size_zs"];
-	}else{
-	$page_size=pagesize_qt;
-	}
+$page_size=isset($_COOKIE['page_size_zs'])?$_COOKIE['page_size_zs']:pagesize_qt;
 }
 
 if (isset($_GET["ys"])){
 $ys=$_GET["ys"];
 setcookie("yszs",$ys,time()+3600*24*360);
 }else{
-	if (isset($_COOKIE["yszs"])){
-	$ys=$_COOKIE["yszs"];
-	}else{
-	$ys="list";
-	}
+$ys=isset($_COOKIE['yszs'])?$_COOKIE['yszs']:'list';
 }
-
 $b = isset($_GET['b'])?$_GET['b']:"";
 $s = isset($_GET['s'])?$_GET['s']:"";
-
 $descriptions="";
 $keywords="";
 $titles="";
 $bigclassname="";
+$bigclassid=0;
 if ($b<>""){
 $sql="select * from zzcms_zsclass where classzm='".$b."'";
 $rs=query($sql);
@@ -61,13 +48,15 @@ $descriptions=$row["discription"];
 $keywords=$row["keyword"];
 $titles=$row["title"];
 $bigclassname=$row["classname"];
+$bigclassid=$row["classid"];
 }
 }
 
 $descriptionsx="";
-	$keywordsx="";
-	$titlesx="";
-	$smallclassname="";
+$keywordsx="";
+$titlesx="";
+$smallclassname="";
+$smallclassid=0;
 if ($s<>"") {
 $sql="select * from zzcms_zsclass where classzm='".$s."'";
 $rs=query($sql);
@@ -77,6 +66,7 @@ if ($row){
 	$keywordsx=$row["keyword"];
 	$titlesx=$row["title"];
 	$smallclassname=$row["classname"];
+	$smallclassid=$row["classid"];
 	}	
 }
 
@@ -121,8 +111,7 @@ $zsclass=bigclass($b,2);
 $zsclass= showzssmallclass($b,$s,8,'');
 }
 
-if( isset($_GET["page"]) && $_GET["page"]!="") 
-{
+if( isset($_GET["page"]) && $_GET["page"]!="") {
     $page=$_GET['page'];
 	checkid($page);
 }else{
@@ -162,10 +151,10 @@ $location_p=explode("*",$city[$i]);//取数组的第一个就是省份名，也�
 $form_qy=$form_qy."</select>";
 
 $form_sj="&nbsp;<select name='sj'>";
-if ($sj==10){
-$form_sj=$form_sj . "<option value=10 selected >更新时间</option>";
+if ($sj==999){
+$form_sj=$form_sj . "<option value=999 selected >更新时间</option>";
 }else{
-$form_sj=$form_sj . "<option value=10 >更新时间</option>";
+$form_sj=$form_sj . "<option value=999 >更新时间</option>";
 }
 if ($sj==1){
 $form_sj=$form_sj . "<option value=1 selected >当天</option>";
@@ -270,14 +259,14 @@ fclose($f);
 $sql="select count(*) as total from zzcms_main where passed<>0 ";		
 $sql2='';
 if ($b<>"") {
-$sql2=$sql2." and bigclasszm='".$b."' ";
+$sql2=$sql2." and bigclassid='".$bigclassid."' ";
 }
 
 if ($s<>"") {
 	if (zsclass_isradio=='Yes'){
-	$sql2=$sql2." and smallclasszm ='".$s."'  ";
+	$sql2=$sql2." and smallclassid ='".$smallclassid."'  ";
 	}else{
-	$sql2=$sql2." and smallclasszm like '%".$s."%' ";
+	$sql2=$sql2." and smallclassids like '%".$smallclassid."%' ";
 	}
 }
 
@@ -289,8 +278,8 @@ if ($province<>"") {
 $sql2=$sql2." and province like '%".$province."%' ";
 }
 
-if ($sj<>10 && $sj<>"") {
-$sql2=$sql2." and  timestampdiff(day,sendtime,now()) < ". $sj ." " ;
+if ($sj<>999 && $sj<>"") {
+$sql2=$sql2." and  timestampdiff(day,sendtime,now()) < '". $sj ."' " ;
 }
 
 if ($tp=="yes") {

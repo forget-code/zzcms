@@ -7,21 +7,18 @@ include("admin.php");
 <title></title>
 <link href="style.css" rel="stylesheet" type="text/css">
 <script>
-function checkform()
-{
-  if (document.form1.classname.value=="")
-  {
-    alert("名称不能为空！");
-    document.form1.classname.focus();
-    return false;
-  }
-    if (document.form1.classzm.value=="")
-  {
-    alert("字母不能为空！");
-    document.form1.classzm.focus();
-    return false;
-  }
- }  
+function checkform(){
+	if (document.form1.classname.value==""){
+	alert("名称不能为空！");
+	document.form1.classname.focus();
+	return false;
+	}
+	if (document.form1.classzm.value==""){
+	alert("字母不能为空！");
+	document.form1.classzm.focus();
+	return false;
+	}
+}  
 </script>
 </head>
 
@@ -29,9 +26,11 @@ function checkform()
 <?php
 $FoundErr=0;
 $classid=trim($_REQUEST["classid"]);
-if(@$_REQUEST["action"]=="modify"){
+checkid($classid);
+if(isset($_REQUEST["action"])){
 checkadminisdo("zsclass");
 $bigclassid=trim($_POST["bigclassid"]);
+checkid($bigclassid,1);
 $oldbigclassid=trim($_POST["oldbigclassid"]);
 $classname=nostr(trim($_POST["classname"]));
 $oldclassname=trim($_POST["oldclassname"]);
@@ -54,7 +53,6 @@ $discription=$classname;
 }
 
 if ($classid==""){
-	
 echo "<script>location.href='zsclassmanage.php'</script>";
 }
 		
@@ -68,7 +66,6 @@ echo "<script>location.href='zsclassmanage.php'</script>";
 	}
 	
 	if ($classzm<>$oldclasszm || $bigclassid<>$oldbigclassid ){
-		
 		$rs=query("Select * from zzcms_zsclass where parentid='".$bigclassid."' and classzm='".$classzm."'");
 		$row= num_rows($rs);//返回记录数
 		if ($row){
@@ -79,13 +76,10 @@ echo "<script>location.href='zsclassmanage.php'</script>";
 		
 	if ($FoundErr==0) {
 		query("update zzcms_zsclass set parentid='$bigclassid',classname='$classname',classzm='$classzm',title='$title',keyword='$keyword',discription='$discription' where classid='$classid'");
-			if ($bigclassid<>$oldbigclassid){
-				query("Update zzcms_main set bigclasszm='" . $bigclassid . "' where bigclasszm='" . $oldbigclassid . "' and smallclasszm='" . $classzm . "' ");	
-			}
-			if ($classzm<>$oldclasszm ){
-			query("update zzcms_main set smallclasszm='".$classzm."' where smallclasszm='".$oldclasszm."' and bigclasszm='" . $bigclassid . "' " );
-			}
 			
+			if ($bigclassid<>$oldbigclassid){
+				query("Update zzcms_main set bigclassid='" . $bigclassid . "' where bigclassid='" . $oldbigclassid . "' and smallclassid='" . $classid . "' ");	
+			}
 			echo "<script>location.href='zsclassmanage.php?#S".$classid."'</script>";
 	}
 }
@@ -96,11 +90,7 @@ WriteErrMsg($ErrMsg);
 $rs=query("Select * from zzcms_zsclass where classid='".$classid."'");
 $row= fetch_array($rs);
 ?>
-<table width="100%" border="0" cellpadding="0" cellspacing="0">
-  <tr> 
-    <td class="admintitle">修改小类</td>
-  </tr>
-</table>
+<div class="admintitle">修改小类</div>
 <script type="text/javascript" src="/js/jquery.js"></script>  
 <script type="text/javascript" language="javascript">
 $.ajaxSetup ({
@@ -117,32 +107,34 @@ $(document).ready(function(){
 <form name="form1" method="post" action="?action=modify" onSubmit="return checkform()">
   <table width="100%" border="0" cellpadding="5" cellspacing="0">
     <tr> 
-      <td width="252" height="22" align="right" class="border">所属大类</td>
-      <td width="1163" class="border"> <select name="bigclassid" id="bigclassid">
+      <td width="252" align="right" class="border">所属大类</td>
+      <td class="border"> 
+	  
+	  <select name="bigclassid" id="bigclassid">
+	   <option value='0'>独立成大类</option>
           <?php
-	$rsb=query("Select * From zzcms_zsclass where parentid='A'");
+	$rsb=query("Select * From zzcms_zsclass where parentid=0");
 	while($rowb= fetch_array($rsb)){
-			if ($rowb["classzm"]==$row["parentid"]){
-				echo "<option value=". $rowb['classzm'] ." selected>" . $rowb['classname']."</option>";
+			if ($rowb["classid"]==$row["parentid"]){
+				echo "<option value=". $rowb['classid'] ." selected>" . $rowb['classname']."</option>";
 			}else{
-				echo "<option value=". $rowb['classzm'] . ">" .$rowb['classname'] . "</option>";
+				echo "<option value=". $rowb['classid'] . ">" .$rowb['classname'] . "</option>";
 			}
 		}
 	?>
-        </select> <input name="oldbigclassid" type="hidden" id="oldbigclassid" value="<?php echo $row["parentid"]?>"> 
-      </td>
+      </select> <input name="oldbigclassid" type="hidden" id="oldbigclassid" value="<?php echo $row["parentid"]?>">      </td>
     </tr>
     <tr> 
-      <td height="11" align="right" class="border">小类名称</td>
+      <td align="right" class="border">小类名称</td>
       <td class="border"> <input name="classname" type="text" id="classname" value="<?php echo $row["classname"]?>" size="60" maxlength="30"> 
         <input name="oldclassname" type="hidden" id="oldclassname" value="<?php echo $row["classname"]?>"></td>
     </tr>
     <tr> 
-      <td height="11" align="right" class="border">小类名称拼音</td>
+      <td align="right" class="border">小类名称拼音</td>
       <td class="border">
 	   <span id="quote"> 
 	    <input name="classzm" type="text" id="classzm" value="<?php echo $row["classzm"]?>" size="60" maxlength="30"> 
-		 </span> 
+	    </span> 
         <input name="oldclasszm" type="hidden" id="oldclasszm" value="<?php echo $row["classzm"]?>"></td>
     </tr>
     <tr> 
@@ -163,7 +155,7 @@ $(document).ready(function(){
         (适当出现关键词，最好是完整的句子)</td>
     </tr>
     <tr> 
-      <td height="22" class="border">&nbsp;</td>
+      <td class="border">&nbsp;</td>
       <td class="border"> <input name="classid" type="hidden" id="classid" value="<?php echo $row["classid"]?>"> 
         <input name="action" type="hidden"  value="modify"> <input name="Save" type="submit" id="save" value=" 修 改 "> 
       </td>

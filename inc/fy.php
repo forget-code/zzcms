@@ -290,4 +290,59 @@ $str=$str."<input name='b' type='hidden' value='$b'/><input name='s' type='hidde
 $str=$str."</form>";	
 return $str;
 }
+
+function showpage_zt($str1,$str2){
+global $id,$page,$totlepage;
+$fenyei='';
+if ($page<>1) {
+		if (whtml=="Yes") {
+			$fenyei=$fenyei. "<a href='/".$str1."/".$str2."-".$id."-".($page-1).".htm'>上一页</a>";
+			}else{
+			$fenyei=$fenyei. "<a href='?id=".$id."&page=".($page-1)."'>上一页</a>";
+		}
+}
+	for($a=1; $a<=$totlepage;$a++){
+		if (whtml=="Yes") {
+			if ($page==$a) {
+			$fenyei=$fenyei. "<span>".$a."</span>";
+			}else{
+			$fenyei=$fenyei. "<a href='/".$str1."/".$str2."-".$id."-".$a.".htm'>".$a."</a>";
+			}
+		}else{
+			if ($page==$a) {
+			$fenyei=$fenyei. "<span>".$a."</span>";
+			}else{
+			$fenyei=$fenyei. "<a href='?id=".$id."&page=".$a."' >".$a."</a>";
+			}
+		}
+	}
+if ($page<>$totlepage) {
+			if (whtml=="Yes") {
+			$fenyei=$fenyei. "<a href='/".$str1."/".$str2."-".$id."-".($page+1).".htm'>下一页</a> ";
+			}else{
+			$fenyei=$fenyei. "<a href='?id=".$id."&page=".($page+1)."'>下一页</a> ";
+			}
+}
+if ($totlepage>1){
+$fenyei=$fenyei. "<select name='select' onChange=if(this.options[this.selectedIndex].value!=''){location=this.options[this.selectedIndex].value;}>";
+for($a=1; $a<=$totlepage;$a++){
+			if (whtml=="Yes") {
+				if ($a==$page) {
+				$fenyei=$fenyei. "<option value='/".$str1."/".$str2."-".$id."-".$a.".htm' selected>第".$a."页</option>";
+				}else{
+				$fenyei=$fenyei. "<option value='/".$str1."/".$str2."-".$id."-".$a.".htm'>第".$a."页</option>";
+				}
+			}else{
+				if ($a==$page) {
+				$fenyei=$fenyei. "<option value='?id=".$id."&page=".$a."' selected>第".$a."页</option>";
+				}else{
+				$fenyei=$fenyei. "<option value='?id=".$id."&page=".$a."' >第".$a."页</option>";
+				}
+			}
+}
+$fenyei=$fenyei. " </select>";
+}
+return $fenyei;
+}
+
 ?>

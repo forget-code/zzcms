@@ -85,22 +85,16 @@ eval("trquanxian3.style.display=\"\";");
 }  
 	</script>
 </head>
-
 <body>
-<table width="100%" border="0" align="center" cellpadding="0" cellspacing="0">
-  <tr> 
-    <td class="admintitle">发布资讯信息</td>
-  </tr>
-</table>
-<form action="zx_save.php?action=add" method="post" name="myform" id="myform" onSubmit="return CheckForm();">
-        
+<div class="admintitle">发布资讯信息</div>
+<form action="zx_save.php?action=add" method="post" name="myform" id="myform" onSubmit="return CheckForm();">        
   <table width="100%" border="0" cellpadding="5" cellspacing="0">
     <tr> 
       <td width="171" align="right" class="border" >所属类别：</td>
       <td width="1220" class="border" > 
         <?php
 
-$sql = "select * from zzcms_zxclass where parentid<>0 order by xuhao asc";
+$sql = "select parentid,classid,classname from zzcms_zxclass where parentid<>0 order by xuhao asc";
 $rs=query($sql);
 ?>
         <script language = "JavaScript" type="text/JavaScript">
@@ -110,15 +104,14 @@ subcat = new Array();
         $count = 0;
         while($row = fetch_array($rs)){
         ?>
-subcat[<?php echo $count?>] = new Array("<?php echo trim($row["classname"])?>","<?php echo trim($row["parentid"])?>","<?php echo trim($row["classid"])?>");
+subcat[<?php echo $count?>] = new Array("<?php echo $row["classname"]?>","<?php echo $row["parentid"]?>","<?php echo $row["classid"]?>");
         <?php
         $count = $count + 1;
        }
         ?>
 onecount=<?php echo $count ?>;
 
-function changelocation(locationid)
-    {
+function changelocation(locationid){
     document.myform.smallclassid.length = 1; 
     var locationid=locationid;
     var i;
@@ -133,19 +126,19 @@ function changelocation(locationid)
 	<select name="bigclassid" onChange="changelocation(document.myform.bigclassid.options[document.myform.bigclassid.selectedIndex].value)" size="1">
           <option value="" selected="selected">请选择大类别</option>
           <?php
-	$sql = "select * from zzcms_zxclass where parentid=0 order by xuhao asc";
+	$sql = "select classid,classname from zzcms_zxclass where parentid=0 order by xuhao asc";
     $rs=query($sql);
 	while($row = fetch_array($rs)){
 	?>
-          <option value="<?php echo trim($row["classid"])?>" <?php if ($row["classid"]==@$_COOKIE["zxbigclassid"]) { echo "selected";}?>><?php echo trim($row["classname"])?></option>
+          <option value="<?php echo $row["classid"]?>" <?php if ($row["classid"]==@$_COOKIE["zxbigclassid"]) { echo "selected";}?>><?php echo $row["classname"]?></option>
           <?php
 				}
 				?>
         </select> <select name="smallclassid">
-          <option value="">不指定小类</option>
+          <option value="0">不指定小类</option>
           <?php
 if ($_COOKIE["zxbigclassid"]!=""){
-$sql="select * from zzcms_zxclass where parentid=" .$_COOKIE["zxbigclassid"]." order by xuhao asc";
+$sql="select classid,classname from zzcms_zxclass where parentid=" .$_COOKIE["zxbigclassid"]." order by xuhao asc";
 $rs=query($sql);
 while($row = fetch_array($rs)){
 	?>
@@ -187,7 +180,7 @@ $(document).ready(function(){
     </tr>
     <tr id="trkeywords">
       <td align="right" class="border" >封面图片：</td>
-      <td class="border" ><input name="img" type="text" id="title2" size="50" maxlength="255" />
+      <td class="border" ><input name="img" type="text" size="50" maxlength="255" />
         （如果内容中有图片，这里可以留空，会自动获取内容中的第一张图片）</td>
     </tr>
     <tr id="trseo">
@@ -219,7 +212,7 @@ $(document).ready(function(){
       <td class="border" ><select name="groupid">
           <option value="0">全部用户</option>
           <?php
-		  $rs=query("Select * from zzcms_usergroup ");
+		  $rs=query("Select groupid,groupname from zzcms_usergroup ");
 		  $row = num_rows($rs);
 		  if ($row){
 		  while($row = fetch_array($rs)){

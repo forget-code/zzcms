@@ -24,66 +24,25 @@ function CheckForm(){
 <?php
 $founderr=0;
 $errmsg="";
+$action = isset($_GET['action'])?$_GET['action']:"";
 	$sql="select * from zzcms_user where username='" .$username. "'";
 	$rs=query($sql);
-	$row=fetch_array($rs);
-	
-	if (isset($_REQUEST['action'])){
-	$action=$_REQUEST['action'];
-	}else{
-	$action="";
-	}
-	
+	$row=fetch_array($rs);	
 if ($action=="modify") {
-			$sex=trim($_POST["sex"]);
-			$email=trim($_POST["email"]);
-			$qq=trim($_POST["qq"]);
-			$oldqq=trim($_POST["oldqq"]);
-			
-			if(!empty($_POST['qqid'])){
-   			$qqid=$_POST['qqid'][0];
-			}else{
-			$qqid="";
-			}
-			
-			$homepage=trim($_POST["homepage"]);
-			//comane=trim($_POST["qomane"])
-            $b=trim($_POST["b"]);
-			if ($b==""){//针对个人用户
-			$b=0;
-			}
-			$s=trim($_POST["s"]);
-			if ($s==""){//针对个人用户
-			$s=0;
-			}
-			$content=stripfxg(rtrim($_POST["content"]));
-			$img=trim($_POST["img"]);
-			$oldimg=trim($_POST["oldimg"]);
-			if (isset($_POST["flv"])){
-			$flv=trim($_POST["flv"]);
-			}else{
-			$flv="";
-			}
-			if (isset($_POST["oldflv"])){
-			$oldflv=trim($_POST["oldflv"]);
-			}else{
-			$oldflv="";
-			}			
-			$province=trim($_POST["province"]);
-			$city=trim($_POST["city"]);	
-			$xiancheng=trim($_POST["xiancheng"]);		
-			$somane=trim($_POST["somane"]);
-			$address=trim($_POST["address"]);
-			$mobile=trim($_POST["mobile"]);
-			$fox=trim($_POST["fox"]);
-			$sex=trim($_POST["sex"]);
+			$qqid = isset($_POST['qqid'])?$_POST['qqid']:"";
+            $b = isset($_POST['b'])?$_POST['b']:'0';
+			$s = isset($_POST['s'])?$_POST['s']:'0';
+			$flv = isset($_POST['flv'])?$_POST['flv']:'';
+			$oldflv = isset($_POST['oldflv'])?$_POST['oldflv']:'';
+			checkstr($somane,'hanzi','联系人');
+			checkstr($mobile,'tel');
+			checkstr($email,'email');	
 			if ($row["usersf"]=="公司"){
 				if ($content==""){//为防止输入空格
 				$founderr=1;
 				$errmsg=$errmsg . $f_array[2];
 				}
 			}
-			$phone=trim($_POST["phone"]);
 			if (allowrepeatreg=='no'){
 			$rsn=query("select * from zzcms_user where phone='" . $phone . "' and username!='$username'");
 			$r=num_rows($rsn);
@@ -92,7 +51,7 @@ if ($action=="modify") {
 			$errmsg=$errmsg . $f_array[3];
 			}
 			}
-		
+			
 			if ($founderr==1){
 			WriteErrMsg($errmsg);
 			}else{
@@ -116,7 +75,7 @@ if ($action=="modify") {
 				}
 			}
 				if ($qq<>$oldqq) {
-				query("Update zzcms_main set qq=" . $qq . " where editor='" . $username . "'");
+				query("Update zzcms_main set qq='" . $qq . "' where editor='" . $username . "'");
 				}
 				echo $f_array[4];
 			}
@@ -136,7 +95,7 @@ include("left.php");
 <div class="content">
 <div class="admintitle"><?php echo $f_array[0]?></div>
 <FORM name="myform" action="?action=modify" method="post" onSubmit="return CheckForm()">              
-          <table width=100% border=0 cellpadding=3 cellspacing=1>
+          <table width="100%" border="0" cellpadding="3" cellspacing="1">
             <tr> 
               <td width="15%" align="right" class="border2"><?php echo $f_array[5]?>：</td>
               <td width="85%" class="border2"><?php echo $row["username"]?></td>
@@ -166,7 +125,7 @@ include("left.php");
               <td align="right" class="border"><?php echo $f_array[12]?>：</td>
               <td class="border">
                 <?php if ($row["qqid"]<>"") { ?>
-                <input name="qqid[]" type="checkbox" id="qqid" value="1" checked>
+                <input name="qqid" type="checkbox" id="qqid" value="1" checked>
                <?php echo $f_array[13];
 				}else{
 		echo $f_array[14];
@@ -197,7 +156,7 @@ include("left.php");
           <tr> 
             <td align="right" class="border"><?php echo $f_array[19]?>：</td>
             <td class="border"><?php
-$sqln = "select * from zzcms_userclass where parentid<>'0' order by xuhao asc";
+$sqln = "select classid,parentid,classname from zzcms_userclass where parentid<>'0' order by xuhao asc";
 $rsn=query($sqln);
 ?>
               <script language = "JavaScript" type="text/javascript">
@@ -225,9 +184,9 @@ function changelocation(locationid){
         }
     }</script>
               <select name="b" size="1" id="b"  class="biaodan" onchange="changelocation(document.myform.b.options[document.myform.b.selectedIndex].value)">
-                <option value="" selected="selected"><?php echo $f_array[20]?></option>
+                <option value="0" selected="selected"><?php echo $f_array[20]?></option>
                 <?php
-	$sqln = "select * from zzcms_userclass where  parentid='0' order by xuhao asc";
+	$sqln = "select classid,classname from zzcms_userclass where  parentid='0' order by xuhao asc";
     $rsn=query($sqln);
 	while($rown = fetch_array($rsn)){
 	?>
@@ -239,7 +198,7 @@ function changelocation(locationid){
               <select name="s"  class="biaodan">
                 <option value="0"><?php echo $f_array[21]?></option>
                 <?php
-$sqln="select * from zzcms_userclass  where parentid='" .$row["bigclassid"]."' order by xuhao asc";
+$sqln="select classid,classname from zzcms_userclass  where parentid='" .$row["bigclassid"]."' order by xuhao asc";
 $rsn=query($sqln);
 $rown= num_rows($rsn);//返回记录数
 if(!$rown){
@@ -288,7 +247,7 @@ new PCAS('province', 'city', 'xiancheng', '<?php echo $row['province']?>', '<?ph
           <tr> 
             <td align="right" class="border2"><?php echo $f_array[28]?>：</td>
             <td class="border2"> 
-			<textarea name="content" id="content"><?php echo $row["content"] ?></textarea> 
+			<textarea name="content" id="content"><?php echo stripfxg($row["content"],true) ?></textarea> 
              <script type="text/javascript" src="/3/ckeditor/ckeditor.js"></script>
 			  <script type="text/javascript">CKEDITOR.replace('content');</script>   
             </td>
@@ -381,7 +340,6 @@ if (check_user_power("uploadflv")=="yes"){
 </div>
 <?php
 }
-
 unset ($f_array);
 ?>
 </body>

@@ -8,13 +8,13 @@ $row=num_rows($rs);
 if ($row){
 while($row=fetch_array($rs)){
 	$str=$str."<li>";
-	if($url==2){
+	if($url==2){//链接到列表页
 		if($row['classid']==$b){
 		$str=$str."<a href='".getpageurl2("zx",$row["classid"],"")."' class='current'>".$row["classname"]."</a>";
 		}else{
 		$str=$str."<a href='".getpageurl2("zx",$row["classid"],"")."'>".$row["classname"]."</a>";
 		}
-	}else{
+	}else{//链接到分类页
 		if($row['classid']==$b){
 		$str=$str."<a href='".getpageurlzx("zx",$row["classid"])."' class='current'>".$row["classname"]."</a>";
 		}else{

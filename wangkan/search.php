@@ -14,34 +14,21 @@ $page_size=$_GET["page_size"];
 checkid($page_size);
 setcookie("page_size_wangkan",$page_size,time()+3600*24*360);
 }else{
-	if (isset($_COOKIE["page_size_wangkan"])){
-	$page_size=$_COOKIE["page_size_wangkan"];
-	}else{
-	$page_size=pagesize_qt;
-	}
-}
-if (isset($_GET['keyword'])){
-$keyword=trim($_GET['keyword']);
-}else{
-$keyword="";
+$page_size=isset($_COOKIE['page_size_wangkan'])?$_COOKIE['page_size_wangkan']:pagesize_qt;
 }
 
-if (isset($_GET['b'])){
-$b=trim($_GET['b']);
-}else{
-$b="";
-}
+$keyword=isset($_GET['keyword'])?$_GET['keyword']:'';
+$b=isset($_GET['b'])?$_GET['b']:0;
+checkid($b,1);
 
-if ($b<>""){
-checkid($b);
-$sql="select * from zzcms_wangkanclass where bigclassid=".$b." ";
+$bigclassname='';
+if ($b<>0){
+$sql="select classname from zzcms_wangkanclass where classid='".$b."' ";
 $rs=query($sql);
 $row=fetch_array($rs);
 if ($row){
-$bigclassname=$row["bigclassname"];
+$bigclassname=$row["classname"];
 }
-}else{
-$bigclassname="";
 }
 
 $pagetitle=sitename;
@@ -49,18 +36,18 @@ $pagekeyword=sitename;
 $pagedescription=sitename;
 
 function formbigclass($b){
-$sql = "select * from zzcms_wangkanclass  ";
+$sql = "select classid,classname from zzcms_wangkanclass  ";
 $rs=query($sql);
 $row=num_rows($rs);
 if (!$row){
 $str= "请先添加类别名称。";
 }else{
-$str="<option value=''>不限类别</option>";
+$str="<option value='0'>不限类别</option>";
 	while($row=fetch_array($rs)){
 		if ($row["bigclassid"]==$b){
-		$str=$str."<option value='".$row["bigclassid"]."' selected>".$row["bigclassname"]."</option>";
+		$str=$str."<option value='".$row["classid"]."' selected>".$row["classname"]."</option>";
 		}else{
-		$str=$str."<option value='".$row["bigclassid"]."'>".$row["bigclassname"]."</option>";
+		$str=$str."<option value='".$row["classid"]."'>".$row["classname"]."</option>";
 		}
 	}
 }
@@ -85,7 +72,7 @@ if( isset($_GET["page"]) && $_GET["page"]!="") {
 }
 $list=strbetween($strout,"{loop}","{/loop}");
 
-$rs = query($sql.$sql2); 
+$rs =query($sql.$sql2); 
 $row = fetch_array($rs);
 $totlenum = $row['total'];
 $offset=($page-1)*$page_size;//$page_size在上面被设为COOKIESS

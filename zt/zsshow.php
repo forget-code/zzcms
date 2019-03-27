@@ -153,7 +153,7 @@ $showflv=$showflv .  "</div> ";
 $showflv="";
 }
 $strout=str_replace("{#flv}",$showflv,$strout) ;
-$strout=str_replace("{#sm}",nl2br($sm),$strout) ;
+$strout=str_replace("{#sm}",$sm,$strout) ;
 $strout=str_replace("{#zc}",nl2br($zc),$strout);
 $strout=str_replace("{#yq}",nl2br($yq),$strout);
 

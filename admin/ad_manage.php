@@ -12,7 +12,8 @@ include("../inc/fy.php");
 <body>
 <?php
 $action=isset($_REQUEST["action"])?$_REQUEST["action"]:'';
-$page=isset($_GET["page"])?$_GET["page"]:1;
+$page=isset($_REQUEST["page"])?$_REQUEST["page"]:1;
+checkid($page);
 $keyword=isset($_REQUEST["keyword"])?$_REQUEST["keyword"]:'';
 $kind=isset($_REQUEST["kind"])?$_REQUEST["kind"]:'';
 $b=isset($_REQUEST["b"])?$_REQUEST["b"]:'';
@@ -44,7 +45,7 @@ $s=isset($_REQUEST["s"])?$_REQUEST["s"]:'';
         <tr> 
           <td style="color:#999999">
 <?php	
-$sql="select * from zzcms_adclass where parentid='A' order by xuhao";
+$sql="select classname from zzcms_adclass where parentid='A' order by xuhao";
 $rs = query($sql); 
 $row = num_rows($rs);
 if (!$row){
@@ -63,7 +64,7 @@ echo "<a href=?b=".$row['classname'].">";
 } 
 echo "<br>";
 
-$sql="select * from zzcms_adclass where parentid='".$b."' order by xuhao";
+$sql="select classname from zzcms_adclass where parentid='".$b."' order by xuhao";
 $rs = query($sql); 
 $row = num_rows($rs);
 if (!$row){
@@ -96,37 +97,43 @@ echo "<a href=?b=".$b."&s=".$row['classname'].">";
 <?php
 $page_size=pagesize_ht;  //每页多少条数据
 $offset=($page-1)*$page_size;
-$sql="select * from zzcms_ad where id<>0 ";
+$sql2="";
 if ($b<>"") {  		
-$sql=$sql." and bigclassname='".$b."' ";
+$sql2=$sql2." and bigclassname='".$b."' ";
 }
 
 if ($s<>"") {  		
-$sql=$sql." and smallclassname='".$s."' ";
+$sql2=$sql2." and smallclassname='".$s."' ";
 }
 
 if ($keyword<>"") {
 	switch ($kind){
 	case "ggz";
-	$sql=$sql. " and username like '%".$keyword."%' ";
+	$sql2=$sql2. " and username like '%".$keyword."%' ";
 	break;
 	case "title";
-	$sql=$sql. " and title like '%".$keyword."%'";
+	$sql2=$sql2. " and title like '%".$keyword."%'";
 	break;		
 	default:
-	$sql=$sql. " and title like '%".$keyword."%'";
+	$sql2=$sql2. " and title like '%".$keyword."%'";
 	}
 }
 
 if ($action=="showendtime") {
-$sql="select * from zzcms_ad where endtime< '".date('Y-m-d')."' ";
+$sql2=$sql2. " and endtime< '".date('Y-m-d')."'";
 }
-$rs = query($sql,$conn); 
-$totlenum= num_rows($rs);  
+
+$sql="select count(*) as total from zzcms_ad where id<>0 ";
+$rs =query($sql.$sql2); 
+$row = fetch_array($rs);
+$totlenum = $row['total']; 
 $totlepage=ceil($totlenum/$page_size);
 
+$sql="select * from zzcms_ad where id<>0 ";
+$sql=$sql.$sql2;
+
 $sql=$sql . " order by xuhao asc,id asc limit $offset,$page_size";
-$rs = query($sql,$conn); 
+$rs = query($sql); 
 if(!$totlenum){
 echo "暂无信息";
 }else{

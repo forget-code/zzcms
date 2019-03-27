@@ -54,6 +54,7 @@ $keyword="";
 
 if( isset($_GET["page"]) && $_GET["page"]!="") {
     $page=$_GET['page'];
+	checkid($page,0);
 }else{
     $page=1;
 }
@@ -70,7 +71,7 @@ if ($keyword!=""){
 $sql2=$sql2." and title like '%".$keyword."%' ";
 }
 
-$rs = query($sql.$sql2); 
+$rs =query($sql.$sql2); 
 $row = fetch_array($rs);
 $totlenum = $row['total'];  
 $totlepage=ceil($totlenum/$page_size);

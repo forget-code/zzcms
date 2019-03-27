@@ -34,17 +34,9 @@ include("left.php");
 </div>
 <div class="right">
 <?php
-if (isset($_POST["cpmc"])){ 
-$cpmc=$_POST["cpmc"];
-}else{
-$cpmc="";
-}
-
-if (isset($_REQUEST["bigclass"])){
-$bigclass=$_REQUEST["bigclass"];
-}else{
-$bigclass="";
-}
+$cpmc=isset($_POST["cpmc"])?$_POST["cpmc"]:"";
+$bigclass=isset($_REQUEST["bigclass"])?$_REQUEST["bigclass"]:0;
+checkid($bigclass);
 ?>
 <div class="content">
 <div class="admintitle">
@@ -57,6 +49,7 @@ $bigclass="";
 <?php
 if( isset($_GET["page"]) && $_GET["page"]!="") {
     $page=$_GET['page'];
+	checkid($page,0);
 }else{
     $page=1;
 }
@@ -69,12 +62,12 @@ if (isset($cpmc)){
 $sql2=$sql2 . " and ppname like '%".$cpmc."%' ";
 }
 if ($bigclass<>""){
-$sql2=$sql2 . " and bigclasszm ='".$bigclass."'";
+$sql2=$sql2 . " and bigclassid ='".$bigclass."'";
 }
 if (isset($_GET["id"])){
 $sql2=$sql2 . " and id ='".$_GET["id"]."'"; 
 }
-$rs = query($sql.$sql2); 
+$rs =query($sql.$sql2); 
 $row = fetch_array($rs);
 $totlenum = $row['total']; 
 $totlepage=ceil($totlenum/$page_size);	
@@ -99,12 +92,12 @@ while($row = fetch_array($rs)){
       <td><a href="<?php echo getpageurl("pp",$row["id"])?>" target="_blank"><?php echo $row["ppname"]?></a> </td>
       <td align="center">
 	  <?php
-	$sqln="select classname from zzcms_zsclass where classzm='".$row["bigclasszm"]."' ";
-	$rsn = query($sqln); 
+	$sqln="select classname from zzcms_zsclass where classid='".$row["bigclassid"]."' ";
+	$rsn =query($sqln); 
 	$rown = fetch_array($rsn);
 	echo $rown["classname"];
-	$sqln="select classname from zzcms_zsclass where classzm='".$row["smallclasszm"]."' ";
-	$rsn = query($sqln); 
+	$sqln="select classname from zzcms_zsclass where classid='".$row["smallclassid"]."' ";
+	$rsn =query($sqln); 
 	$rown = fetch_array($rsn);
 	echo "<br/>".$rown["classname"];
 	  ?>	  </td>

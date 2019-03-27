@@ -26,12 +26,10 @@ if (document.myform.title.value==""){
 <div class="admintitle">修改短信息</div>
 <?php
 checkadminisdo("sendmessage");
-$id=$_REQUEST["id"];
-if ($id<>"") {
-checkid($id);
-}else{
-$id=0;
-}
+$page = isset($_GET['page'])?$_GET['page']:1;
+checkid($page);
+$id = isset($_GET['id'])?$_GET['id']:0;
+checkid($id,1);
 $sql="select * from zzcms_message where id='$id'";
 $rs=query($sql);
 $row=fetch_array($rs);

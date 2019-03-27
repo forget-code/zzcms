@@ -1,11 +1,7 @@
 <?php
 include("../inc/conn.php");
-if(isset($_REQUEST['cpid'])){
-$cpid=$_REQUEST['cpid'];
-checkid($cpid);
-}else{
-$cpid=0;
-}
+$cpid=isset($_GET['cpid'])?$_GET['cpid']:0;
+checkid($cpid,1);
 
 $rs=query("select * from zzcms_pp where id='$cpid'");
 $row=num_rows($rs);

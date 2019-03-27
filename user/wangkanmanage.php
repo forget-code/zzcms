@@ -32,22 +32,20 @@ include("left.php");
 <?php
 if( isset($_GET["page"]) && $_GET["page"]!="") {
     $page=$_GET['page'];
+	checkid($page);
 }else{
     $page=1;
 }
 
-if (isset($_POST["keyword"])){ 
-$keyword=trim($_POST["keyword"]);
-}
-
+$keyword=isset($_POST["keyword"])?$_POST["keyword"]:'';
 $page_size=pagesize_ht;  //每页多少条数据
 $offset=($page-1)*$page_size;
 $sql="select count(*) as total from zzcms_wangkan where editor='".$username."' ";
 $sql2='';
-if (isset($keyword)){
+if ($keyword<>''){
 $sql2=$sql2 . " and title like '%".$keyword."%' ";
 }
-$rs = query($sql.$sql2); 
+$rs =query($sql.$sql2); 
 $row = fetch_array($rs);
 $totlenum = $row['total'];
 $totlepage=ceil($totlenum/$page_size);

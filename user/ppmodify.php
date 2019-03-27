@@ -55,21 +55,15 @@ include("left.php");
 </div>
 <div class="right">
 <?php
-if (isset($_GET["page"])){
-$page=$_GET["page"];
-}else{
-$page=1;
-}
-if (isset($_REQUEST["id"])){
-$id=$_REQUEST["id"];
-}else{
-$id=0;
-}
+$page = isset($_GET['page'])?$_GET['page']:1;
+checkid($page);
+$id = isset($_GET['id'])?$_GET['id']:0;
+checkid($id,1);
 
 $sql="select * from zzcms_pp where id='$id'";
 $rs = query($sql); 
 $row = fetch_array($rs);
-if ($row["editor"]<>$username) {
+if ($id!=0 && $row["editor"]<>$username) {
 markit();
 showmsg('非法操作！警告：你的操作已被记录！小心封你的用户及IP！');
 }
@@ -80,7 +74,7 @@ showmsg('非法操作！警告：你的操作已被记录！小心封你的用�
         <table width="100%" border="0" cellpadding="3" cellspacing="1">
           <tr> 
             <td align="right" class="border" ><?php echo $f_array[2]?></td>
-            <td class="border" > <input name="name" type="text" id="name" class="biaodan" value="<?php echo $row["ppname"]?>" size="60" maxlength="45" onclick="javascript:if (this.value=='<?php echo $f_array[3]?>') {this.value=''};this.style.backgroundColor='';" onblur="javascript:if (this.value=='<?php echo $f_array[3]?>') {this.value=''};this.style.backgroundColor='';"></td>
+            <td class="border" > <input name="proname" type="text" id="proname" class="biaodan" value="<?php echo $row["ppname"]?>" size="60" maxlength="45" onclick="javascript:if (this.value=='<?php echo $f_array[3]?>') {this.value=''};this.style.backgroundColor='';" onblur="javascript:if (this.value=='<?php echo $f_array[3]?>') {this.value=''};this.style.backgroundColor='';"></td>
           </tr>
           <tr> 
             <td width="18%" align="right" valign="top" class="border2" ><br>
@@ -90,15 +84,15 @@ showmsg('非法操作！警告：你的操作已被记录！小心封你的用�
                   <td> <fieldset class="fieldsetstyle">
                     <legend><?php echo $f_array[5]?></legend>
                     <?php
-        $sqlB = "select * from zzcms_zsclass where parentid='A' order by xuhao asc";
-		$rsB = query($sqlB,$conn); 
+        $sqlB = "select classid,classname from zzcms_zsclass where parentid=0 order by xuhao asc";
+		$rsB =query($sqlB); 
 		$n=0;
 		while($rowB= fetch_array($rsB)){
 		$n ++;
-		if ($row['bigclasszm']==$rowB['classzm']){
-		echo "<input name='bigclassid' type='radio' id='E$n'  onclick='javascript:doClick_E(this)' value='$rowB[classzm]' checked/><label for='E$n'>$rowB[classname]</label>";
+		if ($row['bigclassid']==$rowB['classid']){
+		echo "<input name='bigclassid' type='radio' id='E$n'  onclick='javascript:doClick_E(this);uncheckall()' value='$rowB[classid]' checked/><label for='E$n'>$rowB[classname]</label>";
 		}else{
-		echo "<input name='bigclassid' type='radio' id='E$n'  onclick='javascript:doClick_E(this)' value='$rowB[classzm]' /><label for='E$n'>$rowB[classname]</label>";
+		echo "<input name='bigclassid' type='radio' id='E$n'  onclick='javascript:doClick_E(this);uncheckall()' value='$rowB[classid]' /><label for='E$n'>$rowB[classname]</label>";
 		}
 		}
 			?>
@@ -107,26 +101,26 @@ showmsg('非法操作！警告：你的操作已被记录！小心封你的用�
                 <tr> 
                   <td> 
                     <?php
-$sqlB="select * from zzcms_zsclass where parentid='A' order by xuhao asc";
-$rsB = query($sqlB,$conn); 
+$sqlB="select classid,classname from zzcms_zsclass where parentid=0 order by xuhao asc";
+$rsB =query($sqlB); 
 $n=0;
 while($rowB= fetch_array($rsB)){
 $n ++;
-if ($row["bigclasszm"]==$rowB["classzm"]) {  
+if ($row["bigclassid"]==$rowB["classid"]) {  
 echo "<div id='E_con$n' style='display:block;'>";
 }else{
 echo "<div id='E_con$n' style='display:none;'>";
 }
 echo "<fieldset class='fieldsetstyle'><legend>".$f_array[6]."</legend>";
-$sqlS="select * from zzcms_zsclass where parentid='$rowB[classzm]' order by xuhao asc";
-$rsS = query($sqlS,$conn); 
+$sqlS="select classid,classname from zzcms_zsclass where parentid='$rowB[classid]' order by xuhao asc";
+$rsS =query($sqlS); 
 $nn=0;
 while($rowS= fetch_array($rsS)){
 $nn ++;
-if ($row['smallclasszm']==$rowS['classzm']){
-echo "<input name='smallclassid' id='radio$nn$n' type='radio' value='$rowS[classzm]' checked/>";
+if ($row['smallclassid']==$rowS['classid']){
+echo "<input name='smallclassid' id='radio$nn$n' type='radio' value='$rowS[classid]' checked/>";
 }else{
-echo "<input name='smallclassid' id='radio$nn$n' type='radio' value='$rowS[classzm]' />";
+echo "<input name='smallclassid' id='radio$nn$n' type='radio' value='$rowS[classid]' />";
 }
 echo "<label for='radio$nn$n'>$rowS[classname]</label>";
 if ($nn % 6==0) {
@@ -144,7 +138,7 @@ echo "</div>";
 		  
           <tr> 
             <td align="right" class="border" ><?php echo $f_array[7]?></td>
-            <td class="border" > <textarea name="sm" cols="100%" rows="10" id="sm" class="biaodan" style="height:auto" onclick="javascript:if (this.value=='<?php echo $f_array[3]?>') {this.value=''};this.style.backgroundColor='';" onblur="javascript:if (this.value=='<?php echo $f_array[3]?>') {this.value=''};this.style.backgroundColor='';"><?php echo $row["sm"] ?></textarea></td>
+            <td class="border" > <textarea name="sm" cols="100%" rows="10" id="sm" class="biaodan" style="height:auto" onclick="javascript:if (this.value=='<?php echo $f_array[3]?>') {this.value=''};this.style.backgroundColor='';" onblur="javascript:if (this.value=='<?php echo $f_array[3]?>') {this.value=''};this.style.backgroundColor='';"><?php echo stripfxg($row["sm"]) ?></textarea></td>
           </tr>
           <tr> 
             <td align="right" class="border" ><?php echo str_replace("{#maximgsize}",maximgsize,$f_array[8])?> 
@@ -167,9 +161,9 @@ echo "</div>";
 		   
           <tr> 
             <td align="center" class="border2" >&nbsp;</td>
-            <td class="border2" > <input name="ypid" type="hidden" id="ypid2" value="<?php echo $row["id"] ?>"> 
-              <input name="action" type="hidden" id="action2" value="modify"> 
-              <input name="page" type="hidden" id="action" value="<?php echo $page ?>"> 
+            <td class="border2" > <input name="cpid" type="hidden" value="<?php echo $row["id"] ?>"> 
+              <input name="action" type="hidden"  value="modify"> 
+              <input name="page" type="hidden"  value="<?php echo $page ?>"> 
               <input name="Submit" type="submit" class="buttons" value="<?php echo $f_array[10]?>"></td>
           </tr>
         </table>

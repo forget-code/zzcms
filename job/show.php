@@ -4,8 +4,8 @@ include("../inc/top.php");
 include("../inc/bottom.php");
 include("../label.php");
 include("subjob.php");
-if (isset($_REQUEST["id"])){
-$cpid=trim($_REQUEST["id"]);
+if (isset($_GET["id"])){
+$cpid=trim($_GET["id"]);
 checkid($cpid);
 }else{
 $cpid=0;
@@ -29,12 +29,12 @@ $sm=$row["sm"];
 $province=$row["province"];
 $city=$row["city"];
 
+$bigclassname="大类已删除";
+$smallclassname="小类已删除";
 $rs=query("select classname from zzcms_jobclass where classid='".$bigclassid."'");
 $row=fetch_array($rs);
 if ($row){
 $bigclassname=$row["classname"];
-}else{
-$bigclassname="大类已删除";
 }
 
 if ($smallclassid<>""){
@@ -42,8 +42,6 @@ $rs=query("select classname from zzcms_jobclass where classid='".$smallclassid."
 $row=fetch_array($rs);
 if ($row){
 $smallclassname=$row["classname"];
-}else{
-$smallclassname="小类已删除";
 }
 }
 
@@ -69,7 +67,6 @@ $fp="../template/".$siteskin."/jobshow.htm";
 $f = fopen($fp,'r');
 $strout = fread($f,filesize($fp));
 fclose($f);
-
 
 $strout=str_replace("{#siteskin}",$siteskin,$strout) ;
 $strout=str_replace("{#sitename}",sitename,$strout) ;

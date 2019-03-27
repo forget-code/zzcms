@@ -5,7 +5,8 @@ if (!isset($_COOKIE["UserName"]) || !isset($_COOKIE["PassWord"])){
 echo "<script>location.href='/user/login.php';</script>";
 }else{
 $username=nostr($_COOKIE["UserName"]);
-	$rs=query("select id,usersf,lastlogintime from zzcms_user where lockuser=0 and username='".$username."' and password='".$_COOKIE["PassWord"]."'");
+$password=nostr($_COOKIE["PassWord"]);
+	$rs=query("select id,usersf,lastlogintime from zzcms_user where lockuser=0 and username='".$username."' and password='".$password."'");
 	$row=num_rows($rs);
 		if (!$row){
 		setcookie("UserName",'xxx',1,"/");//清缓存，让登录页直接显示登录表单

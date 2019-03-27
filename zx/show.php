@@ -6,10 +6,12 @@ include("subzx.php");
 include("../label.php");
 
 if (@$_REQUEST["action"]=="addpinglun"){
-checkyzm($_POST["yzm"]);
+//checkyzm($_POST["yzm"]);
 
 $about=$_POST["about"];
+checkstr($about,"num");
 $content=substr($_POST["content"],0,200);
+checkstr($content,"quanhanzi","评论内容");
 $face=@$_POST["face"];
 $user=$_POST["user"];
 if ($user==''){
@@ -30,7 +32,9 @@ $sql="select * from zzcms_zx where id='$zxid'";
 $rs=query($sql);
 $row=fetch_array($rs);
 if (!$row){
-showmsg('不存在相关信息！');
+WriteErrMsg('不存在相关信息！');
+}elseif($row["passed"]==0 && !isset($_COOKIE["admin"])){
+WriteErrMsg('尚未审核');
 }else{
 query("update zzcms_zx set hit=hit+1 where id='$zxid'");
 $bigclassid=$row["bigclassid"];
@@ -148,7 +152,7 @@ return $str;
 
 $msg="<b>[".$groupname."]才能查看</b><br/>";
 $msg1="需要办理[".$groupname."] 请联系本站客服";
-$msg2="如果您是[".$groupname."]请 <a href='javascript:' onClick=\"MsgBox('用户登录','../user/login2.php?fromurl=http://".$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI']."',460,196,1)\"><strong>登录</strong></a>；";
+$msg2="如果您是[".$groupname."]请 <a href='javascript:void(0)' onClick='OpenAndDataFunc()'><strong>登录</strong></a>；";
 $msg2=$msg2."尚未注册的[".$groupname."]请先 <a href='/reg/userreg.php' target='_parent'><strong>注册</strong></a> 成为本站会员。然后联系客服为您办理为[".$groupname."]。方可查看本页内容。";  
 
 if ($groupid==0){
@@ -236,6 +240,7 @@ $strout=str_replace("{#nextid}",$nextid,$strout);
 $strout=str_replace("{#pinglun}",$pinglun,$strout);
 $strout=str_replace("{#getuserip}",getip(),$strout);
 $strout=str_replace("{#pinglunren}","",$strout);
+$strout=str_replace("{#pageurl}","http://".$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI'],$strout);
 $strout=str_replace("{#sitebottom}",sitebottom(),$strout);
 $strout=str_replace("{#sitetop}",sitetop(),$strout);
 $strout=showlabel($strout);

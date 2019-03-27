@@ -31,19 +31,6 @@ if (document.myform.link.value==""){
 	document.myform.link.focus();
 	return false;
 }
-//定义正则表达式部分
-var strP=/^\d+$/;
-if(!strP.test(document.myform.imgwidth.value)) {
-alert("图片宽度只能填数字！"); 
-document.myform.imgwidth.focus(); 
-return false; 
-}
-
-if(!strP.test(document.myform.imgheight.value)) {
-alert("图片高度只能填数字！"); 
-document.myform.imgheight.focus(); 
-return false; 
-}
 } 
 </script>
 </head>
@@ -66,10 +53,6 @@ $title=str_replace("{","",$title);//过滤{ 如果这里填写调用标签如{#s
 $link=str_replace("{","",$link);
 
 if (isset($_POST["noimg"])){$img='';}
-$imgwidth=isset($_POST["imgwidth"])?$_POST["imgwidth"]:0;
-checkid($imgwidth,1);
-$imgheight=isset($_POST["imgheight"])?$_POST["imgheight"]:0;
-checkid($imgheight,1);
 
 $bigclassname=$_POST["bigclassid"];
 $smallclassname=$_POST["smallclassid"];
@@ -98,19 +81,20 @@ checkstr($img,"upload");//入库前查上传文件地址是否合格
 
 if ($_REQUEST["action"]=="add"){
 checkadminisdo("adv_add");
-$isok=query("INSERT INTO zzcms_ad (bigclassname,smallclassname,title,titlecolor,link,img,imgwidth,imgheight,username,starttime,endtime,elite,sendtime)VALUES('$bigclassname','$smallclassname','$title','$titlecolor','$link','$img','$imgwidth','$imgheight','$username','$starttime','$endtime','$elite','".date('Y-m-d H:i:s',time()-(showadvdate+1)*60*60*24)."')");
+$isok=query("INSERT INTO zzcms_ad (bigclassname,smallclassname,title,titlecolor,link,img,username,starttime,endtime,elite,sendtime)
+VALUES
+('$bigclassname','$smallclassname','$title','$titlecolor','$link','$img','$username','$starttime','$endtime','$elite','".date('Y-m-d H:i:s',time()-(showadvdate+1)*60*60*24)."')");
 $id=insert_id();
 }elseif ($_REQUEST["action"]=="modify") {
 checkadminisdo("adv_modify");
-$isok=query("update zzcms_ad set bigclassname='$bigclassname',smallclassname='$smallclassname',title='$title',titlecolor='$titlecolor',link='$link',img='$img',imgwidth='$imgwidth',imgheight='$imgheight',username='$username',nextuser='$nextuser',starttime='$starttime',endtime='$endtime',elite='$elite' where id='$id'");	
-	
+$isok=query("update zzcms_ad set bigclassname='$bigclassname',smallclassname='$smallclassname',title='$title',titlecolor='$titlecolor',link='$link',
+img='$img',username='$username',nextuser='$nextuser',
+starttime='$starttime',endtime='$endtime',elite='$elite' where id='$id'");		
 }
 setcookie("title",$title,time()+3600*24,"/admin");
 setcookie("bigclassid",$bigclassname,time()+3600*24,"/admin");
 setcookie("smallclassid",$smallclassname,time()+3600*24,"/admin");
 setcookie("link",$link,time()+3600*24,"/admin");
-setcookie("imgwidth",$imgwidth,time()+3600*24,"/admin");
-setcookie("imgheight",$imgheight,time()+3600*24,"/admin");
 ?>
   
 <div class="boxsave"> 
@@ -141,8 +125,6 @@ function add(){
 //checkadminisdo("adv_add");
 $stitle=isset($_COOKIE["title"])?$_COOKIE["title"]:'';
 $slink=isset($_COOKIE["link"])?$_COOKIE["link"]:'javascript:void(0)';
-$simgwidth=isset($_COOKIE["simgwidth"])?$_COOKIE["simgwidth"]:100;
-$simgheight=isset($_COOKIE["simgheight"])?$_COOKIE["simgheight"]:100;
 ?>
 <div class="admintitle">添加广告</div>
 <form name="myform" method="post" action="?do=save" onSubmit="return CheckForm();">
@@ -200,8 +182,7 @@ while($row = fetch_array($rs)){
 			    }
 				}
 				?>
-        </select>
-		</td>
+        </select>		</td>
     </tr>
     <tr> 
       <td align="right" class="border">标题：</td>
@@ -216,8 +197,7 @@ while($row = fetch_array($rs)){
     </tr>
     <tr> 
       <td align="right" class="border">链接地址：</td>
-      <td class="border"> <input name="link" type="text" id="link2" value="<?php echo $slink?>" size="50"> 
-      </td>
+      <td class="border"> <input name="link" type="text" id="link2" value="<?php echo $slink?>" size="50">      </td>
     </tr>
     <tr> 
       <td align="right" class="border">&nbsp;</td>
@@ -227,22 +207,13 @@ while($row = fetch_array($rs)){
       <td colspan="2" class="admintitle2">以下内容为图片广告所填写</td>
     </tr>
     <tr> 
-      <td align="right" class="border">上传图片： <input name="img" type="hidden" id="img" ></td>
+      <td align="right" class="border">图片： <input name="img" type="hidden" id="img" ></td>
       <td class="border"> 
  <table width="120" height="120" border="0" cellpadding="5" cellspacing="1" bgcolor="#999999">
           <tr align="center" bgcolor="#FFFFFF"> 
             <td id="showimg" onClick="openwindow('/uploadimg_form.php?noshuiyin=1',400,300)"> <input name="Submit2" type="button"  value="上传图片" /></td>
           </tr>
         </table></td>
-    </tr>
-    <tr> 
-      <td align="right" class="border">图片大小：</td>
-      <td class="border">宽： 
-        <input name="imgwidth" type="text" id="link2" value="<?php echo $simgwidth?>" size="10">
-        px <br>
-        高： 
-        <input name="imgheight" type="text" id="imgheight" value="<?php echo $simgheight?>" size="10" style="margin-top:5px">
-        px </td>
     </tr>
     <tr> 
       <td align="right" class="border">&nbsp;</td>
@@ -260,15 +231,13 @@ while($row = fetch_array($rs)){
     </tr>
     <tr> 
       <td align="right" class="border">广告主：</td>
-      <td class="border"> <input name="username" type="text" id="username" size="25"> 
-      </td>
+      <td class="border"> <input name="username" type="text" id="username" size="25">      </td>
     </tr>
     <tr> 
       <td align="right" class="border">广告期限：</td>
       <td class="border"> <input name="starttime" type="text" id="starttime" value="<?php echo date('Y-m-d')?>" size="10" onFocus="JTC.setday(this)">
         至 
-        <input name="endtime" type="text" id="endtime" value="<?php echo date('Y-m-d',time()+60*60*24*365)?>" size="10" onFocus="JTC.setday(this)"> 
-      </td>
+        <input name="endtime" type="text" id="endtime" value="<?php echo date('Y-m-d',time()+60*60*24*365)?>" size="10" onFocus="JTC.setday(this)">      </td>
     </tr>
     <tr> 
       <td align="right" class="border">&nbsp;</td>
@@ -345,9 +314,7 @@ while($rown = fetch_array($rsn)){
           <?php
 			    }
 				?>
-        </select> 
-		
-		</td>
+        </select>		</td>
     </tr>
     <tr> 
       <td align="right" class="border">标题：</td>
@@ -362,20 +329,19 @@ while($rown = fetch_array($rsn)){
     </tr>
     <tr> 
       <td align="right" class="border">链接地址：</td>
-      <td class="border"> <input name="link" type="text" id="link" value="<?php echo $row["link"]?>" size="50"> 
-      </td>
+      <td class="border"> <input name="link" type="text" id="link" value="<?php echo $row["link"]?>" size="50">      </td>
     </tr>
     <tr> 
       <td align="right" class="border">&nbsp;</td>
       <td class="border"><input name="id" type="hidden" value="<?php echo $row["id"]?>"> 
-        <input name="action" type="hidden" id="action3" value="modify"> <input name="page" type="hidden" id="action" value="<?php echo $page?>"> 
+        <input name="action" type="hidden"  value="modify"> <input name="page" type="hidden"  value="<?php echo $page?>"> 
         <input type="submit" value="提交"></td>
     </tr>
     <tr> 
       <td colspan="2" class="admintitle2"><strong>以下内容为图片广告所填写</strong></td>
     </tr>
     <tr> 
-      <td align="right" class="border">广告图片： 
+      <td align="right" class="border">图片： 
         <input name="oldimg" type="hidden" id="oldimg" value="<?php echo $row["img"]?>"> 
         <input name="img" type="hidden" id="img" value="<?php echo $row["img"]?>"></td>
       <td class="border"> 
@@ -383,37 +349,16 @@ while($rown = fetch_array($rsn)){
           <tr> 
             <td align="center" bgcolor="#FFFFFF" id="showimg" onClick="openwindow('/uploadimg_form.php?noshuiyin=1',400,300)"> 
               <?php
-				 if ($row["img"]<>""){
-						if (substr($row["img"],-3)=="swf"){
-						$str=$str."<object classid='clsid:D27CDB6E-AE6D-11cf-96B8-444553540000' codebase='http://download.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=7,0,19,0' width='120' height='120'>";
-						$str=$str."<param name='wmode' value='transparent'>";
-						$str=$str."<param name='movie' value='".$row["img"]."' />";
-						$str=$str."<param name='quality' value='high' />";
-						$str=$str."<embed src='".$row["img"]."' quality='high' pluginspage='http://www.macromedia.com/go/getflashplayer' type='application/x-shockwave-flash' width='120'  height='120' wmode='transparent'></embed>";
-						$str=$str."</object>";
-						echo $str;
-						}elseif (strpos("gif|jpg|png|bmp",substr($row["img"],-3))!==false ){
-                    	echo "<img src='".$row["img"]."' width='120'  border='0'> ";
-                    	}
-					echo "点击可更换图片";	
-					}else{
-                     echo "<input name='Submit2' type='button'  value='上传图片'/>";
-                    }	
-				  ?>
-            </td>
+			if ($row["img"]<>""){
+			echo "<img src='".$row["img"]."' width='120'  border='0'> 点击可更换图片";
+			}else{
+			echo "<input name='Submit2' type='button'  value='上传图片'/>";
+            }	
+			?>            </td>
           </tr>
         </table>
         <input name='noimg' type='checkbox' id="noimg" value='1' />
         选中可改为文字广告</td>
-    </tr>
-    <tr> 
-      <td align="right" class="border">图片大小：</td>
-      <td class="border">宽： 
-        <input name="imgwidth" type="text" id="link2" value="<?php echo $row["imgwidth"]?>" size="10" onBlur="CheckNum()">
-        px (提示：如果宽设为0，前台以文字广告显示，鼠标放上后可显图片)<br>
-        高： 
-        <input name="imgheight" type="text" id="imgheight" value="<?php echo $row["imgheight"]?>" size="10" onBlur="CheckNum()" style="margin-top:5px">
-        px </td>
     </tr>
     <tr> 
       <td align="right" class="border">&nbsp;</td>
@@ -424,8 +369,7 @@ while($rown = fetch_array($rsn)){
     </tr>
     <tr> 
       <td align="right" class="border">广告主：</td>
-      <td class="border"> <input name="username" type="text" id="username" value="<?php echo $row["username"]?>" size="25"> 
-      </td>
+      <td class="border"> <input name="username" type="text" id="username" value="<?php echo $row["username"]?>" size="25">      </td>
     </tr>
     <tr> 
       <td align="right" class="border">下一个占位的广告主：</td>
@@ -442,8 +386,7 @@ while($rown = fetch_array($rsn)){
       <td align="right" class="border">广告期限：</td>
       <td class="border"> <input name="starttime" type="text" id="starttime" value="<?php echo $row["starttime"]?>" size="10" onFocus="JTC.setday(this)">
         至 
-        <input name="endtime" type="text" id="endtime" value="<?php echo $row["endtime"]?>" size="10"  onFocus="JTC.setday(this)"> 
-      </td>
+        <input name="endtime" type="text" id="endtime" value="<?php echo $row["endtime"]?>" size="10"  onFocus="JTC.setday(this)">      </td>
     </tr>
     <tr> 
       <td align="right" class="border">&nbsp;</td>

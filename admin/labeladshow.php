@@ -59,7 +59,7 @@ if(document.myform.title.value.search(re)==-1)  {
 <form action="" method="post" name="myform" id="myform" onSubmit="return CheckForm();">       
   <table width="100%" border="0" cellpadding="5" cellspacing="0">
     <tr> 
-      <td width="150" align="right" class="border" >现有标签：</td>
+      <td width="150" align="right" class="border" >现有标签</td>
       <td class="border" > 
 	  <div class="boxlink">
         <?php
@@ -102,13 +102,13 @@ $title=$f[0];$bigclassid=$f[1];$smallclassid=$f[2];$numbers=$f[3];$titlenum=$f[4
       </td>
     </tr>
     <tr> 
-      <td align="right" class="border" >标签名称：</td>
+      <td align="right" class="border" >标签名称</td>
       <td class="border" >
 <input name="title" type="text" id="title" value="<?php echo $title?>" size="50" maxlength="255">
 <input name="title_old" type="hidden" id="title_old" value="<?php echo $title?>" size="50" maxlength="255">      </td>
     </tr>
  <tr> 
-      <td align="right" class="border" >调用内容：</td>
+      <td align="right" class="border" >调用内容</td>
       <td class="border" >
 	  <?php
 $sql = "select * from zzcms_adclass where parentid<>'A' order by xuhao asc";
@@ -160,30 +160,30 @@ while($row = fetch_array($rs)){
 	  </td>
 	  </tr> 
 <tr> 
-      <td align="right" class="border" >调用记录条数：</td>
+      <td align="right" class="border" >调用记录条数</td>
       <td class="border" ><input name="numbers" type="text"  value="<?php echo $numbers?>" size="10" maxlength="255"> 
       </td>
     </tr>
     <tr > 
-      <td align="right" class="border" >标题长度：</td>
+      <td align="right" class="border" >标题长度</td>
       <td class="border" > <input name="titlenum" type="text" id="titlenum" value="<?php echo $titlenum?>" size="20" maxlength="255"></td>
     </tr>
     <tr> 
-      <td align="right" class="border" >列数：</td>
+      <td align="right" class="border" >列数</td>
       <td class="border" > <input name="column" type="text" id="column" value="<?php echo $column?>" size="20" maxlength="255">
         （分几列显示）</td>
     </tr>
     <tr> 
-      <td align="right" class="border" >解释（开始）：</td>
+      <td align="right" class="border" >解释（开始）</td>
       <td class="border" ><textarea name="start" cols="70" rows="6" id="start" style="width:100%"><?php echo $start?></textarea></td>
     </tr>
     <tr> 
-      <td align="right" class="border" >解释（循环）：</td>
+      <td align="right" class="border" >解释（循环）</td>
       <td class="border" ><textarea name="mids" cols="70" rows="6" id="mids" style="width:100%"><?php echo $mids ?></textarea> 
       </td>
     </tr>
     <tr> 
-      <td align="right" class="border" >解释（结束）：</td>
+      <td align="right" class="border" >解释（结束）</td>
       <td class="border" ><textarea name="ends" cols="70" rows="6" id="ends" style="width:100%"><?php echo $ends ?></textarea></td>
     </tr>
     <tr> 

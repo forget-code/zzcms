@@ -1,19 +1,16 @@
 <?php
 define('zzcmsroot2', str_replace("\\", '/', substr(dirname(__FILE__), 0, -3)));//-3截除当前目录inc
 function WriteErrMsg($ErrMsg){
-	$strErr="<!DOCTYPE html>";//有些文件不能设文件头
-	$strErr=$strErr."<meta http-equiv='Content-Type' content='text/html; charset=utf-8'>";	
-	$strErr=$strErr . "<div style='text-align:center;font-size:14px;line-height:35px;margin:0 auto;width:50%;padding:20px;'>" ;
+	$strErr="<div style='text-align:center;font-size:14px;line-height:35px;margin:0 auto;width:50%;padding:20px;'>" ;
 	$strErr=$strErr . "<div style='border:solid 1px #999999;background-color:#FFFFFF;'>";
 	$strErr=$strErr . "<div style='background-color:#f1f1f1;border-bottom:solid 1px #ddd;font-weight:bold'>禁止操作</div>";
 	$strErr=$strErr . "<div style='padding:10px;text-align:left'>" .$ErrMsg."</div>";
 	$strErr=$strErr . "<div style='border-top:solid 1px #dddddd;margin:0 10px'><a href='javascript:history.go(-1)'>[返回上页]</a>&nbsp;&nbsp;<a href=# onClick='window.opener=null;window.close()'>[关闭窗口]</a></div>";
 	$strErr=$strErr . "</div>"; 
 	$strErr=$strErr . "</div>" ;
-	$strErr=$strErr . "</html>" ;
 	echo $strErr;
 }
-	//显示信息
+//显示信息
 function showmsg($msg,$zc_url = 'back'){
 	$strErr="<!DOCTYPE html>";//有些文件不能设文件头
 	$strErr=$strErr."<meta http-equiv='Content-Type' content='text/html; charset=utf-8'>";
@@ -83,7 +80,7 @@ case "quanhanzi";
 break;	
 
 case "upload";//用于引用网络图片地址和视频地址的上传页
-	if (strpos("gif|jpg|png|bmp|flv|swf",strtolower(substr($str,-3)))===false){
+	if (strpos("gif|jpg|peg|png|bmp|flv|swf",strtolower(substr($str,-3)))===false){
 	showmsg($msg.$str."不支持的上传文件格式。支持的文件格式为（gif|jpg|png|bmp|flv|swf）",$back_url);
 	}
 	if (substr($str,0,4)<>"http" && $str<>"/image/nopic.gif"){
@@ -92,7 +89,6 @@ case "upload";//用于引用网络图片地址和视频地址的上传页
 		}
 	}
 break;	
-	
 }
 }
 }
@@ -202,11 +198,11 @@ if (strlen($str)<$longs){
 }else{
 $str= $str;
 }
- return $str;
+return $str;
 }
 
 function addhttp($url){
-if ($url<>"" && substr($url,0,4)<>"http"){return "http://".$url;}else{return $url;}
+if ($url<>"" && substr($url,0,4)<>"http" && substr($url,0,3)=="www"){return "http://".$url;}else{return $url;}
 }
 
 function getstation($bid,$bname,$sid,$sname,$title,$keyword,$channel){
@@ -224,7 +220,6 @@ function getstation($bid,$bname,$sid,$sname,$title,$keyword,$channel){
 		if ($title<>"") {$str=$str. "<li>".$title."</li>";}
 		if ($keyword<>"") {$str=$str. "<li>关键字中含有“".$keyword."”</li>";}
 	}
-
 return $str;	
 }
 
@@ -287,7 +282,6 @@ function showannounce($cs){
 $cs=explode(",",$cs); //传入的$cs是一个整体字符串,转成数组
 $numbers=isset($cs[0])?$cs[0]:2;checkid($numbers,0,'{#showannounce}标签的第1个参数须为大于0的整数');
 $titlelong=isset($cs[1])?$cs[1]:20;checkid($titlelong,0,'{#showannounce}标签的第2个参数须为大于0的整数');
-
 if (isset($_COOKIE['closegg'])){
 $str='';
 }else{
@@ -343,7 +337,6 @@ return siteurl.str_replace(".jpeg","_small.jpeg",str_replace(".png","_small.png"
 function makesmallimg($img){
 $img=substr($img,0);
 $imgbig=zzcmsroot2.$img;
-
 if(!file_exists($imgbig)){
 echo "<script>alert('封面图片不存在，没有生成缩略图')</script>";
 }else{
@@ -360,6 +353,7 @@ echo "<script>alert('封面图片不存在，没有生成缩略图')</script>";
      	//default :echo "不支持的文件类型，无法生成缩略图";
     	}
 		//生成小图
+		if ($data[1]!=0 && $data[0]!=0){
 		if ($data[1]>$data[0]){
 		$newwidth=$sImgSize*($data[0]/$data[1]) ;
 		$newheight= $sImgSize;
@@ -378,6 +372,7 @@ echo "<script>alert('封面图片不存在，没有生成缩略图')</script>";
     	imagedestroy($sImgDate);
        	$isok=imagedestroy($sImg);
 		//if ($isok){echo "生成小图片成功:".$sImgName;}	
+		}
    	}
 }
 }
@@ -499,10 +494,8 @@ $cs=explode(",",$cs); //传入的$cs是一个整体字符串,转成数组
 $b=isset($cs[0])?$cs[0]:'';
 $s=isset($cs[1])?$cs[1]:'';
 $num=isset($cs[2])?$cs[2]:'';
-$imgwidth=isset($cs[3])?$cs[3]:0;
-$imgheight=isset($cs[4])?$cs[4]:0;
-$titlelong=isset($cs[5])?$cs[5]:0;
-$bianhao=isset($cs[6])?$cs[6]:'';
+$titlelong=isset($cs[3])?$cs[3]:0;
+$bianhao=isset($cs[4])?$cs[4]:'';
 $fp=zzcmsroot2."cache/".$siteskin."/adv_".pinyin($b)."_".pinyin($s).".htm";//广告中文类别名转换成拼音字母来给缓存文件命名
 if (cache_update_time!=0 && file_exists($fp) && filesize($fp)>10 && time()-filemtime($fp)<3600*24*cache_update_time ) {
 //按管理员设定的时间更新,//utf-8有文件头，空文件大小为3字节
@@ -520,45 +513,27 @@ $row=num_rows($rs);
 if ($row){   
 $str="<ul>";
 while ($row=fetch_array($rs)){
-	if ($row["img"]<>"" and $row["imgwidth"]<>0 ) {//有图片且宽度不为0，宽度设为0的以文字广告形式显示
-	$str=$str."<li> ";
-		if (isshowad_when_timeend=="No" && $row["endtime"]<=date('Y-m-d H:i:s')){ //到期的
-		$str=$str. showadtext;
-		}else{
-		$str=$str. "<a href='".$row["link"]."' target='_blank' style='color:".$row["titlecolor"]."'>";
-			if ($imgwidth!=0){//参数里设值的按所设值显示，未设值的按广告管理中所设的值显示
-			$str=$str. "<img data-original='".isaddsiteurl($row["img"])."' width='100%' height='$imgheight' alt='".$row["title"]."'/>";
-			}else{
-			$str=$str. "<img data-original='".isaddsiteurl($row["img"])."' width='".$row["imgwidth"]."' height='".$row["imgheight"]."' alt='".$row["title"]."'/>";
-			}
-			if ($titlelong!=0){
-			$str=$str.'<br/>';
-				if ($bianhao=='yes'){$str=$str.addzero($n,2)."-";}
-				if ($titlelong!=0){$str=$str.cutstr($row["title"],$titlelong);}else{$str=$str.$row["title"];}
-			}
-		$str=$str."</a>";
+$str=$str."<li> ";
+if (isshowad_when_timeend=="No" && $row["endtime"]<=date('Y-m-d H:i:s')){ //到期的
+$str=$str. showadtext;
+}else{		
+$str=$str. "<a href='".addhttp($row["link"])."' target='_blank' style='color:".$row["titlecolor"]."'>";
+	if ($row["img"]<>"" ) {//有图片的
+	$str=$str. "<img data-original='".isaddsiteurl($row["img"])."'  alt='".$row["title"]."' />";
+		if ($titlelong!=0){
+		if ($bianhao=='yes'){$str=$str.addzero($n,2)."-";}
+		$str=$str.cutstr($row["title"],$titlelong);
 		}
-	$str=$str."</li>\n";
-	}else{//文字类的广告，或是图片设为0宽度的图片广告,都以文字显示
-	$str=$str."<li> ";
-		if (isshowad_when_timeend=="No" && $row["endtime"]<=date('Y-m-d H:i:s')){ //到期的
-		$str=$str. showadtext;
-		}else{		
-			if ($row['img']<>''){//传了图片的文字广告
-			$str=$str."<div id='ad_layer".$row["id"]."' class='hiddiv'></div>";
-			$str=$str."<a href='".$row["link"]."' target='_blank' onMouseOver=\"showfilter(ad_layer".$row["id"].");window.document.getElementById('ad_layer".$row["id"]."').innerHTML='<img src=".isaddsiteurl($row["img"])." width=200px>'\" onMouseOut='showfilter(ad_layer".$row["id"].")'>";	
-			}else{
-			$str=$str."<a href='".$row["link"]."' target='_blank' style='color:".$row["titlecolor"]."'>";	
-			}
-			if ($bianhao=='yes'){$str=$str.addzero($n,2)."-";}
-			if ($titlelong!=0){$str=$str.cutstr($row["title"],$titlelong);}else{$str=$str.$row["title"];}
-			$str=$str. "</a>";
-		}
-	$str=$str."</li>\n";
-	}
-	$n=$n+1;
+	}else{//无图的
+		if ($bianhao=='yes'){$str=$str.addzero($n,2)."-";}
+		if ($titlelong!=0){$str=$str.cutstr($row["title"],$titlelong);}else{$str=$str.$row["title"];}
+	}		
+$str=$str."</a>";
 }
-	$str=$str."</ul>";
+$str=$str."</li>\n";
+$n=$n+1;
+}
+$str=$str."</ul>";
 }
 	if (cache_update_time!=0){
 	$fp=zzcmsroot2."cache/".$siteskin."/adv_".pinyin($b)."_".pinyin($s).".htm";
@@ -904,7 +879,7 @@ $contact=$contact ."<li style=height:36px>";
 	$contact=$contact . "<a href='".getpageurl("zt",$userid)."'>";
 	}
 $contact=$contact . "<img src='/image/button_site.gif'  border='0' /></a></li>";
-if ($showcontact=='yes'  || @$_SESSION["dlliuyan"]==$editor) {
+if ($showcontact=='yes'  || @$_COOKIE["dlliuyan"]==$editor) {
 //if ($showcontact=='yes' ) {
 	$contact=$contact . "<li>联系人：<b>".$somane."</b>&nbsp;";
 	if ($sex==1){ 
@@ -1007,7 +982,7 @@ for($i=0; $i<count($houzhui_array);$i++){
 }
 
 function check_isip($str){
-  if(preg_match("/[\d]{2,3}\.[\d]{1,3}\.[\d]{1,3}\.[\d]{1,3}/", $str))
+  if(preg_match("/^[\d]{2,3}\.[\d]{1,3}\.[\d]{1,3}\.[\d]{1,3}$/", $str))
   return true;
   return false;
 }

@@ -14,7 +14,7 @@ $action=isset($_GET["action"])?$_GET["action"]:'';
 $mlname=isset($_GET["mlname"])?$_GET["mlname"]:'';
 ?>
 <div class="admintitle">删除无用的上传文件</div>
-<div class="border">
+
 <div class="boxlink"> 
        <?php
 $fp = opendir("../uploadfiles");
@@ -31,10 +31,11 @@ while(($file = readdir($fp))!=false){
 closedir($fp);	 
   ?>
   </div>
-</div>
-<div class="border" style="font-size:14px;line-height:25px"> 
+
+
 <?php
 if ($action=="del" ){
+echo"<div class='border'> ";
 checkadminisdo("uploadfiles");
 $ml='../uploadfiles/'.$mlname;
     if (file_exists($ml)==false){
@@ -205,7 +206,8 @@ closedir($fp);
 	echo "<script>alert('".$mlname." 是空目录，已被删除');location.href='uploadfile_nouse.php'</script>";
 	}
 }
+echo "</div>";
   ?>
-</div>
+
 </body>
 </html>

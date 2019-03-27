@@ -95,8 +95,7 @@ exit;
 				    if ($looked==1) {
 					echo showlx($dlsname,$company,$companyname,$tel,$email);
 					}
-					$action = isset($_GET['action'])?$_GET['action']:"";
-					if ($action=="" && $looked==0) {?>
+					if (!isset($_POST["action"]) && $looked==0) {?>
             		<div class="box">
 					<form name="form1" method="post" action="">
                     <input type="submit" name="Submit2" style="height:30px" value="点击查看联系方式。注：需要您付出金币：<?php echo jf_lookmessage?>">
@@ -104,7 +103,7 @@ exit;
                   	</form>
 				  	</div>		
 					<?php		
-			    	}elseif ($action=="kan" && $looked==0) {
+			    	}elseif ($_POST["action"]=="kan" && $looked==0) {
                     $sql="select totleRMB from zzcms_user where username='".$_COOKIE["UserName"]."'";
 					$rsuser=query($sql);
 					$rowuser=fetch_array($rsuser);

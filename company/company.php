@@ -80,7 +80,7 @@ $totlepage=ceil($totlenum/$page_size);
 
 $sql="select * from zzcms_user where passed=1 and usersf='公司' and lockuser=0 ";
 $sql=$sql.$sql2;
-$sql=$sql." order by groupid desc,id desc limit $offset,$page_size";
+$sql=$sql." order by groupid desc,elite desc,id desc limit $offset,$page_size";
 $rs = query($sql); 
 if(!$totlenum){
 $strout=str_replace("{loop}".$clist."{/loop}","暂无信息",$strout) ;
@@ -102,9 +102,9 @@ $rown=fetch_array($rsn);
 $usergrouppic=$rown["grouppic"];
 $usergroupname=$rown["groupname"];
 
-$usergroup="<img src='".$usergrouppic."' alt='".$usergroupname."'>";
+$usergroup="<img src='".$usergrouppic."' alt='".$usergroupname."' title='".$usergroupname."'>";
 if ($row["renzheng"]==1) {
-$usergroup=$usergroup."<img src='/image/ico_renzheng.png' alt='认证会员'>";
+$usergroup=$usergroup."<img src='/image/ico_renzheng.png' alt='认证会员' title='认证会员'>";
 }
 
 $rsn=query("select xuhao,proname,id from zzcms_main where editor='".$row["username"]."' and passed=1 order by xuhao asc limit 0,3");
@@ -118,7 +118,11 @@ if ($rown){
 $cp="暂无产品";
 }
 
+if ($row["elite"]>0){
+$clist2 = $clist2. str_replace("{#comane}" ,$row["comane"]." <img src='/image/ico_jian.png' title='推荐值：".$row["elite"]."'>",$clist) ;
+}else{
 $clist2 = $clist2. str_replace("{#comane}" ,$row["comane"],$clist) ;
+}
 $clist2 =str_replace("{#zturl}" ,$zturl,$clist2) ;
 $clist2 =str_replace("{#usergroup}" ,$usergroup,$clist2) ;
 $clist2 =str_replace("{#address}" ,$row["address"],$clist2) ;

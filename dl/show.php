@@ -104,10 +104,10 @@ $rowlooked=num_rows($rslooked);
     $str=$str."<input name='action' type='hidden' id='action' value='kan'>";
     $str=$str."</form>";
 	$str=$str."</div>";	       
-	}elseif ($_POST["action"]=="kan"  && $looked==0) {
+	}elseif (@$_POST["action"]=="kan"  && $looked==0) {
 		if( $totleRMB>=jf_look_dl) {
 		query("update zzcms_user set totleRMB=totleRMB-".jf_look_dl." where username='".$_COOKIE["UserName"]."'");//查看时扣除积分
-		query("Insert into zzcms_looked_dls(dlsid,username,) values('$dlid','".$_COOKIE["UserName"]."')") ; //付分查看的写入记录表中
+		query("insert into zzcms_looked_dls(dlsid,username) values('$dlid','".$_COOKIE["UserName"]."')") ; //付分查看的写入记录表中
 		query("insert into zzcms_pay (username,dowhat,RMB,mark,sendtime) values('".$_COOKIE['UserName']."','查看".channeldl."信息','-".jf_look_dl."','<a href=/dl/show.php?id=$dlid>$dlid</a>','".date('Y-m-d H:i:s')."')");//写入冲值记录 
 		$str=$str.$showlx;
 		}else{
@@ -119,8 +119,7 @@ $rowlooked=num_rows($rslooked);
 return $str;
 }
 
-function contact($showlx,$dlid)
-{	
+function contact($showlx,$dlid){	
 $str="";
 switch (isshowcontact){
 case "Yes";
@@ -130,7 +129,7 @@ case "No";
 	if (!isset($_COOKIE["UserName"]) || $_COOKIE["UserName"]=="") {
 	$str=$str."<div class='boxin'>";	
 	$str=$str."联系方式登录后才能查看！<br>";
-	$str=$str."如果您是本站会员请 <a href='javascript:void(0)' onClick=\"MsgBox('用户登录','/user/login2.php?fromurl=http://".$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI']."',360,196,1)\"><strong>登录</strong></a>；";//不要设太宽，有手机用户
+	$str=$str."如果您是本站会员请 <a href='javascript:void(0)' onClick='OpenAndDataFunc()'><strong>登录</strong></a>；";//不要设太宽，有手机用户
 	$str=$str."如果不是可以 <a href=/reg/userreg.php target=_parent><strong>免费注册</strong></a> 成为本站会员。";
 	$str=$str."</div>";
 	}else{
@@ -222,6 +221,8 @@ $strout=str_replace("{#dlmore}",showdl(1,10,16,"","",$saver,"",$dlid),$strout);
 }else{
 $strout=str_replace("{#dlmore}","暂无信息",$strout);
 }
+$strout=str_replace("{#pageurl}","http://".$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI'],$strout);
+
 $strout=str_replace("{#sitebottom}",sitebottom(),$strout);
 $strout=str_replace("{#sitetop}",sitetop(),$strout);
 $strout=showlabel($strout);

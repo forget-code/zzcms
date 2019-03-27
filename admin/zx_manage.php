@@ -58,19 +58,18 @@ echo "<script>location.href='?b=".$b."&keyword=".$keyword."&page=".$page."'</scr
 </div>
 <div class="border2">
  
-    <?php
-$str="";
-$rs = query("select classid,classname from zzcms_zxclass where parentid=0 order by xuhao"); 
+    <?php	
+$sql="select classid,classname from zzcms_zxclass where parentid=0 order by xuhao";
+$rs = query($sql); 
 while($row = fetch_array($rs)){
-$str=$str. "<a href=?b=".$row['classid'].">";  
+echo "<a href=?b=".$row['classid'].">";  
 	if ($row["classid"]==$b) {
-	$str=$str."<b>".$row["classname"]."</b>";
+	echo "<b>".$row["classname"]."</b>";
 	}else{
-	$str=$str.$row["classname"];
+	echo $row["classname"];
 	}
-	$str=$str."</a>";  
-}
-if ($str==""){echo '暂无分类';}else{echo $str;} 
+	echo "</a>";  
+ }
  ?>
 </div>
 
@@ -115,11 +114,11 @@ if(!$totlenum){
 echo "暂无信息";
 }else{
 ?>
-<form name="myform" method="post" action="" onSubmit="return anyCheck(this.form)"> 
+<form name="myform" method="post" action=""> 
   
   <table width="100%" border="0" cellspacing="1" cellpadding="5">
     <tr class="trtitle"> 
-      <td width="2%" align="center">  <label for="chkAll" style="cursor: pointer;">全选</label> </td>
+      <td width="2%" align="center" class="tdtitle">  <label for="chkAll" style="cursor: pointer;">全选</label> </td>
       <td width="10%" >所属类别</td>
       <td width="20%" >标题</td>
       <td width="10%" >img</td>
@@ -134,7 +133,7 @@ while($row = fetch_array($rs)){
 ?>
     <tr class="trcontent"> 
       <td align="center" class="docolor"> <input name="id[]" type="checkbox" id="id" value="<?php echo $row["id"]?>"></td>
-      <td ><a href="?b=<?php echo $row["bigclassid"]?>"><?php echo $row["bigclassname"]?></a> - 
+      <td ><a href="?b=<?php echo $row["bigclassid"]?>"><?php echo $row["bigclassname"]?></a>  
 	  <a href="?b=<?php echo $row["bigclassid"]?>&s=<?php echo $row["smallclassid"]?>"><?php echo $row["smallclassname"]?></a> </td>
       <td ><a href="<?php echo getpageurl("zx",$row["id"])?>" target="_blank"><?php echo $row["title"]?></a></td>
       <td ><?php echo $row["img"]?></td>

@@ -31,7 +31,6 @@ hr{border-top:solid 1px #b4cceb}
 .border{border-bottom:solid 1px #B4CCEB}
 .border a,.border2 a{padding:0 5px}
 
-
 .bgcolor1{background-color:#F1F6FC}
 .bgcolor{background-color:#B4CCEB;color:#F0F5FB}
 .bgcolor0{background-color:#396eb5;color:#F0F5FB}
@@ -44,20 +43,13 @@ hr{border-top:solid 1px #b4cceb}
 .boxsave .editor li{display:inline;padding:0 10px}
 
 .admintitle {
-	font-weight: bold;color:#396eb5;
-	letter-spacing: 0.1em;
+	font-weight: bold;color:#396eb5;letter-spacing: 0.1em;text-align: center;
 	height: 25px;line-height: 25px;background-color: #c9defa;
-	text-align: center;}
+	}
 .admintitle a{color: #0066CC;} 
-
 .admintitle2 {background-color: #F0F5FB;border-left:solid 1px #b4cceb;border-bottom:solid 1px #b4cceb;
-	font-weight: bold;
-	text-align: left;height: 25px;}
-
-.docolor {
-	color: #CCCCCC;
-
-}
+font-weight: bold;text-align: left;height: 25px;}
+.docolor {color: #CCCCCC;}
 
 .tstitle {
 	background-color: #396eb5;
@@ -65,13 +57,11 @@ hr{border-top:solid 1px #b4cceb}
 	height: 35px;text-align: center;
 }
 .px14 {font-size: 14px;line-height: 25px;}
-
 .userbar {
 	border-bottom:solid 1px #b4cceb;
 	background-color:#c9defa;
-	height:25px;
+	height:25px;line-height:25px;
 	color: #025bad;padding: 1px 10px 0 10px;
-
 }
 .center{text-align:center}
 .boxlink{}
@@ -84,15 +74,46 @@ hr{border-top:solid 1px #b4cceb}
 #help{display:none;position:absolute;float:left;left:0px;border:solid 1px #FFCC00;background-color:#FFFF99;padding:10px;color:#000000}
 #loading{
 position: fixed;/* 相对于屏幕*/
-    top: 50%;
-    left: 50%;
-	height:100px;
-	width:300px;
-	margin-top:-50px;
-	margin-left:-150px;
-	background-color:#666666;
-	padding:10px;
-	color:#FFF;
-	line-height:100px;
-	text-align:center;	
+    top: 50%;left: 50%;height:100px;width:300px;margin-top:-50px;margin-left:-150px;
+	background-color:#666666;padding:10px;color:#FFF;line-height:100px;text-align:center;	
 }
+#tabs {
+  min-width:600px;
+  line-height:14px;
+  }
+#tabs ul {
+  margin:0;
+  padding:14px 10px 0 0px;
+  list-style:none;
+  }
+#tabs li {
+  float:left;
+  margin:0 1px;
+  padding:0;
+  }
+#tabs a {
+  float:left;
+  background:url("image/manage_tableft6.png") no-repeat left top;
+  margin:0;
+  padding:0 0 0 4px;
+  text-decoration:none;
+  }
+#tabs a span {
+  float:left;
+  display:block;
+  background:url("image/manage_tabright6.png") no-repeat right top;
+  padding:8px 8px 6px 6px;
+  color:#E9F4FF;
+  }
+#tabs a span {float:none;}
+/* End IE5-Mac hack */
+#tabs a:hover span {
+  color:#fff;
+  }
+#tabs a:hover {
+  background-position:0% -42px;
+  }
+#tabs a:hover span {
+  background-position:100% -42px;
+  color:#222;
+  }

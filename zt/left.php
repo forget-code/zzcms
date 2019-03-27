@@ -7,7 +7,7 @@ $row=fetch_array($rs);
 $showcontact=str_is_inarr($row["config"],'showcontact');
 $siteleft="<div class='titleleft'>联系人</div>";
 $siteleft=$siteleft."<div class='contentleft'>";
-if ($showcontact=="yes" || $_SESSION["dlliuyan"]==$editor) {
+if ($showcontact=="yes" || $_COOKIE["dlliuyan"]==$editor) {
 $siteleft=$siteleft. "<ul>";
 $siteleft=$siteleft. "<li><b>".$somane."</b>&nbsp;&nbsp; ";
 if ($sex==1){ 

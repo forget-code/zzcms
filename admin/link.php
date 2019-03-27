@@ -59,8 +59,6 @@ query("INSERT INTO zzcms_link (bigclassid,sitename,url,logo,content,passed,elite
 checkadminisdo("friendlink_modify");
 query("update zzcms_link set bigclassid='$bigclassid',sitename='$FriendSiteName',url='$url',logo='$logo',content='$content',passed='$passed',elite='$elite',sendtime='".date('Y-m-d H:i:s')."' where id='$id'");	
 }
-$_SESSION["bigclassid"]=$bigclassid;
-
 echo  "<script>location.href='linkmanage.php?b=".$bigclassid."&page=".$page."'</script>";
 }
 
@@ -68,9 +66,8 @@ echo  "<script>location.href='linkmanage.php?b=".$bigclassid."&page=".$page."'</
 
 function add(){
 //checkadminisdo("friendlink_add");
-$sbigclassid = isset($_SESSION['bigclassid'])?$_SESSION['bigclassid']:'';
 ?>
-<div class="admintitle">添加友情链接信息</div>
+<div class="admintitle">添加友情链接</div>
 <form action="?do=save" method="post" name="myform" id="myform" onSubmit="return CheckForm();">    
   <table width="100%" border="0" cellpadding="5" cellspacing="0">
     <tr> 
@@ -89,7 +86,7 @@ $sbigclassid = isset($_SESSION['bigclassid'])?$_SESSION['bigclassid']:'';
                 <?php
 		while($row= fetch_array($rs)){
 			?>
-                <option value="<?php echo $row["classid"]?>" <?php if ($row["classid"]==$sbigclassid) { echo "selected";}?>><?php echo $row["classname"]?></option>
+                <option value="<?php echo $row["classid"]?>"><?php echo $row["classname"]?></option>
                 <?php
 		  }
 		  ?>
@@ -143,7 +140,7 @@ checkid($page);
 $id = isset($_GET['id'])?$_GET['id']:0;
 checkid($id,1);
 ?>
-<div class="admintitle">修改友情链接信息</div>
+<div class="admintitle">修改友情链接</div>
 <?php
 $sql="select * from zzcms_link where id='$id'";
 $rs=query($sql);
@@ -208,7 +205,7 @@ $row=fetch_array($rs);
     <tr> 
       <td align="right" class="border">&nbsp;</td>
       <td class="border"><input type="submit" name="Submit" value="修 改">
-      <input name="action" type="hidden" id="action" value="add"></td>
+      <input name="action" type="hidden" id="action" value="modify"></td>
     </tr>
   </table>
       </form>

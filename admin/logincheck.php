@@ -2,7 +2,7 @@
 ob_start();//打开缓冲区，可以setcookie
 define ("checkadminlogin",1);//当关网站时，如果是管理员登录时使链接正常打开
 include("../inc/conn.php");
-define('trytimes',90);//可尝试登录次数
+define('trytimes',10);//可尝试登录次数
 define('jgsj',15*60);//间隔时间，秒
 ?>
 <!DOCTYPE html>

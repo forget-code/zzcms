@@ -29,9 +29,6 @@ return false;
 <?php
 $action=isset($_REQUEST["action"])?$_REQUEST["action"]:'';
 if($action=="modify"){
-$comanestyle=$_POST["comanestyle"];
-$comanecolor=$_POST["comanecolor"];
-$swf=isset($_POST["swf"])?$_POST["swf"]:'';
 $daohang="";
 if(!empty($_POST['daohang'])){
     for($i=0; $i<count($_POST['daohang']);$i++){
@@ -41,14 +38,14 @@ if(!empty($_POST['daohang'])){
 }
 $bannerbg=isset($_POST["img"])?$_POST["img"]:'';
 $oldbannerbg=isset($_POST["oldimg"])?$_POST["oldimg"]:'';
+checkstr($oldbannerbg,"upload");
 if (isset($_POST["nobannerbg"])){
 $bannerbg="";
 }
 $bannerheight=@$_POST["bannerheight"];
-
-$tongji=str_replace('"','',str_replace("'",'',stripfxg(trim($_POST['tongji']))));
-$baidu_map=str_replace('"','',str_replace("'",'',stripfxg(trim($_POST['baidu_map']))));
-$isok=query("update zzcms_usersetting set comanestyle='$comanestyle',comanecolor='$comanecolor',swf='$swf',daohang='$daohang',bannerbg='$bannerbg',bannerheight='$bannerheight',tongji='$tongji',baidu_map='$baidu_map' where username='".$username."'");		
+$tongji=str_replace('"','',str_replace("'",'',trim($_POST['tongji'])));
+$baidu_map=str_replace('"','',str_replace("'",'',trim($_POST['baidu_map'])));
+$isok=query("update zzcms_usersetting set comanestyle='$comanestyle',comanecolor='$comanecolor',daohang='$daohang',bannerbg='$bannerbg',bannerheight='$bannerheight',tongji='$tongji',baidu_map='$baidu_map' where username='".$username."'");		
 
 if($oldbannerbg<>$bannerbg && $oldbannerbg<>"/image/nopic.gif" && $oldbannerbg<>"" ) {
 	$f="../".$oldbannerbg;
@@ -64,7 +61,7 @@ if($oldbannerbg<>$bannerbg && $oldbannerbg<>"/image/nopic.gif" && $oldbannerbg<>
 $rs=query("select * from zzcms_usersetting where username='".$username."'");
 $row=num_rows($rs);
 if(!$row){
-query("INSERT INTO zzcms_usersetting (username,skin,swf,daohang)VALUES('".$username."','blue1','6.swf','网站首页, 招商信息, 公司简介, 资质证书, 联系方式, 在线留言')");//如不存在自动添加
+query("INSERT INTO zzcms_usersetting (username,skin,daohang)VALUES('".$username."','blue1','网站首页, 招商信息, 公司简介, 资质证书, 联系方式, 在线留言')");//如不存在自动添加
 echo "用户配置记录不存在，已自动修复，请刷新页面";
 }else{
 $row=fetch_array($rs);
@@ -83,7 +80,7 @@ include("left.php");
 </div>
 <div class="right">
 <div class="content">
-<div class="admintitle"><?php echo $f_array[0] ?></div>
+<div class="admintitle">展厅设置</div>
 <?php 
 if (str_is_inarr(usergr_power,'zt')=="no" && $usersf=='个人'){
 echo "<script>alert('个人用户没有此权限');history.back()'</script>";
@@ -92,47 +89,12 @@ exit;
 ?>
 <form name="myform" method="post" action="?action=modify"> 
         <table width="100%" border="0" cellpadding="3" cellspacing="1">
-          <tr> 
-            <td width="20%" align="right" class="border">banner动画效果设置：</td>
-            <td width="80%" height="280" valign="top" class="border">
-			<div id="Layer2" style="position:absolute; width:780px; height:270px; z-index:1; overflow: scroll;"> 
-                <table width="98%" border="0" cellspacing="1" cellpadding="5">
-                  <tr> 
-                    <?php 
-$dir = opendir("../flash");
-$i=0;
-while(($file = readdir($dir))!=false){
-  if ($file!="." && $file!="..") { //不读取. ..
-    //$f = explode('.', $file);//用$f[0]可只取文件名不取后缀。 
-?>
-                    <td> <table width="180" border="0" cellpadding="5" cellspacing="0" >
-                        <tr> 
-                          <td align="center" <?php if($row["swf"]==$file){ echo "bgcolor='#FF0000'";}else{echo "bgcolor='#000'"; }?>><embed src="/flash/<?php echo $file?>" quality="high" pluginspage="http://www.macromedia.com/go/getflashplayer" type="application/x-shockwave-flash" width="180" height="150" wmode="transparent"></embed></td>
-                        </tr>
-                        <tr> 
-                          <td align="center" bgcolor="#FFFFFF">
-						   <input name="swf" type="radio" value="<?php echo $file?>" id="<?php echo $file?>" <?php if($row["swf"]==$file){ echo"checked";}?>/> 
-                            <label for='<?php echo $file?>'><?php echo $file?></label></td>
-                        </tr>
-                      </table></td>
-                    <?php 
-	$i=$i+1;
-		if($i % 3==0 ){
-		echo"<tr>";
-		}
-	}
-}
-closedir($dir)
-?>
-                </table>
-              </div></td>
-          </tr>
           <?php if(check_user_power('set_zt')=='yes'){?>
           <tr> 
-            <td align="right" class="border2">banner背景图自定义： 
+            <td width="20%" align="right" class="border2">banner背景图自定义： 
               <input name="oldimg" type="hidden" id="oldimg" value="<?php echo $row["bannerbg"]?>" /> 
               <input name="img" type="hidden" id="img" value="<?php echo trim($row["bannerbg"])?>" size="50" maxlength="255"></td>
-            <td class="border2">  <table width="120" height="120" border="0" cellpadding="5" cellspacing="1" bgcolor="#cccccc">
+            <td width="80%" class="border2">  <table width="120" height="120" border="0" cellpadding="5" cellspacing="1" bgcolor="#cccccc">
                 <tr> 
                   <td align="center" bgcolor="#FFFFFF" id="showimg" onClick="openwindow('/uploadimg_form.php?noshuiyin=1',400,300)"> 
                     <?php
@@ -160,7 +122,7 @@ closedir($dir)
          
 		   <tr> 
             <td align="right" class="border2">banner高度设置：</td>
-            <td class="border2"><input name="bannerheight" type="text" id="bannerheight" class="biaodan"  value="<?php echo $row["bannerheight"]?>" size="10" maxlength="3" onblur="checkbannerheight()" />
+            <td class="border2"><input name="bannerheight" type="text" id="bannerheight" class="biaodan"  value="<?php echo $row["bannerheight"]?>" size="10" maxlength="3" onBlur="checkbannerheight()" />
               px</td>
           </tr>
             <td align="right" class="border">公司名称样式：</td>

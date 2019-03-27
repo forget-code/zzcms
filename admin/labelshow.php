@@ -144,7 +144,7 @@ if ($channel=='zsshow' || $channel=='ppshow' || $channel=='askshow'|| $channel==
 <form action="" method="post" name="myform" id="myform" onSubmit="return CheckForm();">        
   <table width="100%" border="0" cellpadding="5" cellspacing="0">
     <tr> 
-      <td width="150" align="right" class="border" >现有标签：</td>
+      <td width="150" align="right" class="border" >现有标签</td>
       <td class="border" >
 	  <div class="boxlink"> 
         <?php
@@ -219,13 +219,13 @@ $title=$f[0];$id=$f[1];$titlenum=$f[2];$cnum=$f[3];$column=$f[4];$start=$f[5];$m
       </td>
     </tr>
     <tr> 
-      <td align="right" class="border" >标签名称：</td>
+      <td align="right" class="border" >标签名称</td>
       <td class="border" >
 <input name="title" type="text" id="title" value="<?php echo $title?>" size="50" maxlength="255">
 <input name="title_old" type="hidden" id="title_old" value="<?php echo $title?>" size="50" maxlength="255">      </td>
     </tr>
     <tr> 
-      <td align="right" class="border" >调用内容：</td>
+      <td align="right" class="border" >调用内容</td>
       <td class="border" > 
 	  <?php 
 if ($channel=='zsshow' ||$channel=='companyshow'|| $channel=='ppshow' || $channel=='askshow'||$channel=='zxshow'||$channel=='dlshow'||$channel=='baojiashow'||$channel=='jobshow'||$channel=='zhshow'||$channel=='specialshow'||$channel=='wangkanshow'||$channel=='linkshow'){ 
@@ -376,7 +376,7 @@ if ($channel=='zsshow' ||$channel=='companyshow'|| $channel=='ppshow' || $channe
 		if ($channel!='aboutshow'){
 		?>
     <tr> 
-      <td align="right" class="border" >调用记录条数：</td>
+      <td align="right" class="border" >调用记录条数</td>
       <td class="border" >
 	  <input name="numbers" type="text"  value="<?php echo $numbers?>" size="10" maxlength="255"> 
       </td>
@@ -385,7 +385,7 @@ if ($channel=='zsshow' ||$channel=='companyshow'|| $channel=='ppshow' || $channe
 		}
 		?>
     <tr> 
-      <td align="right" class="border" >排序方式设置：</td>
+      <td align="right" class="border" >排序方式设置</td>
       <td class="border" > <select name="orderby" id="orderby">
           <option value="id" <?php if ($orderby=="id") { echo "selected";}?>>最新发布</option>
 		   <option value="sendtime" <?php if ($orderby=="sendtime") { echo "selected";} ?>>最近更新</option>
@@ -394,14 +394,14 @@ if ($channel=='zsshow' ||$channel=='companyshow'|| $channel=='ppshow' || $channe
 		</select></td>
     </tr>
     <tr > 
-      <td align="right" class="border" >标题长度：</td>
+      <td align="right" class="border" >标题长度</td>
       <td class="border" > <input name="titlenum" type="text" id="titlenum" value="<?php echo $titlenum?>" size="20" maxlength="255"></td>
     </tr>
 	<?php
 		if ($channel=='aboutshow' || $channel=='helpshow' || $channel=='zxshow'|| $channel=='specialshow'|| $channel=='askshow'){
 		?>
 	 <tr>
-      <td align="right" class="border" >内容长度：</td>
+      <td align="right" class="border" >内容长度</td>
       <td class="border" ><input name="cnum" type="text"  value="<?php echo $cnum?>" size="10" maxlength="255">
       </td>
     </tr>
@@ -409,21 +409,21 @@ if ($channel=='zsshow' ||$channel=='companyshow'|| $channel=='ppshow' || $channe
 		}
 		?>
     <tr> 
-      <td align="right" class="border" >列数：</td>
+      <td align="right" class="border" >列数</td>
       <td class="border" > <input name="column" type="text" id="column" value="<?php echo $column?>" size="20" maxlength="255">
         （分几列显示）</td>
     </tr>
     <tr> 
-      <td align="right" class="border" >解释（开始）：</td>
+      <td align="right" class="border" >解释（开始）</td>
       <td class="border" ><textarea name="start" cols="100" rows="6" id="start" style="width:100%"><?php echo $start?></textarea></td>
     </tr>
     <tr> 
-      <td align="right" class="border" >解释（循环）：</td>
+      <td align="right" class="border" >解释（循环）</td>
       <td class="border" ><textarea name="mids" cols="100" rows="6" id="mids" style="width:100%"><?php echo $mids ?></textarea> 
       </td>
     </tr>
     <tr> 
-      <td align="right" class="border" >解释（结束）：</td>
+      <td align="right" class="border" >解释（结束）</td>
       <td class="border" ><textarea name="ends" cols="100" rows="6" id="ends" style="width:100%"><?php echo $ends ?></textarea></td>
     </tr>
     <tr> 

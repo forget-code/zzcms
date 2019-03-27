@@ -747,7 +747,7 @@ $channel=substr($channel,0,strlen($channel)-1);//去除最后面的"#"
 	$fcontent=$fcontent. "define('sqlpwd','".html_entity_decode($_POST['sqlpwd'])."');//密码\r\n";//html_entity_decode针对&被转变成&amp;
 	$fcontent=$fcontent. "define('sqlhost','".$_POST['sqlhost']."');//连接服务器,本机填localhost，外地填IP地址\r\n";
 	$fcontent=$fcontent. "define('sqlport','".$_POST['sqlport']."');//端口（默认为:3306）\r\n";
-	$fcontent=$fcontent. "define('zzcmsver','Powered By <a target=_blank style=\"font-weight:bold;letter-spacing:1px;text-shadow:-1px 0 #FFF,0 1px #FFF,1px 0 #FFF,0 -1px #FFF;\" href=http://www.zzcms.net><font color=#FF6600 face=Arial>ZZ</font><font color=#025BAD face=Arial>CMS2018</font></a>');//版本\r\n";
+	$fcontent=$fcontent. "define('zzcmsver','Powered By <a target=_blank style=\"font-weight:bold;letter-spacing:1px;text-shadow:-1px 0 #FFF,0 1px #FFF,1px 0 #FFF,0 -1px #FFF;\" href=http://www.zzcms.net><font color=#FF6600 face=Arial>ZZ</font><font color=#025BAD face=Arial>CMS2019</font></a>');//版本\r\n";
 	$fcontent=$fcontent. "define('sitename','". $_POST['sitename']."') ;//网站名称\r\n";
 	$fcontent=$fcontent. "define('siteurl','". $_POST['siteurl']."') ;//网站地址\r\n";
 	$fcontent=$fcontent. "define('logourl','". $_POST['img']."') ;//Logo地址\r\n";

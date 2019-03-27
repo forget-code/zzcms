@@ -113,7 +113,7 @@ $mids = str_replace($channel.".php?b={#classid}", "{#classid}",$mids);
 	}
 	if($channel=="zx" || $channel=="special" || $channel=="ask"){
 	$mids = str_replace("/".$channel."/".$channel.".php?b={#bigclassid}&s={#smallclassid}","/".$channel."/{#bigclassid}/{#smallclassid}",$mids);
-	$mids = str_replace("/".$channel."/".$channel.".php?b={#bigclassid}","{#bigclassid}",$mids);
+	$mids = str_replace("/".$channel."/".$channel.".php?b={#bigclassid}","/".$channel."/{#bigclassid}",$mids);
 	}
 	if($channel=="special"){
 	$mids = str_replace("class.php?b={#bigclassid}","/special/class/{#bigclassid}",$mids);
@@ -221,6 +221,7 @@ $mids3=str_replace("{#i}", $i,$mids3);//类别标签中序号用i，内容标签
 $i = $i + 1;
 }
 $str = $start.$mids3 . $ends;
+$str = showlabel($str);
 if ($mids3==''){$str='暂无信息';}
 return $str;
 }
@@ -257,7 +258,7 @@ $groupid =$f[3];$pic =$f[4];$flv =$f[5];$elite = $f[6];$numbers = $f[7];$orderby
 $mids = str_replace("show.php?id={#id}", "/zs/show.php?id={#id}",$mids);
 if (whtml == "Yes") {$mids = str_replace("/zs/show.php?id={#id}", "/zs/show-{#id}.htm",$mids);}
 $ends = $f[13];
-$sql = "select id,proname,bigclassid,prouse,shuxing_value,sendtime,img,flv,hit,city,editor from zzcms_main where passed=1 ";
+$sql = "select id,proname,link,bigclassid,prouse,shuxing_value,sendtime,img,flv,hit,city,editor from zzcms_main where passed=1 ";
 	if ( $bigclassid <> 0) {$sql = $sql . " and bigclassid='" . $bigclassid . "'";}
 	if ( $smallclassid <> 0) {$sql = $sql . " and smallclassid='" . $smallclassid . "'";}
 	if ( $groupid <> 0) {$sql = $sql . " and groupid>=$groupid ";}    
@@ -285,7 +286,17 @@ $sql = "select id,proname,bigclassid,prouse,shuxing_value,sendtime,img,flv,hit,c
 $rs=query($sql);
 $str="";$xuhao=1;$n = 1;$mids2='';
 while($r=fetch_array($rs)){
-$mids2 = $mids2 . str_replace("{#hit}", $r["hit"],str_replace("{#n}", $n,str_replace("{#sendtime}", date("Y-m-d",strtotime($r['sendtime'])),str_replace("{#imgbig}",$r["img"],str_replace("{#img}",getsmallimg($r["img"]),str_replace("{#id}", $r["id"],str_replace("{#proname}",cutstr($r["proname"],$titlenum),$mids)))))));
+$mids2 = $mids2 . str_replace("{#hit}", $r["hit"],str_replace("{#n}", $n,str_replace("{#sendtime}", date("Y-m-d",strtotime($r['sendtime'])),str_replace("{#imgbig}",$r["img"],str_replace("{#img}",getsmallimg($r["img"]),str_replace("{#proname}",cutstr($r["proname"],$titlenum),$mids))))));
+	
+	if ($r["link"]<>''){//当为外链时
+		if (whtml=="Yes"){
+		$mids2=str_replace("/zs/show-{#id}.htm", addhttp($r["link"]),$mids2);
+		}else{
+		$mids2=str_replace("/zs/show.php?id={#id}",addhttp($r["link"]),$mids2);
+		}
+	}
+	
+	$mids2 =str_replace("{#id}", $r["id"],$mids2);
 	$mids2 =str_replace("{#prouse}", cutstr($r["prouse"],$titlenum*5),$mids2);
 	$mids2 =str_replace("{#flv}", $r["flv"],$mids2);
 	$mids2 =str_replace("{#city}", $r["city"],$mids2);
@@ -1167,7 +1178,7 @@ $sql = $sql . " limit 0,$numbers ";
 $rs=query($sql);
 $str="";$mids2 ='';$n = 1;$xuhao=1;
 while($r=fetch_array($rs)){
-	$mids2 = $mids2 . str_replace("{#url}",$r["url"],str_replace("{#logo}", $r["logo"],str_replace("{#sitename}",cutstr($r["sitename"],$titlenum),$mids)));
+	$mids2 = $mids2 . str_replace("{#url}",addhttp($r["url"]),str_replace("{#logo}", $r["logo"],str_replace("{#sitename}",cutstr($r["sitename"],$titlenum),$mids)));
 	require(zzcmsroot.'inc/mid2.php');
 $n = $n + 1;
 $xuhao++;
@@ -1252,9 +1263,7 @@ $sql=$sql. "order by xuhao asc,id asc";
 $rs=query($sql);
 $str="";$mids2='';$n = 1;
 while($r=fetch_array($rs)){
-$mids2 =$mids2 .str_replace("{#link}", $r["link"],str_replace("{#n}", addzero($n,2),str_replace("{#title}",cutstr($r["title"],$titlenum),$mids)));
-	$mids2 =str_replace("{#width}",$r["imgwidth"],$mids2);
-	$mids2 =str_replace("{#height}",$r["imgheight"],$mids2);
+$mids2 =$mids2 .str_replace("{#link}", addhttp($r["link"]),str_replace("{#n}", addzero($n,2),str_replace("{#title}",cutstr($r["title"],$titlenum),$mids)));
 	$mids2 =str_replace("{#titlecolor}",$r["titlecolor"],$mids2);
 	if (($n + 4) % 8 == 0 || ($n + 5) % 8 == 0 ||  ($n + 6) % 8 == 0 ||  ($n + 7) % 8 == 0){
 	$mids2 =str_replace("{#style}","textad1",$mids2);

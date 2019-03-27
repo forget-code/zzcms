@@ -25,7 +25,7 @@ if($_REQUEST){
 //特别的表单，需要特别提示的
 function nostr($str){
 //strip_tags($str);
-	$sql_injdata = "',/,\,<,>,�";
+	$sql_injdata = "',/,\,<,>,�,select";
     $sql_inj = explode(",",$sql_injdata);
 	for ($i=0; $i< count($sql_inj);$i++){
 		if (@strpos($str,$sql_inj[$i])!==false){ 

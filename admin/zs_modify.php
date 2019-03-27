@@ -215,7 +215,7 @@ $n ++;
     </tr>
     <tr> 
       <td align="right" class="border">审核</td>
-      <td class="border"><input name="passed[]" type="checkbox" id="passed[]" value="1"  <?php if ($row["passed"]==1) { echo "checked";}?>>
+      <td class="border"><input name="passed" type="checkbox" id="passed" value="1"  <?php if ($row["passed"]==1) { echo "checked";}?>>
         （选中为通过审核） </td>
     </tr>
     <tr>
@@ -225,7 +225,6 @@ $n ++;
 	 <tr> 
       <td colspan="2" class="userbar">SEO设置</td>
     </tr>
-	
     <tr>
       <td align="right" class="border" >标题（title）</td>
       <td class="border" ><input name="title" type="text" id="title" value="<?php echo $row["title"] ?>" size="60" maxlength="255"></td>
@@ -249,7 +248,7 @@ $n ++;
     </tr>
     <tr> 
       <td align="right" class="border">设为关键字排名产品</td>
-      <td class="border"><input name="elite[]" type="checkbox" id="elite[]" value="1" <?php if ($row["elite"]==1) { echo "checked";}?>>
+      <td class="border"><input name="elite" type="checkbox" id="elite" value="1" <?php if ($row["elite"]==1) { echo "checked";}?>>
       （选中后生效）
         时间： 
         <input name="elitestarttime" type="text" value="<?php echo $row["elitestarttime"]?>" size="20" onFocus="JTC.setday(this)">
@@ -269,7 +268,10 @@ $n ++;
               <label><input type="radio" name="skin" value="xm" id="xm" <?php if ($row["skin"]=='xm'){ echo "checked";}  ?>/>
               项目型</label>            </td>
     </tr>
-		  
+	  <tr>
+        <td align="right" class="border">外链地址</td>
+	    <td class="border"><input name="link" type="text" id="link" value="<?php echo $row["link"]?>" size="45"></td>
+    </tr>	  
     <tr> 
       <td align="center" class="border">&nbsp;</td>
       <td class="border"><input type="submit" name="Submit" value="修 改">
@@ -284,7 +286,6 @@ $n ++;
 <div id='loading' style="display:none">正在保存，请稍候...</div>
 <?php
 }
-
 
 if ($do=="save"){
 global $page;
@@ -343,9 +344,9 @@ if ($img<>''){
 	}	
 }
 checkstr($img,"upload");//入库前查上传文件地址是否合格
-$passed=isset($_POST["passed"])?$_POST["passed"][0]:0;
+$passed=isset($_POST["passed"])?$_POST["passed"]:0;
 checkid($passed,1);
-$elite=isset($_POST["elite"])?$_POST["elite"][0]:0;
+$elite=isset($_POST["elite"])?$_POST["elite"]:0;
 checkid($elite,1);
 
 if ($title=="") {$title=$cpname;}
@@ -355,11 +356,9 @@ if ($description=="") {$description=$cpname;}
 if ($elitestarttime=="") {$elitestarttime=date('Y-m-d H:i:s');}
 if ($eliteendtime=="") {$eliteendtime=date('Y-m-d H:i:s',time()+365*3600*24);}
 
-
 $isok=query("update zzcms_main set bigclassid='$bigclassid',smallclassid='$smallclassid',smallclassids='$smallclassids',szm='$szm',prouse='$prouse',proname='$cpname',sm='$sm',img='$img',
-flv='$flv',zc='$zc',yq='$yq',shuxing_value='$shuxing_value',
-title='$title',keywords='$keywords',description='$description',sendtime='$sendtime',tag='$tag',skin='$skin' where id='$cpid'");
-
+flv='$flv',zc='$zc',yq='$yq',shuxing_value='$shuxing_value',passed='$passed',elite='$elite',elitestarttime='$elitestarttime',eliteendtime='$eliteendtime',
+title='$title',keywords='$keywords',description='$description',sendtime='$sendtime',tag='$tag',skin='$skin',link='$link' where id='$cpid'");
 
 if ($editor<>$oldeditor) {
 $rs=query("select groupid,qq,comane,id,renzheng,province,city,xiancheng from zzcms_user where username='".$editor."'");
@@ -377,13 +376,10 @@ $xiancheng_user=$row["xiancheng"];
 }else{
 $groupid=0;$userid=0;$qq="";$comane="";$renzheng=0;$province_user='';$city_user='';$xiancheng_user='';
 }
-query("update zzcms_main set editor='$editor',userid='$userid',groupid='$groupid',qq='$qq',comane='$comane',province_user='$province_user',city_user='$city_user',xiancheng_user='$xiancheng_user',renzheng='$renzheng',passed='$passed',elite='$elite',elitestarttime='$elitestarttime',eliteendtime='$eliteendtime' where id='$cpid'");
+query("update zzcms_main set editor='$editor',userid='$userid',groupid='$groupid',qq='$qq',comane='$comane',province_user='$province_user',city_user='$city_user',xiancheng_user='$xiancheng_user',renzheng='$renzheng' where id='$cpid'");
 }
-
-
 //echo "<script>location.href='zs_manage.php?keyword=".$_POST["editor"]."&page=".$_REQUEST["page"]."'<//script>";
 ?>
-
 <div class="boxsave"> 
     <div class="title"> <?php if ($isok) {echo "发布成功";}else{echo "发布失败";}?></div>
 	<div class="content_a">
@@ -396,9 +392,6 @@ query("update zzcms_main set editor='$editor',userid='$userid',groupid='$groupid
 	</div>
 	</div>
 	</div>
-
-
-
 <?php 
 if ($msg<>'' ){echo "<div class='border'>" .$msg."</div>";}
 }

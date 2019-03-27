@@ -10,8 +10,8 @@ include ("admin.php");
 </head>
 <body>
 <?php
-$b=isset($_REQUEST["b"])?$_REQUEST["b"]:'';
-$s=isset($_REQUEST["s"])?$_REQUEST["s"]:'';
+$b=isset($_GET["b"])?nostr($_GET["b"]):'';
+$s=isset($_GET["s"])?nostr($_GET["s"]):'';
 
 if (@$_REQUEST["action"]=="px"){
 checkadminisdo("adv");
@@ -96,9 +96,9 @@ echo "暂无信息";
     <tr class="trtitle"> 
       <td width="5%" align="center">序号</td>
       <td width="10%">所属类别</td>
-      <td width="20%">标题</td>
-      <td width="10%">图片</td>
-      <td width="5%">操作</td>
+      <td width="10%">标题</td>
+      <td width="5%">图片</td>
+      <td width="5%">&nbsp;</td>
     </tr>
     <?php
 $n=1;
@@ -126,7 +126,7 @@ if ($row["img"]<>""){
 	echo "文字广告-无图片";
 }	
 	?>      </td>
-      <td> <a href="ad.php?do=modify&b=<?php echo $b?>&id=<?php echo $row["id"]?>">修改</a></td>
+      <td> <a href="ad_modify.php?b=<?php echo $b?>&id=<?php echo $row["id"]?>">修改</a></td>
     </tr>
     <?php
 $n++;

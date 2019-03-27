@@ -11,7 +11,7 @@ $sitebottom=str_replace("{#sitename}",sitename,$sitebottom) ;
 $sitebottom=str_replace("{#kftel}",kftel,$sitebottom);
 $sitebottom=str_replace("{#siteurl}",siteurl,$sitebottom);
 $sitebottom=str_replace("{#zzcmsver}",zzcmsver,$sitebottom);
-$sitebottom=str_replace("{#tongji}",$tongji,$sitebottom);
+$sitebottom=str_replace("{#tongji}",stripfxg($tongji,true),$sitebottom);
 $sitebottom=str_replace("{#companyname}",$comane,$sitebottom);
 }
 ?>

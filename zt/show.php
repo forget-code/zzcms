@@ -1,5 +1,4 @@
 <?php
-if(!isset($_SESSION)){session_start();} 
 include("../inc/conn.php");
 include("../inc/fly.php");
 include("../zx/subzx.php");
@@ -261,7 +260,7 @@ $gsjj=$gsjj. "</tr>";
 $gsjj=$gsjj. "</table>";
 
 $lxfs="<div class='lxfsbg'>";
-if ($showcontact=="yes"  || $_SESSION["dlliuyan"]==$editor) {
+if ($showcontact=="yes"  || $_COOKIE["dlliuyan"]==$editor) {
 $lxfs=$lxfs."<ul>";
 $lxfs=$lxfs."<li><b>".$comane."</b></li>";
 $lxfs=$lxfs."<li>地址：".$address."</li>";
@@ -376,14 +375,12 @@ $strout=str_replace("{#gsjj}",$gsjj,$strout);
 $strout=str_replace("{#lxfs}",$lxfs,$strout);
 $strout=str_replace("{#zxzs}",$zxzs,$strout);
 $strout=str_replace("{#editor}",$editor,$strout);
-$strout=str_replace("{#baidu_map}",$baidu_map,$strout);
+$strout=str_replace("{#baidu_map}",stripfxg($baidu_map,true),$strout);
 $strout=str_replace("{#jdimg2}",adv($editor,"焦点图片广告"),$strout);
 $strout=str_replace("{#phone}",$phone,$strout);
 $strout=str_replace("{#mobile}",$mobile,$strout);
 $strout=str_replace("{#sitebottom}",$sitebottom,$strout);
 $strout=str_replace("{#sitetop}",$sitetop,$strout);
 $strout=showlabel($strout);
-echo  $strout;
-	
-session_write_close();	  
+echo  $strout;  
 ?>

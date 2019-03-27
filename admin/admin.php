@@ -1,7 +1,7 @@
 <?php
 include("../inc/conn.php");
 if (isset($_COOKIE["admin"]) && isset($_COOKIE["pass"])){
-	$sql="select * from zzcms_admin where admin='".$_COOKIE["admin"]."'";
+	$sql="select * from zzcms_admin where admin='".addslashes($_COOKIE["admin"])."'";
 	$rs=query($sql) or showmsg('查寻管理员信息出错');
 	$ok=is_array($row=fetch_array($rs));
 	if($ok){

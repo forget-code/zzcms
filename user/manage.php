@@ -74,6 +74,7 @@ if ($action=="modify") {
 			$oldflv = isset($_POST['oldflv'])?$_POST['oldflv']:'';
 			checkstr($img,"upload");//入库前查上传文件地址是否合格
 			checkstr($flv,"upload");//入库前查上传文件地址是否合格
+			checkstr($oldflv,"upload");//入库前查上传文件地址是否合格
 			checkstr($oldimg,"upload");
 			checkstr($somane,'quanhanzi','联系人');
 			checkstr($mobile,'tel');
@@ -147,10 +148,10 @@ include("left.php");
             </tr>
             <tr > 
               <td align="right" class="border2">性别：</td>
-              <td class="border2"> <input type="radio" value="1" name="sex" <?php if ($row["sex"]==1) { echo "CHECKED";}?>>
-               男
-<INPUT type="radio" value="0" name="sex" <?php if ($row["sex"]==0) { echo "CHECKED";}?>>
-              女</td>
+              <td class="border2"><label> <input type="radio" value="1" name="sex" <?php if ($row["sex"]==1) { echo "CHECKED";}?>>
+               男</label>
+<label> <input type="radio" value="0" name="sex" <?php if ($row["sex"]==0) { echo "CHECKED";}?>>
+              女</label></td>
             </tr>
             <tr> 
               <td align="right" class="border">E-mail：</td>

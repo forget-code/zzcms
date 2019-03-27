@@ -1,4 +1,5 @@
 <?php
+ob_start();//打开缓冲区，可以setcookie
 include ("admin.php");
 ?>
 <!DOCTYPE html>
@@ -301,6 +302,10 @@ while($row = fetch_array($rs)){
       <td class="border" ><input name="img" type="text" size="50" maxlength="255" />
         （如果内容中有图片，这里可以留空，会自动获取内容中的第一张图片）</td>
     </tr>
+    <tr>
+      <td align="right" class="border" >&nbsp;</td>
+      <td class="border" ><input type="submit" name="Submit" value="发 布" ></td>
+    </tr>
     <tr id="trseo">
       <td colspan="2" class="admintitle2" >SEO设置</td>
     </tr>
@@ -420,8 +425,7 @@ while($row = fetch_array($rs)){
 <?php
 }
 ?>
-</select>
-</td>
+</select></td>
     </tr>
     <tr> 
       <td align="right" class="border">标题</td>
@@ -446,6 +450,10 @@ while($row = fetch_array($rs)){
     <tr id="trkeywords">
       <td align="right" class="border" >封面图片</td>
       <td class="border" ><input name="img" type="text" value="<?php echo $rowzx["img"]?>" size="50" maxlength="255" /></td>
+    </tr>
+    <tr>
+      <td align="right" class="border">&nbsp;</td>
+      <td class="border"><input type="submit" name="Submit" value="提交"></td>
     </tr>
     <tr id="trkeywords">
       <td colspan="2" class="admintitle2" >SEO</td>

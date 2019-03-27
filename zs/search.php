@@ -5,18 +5,9 @@ include("../inc/bottom.php");
 include("../inc/fy.php");
 include("subzs.php");
 include("../label.php");
-if (isset($_GET["px"])){
-$px=$_GET["px"];
-	if ($px!='hit' && $px!='id' && $px!='sendtime'){
-	$px="sendtime";
-	}
-setcookie("pxzs",$px,time()+3600*24*360);
-}else{
-	if (isset($_COOKIE["pxzs"])){
-	$px=$_COOKIE["pxzs"];
-	}else{
-	$px="sendtime";
-	}
+$px = isset($_GET['px'])?$_GET['px']:"sendtime";
+if ($px!='hit' && $px!='id' && $px!='sendtime'){
+$px="sendtime";
 }
 if (isset($_GET["page_size"])){
 $page_size=$_GET["page_size"];
@@ -386,7 +377,7 @@ $totlenum = $row['total'];
 $offset=($page-1)*$page_size;//$page_size在上面被设为COOKIESS 
 $totlepage=ceil($totlenum/$page_size);
 
-$sql="select id,proname,prouse,shuxing_value,img,tz,province,city,xiancheng,province_user,city_user,xiancheng_user,sendtime,editor,elite,userid,comane,qq,groupid,renzheng,tag from zzcms_main where passed=1 ";
+$sql="select id,proname,prouse,shuxing_value,img,tz,link,province,city,xiancheng,province_user,city_user,xiancheng_user,sendtime,editor,elite,userid,comane,qq,groupid,renzheng,tag from zzcms_main where passed=1 ";
 $sql=$sql.$sql2;
 $sql=$sql." order by groupid desc,elite desc,".$px." desc limit $offset,$page_size";
 //echo $sql;
@@ -416,8 +407,13 @@ $list2='';
 	}else{
 	$list2 = $list2. str_replace("{#id}",$row["id"],$loop_list) ;
 	}
+	if ($row["link"]<>""){
+	$link=$row["link"];
+	}else{
+	$link=getpageurl("zs",$row["id"]);	
+	}
 	$list2 =str_replace("{#i}" ,$i,$list2) ;
-	$list2 =str_replace("{#url}" ,getpageurl("zs",$row["id"]),$list2) ;
+	$list2 =str_replace("{#url}" ,$link,$list2) ;
 	$list2 =str_replace("{#proname:".$proname_num."}",cutstr($row["proname"],$proname_num),$list2) ;
 	$list2 =str_replace("{#prouse:".$prouse_num."}",cutstr($row["prouse"],$prouse_num),$list2) ;
 	$list2 =str_replace("{#img}" ,getsmallimg($row["img"]),$list2) ;

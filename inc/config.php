@@ -4,7 +4,7 @@ define('sqluser','root');//用户名
 define('sqlpwd','root');//密码
 define('sqlhost','localhost');//连接服务器,本机填localhost，外地填IP地址
 define('sqlport','3306');//端口（默认为:3306）
-define('zzcmsver','Powered By <a target=_blank style=font-weight:bold href=http://www.zzcms.net><font color=#FF6600 face=Arial>ZZ</font><font color=#025BAD face=Arial>CMS2018</font></a>');//版本
+define('zzcmsver','Powered By <a target=_blank style="font-weight:bold;letter-spacing:1px;text-shadow:-1px 0 #FFF,0 1px #FFF,1px 0 #FFF,0 -1px #FFF;" href=http://www.zzcms.net><font color=#FF6600 face=Arial>ZZ</font><font color=#025BAD face=Arial>CMS2019</font></a>');//版本
 define('sitename','zzcms') ;//网站名称
 define('siteurl','http://a.com') ;//网站地址
 define('logourl','http://a.com/image/logo.png') ;//Logo地址
@@ -48,6 +48,8 @@ define('showdlinzs','Yes') ;//招商信息内是否显示代理留言数
 define('zsliststyle','list') ;//招商列表页默认显示格式
 define('siteskin','red13') ;//网站电脑端模板
 define('siteskin_mobile','mobile') ;//网站手机端模板
+define('ztskin','tongyong') ;//展厅电脑端默认模板
+define('ztskin_mobile','mobile1') ;//展厅手机端默认模板
 define('siteskin_usercenter','1') ;//用户中心样式
 define('checksqlin','Yes') ;//是否开启防SQL注入功能
 define('cache_update_time','0') ;//缓存更新周期
@@ -55,7 +57,7 @@ define('html_update_time','0') ;//静态页更新周期
 define('zsclass_isradio','No') ;//小类别是否设为单选（设为否时为多选）
 define('checkistrueemail','No') ;//用户注册时是否开启邮箱验证功能
 define('sdomain','No') ;//用户展厅页是否启用二级域名
-define('whtml','No') ;//是否开启伪静态
+define('whtml','Yes') ;//是否开启伪静态
 define('isshowad_when_timeend','Yes') ;//到期的广告是否还让显示
 define('showadtext','广告位已到期') ;//到期的广告前台显示语
 define('qiangad','Yes') ;//是否开通抢占广告位功能
@@ -65,10 +67,10 @@ define('flyadisopen','No') ;//是否打开漂浮广告
 define('jifen','Yes') ;//是否启用积分功能
 define('jifen_bilu','1') ;//1元等于多少积分
 define('jf_reg','50') ;//注册时获取积分值
-define('jf_login','20') ;//登录时获取积分值
+define('jf_login','10') ;//登录时获取积分值
 define('jf_addreginfo','10') ;      //完善注册信息获取积分值
-define('jf_lookmessage','50') ;  //查看代理留言时扣除的积分值
-define('jf_look_dl','50') ;  //查看代理商信息库时扣除的积分值
+define('jf_lookmessage','10') ;  //查看代理留言时扣除的积分值
+define('jf_look_dl','10') ;  //查看代理商信息库时扣除的积分值
 define('jf_set_adv','10') ; //抢占首页广告位扣除的积分值
 define('jf_set_elite','10') ; //固顶信息扣除的积分值
 define('maximgsize','20000') ;  //图片文件大小限制,单位K

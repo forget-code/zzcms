@@ -1,9 +1,14 @@
 <?php
-if(!isset($_SESSION)){session_start();} 
+ob_start();//打开缓冲区
+//if(!isset($_SESSION)){session_start();} 
 include("../inc/conn.php");
 
-$token = md5(uniqid(rand(), true));    
-$_SESSION['token']= $token; 
+//$token = md5(uniqid(rand(), true));    
+//$_SESSION['token']= $token; 
+//session_write_close();
+
+$token = md5(uniqid(rand(), true)); 
+setcookie("token",$token,time()+3600,"/zs");
 
 if(isset($_REQUEST['cpid'])){
 $cpid=$_REQUEST['cpid'];
@@ -34,13 +39,13 @@ $cpmc=$row['proname'];
 $prouse=$row['prouse'];
 $cpimg=$row["img"];
 $flv=$row["flv"];
-$bigclasszm=$row["bigclasszm"];
-$smallclasszm=$row["smallclasszm"];
-if(strpos($smallclasszm,',')!==false){
-$smallclasszm=explode(",",$smallclasszm); //转换成数组
-$smallclasszm=$smallclasszm[0];//只取第一个小类，供显示在station中
+$bigclassid=$row["bigclassid"];
+$smallclassid=$row["smallclassid"];
+if(strpos($smallclassid,',')!==false){
+$smallclassid=explode(",",$smallclassid); //转换成数组
+$smallclassid=$smallclassid[0];//只取第一个小类，供显示在station中
 } 
-$smallclasszm=str_replace('"',"",$smallclasszm);//开启多选后小类两边都加了""
+$smallclassid=str_replace('"',"",$smallclassid);//开启多选后小类两边都加了""
 $sendtime=$row["sendtime"];
 $hit=$row["hit"];
 $title=$row["title"];
@@ -54,13 +59,16 @@ $city=$row["city"];
 $shuxing_value = explode("|||",$row["shuxing_value"]);
 
 $smallclassname='';
-$rsn=query("select classname from zzcms_zsclass where classzm='".$bigclasszm."'");
+$rsn=query("select classname,classzm from zzcms_zsclass where classid='".$bigclassid."'");
 $rown=fetch_array($rsn);
 $bigclassname=$rown["classname"];
-if ($smallclasszm<>""){
-$rsn=query("select classname from zzcms_zsclass where classzm='".$smallclasszm."'");
+$bigclasszm=$rown["classzm"];
+
+if ($smallclassid<>0){
+$rsn=query("select classname,classzm from zzcms_zsclass where classid='".$smallclassid."'");
 $rown=fetch_array($rsn);
 $smallclassname=$rown["classname"];
+$smallclasszm=$rown["classzm"];
 }
 
 include("top.php");
@@ -161,7 +169,7 @@ $strout=str_replace("{#yq}",nl2br($yq),$strout);
 $strout=str_replace("{#proname}",$cpmc,$strout);
 $strout=str_replace("{#cpid}",$cpid,$strout);
 $strout=str_replace("{#fbr}",$fbr,$strout);
-$strout=str_replace("{#bigclassid}",$bigclasszm,$strout);
+$strout=str_replace("{#bigclassid}",$bigclassid,$strout);
 $strout=str_replace("{#token}",$token,$strout);
 
 $companyname="";
@@ -216,6 +224,5 @@ $strout=str_replace("{#shuxing".$i."}",$shuxing_value[$i],$strout);
 $strout=str_replace("{#sitebottom}",$sitebottom,$strout);
 $strout=str_replace("{#sitetop}",$sitetop,$strout);
 echo  $strout;
-}	
-session_write_close();		  
+}	  
 ?>

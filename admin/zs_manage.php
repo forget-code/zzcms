@@ -40,7 +40,7 @@ if(!empty($_POST['id'])){
 }else{
 echo "<script>alert('操作失败！至少要选中一条信息。');history.back()</script>";
 }
-echo "<script>location.href='?keyword=".$keyword."&page=".$page."'</script>";	
+echo "<script>location.href='?keyword=".$keyword."&shenhe=".$shenhe."&page=".$page."'</script>";	
 }
 ?>
 </head>

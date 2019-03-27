@@ -59,8 +59,13 @@ $tongji=$row["tongji"];
 $baidu_map=$row["baidu_map"];
 }else{
 $skin=ztskin;
+$skin_mobile=ztskin_mobile;
 $tongji='';
 $baidu_map='http://j.map.baidu.com/dYCQy';
+}
+
+if ($skin_mobile==''){
+$skin_mobile=ztskin_mobile;
 }
 
 //php判断客户端是否为手机,这暂不用，用JS判断的  
@@ -95,24 +100,12 @@ $showad_inzt=str_is_inarr($row["config"],'showad_inzt');//用于判断是否在�
 $rs=query("select * from zzcms_usersetting where username='".$editor."'");
 $row=num_rows($rs);
 if(!$row){
-query("INSERT INTO zzcms_usersetting (username,skin,swf,daohang)VALUES('".$editor."','red2','6.swf','网站首页, 招商信息, 公司简介, 资质证书, 联系方式, 在线留言')");
+query("INSERT INTO zzcms_usersetting (username,skin,daohang)VALUES('".$editor."','tongyong','网站首页, 招商信息, 公司简介, 资质证书, 联系方式, 在线留言')");
 $showbanner="用户配置表中无此用户信息，已自动修复，刷新本页后，可正常显示";
 }else{
 $row=fetch_array($rs);
-if($row["bannerbg"]<>"" ){
-$showbanner="<div id='Layer1' style='position:absolute; width:100%; height:".$row["bannerheight"]."px; z-index:1'>";
-	if (substr($skin,0,6)!="mobile"){
-	$showbanner=$showbanner."<embed src='".siteurl."/flash/".$row["swf"]."' width='100%' height='".$row["bannerheight"]."'; quality='high' 		pluginspage='http://www.macromedia.com/go/getflashplayer' type='application/x-shockwave-flash' wmode='transparent'></embed>";
-	}
-}else{
-$showbanner="<div id='Layer1' style='position:absolute; width:100%; height:110px; z-index:1'>";
-	if (substr($skin,0,6)!="mobile"){
-	$showbanner=$showbanner."<embed src='".siteurl."/flash/".$row["swf"]."' width='100%' height='110'; quality='high' pluginspage='http://www.macromedia.com/go/getflashplayer' type='application/x-shockwave-flash' wmode='transparent'></embed>";
-	}
-}
-	$showbanner=$showbanner."</div>";
 	if($row["bannerbg"]<>"" ){
-	$showbanner=$showbanner."<div class='banner' style='background:url(".siteurl.$row["bannerbg"].") repeat 0 0;color:".$row["comanecolor"].";text-align:".$row["comanestyle"].";height:".$row["bannerheight"]."px'>";
+	$showbanner=$showbanner."<div class='banner' style='background:url(".siteurl.$row["bannerbg"].") repeat 0 0 ;background-size:100% 100%;-moz-background-size:100% 100%;color:".$row["comanecolor"].";text-align:".$row["comanestyle"].";height:".$row["bannerheight"]."px'>";
 	}else{
 	$showbanner=$showbanner."<div class='banner' style='color:".$row["comanecolor"].";text-align:".$row["comanestyle"]."'>";
 	}

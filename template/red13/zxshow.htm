@@ -66,7 +66,7 @@ function checkform(){
 {#pinglun}             
 </div>
 <div class="box">
-<form name="form2" id="form2" method="post" action="" onsubmit="return checkform()">
+<form name="form2" id="form2" method="post" action="" onSubmit="return checkform()">
           <div> 
 			 <div contenteditable="true" id="divtextarea" onblur="AddContentFromDiv('content','divtextarea')" ></div>
               
@@ -77,12 +77,7 @@ function checkform(){
               <span style="text-align:right">
               <input name="user" type="hidden"  id="username3" tabindex="1" value="{#pinglunren}" size="17" />
             </span></div>
-            <div style="text-align:right">
-              <span class="bgcolor1">答案
-              <input name="yzm" type="text" id="yzm" value="" size="10" maxlength="50" style="width:60px"/>
-              <img src="/one/code_math.php"  align="absmiddle" id="getcode_math" title="看不清，点击换一张" /></span>
-              <input type="submit" name="Submit" value="发表评论" />
-          </div>
+            <div><input type="submit" name="Submit" value="发表评论" /></div>
         </form>			
 </div>
 </div>

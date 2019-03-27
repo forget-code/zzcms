@@ -49,8 +49,8 @@ $str=$str. "</h2>\n";
 
 if ($style==1){//--------------style为1时左侧大类下显示小类
 	if ($adv=="yes"){//开启广告后只显广告
-	//$str=$str.showad(2,4,"no","yes","no",0,0,5,$row["classname"],"分类招商间","no");//两种方法都可以
-	$str=$str.adshow("index_zsclass",$row["classname"],"分类招商间");//在广告标签中加个名为index_zsclass的广告,这种布局更灵活，缺点：得加个自定标签，麻烦点
+	//$str=$str.showad($row["classname"],"大类间",100,100,0,"no");//两种方法都可以
+	$str=$str.adshow("index_zsclass",$row["classname"],"大类间");//在广告标签中加个名为index_zsclass的广告,这种布局更灵活，缺点：得加个自定标签，麻烦点
 	}else{
 	$rsn=query("select * from zzcms_zsclass where parentid='".$row["classid"]."' order by xuhao asc limit 0,3");
 	$rown=num_rows($rsn);
@@ -91,7 +91,7 @@ $rown=num_rows($rsn);
 			if ($rowcp){
 				while ($rowcp=fetch_array($rscp)){
 				$str=$str. "<a href='".getpageurl("zs",$rowcp['id'])."' target='_blank'>".cutstr($rowcp['proname'],$long_p)."</a>";
-				if ($nnn % $column_p==0){$str=$str.'<br/>' ;}else {$str=$str.'&nbsp;|&nbsp; ';}
+				if ($nnn % $column_p==0){$str=$str.'<br/>' ;}else {$str=$str.'&nbsp; ';}
 				$nnn=$nnn+1;
 				}
 			}else{

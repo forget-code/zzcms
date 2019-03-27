@@ -189,7 +189,8 @@ checkid($page);
 $cpid = isset($_POST['cpid'])?$_POST['cpid']:'0';
 checkid($cpid,1);//允许为0
 
-$bigclassid=isset($_POST['bigclassid'])?$_POST["bigclassid"][0]:0;
+
+$bigclassid=isset($_POST['bigclassid'])?$_POST["bigclassid"]:0;
 checkid($bigclassid);
 
 $smallclassid=isset($_POST['smallclassid'])?$_POST["smallclassid"][0]:0;//加[]可同多选共用同一个JS判断函数uncheckall

@@ -127,10 +127,10 @@ WriteErrMsg($errmsg);
     </tr>
     <tr> 
       <td align="right" class="border">性别</td>
-      <td class="border"> <input type="radio" value="1" name="sex" <?php if ($row["sex"]==1) { echo "checked";}?>>
-        男 
-        <input type="radio" value="0" name="sex" <?php if ($row["sex"]==0 ){ echo "checked";}?>>
-        女</td>
+      <td class="border"> <label><input type="radio" value="1" name="sex" <?php if ($row["sex"]==1) { echo "checked";}?>>
+        男</label> 
+        <label><input type="radio" value="0" name="sex" <?php if ($row["sex"]==0 ){ echo "checked";}?>>
+        女</label></td>
     </tr>
     <tr> 
       <td align="right" class="border">手机</td>
@@ -151,8 +151,8 @@ WriteErrMsg($errmsg);
         <?php 
 	  if ($row["qqid"]<>""){
 		  ?>
-        <input name="qqid[]" type="checkbox" id="qqid[]" value="1" checked>
-        (已绑定。点击可取消绑定) 
+       <label> <input name="qqid[]" type="checkbox" id="qqid[]" value="1" checked>
+        (已绑定。点击可取消绑定) </label>
         <?php
 		}else{
 		echo "未绑定QQ登录";
@@ -284,31 +284,31 @@ while($rown = fetch_array($rsn)){
     </tr>
     <tr> 
       <td align="right" class="border">是否审核</td>
-      <td class="border"><input type="radio" name="passed" value="0" <?php if ($row["passed"]==0) { echo "checked";}?>>
-        未审核 
-        <input type="radio" name="passed" value="1" <?php if ($row["passed"]==1) { echo "checked";}?>>
-        已审核</td>
+      <td class="border"> <label><input type="radio" name="passed" value="0" <?php if ($row["passed"]==0) { echo "checked";}?>>
+       未审核 </label>
+        <label><input type="radio" name="passed" value="1" <?php if ($row["passed"]==1) { echo "checked";}?>>
+        已审核</label></td>
     </tr>
     <tr> 
       <td align="right" class="border">用户身份</td>
-      <td class="border"> <input type="radio" name="usersf" value="公司" <?php if ($row["usersf"]=='公司') { echo "checked";}?>>
-        公司 
-        <input type="radio" name="usersf" value="个人" <?php if ($row["usersf"]=='个人') { echo "checked";}?>>
-        个人</td>
+      <td class="border"><label> <input type="radio" name="usersf" value="公司" <?php if ($row["usersf"]=='公司') { echo "checked";}?>>
+        公司</label> 
+       <label> <input type="radio" name="usersf" value="个人" <?php if ($row["usersf"]=='个人') { echo "checked";}?>>
+        个人</label></td>
     </tr>
     <tr> 
       <td align="right" class="border">用户状态</td>
-      <td class="border"> <input type="radio" name="lockuser" value="0" <?php if ($row["lockuser"]==0) { echo "checked";}?>>
-        正常 
-        <input type="radio" name="lockuser" value="1" <?php if ($row["lockuser"]==1) { echo "checked";}?>>
-        锁定</td>
+      <td class="border"> <label><input type="radio" name="lockuser" value="0" <?php if ($row["lockuser"]==0) { echo "checked";}?>>
+        正常 </label>
+       <label> <input type="radio" name="lockuser" value="1" <?php if ($row["lockuser"]==1) { echo "checked";}?>>
+        锁定</label></td>
     </tr>
     <tr> 
       <td align="right" class="border">是否认证</td>
-      <td class="border"><input type="radio" name="renzheng" value="0" <?php if ($row["renzheng"]==0) { echo "checked";}?>>
-        未认证 
-        <input type="radio" name="renzheng" value="1" <?php if ($row["renzheng"]==1) { echo "checked";}?>>
-        已认证 
+      <td class="border"><label><input type="radio" name="renzheng" value="0" <?php if ($row["renzheng"]==0) { echo "checked";}?>>
+        未认证</label> 
+        <label><input type="radio" name="renzheng" value="1" <?php if ($row["renzheng"]==1) { echo "checked";}?>>
+        已认证 </label>
         <input name="oldrenzheng" type="hidden" id="oldrenzheng" value="<?php echo $row["renzheng"]?>"></td>
     </tr>
     <tr> 
@@ -343,7 +343,7 @@ while($rown = fetch_array($rsn)){
     <tr> 
       <td align="right" class="border">置顶值</td>
       <td height="20" class="border"><input name="elite" id="elite" value="<?php echo $row["elite"]?>" size="4" maxLength="4">
-        （设值范围 1-255，数值越大排位越靠顶部） </td>
+        （设值范围 1-127值越大排位越靠顶部） </td>
     </tr>
     <tr> 
       <td height="20" align="center" class="border">&nbsp;</td>

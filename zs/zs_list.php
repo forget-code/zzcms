@@ -8,15 +8,12 @@ if (isset ($_GET["action"])){
 setcookie("zzcmscpid","",time()-3600);
 echo "<script>location.href='zs_list.php'</script>";
 }
-if (isset($_GET["px"])){
-$px=$_GET["px"];
-	if ($px!='hit' && $px!='id' && $px!='sendtime'){
-	$px="sendtime";
-	}
-setcookie("pxzs",$px,time()+3600*24*360);
-}else{
-$px=isset($_COOKIE['pxzs'])?$_COOKIE['pxzs']:"sendtime";
+
+$px = isset($_GET['px'])?$_GET['px']:"sendtime";
+if ($px!='hit' && $px!='id' && $px!='sendtime'){
+$px="sendtime";
 }
+
 if (isset($_GET["page_size"])){
 $page_size=$_GET["page_size"];
 checkid($page_size);
@@ -179,7 +176,7 @@ $form_vip="&nbsp;<input name='vip' type='checkbox' id='vip' value='yes'/>";
 $form_vip=$form_vip . "VIP";
 
 $form_px="&nbsp;<select name='menu2' onChange=MM_jumpMenu('parent',this,0)>";
-$cs="/zs/zs_list.php?b=".$b."&s=".$s."&sx=".$sx."&province=".$province."&sj=".$sj."&tp=".$tp."&vip=".$vip." ";
+$cs="/zs/zs_list.php?b=".$b."&s=".$s."&px=".$px."&province=".$province."&sj=".$sj."&tp=".$tp."&vip=".$vip." ";
 if ($px=="id") {
 $form_px=$form_px . "<option value='".$cs."&px=id' selected>最近发布</option>";
 }else{
@@ -276,7 +273,7 @@ $totlenum = $row['total'];
 $offset=($page-1)*$page_size;//$page_size在上面被设为COOKIESS
 $totlepage=ceil($totlenum/$page_size);
 
-$sql="select id,proname,prouse,shuxing_value,img,tz,province,city,xiancheng,province_user,city_user,xiancheng_user,sendtime,editor,elite,userid,comane,qq,groupid,renzheng from zzcms_main where passed=1 ";	
+$sql="select id,proname,prouse,shuxing_value,img,tz,link,province,city,xiancheng,province_user,city_user,xiancheng_user,sendtime,editor,elite,userid,comane,qq,groupid,renzheng from zzcms_main where passed=1 ";	
 $sql=$sql.$sql2;
 $sql=$sql." order by groupid desc,elite desc,".$px." desc limit $offset,$page_size";
 $rs = query($sql); 
@@ -307,8 +304,13 @@ $list2='';
 	}else{
 	$list2 = $list2. str_replace("{#id}",$row["id"],$loop_list) ;
 	}
+	if ($row["link"]<>""){
+	$link=$row["link"];
+	}else{
+	$link=getpageurl("zs",$row["id"]);	
+	}
 	$list2 =str_replace("{#i}",$i,$list2) ;
-	$list2 =str_replace("{#url}" ,getpageurl("zs",$row["id"]),$list2) ;
+	$list2 =str_replace("{#url}" ,$link,$list2) ;
 	$list2 =str_replace("{#proname:".$proname_num."}",cutstr($row["proname"],$proname_num),$list2) ;
 	$list2 =str_replace("{#prouse:".$prouse_num."}",cutstr($row["prouse"],$prouse_num),$list2) ;
 	$list2 =str_replace("{#img}" ,getsmallimg($row["img"]),$list2) ;
@@ -384,9 +386,9 @@ $strout=str_replace("{/zs}","",$strout) ;
 }
 
 function fenyei(){
-global $sx,$province,$sj,$tp,$vip,$b,$s,$page,$totlepage;
+global $px,$province,$sj,$tp,$vip,$b,$s,$page,$totlepage;
 $zslist='';
-$cs="&sx=".$sx."&province=".$province."&sj=".$sj."&tp=".$tp."&vip=".$vip."";
+$cs="&px=".$px."&province=".$province."&sj=".$sj."&tp=".$tp."&vip=".$vip."";
 	if ($page<>1){
 		if ($s<>"") {
 		$zslist=$zslist . "<a href='/zs/zs_list.php?page=1&b=".$b."&s=".$s.$cs."'>1...</a>";

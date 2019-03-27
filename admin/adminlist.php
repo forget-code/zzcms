@@ -91,7 +91,7 @@ $rs = query($sql);
 			echo $r["groupname"];
 			}
 			 ?><br>
-    <a href="admingroupmodify.php?id=<?php echo $row["groupid"]?>">查看此组权限</a></td>
+    <a href="admingroup.php?do=modify&id=<?php echo $row["groupid"]?>">查看此组权限</a></td>
     <td align="center"><?php echo $row["logins"]?></td>
     <td><?php echo $row["showloginip"]?></td>
     <td><?php echo $row["showlogintime"]?></td>

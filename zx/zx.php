@@ -49,7 +49,9 @@ if ($s<>0){
 $sql="select * from zzcms_zxclass where classid='".$s."'";
 $rs=query($sql);
 $row=fetch_array($rs);
+if ($row){
 $smallclassname=$row["classname"];
+}
 }
 
 $pagetitle=$classtitle.zxlisttitle;
@@ -59,7 +61,7 @@ $pagedescription=$classdescription.zxlistdescription;
 $page=isset($page)?$page:1;
 checkid($page);
 
-if ($b==0) {
+if ($b=="") {
 $zxclass=zxbigclass($b,2);
 }else{
 $zxclass=zxsmallclass($b,$s);
@@ -75,9 +77,10 @@ $strout = fread($f,filesize($fp));
 fclose($f);
 
 $list=strbetween($strout,"{loop}","{/loop}");
+$c_num=strbetween($list,"{#content:","}");
 $sql="select count(*) as total from zzcms_zx where passed<>0 ";
 $sql2='';
-if ($b<>0) {
+if ($b<>'') {
 $sql2=$sql2." and bigclassid='".$b."' ";
 }
 if ($s<>'') {
@@ -129,9 +132,12 @@ $list2 =str_replace("{#title}",cutstr($row["title"],30),$list2) ;
 $list2 =str_replace("{#imgbig}",$row["img"],$list2) ;
 $list2 =str_replace("{#img}",getsmallimg($row["img"]),$list2) ;
 $list2 =str_replace("{#content}",stripfxg($row["content"],true),$list2) ;
+$list2 =str_replace("{#content:".$c_num."}",cutstr(nohtml(stripfxg($row["content"],true)),$c_num),$list2) ;
+$list2 =str_replace("{#hit}" ,$row["hit"],$list2) ;
 $list2 =str_replace("{#sendtime}",date("Y-m-d",strtotime($row["sendtime"])),$list2) ;
 $list2 =str_replace("{#listimg}" ,$listimg,$list2) ;
 $list2 =str_replace("{#shuxing}" ,$shuxing,$list2) ;
+
 $i=$i+1;
 }
 $strout=str_replace("{loop}".$list."{/loop}",$list2,$strout) ;

@@ -26,11 +26,6 @@ body {background: url({#bodybg}) {#bodybgrepeat};}
 {#sitetop}
 <div class="main">
 {#showad:6,0,yes,yes,yes,0,0,0,首页,展示页,no}
-
-  <div id='Layer1' style='position:absolute; width:950px; height:400px; z-index:1;'> 
-    <embed src="/flash/{#swf}" width='940' height="400" quality='high' pluginspage='http://www.macromedia.com/go/getflashplayer' type='application/x-shockwave-flash' wmode='transparent'></embed>
-</div>
-
 <div class="pagebody">
 {#sm}
 </div>
@@ -42,10 +37,11 @@ body {background: url({#bodybg}) {#bodybgrepeat};}
       <table width="100%" border="0" cellpadding="3" cellspacing="1">
         <tr> 
               <td width="33%" align="right">联 系 人<font color=#FF0000>*</font></td>
-              <td width="67%" > <input name=name type=text id=name size=30 maxlength=50 onblur="check_somane()"/>
+              <td width="67%" > <input name=name type=text id=name size=30 maxlength=50 onBlur="check_somane()"/>
 			  <input name="name2" id="name2" style="display:none" />
 			<span id="ts_name"></span>	
-              <input name="fbr" type="hidden" id="fbr" value="{#fbr}" /></td>
+              <input name="fbr" type="hidden" id="fbr" value="{#fbr}" />
+			  <input id="token" value="{#token}" type="hidden" name="token" /></td>
             </tr>
             <tr> 
               <td align="right">手机 <font color=#FF0000>*</font></td>
@@ -55,7 +51,7 @@ body {background: url({#bodybg}) {#bodybgrepeat};}
             </tr>
             <tr> 
               <td align="right" >电子邮箱：</td>
-              <td > <input name=email type=text id=email size=30 maxlength=50 onblur="check_email()" /> 
+              <td > <input name=email type=text id=email size=30 maxlength=50 onBlur="check_email()" /> 
 			  <input name="email2" id="email2" style="display:none" />
 			<span id="ts_email"></span>              </td>
             </tr>
@@ -69,12 +65,12 @@ body {background: url({#bodybg}) {#bodybgrepeat};}
 					<input name="contents2" id="contents2" style="display:none" />
 			<br/><span id="ts_contents"></span>					</td>
                     <td width='65%' class="liuyanbg2">
-<input name='chcontent' type='checkbox' id='chcontent1' onclick="showinfo('content',1);document.ly.contents.focus()" value='有兴趣开一个店，请寄资料或给我打电话。' /><label for='chcontent1' id='content1'>有兴趣开一个店，请寄资料或给我打电话。</label><br /> 
-<input name='chcontent' type='checkbox' id='chcontent2' onclick="showinfo('content',2);document.ly.contents.focus()" value='想了解招商细节，请尽快寄一份资料。' /> 
+<input name='chcontent' type='checkbox' id='chcontent1' onClick="showinfo('content',1);document.ly.contents.focus()" value='有兴趣开一个店，请寄资料或给我打电话。' /><label for='chcontent1' id='content1'>有兴趣开一个店，请寄资料或给我打电话。</label><br /> 
+<input name='chcontent' type='checkbox' id='chcontent2' onClick="showinfo('content',2);document.ly.contents.focus()" value='想了解招商细节，请尽快寄一份资料。' /> 
                       <label for='chcontent2'  id='content2'>想了解招商细节，请尽快寄一份资料。</label><br /> 
-<input name='chcontent' type='checkbox' id='chcontent3' onclick="showinfo('content',3);document.ly.contents.focus()" value='我想找一个合适的项目做，想加入您们。' /> 
+<input name='chcontent' type='checkbox' id='chcontent3' onClick="showinfo('content',3);document.ly.contents.focus()" value='我想找一个合适的项目做，想加入您们。' /> 
                       <label for='chcontent3'  id='content3'>我想找一个合适的项目做，想加入您们。</label><br /> 
-<input name='chcontent' type='checkbox' id='chcontent4' onclick="showinfo('content',4);document.ly.contents.focus()" value='我加入你们后，您们还会提供哪些服务？' /> 
+<input name='chcontent' type='checkbox' id='chcontent4' onClick="showinfo('content',4);document.ly.contents.focus()" value='我加入你们后，您们还会提供哪些服务？' /> 
                     <label for='chcontent4'  id='content4'>我加入你们后，您们还会提供哪些服务？</label> </td>
                   </tr>
                 </table></td>

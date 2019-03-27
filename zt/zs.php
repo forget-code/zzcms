@@ -25,6 +25,15 @@ $bigclassid=$row["classid"];
 }
 }
 
+if ($smallclass<>"A"){
+$sql="select * from zzcms_zsclass where classzm='".$smallclass."'";
+$rs=query($sql);
+$row=fetch_array($rs);
+if ($row){
+$smallclassid=$row["classid"];
+}
+}
+
 $pagetitle=$comane."—".channelzs."信息列表";
 $pagekeywords=$comane."—".channelzs."信息列表";
 $pagedescription=$comane."—".channelzs."信息列表";

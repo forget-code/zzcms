@@ -1,5 +1,6 @@
 <?php
-if(!isset($_SESSION)){session_start();} 
+ob_start();//打开缓冲区，可以setcookie
+//if(!isset($_SESSION)){session_start();} 
 include("../inc/conn.php");
 include("../inc/mail_class.php");
 include ("../3/mobile_msg/inc.php");
@@ -17,16 +18,15 @@ include ("../3/mobile_msg/inc.php");
 //echo sitetop();
 //checkyzm($_POST["yzm"]);
 
-//if ($_POST['token'] != $_COOKIE['token'] || $_POST['token']=='' ){    
-//showmsg('非法提交','back');
-//}
-
-if ($_POST['token'] != $_SESSION['token'] || $_POST['token']=='' ){    
+if ($_POST['token'] != $_COOKIE['token'] || $_POST['token']=='' ){    
 showmsg('非法提交','back');
-}else{
-unset($_SESSION['token']);
 }
-session_write_close();
+
+//if ($_POST['token'] != $_SESSION['token'] || $_POST['token']=='' ){    
+//showmsg('非法提交','back');
+//}else{
+//unset($_SESSION['token']);
+//}
 
 checkid($bigclassid,1);
 checkid($cpid);
@@ -55,7 +55,6 @@ checkstr($tel,'tel','电话号码',$_SERVER['HTTP_REFERER']);
 $rs=query("select groupid from zzcms_user where username='".$saver."' ");
 $row=fetch_array($rs);
 $savergroupid=$row['groupid'];
-
 if ($cp<>'' && $dlsname<>'' && $tel<>''){
 //$rs=query("select * from zzcms_dl where dlsname='$dlsname' and tel='$tel' and saver='$saver' and cpid='$cpid'");
 //$row=num_rows($rs);
@@ -63,7 +62,7 @@ if ($cp<>'' && $dlsname<>'' && $tel<>''){
 //echo "<script>alert('您已留过言了！');history.back(-1)<//script>";
 //}else{
 $isok=query("insert into zzcms_dl (cp,cpid,classid,province,city,content,company,companyname,dlsname,tel,email,editor,saver,savergroupid,sendtime)values('$cp','$cpid','$bigclassid','$province','$city','$contents','$company','$companyname','$dlsname','$tel','$email','".@$_COOKIE["UserName"]."','$saver','$savergroupid','".date('Y-m-d H:i:s')."')");
-$_SESSION["dlliuyan"]=$saver;//供留言后显示联系方式处用
+setcookie("dlliuyan",$saver,time()+3600,"/");//供留言后显示联系方式处用
 $dlid=insert_id();
 
 $rsn=query("select id,username,sex,email,mobile,somane from zzcms_user where username='".$saver."'");
@@ -109,6 +108,7 @@ showmsg('成功提交',$_SERVER['HTTP_REFERER']);
 }
 //}
 }
+//session_write_close();
 ?>
 </div>
 </body>

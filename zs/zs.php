@@ -7,14 +7,9 @@ include("../inc/bottom.php");
 include("subzs.php");
 include("../label.php");
 
-if (isset($_GET["px"])){
-$px=$_GET["px"];
-	if ($px!='hit' && $px!='id' && $px!='sendtime'){
-	$px="sendtime";
-	}
-setcookie("pxzs",$px,time()+3600*24*360);
-}else{
-$px=isset($_COOKIE['pxzs'])?$_COOKIE['pxzs']:"sendtime";
+$px = isset($_GET['px'])?$_GET['px']:"sendtime";
+if ($px!='hit' && $px!='id' && $px!='sendtime'){
+$px="sendtime";
 }
 if (isset($_GET["page_size"])){
 $page_size=$_GET["page_size"];
@@ -86,7 +81,6 @@ $descriptionsx="";
 $keywordsx="";
 $titlesx="";
 $smallclassname="";
-
 
 if ($b<>""){
 $sql="select * from zzcms_zsclass where classzm='".$b."'";
@@ -259,19 +253,19 @@ $form_vip=$form_vip . "VIP&nbsp;";
 
 $form_px= "<select name='menu2' onChange=MM_jumpMenu('parent',this,0)>";
 if ($px=="id") {
-$form_px=$form_px . "<option value=/zs/zs.php?b=".$b."&s=".$s."&px=id selected>最近发布</option>";
+$form_px=$form_px . "<option value=/zs/zs_list.php?b=".$b."&s=".$s."&px=id selected>最近发布</option>";
 }else{
-$form_px=$form_px . "<option value=/zs/zs.php?b=".$b."&s=".$s."&px=id >最近发布</option>";
+$form_px=$form_px . "<option value=/zs/zs_list.php?b=".$b."&s=".$s."&px=id >最近发布</option>";
 }
 if( $px=="sendtime") {
-$form_px=$form_px . "<option value='/zs/zs.php?b=".$b."&s=".$s."&px=sendtime' selected>最近更新</option>";
+$form_px=$form_px . "<option value='/zs/zs_list.php?b=".$b."&s=".$s."&px=sendtime' selected>最近更新</option>";
 }else{
-$form_px=$form_px . "<option value='/zs/zs.php?b=".$b."&s=".$s."&px=sendtime'>最近更新</option>";
+$form_px=$form_px . "<option value='/zs/zs_list.php?b=".$b."&s=".$s."&px=sendtime'>最近更新</option>";
 }
 if ($px=="hit") { 
-$form_px=$form_px . "<option value='/zs/zs.php?b=".$b."&s=".$s."&px=hit' selected>最热点击</option>";
+$form_px=$form_px . "<option value='/zs/zs_list.php?b=".$b."&s=".$s."&px=hit' selected>最热点击</option>";
 }else{
-$form_px=$form_px . "<option value='/zs/zs.php?b=".$b."&s=".$s."&px=hit'>最热点击</option>";
+$form_px=$form_px . "<option value='/zs/zs_list.php?b=".$b."&s=".$s."&px=hit'>最热点击</option>";
 }
 $form_px=$form_px . "</select>&nbsp;";
 
@@ -323,7 +317,7 @@ $totlenum = $row['total'];
 $offset=($page-1)*$page_size;//$page_size在上面被设为COOKIESS
 $totlepage=ceil($totlenum/$page_size);
 
-$sql="select id,proname,prouse,img,tz,shuxing_value,province,city,xiancheng,province_user,city_user,xiancheng_user,sendtime,editor,elite,
+$sql="select id,proname,prouse,img,tz,shuxing_value,link,province,city,xiancheng,province_user,city_user,xiancheng_user,sendtime,editor,elite,
 userid,comane,qq,groupid,renzheng from zzcms_main where passed=1 ";
 $sql=$sql.$sql2;
 $sql=$sql." order by groupid desc,elite desc,".$px." desc limit $offset,$page_size";
@@ -356,8 +350,13 @@ $list2='';
 	}else{
 	$list2 = $list2. str_replace("{#id}",$row["id"],$loop_list) ;
 	}
+	if ($row["link"]<>""){
+	$link=$row["link"];
+	}else{
+	$link=getpageurl("zs",$row["id"]);	
+	}
 	$list2 =str_replace("{#i}",$i,$list2) ;
-	$list2 =str_replace("{#url}",getpageurl("zs",$row["id"]),$list2) ;
+	$list2 =str_replace("{#url}",$link,$list2) ;
 	$list2 =str_replace("{#proname:".$proname_num."}",cutstr($row["proname"],$proname_num),$list2) ;
 	$list2 =str_replace("{#prouse:".$prouse_num."}",cutstr($row["prouse"],$prouse_num),$list2) ;
 	

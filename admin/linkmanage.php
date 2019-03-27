@@ -100,6 +100,7 @@ echo "暂无信息";
       <td width="2%" align="center"><label for="chkAll" style="cursor: pointer;">全选</label></td>
       <td width="5%">类型</td>
       <td width="10%">网站名称</td>
+      <td width="10%">logo</td>
       <td width="10%">网站描述</td>
       <td width="10%">申请时间</td>
       <td width="5%" align="center">信息状态</td>
@@ -117,12 +118,15 @@ while($row = fetch_array($rs)){
 	  echo $rown["classname"]?></a></td>
       <td><b><?php echo $row["sitename"]?></b><br> 
         <a href="<?php echo $row["url"]?>" target="_blank"><?php echo $row["url"]?></a><br> 
-        <?php if ($row["logo"]<>""){?>
+            </td>
+      <td>
+	   <?php if ($row["logo"]<>""){?>
         <img src="<?php echo $row["logo"]?>" width="150" height="50"> 
         <?php }else{
 		  echo "未填写LOGO地址";
 		  }
-		 ?>      </td>
+		 ?> 
+	  </td>
       <td><?php echo $row["content"]?></td>
       <td><?php echo $row["sendtime"]?></td>
       <td align="center" > 

@@ -33,6 +33,8 @@ $rs=query($sql);
 $row=fetch_array($rs);
 if (!$row){
 echo showmsg("不存在相关信息！");
+}elseif($row["passed"]==0 && !isset($_COOKIE["admin"])){
+showmsg('尚未审核');
 }else{
 query("update zzcms_main set hit=hit+1 where id='$cpid'");
 $editor=$row["editor"];

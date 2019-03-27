@@ -70,9 +70,9 @@ echo $str;
 </div>
 
 <div class="border2"> <strong>前台调用代码示例：</strong> 
-<input name="js" type="text" id="js" style="width:240px" value="{#showad:b,s,40,198,117,12,yes}" size="40" maxlength="255">
+<input name="js" type="text" id="js" style="width:240px" value="{#showad:b,s,40,12,yes}" size="40" maxlength="255">
 把这个代码放到网站模板页中，广告就可以在网页中显示了。<img src="../image/help.gif" alt="help" width="45" height="18" onMouseOver="showfilter2(help)" onMouseOut="showfilter2(help)">
-<div id="help">参数说明：<br>b：广告大类名<br>s：广告小类名<br>40：显示前40条数，0为不限制<br>198：图片宽度，设为0，则按每个广告所设的值显示<br>117：图片高度<br>12：广告标题长度，设为0则不显示文字<br>yes：是否显示广告标题前的数字序号(yes,no)</div>
+<div id="help">参数说明：<br>b：广告大类名<br>s：广告小类名<br>40：显示前40条数，0为不限制<br>12：广告标题长度，设为0则不显示文字<br>yes：是否显示广告标题前的数字序号(yes,no)</div>
 </div>
 
 <?php

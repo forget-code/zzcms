@@ -191,5 +191,4 @@ $n=$n+1;
 </html>
 <?php
 }
-unset ($f_array);
 ?>

@@ -55,6 +55,7 @@ DROP TABLE IF EXISTS `zzcms_main`;
 CREATE TABLE `zzcms_main` (
   `id` int(4) NOT NULL auto_increment,
   `proname` char(50) default NULL,
+  `link` char(255) default NULL,
   `szm` char(100) default NULL,
   `prouse` char(255) default NULL,
   `procompany` char(50) default NULL,
@@ -301,6 +302,7 @@ CREATE TABLE `zzcms_message` (
   `looked` tinyint(4) NOT NULL default '0',
   PRIMARY KEY  (`id`)
 ) ENGINE=MyISAM AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
+
 DROP TABLE IF EXISTS `zzcms_ad`;
 CREATE TABLE `zzcms_ad` (
   `id` int(11) NOT NULL auto_increment,
@@ -315,8 +317,6 @@ CREATE TABLE `zzcms_ad` (
   `nextuser` char(50) default NULL,
   `elite` tinyint(4) NOT NULL default '0',
   `img` char(255) default NULL,
-  `imgwidth` int(11) default NULL,
-  `imgheight` int(11) default NULL,
   `starttime` datetime default NULL,
   `endtime` datetime default NULL,
   PRIMARY KEY  (`id`)
@@ -522,7 +522,6 @@ CREATE TABLE `zzcms_usersetting` (
   `daohang` char(50) default NULL,
   `bannerbg` char(50) default NULL,
   `bannerheight` int(11) NOT NULL default '160',
-  `swf` char(50) default NULL,
   `comanestyle` char(50) default NULL,
   `comanecolor` char(50) default NULL,
   PRIMARY KEY  (`id`)
@@ -579,7 +578,7 @@ CREATE TABLE `zzcms_wangkanclass` (
 DROP TABLE IF EXISTS `zzcms_zsclass`;
 CREATE TABLE `zzcms_zsclass` (
   `classid` int(11) NOT NULL auto_increment,
-  `parentid` tinyint(4) NOT NULL default 0,
+  `parentid` int(11) NOT NULL default 0,
   `classname` char(50) NOT NULL,
   `classzm` char(50) default NULL,
   `img` char(50) NOT NULL default '0',

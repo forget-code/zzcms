@@ -22,7 +22,7 @@ function check_password_format(){
 		window.document.getElementById('ts_password').innerHTML='<span class=boxuserreg>密码只能为字母和数字，字符介于4到50个。</span>';
 		window.document.userreg.password2.value='no';
 		}else{
-		window.document.getElementById('ts_password').innerHTML='<img src=/image/dui2.gif>';
+		window.document.getElementById('ts_password').innerHTML='<img src=/image/dui2.png>';
 		window.document.userreg.password2.value='yes';
 		window.document.userreg.password.style.border = '1px solid #dddddd';
 		}
@@ -34,7 +34,7 @@ if (document.userreg.password.value !="" && document.userreg.PwdConfirm.value !=
 	window.document.getElementById('ts_password2').innerHTML='<span class=boxuserreg>两次密码输入不一致，请重新输入。</span>';
 	window.document.userreg.PwdConfirm2.value='no';
 	}else{
-	window.document.getElementById('ts_password2').innerHTML='<img src=/image/dui2.gif>';
+	window.document.getElementById('ts_password2').innerHTML='<img src=/image/dui2.png>';
 	window.document.userreg.PwdConfirm2.value='yes';
 	window.document.userreg.PwdConfirm.style.border = '1px solid #dddddd';
 	}
@@ -51,7 +51,7 @@ if (document.userreg.somane.value==""){
 	window.document.getElementById('ts_somane').innerHTML='<span class=boxuserreg>联系人只能为汉字，字符介于2到10个。</span>';
     window.document.userreg.somane2.value='no';
 	}else{
-	window.document.getElementById('ts_somane').innerHTML='<img src=/image/dui2.gif>';
+	window.document.getElementById('ts_somane').innerHTML='<img src=/image/dui2.png>';
 	window.document.userreg.somane2.value='yes';
 	window.document.userreg.somane.style.border = '1px solid #dddddd';
 	}
@@ -114,6 +114,7 @@ function Checkall(){
 	document.userreg.PwdConfirm.style.border = '1px solid #FF0000';
 	return false;
 	}
+	if (usersfchecked=='公司'){
 	if (document.userreg.comane.value==""){	
 	document.userreg.comane.style.border = '1px solid #FA8072';
 	window.document.getElementById('ts_comane').innerHTML='<span class=boxuserreg>请输入公司名</span>';
@@ -125,6 +126,7 @@ function Checkall(){
 	//document.userreg.comane.style.backgroundColor='#FF0000';
 	document.userreg.comane.style.border = '1px solid #FF0000';
 	return false;
+	}
 	}
 	if (document.userreg.somane.value==""){	
 	document.userreg.somane.style.border = '1px solid #FA8072';
@@ -221,6 +223,13 @@ $(document).ready(function(){
        <form name="userreg" action="/reg/userregpost.php" method="post" onSubmit="return Checkall()">
           
       <table width="100%" border="0" cellpadding="5" cellspacing="0" >
+        <tr>
+          <td height="35" align="right" class="bigword">用户类型</td>
+          <td><label><input name="usersf" type="radio" onClick="showTR()" value="公司" checked="checked"/>
+              公司</label>
+             <label> <input type="radio" name="usersf" value="个人"  onClick="hiddenTR()"/>
+              个人</label></td>
+        </tr>
         <tr> 
           <td width="200" height="35" align="right" class="bigword">用户名</td>
           <td> 
@@ -243,7 +252,7 @@ $(document).ready(function(){
 			<span id="ts_password2"></span>		    </td>
         </tr>
        
-        <tr> 
+           <tr id="TRcomane" style="display:">
           <td height="35" align="right" class="bigword">公司名称</td>
           <td> 
             <input name="comane" id="comane" class="biaodan2"  tabindex="4"   size="30" maxlength="100" /> 
@@ -253,7 +262,7 @@ $(document).ready(function(){
         <tr> 
           <td height="35" align="right" class="bigword">联系人</td>
           <td> 
-            <input name="somane" class="biaodan2" onblur="check_somane()"  tabindex="6" size="30" maxlength="20"/>
+            <input name="somane" class="biaodan2" onBlur="check_somane()"  tabindex="6" size="30" maxlength="20"/>
 			<input name="somane2" id="somane2" style="display:none" />
 			<span id="ts_somane"></span>			</td>
         </tr>
@@ -274,14 +283,14 @@ $(document).ready(function(){
         <tr> 
           <td height="35" align="right" class="bigword">验证问题</td>
           <td>
-		    <input name="yzm" type="text" class="biaodan2" id="yzm" onblur="check_yzm()" tabindex="10" value="" size="10" maxlength="50" style="width:60px"/>
+		    <input name="yzm" type="text" class="biaodan2" id="yzm" onBlur="check_yzm()" tabindex="10" value="" size="10" maxlength="50" style="width:60px"/>
 			<input name="yzm2" id="yzm2" style="display:none" />
 			<span id="ts_yzm"></span>
 	      <img src="/one/code_math.php" align="absmiddle" id="getcode_tp"/><a href="#" id="getcode_wz">看不清？换一张？</a></td>
         </tr>
         <tr> 
           <td height="40" align="right"></td>
-          <td> <input name="allow" id="allow" type="checkbox" value="checkbox" checked="checked" onclick="check_tk()"/>
+          <td> <input name="allow" id="allow" type="checkbox" value="checkbox" checked="checked" onClick="check_tk()"/>
 		  <input name="tk2" id="tk2" style="display:none" />
           <label for="allow">我接受</label> <a href="/one/agreement.php" target="_blank">{#sitename}服务条款(点击阅读)</a>
 		  <span id="ts_tk"></span>		  </td>

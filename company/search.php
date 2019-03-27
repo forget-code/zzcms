@@ -13,7 +13,6 @@ fclose($fp);
 
 if (isset($_GET["page_size"])){
 $page_size=$_GET["page_size"];
-checkid($page_size);
 setcookie("page_size_company",$page_size,time()+3600*24*360);
 }else{
 	if (isset($_COOKIE["page_size_company"])){
@@ -22,7 +21,7 @@ setcookie("page_size_company",$page_size,time()+3600*24*360);
 	$page_size=pagesize_qt;
 	}
 }
-
+checkid($page_size);
 if (isset($_GET['b'])){
 $bNew=$_GET['b'];
 setcookie("companyb",$bNew,time()+3600*24);
@@ -266,8 +265,13 @@ $keyword = isset($_GET['keyword'])?trim($_GET['keyword']):"";
 $pagetitle=$province.companylisttitle.$bigclassname.sitename;
 $pagekeyword=$province.$bigclassname.companylistkeyword;
 $pagedescription=$province.$bigclassname.companylistdescription;
-if( isset($_GET["page"]) && $_GET["page"]!="") {$page=$_GET['page'];}else{$page=1;}
-checkid($page);
+if( isset($_GET["page"]) && $_GET["page"]!="") 
+{
+    $page=$_GET['page'];
+	checkid($page);
+}else{
+    $page=1;
+}
 
 $list=strbetween($strout,"{loop}","{/loop}");		
 $sql="select count(*) as total from zzcms_user where  usersf='公司' and lockuser=0 and passed<>0  ";
@@ -299,7 +303,7 @@ $offset=($page-1)*$page_size;//$page_size在上面被设为COOKIESS
 $totlepage=ceil($totlenum/$page_size);
 $sql="select * from zzcms_user where passed=1 and usersf='公司' and lockuser=0 ";
 $sql=$sql.$sql2;
-$sql=$sql." order by groupid desc,id desc limit $offset,$page_size";
+$sql=$sql." order by groupid desc,elite desc,id desc limit $offset,$page_size";
 //echo $sql;
 $rs = query($sql); 
 if(!$totlenum){
@@ -336,7 +340,11 @@ if ($rown){
 $cp="暂无产品";
 }
 
+if ($row["elite"]>0){
+$list2 = $list2. str_replace("{#comane}" ,$row["comane"]." <img src='/image/ico_jian.png' title='推荐值：".$row["elite"]."'>",$list) ;
+}else{
 $list2 = $list2. str_replace("{#comane}" ,$row["comane"],$list) ;
+}
 $list2 =str_replace("{#zturl}" ,$zturl,$list2) ;
 $list2 =str_replace("{#usergroup}" ,$usergroup,$list2) ;
 $list2 =str_replace("{#address}" ,$row["address"],$list2) ;

@@ -54,12 +54,8 @@ $smallclassname=$row["classname"];
 $pagetitle=companylisttitle.$bigclassname.sitename;
 $pagekeyword=$bigclassname.companylistkeyword;
 $pagedescription=$bigclassname.companylistdescription;
-if( isset($_GET["page"]) && $_GET["page"]!="") {
-    $page=$_GET['page'];
-	checkid($page,0);
-}else{
-    $page=1;
-}
+$page=isset($page)?$page:1;
+checkid($page);
 
 if ($b=="") {
 $class=bigclass($b);
@@ -71,10 +67,10 @@ $clist=strbetween($strout,"{loop}","{/loop}");
 $sql="select count(*) as total from zzcms_user where  usersf='公司' and lockuser=0 and passed<>0  ";
 $sql2='';
 if ($b<>0){
-$sql2=$sql2." and bigclassid=".$b." ";
+$sql2=$sql2." and bigclassid='".$b."' ";
 }
 if ($s<>0){
-$sql2=$sql2." and smallclassid=".$s." ";
+$sql2=$sql2." and smallclassid='".$s."' ";
 }
 $rs =query($sql.$sql2); 
 $row = fetch_array($rs);

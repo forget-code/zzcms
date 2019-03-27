@@ -2,15 +2,12 @@
 ob_start();   //打开缓存区 
 include("../inc/conn.php");
 include("check.php");
-$fpath="text/dls_download.txt";
-$fcontent=file_get_contents($fpath);
-$f_array=explode("|||",$fcontent) ;
 //此页不能且不需要链接CSS文件，否则生成的下载文件打开时会提示少CSS文件。
 $founderr=0;
 $ErrMsg="";
 if (check_user_power("dls_download")=="no"){
 $founderr=1;
-$ErrMsg=$ErrMsg.$f_array[0];
+$ErrMsg=$ErrMsg."您所在的用户组没有下载此信息的权限！<br><input  type=button value=升级成VIP会员 onclick=\"location.href='/one/vipuser.php'\"/>";
 }
 
 $id="";
@@ -23,7 +20,7 @@ if(!empty($_POST['id'])){
 
 if (strpos($id,',')==0){
 $founderr=1;
-$ErrMsg=$f_array[1];
+$ErrMsg="<li>操作失败！至少要选中两条信息才能下载。</li>";
 }
 
 if ($founderr==1){
@@ -51,7 +48,12 @@ $sql="select * from zzcms_dl where passed=1 and saver='".$username."' and id='$i
 $rs=query($sql);
 $table="<table width=100% cellspacing=0 cellpadding=0 border=1>";
 $table=$table."<tr>";
-$table=$table.$f_array[2];
+$table=$table."<td align=center  bgcolor=#dddddd><b>电话</b></td>
+<td align=center  bgcolor=#dddddd><b>意向产品</b></td>
+<td align=center  bgcolor=#dddddd><b>联系人</b></td>
+<td align=center  bgcolor=#dddddd><b>意向区域</b></td>
+<td align=center  bgcolor=#dddddd><b>自我介绍</b></td>
+<td align=center  bgcolor=#dddddd><b>发布时间</b></td>";
 $table=$table."</tr>";
 while ($row=fetch_array($rs)){
 $table=$table."<tr>";

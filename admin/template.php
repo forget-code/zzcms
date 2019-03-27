@@ -1,42 +1,10 @@
 <?php
 include("admin.php");
 ?>
-<html>
+<!DOCTYPE html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <link href="style.css" rel="stylesheet" type="text/css">
-<?php
-$action = isset($_REQUEST['action'])?$_REQUEST['action']:"";
-if ($action=="add") {
-checkadminisdo("label");
-$title=nostr($_POST["title"]);
-$title_old=$_POST["title_old"];
-if (substr($title,-3)!='css' and substr($title,-3)!='htm'){
-showmsg('只能是htm或css这两种格式,模板名称：后面加上.htm或.css');
-}
-$start=stripfxg($_POST["start"],true);//stripfxg如果有自动加反斜杠去反斜杠
-$fp="../template/".siteskin."/".$title;
-$f=fopen($fp,"w+");//fopen()的其它开关请参看相关函数
-$isok=fputs($f,$start);
-fclose($f);
-if ($isok){
-$title==$title_old ?$msg='修改成功':$msg='添加成功';
-}else{
-$msg="失败";
-}
-echo "<script>alert('".$msg."');location.href='?title=".$title."'</script>";
-}
-
-if ($action=="del"){ 
-checkadminisdo("label");
-$f="../template/".siteskin."/".nostr($_POST["title"]);
-	if (file_exists($f)){
-	unlink($f)?showmsg('删除成功',"?"):showmsg('失败');
-	}else{
-	showmsg('请选择要删除的模板');
-	}
-}
-?>
 <script language = "JavaScript">
 function ConfirmDel(){
    if(confirm("确定要删除吗？一旦删除将不能恢复！"))
@@ -64,6 +32,44 @@ if (document.myform.start.value==""){
   }
 }  
 </script>
+<?php
+checkadminisdo("label");
+$action = isset($_REQUEST['action'])?$_REQUEST['action']:"";
+if ($action=="add") {
+checkadminisdo("label_add");
+$title=nostr($_POST["title"]);
+$title_old=$_POST["title_old"];
+if (substr($title,-3)!='css' && substr($title,-3)!='htm'){
+showmsg('只能是htm或css这两种格式,模板名称：后面加上.htm或.css');
+}
+$start=stripfxg($_POST["start"],true);//stripfxg如果有自动加反斜杠去反斜杠
+$fp="../template/".siteskin."/".$title;
+$f=fopen($fp,"w+");//fopen()的其它开关请参看相关函数
+$isok=fputs($f,$start);
+fclose($f);
+if ($isok){
+$title==$title_old ?$msg='修改成功':$msg='添加成功';
+}else{
+$msg="失败";
+}
+echo "<script>alert('".$msg."');location.href='?title=".$title."';target='_self'</script>";
+}
+
+if ($action=="del"){ 
+checkadminisdo("label_del");
+$title=nostr($_POST["title"]);
+if (substr($title,-3)!='css' && substr($title,-3)!='htm'){
+showmsg('只能是htm或css这两种格式,模板名称：后面加上.htm或.css');
+}
+$f="../template/".siteskin."/".$title;
+	if (file_exists($f)){
+	unlink($f)?$msg='成功删除':$msg='删除失败';
+	}else{
+	$msg='请选择要删除的文件';
+	}
+echo "<script>alert('".$msg."');location.href='?'</script>";
+}
+?>
 </head>
 <body>
 <div class="admintitle">模板管理</div>

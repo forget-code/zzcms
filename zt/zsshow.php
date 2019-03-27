@@ -46,7 +46,7 @@ $hit=$row["hit"];
 $title=$row["title"];
 $keywords=$row["keywords"];
 $description=$row["description"];
-$sm=$row["sm"];
+$sm=stripfxg($row["sm"],true);
 $yq=$row["yq"];
 $zc=$row["zc"];
 $province=$row["province"];
@@ -180,8 +180,8 @@ $email=$rown["email"];
 }
 //访客地理位置
 $cuestip=getip(); 
-$cuest_city=getIPLoc_sina($cuestip); 
-$cuest_city=str_replace('联通','',str_replace('网通','',str_replace('电信','',$cuest_city)));
+//$cuest_city=getIPLoc_sina($cuestip); 
+//$cuest_city=str_replace('联通','',str_replace('网通','',str_replace('电信','',$cuest_city)));
 
 $strout=str_replace("{textarea}","<textarea id=\"contents\" rows=\"6\" cols=\"30\" name=\"contents\" onfocus='check_contents()' onblur='check_contents()'>我对这个产品感兴趣，请与我联系。</textarea>",$strout) ;
 $strout=str_replace("{#companyname}",$companyname,$strout) ;
@@ -189,7 +189,8 @@ $strout=str_replace("{#somane}",$somane,$strout) ;
 $strout=str_replace("{#phone}",$phone,$strout);
 $strout=str_replace("{#email}",$email,$strout);
 
-$strout=str_replace("{#cuest_city}",$cuest_city,$strout);
+//$strout=str_replace("{#cuest_city}",$cuest_city,$strout);
+$strout=str_replace("{#cuest_city}",'',$strout);
 
 $strout=str_replace("{#siteskin}",siteskin,$strout) ;
 $strout=str_replace("{#sitename}",sitename,$strout) ;
@@ -202,8 +203,14 @@ $strout=str_replace("{#showdaohang}",$showdaohang,$strout);
 $strout=str_replace("{#skin}",$skin,$strout);
 $strout=str_replace("{#station}",$station,$strout);
 
+if (count($shuxing_value)<3){
+	for ($a=0; $a< 6;$a++){
+	$strout=str_replace("{#shuxing".$a."}",'',$strout);
+	}
+}else{
 for ($i=0; $i< count($shuxing_value);$i++){
 $strout=str_replace("{#shuxing".$i."}",$shuxing_value[$i],$strout);
+}
 }
 
 $strout=str_replace("{#sitebottom}",$sitebottom,$strout);

@@ -1,6 +1,6 @@
 <?php
 include("admin.php");
-checkadminisdo("userreg");
+checkadminisdo("user");
 $id=trim($_REQUEST["id"]);
 $action=trim($_REQUEST["action"]);
 $page=trim($_REQUEST["page"]);

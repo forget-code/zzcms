@@ -31,17 +31,15 @@ if(is_dir($file)){
 return $writeable;  
 }
 ?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" lang="zh-CN">
+<!DOCTYPE html>
 <head>
 <title>zzcms安装向导</title>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
-<meta http-equiv="X-UA-Compatible" content="IE=EmulateIE7" />
 <link href="style.css" rel="stylesheet" type="text/css">
 </head>
 <body>
 <div class="main"> 
-<div class="head">ZZCMS(产品招商)版安装向导 </div>
+<div class="head">ZZCMS安装向导 </div>
 <div class="jindu">
 <li <?php if ($step==2){echo 'class=current';} ?>>检查系统运行环境 -></li>
 <li <?php if ($step==3){echo 'class=current';} ?>>检查目录/文件属性 -></li>
@@ -100,7 +98,7 @@ switch($step) {
 		if(!select_db($db_name)) {
 			if(!query("CREATE DATABASE $db_name")) dexit('指定的数据库不存在\n\n系统尝试创建失败，请通过其他方式建立数据库');
 		}
-		
+		$url=str_replace("'",'',$url);
 		//保存配置文件
 		$fp="../inc/config.php";
 		$f = fopen($fp,'r');

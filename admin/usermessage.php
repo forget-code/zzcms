@@ -1,7 +1,7 @@
 <?php
 include("admin.php");
 ?>
-<html>
+<!DOCTYPE html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <title></title>
@@ -16,21 +16,18 @@ include("admin.php");
    }
   </style>
 
-<script language="JavaScript" src="/js/gg.js"></script>
+<script language="JavaScript" src="../js/gg.js"></script>
   <script language="javascript" type="text/javascript">
    var _IsMousedown = 0;
    var _ClickLeft = 0;
    var _ClickTop = 0;
-   function moveInit(divID,evt)
-   {
+   function moveInit(divID,evt){
     _IsMousedown = 1;
-    if(getBrowserType() == "NSupport")
-    {
+    if(getBrowserType() == "NSupport"){
      return;
     }
     var obj = getObjById(divID);
-    if(getBrowserType() == "fox")
-    {
+    if(getBrowserType() == "fox"){
      _ClickLeft = evt.pageX - parseInt(obj.style.left);
      _ClickTop = evt.pageY - parseInt(obj.style.top);
     }else{
@@ -38,55 +35,41 @@ include("admin.php");
      _ClickTop = evt.y - parseInt(obj.style.top);
     }
    }
-   function Move(divID,evt)
-   {
-    if(_IsMousedown == 0)
-    {
+   function Move(divID,evt){
+    if(_IsMousedown == 0){
      return;
     }
     var objDiv = getObjById(divID);
-    if(getBrowserType() == "fox")
-    {
+    if(getBrowserType() == "fox"){
      objDiv.style.left = evt.pageX - _ClickLeft;
      objDiv.style.top = evt.pageY - _ClickTop;
-    }
-    else{
+    }else{
      objDiv.style.left = evt.x - _ClickLeft;
      objDiv.style.top = evt.y - _ClickTop;
     }
     
    }
-   function stopMove()
-   {
+   function stopMove(){
     _IsMousedown = 0;
    }
-   function getObjById(id)
-   {
+   function getObjById(id){
     return document.getElementById(id);
    }
-   function getBrowserType()
-   {
+   function getBrowserType(){
     var browser=navigator.appName
     var b_version=navigator.appVersion
     var version=parseFloat(b_version)
     //alert(browser);
-    if ((browser=="Netscape"))
-    {
+    if ((browser=="Netscape")){
      return "fox";
     }
-    else if(browser=="Microsoft Internet Explorer")
-    {
-     if(version>=4)
-     {
+    else if(browser=="Microsoft Internet Explorer"){
+     if(version>=4){
       return "ie4+";
-     }
-     else
-     {
+     }else{
       return "ie4-";
      }
-    }
-    else
-    {
+    }else{
      return "NSupport";
     }
    }
@@ -105,16 +88,13 @@ if (@$_GET["step"]==2){
       <input name="message_id" type="hidden" value="<?php echo $_GET["id"]?>">
       <br>
       <input type="submit" name="Submit" value="回复">
+      <input type="button" name="Submit2"  onClick="javascript:location.href='?'" value="取消回复">
   </form>
 </div>
 <?php
- }
-
-if (isset($_REQUEST["action"])){
-$action=$_REQUEST["action"];
-}else{
-$action="";
 }
+
+$action=isset($_REQUEST["action"])?$_REQUEST["action"]:'';
 if ($action=="reply"){
 $id=$_REQUEST["message_id"];
 $reply=$_POST["reply"];
@@ -123,18 +103,10 @@ query("update zzcms_usermessage set reply='$reply',replytime='".date('Y-m-d H:i:
 }
 
 checkadminisdo("sendmessage");
-if( isset($_GET["page"]) && $_GET["page"]!="") {
-    $page=$_GET['page'];
-	checkid($page,0);
-}else{
-    $page=1;
-}
+$page=isset($page)?$page:1;
+checkid($page);
 
-if (isset($_GET["reply"])){
-$reply=$_GET["reply"];
-}else{
-$reply="";
-}
+$reply=isset($_GET["reply"])?$_GET["reply"]:'';
 
 $page_size=pagesize_ht;  //每页多少条数据
 $offset=($page-1)*$page_size;
@@ -152,20 +124,20 @@ echo "暂无信息";
 }else{
 ?>
 <form name="myform" method="post" action="del.php">
-<table width="100%" border="0" cellpadding="5" cellspacing="1" class="bgcolor">
-    <tr> 
-      <td width="70%" class="border">内容/回复</td>
-      <td width="5%" align="center" class="border">删除</td>
+<table width="100%" border="0" cellpadding="5" cellspacing="1">
+    <tr class="trtitle"> 
+      <td width="70%">内容/回复</td>
+      <td width="5%" align="center">删除</td>
     </tr>
 <?php
 while($row = fetch_array($rs)){
 ?>
-    <tr class="bgcolor1" onMouseOver="fSetBg(this)" onMouseOut="fReBg(this)"> 
+    <tr class="trcontent"> 
       <td>
-	  <div style="border:solid 1px #dddddd;padding:5px;margin-bottom:5px">
+	  <div style="border-bottom:solid 1px #dddddd;padding:5px;margin-bottom:5px">
 	  <span style="float:right"><?php echo $row["sendtime"]?></span>内容：<?php echo stripfxg($row["content"],false,true)?>
 	  </div>
-	  <div style="border:solid 1px #dddddd;padding:5px">
+	  <div style="padding:5px">
 	  <?php 
 	  if ($row["reply"]<>''){
 	  ?>
@@ -209,7 +181,7 @@ echo "【下一页】【尾页】";
           <input name="submit"  type="submit" class="buttons"  value="删除" onClick="return ConfirmDel()" />
           <input name="pagename" type="hidden" id="pagename" value="usermessage.php?page=<?php echo $page ?>" />
           <input name="tablename" type="hidden" id="tablename" value="zzcms_usermessage" />
-        </div>
+  </div>
 </form>
 
 <?php

@@ -51,7 +51,7 @@ echo "暂无信息";
                   <tr bgcolor="#dddddd" onMouseOver="this.bgColor='#f1f1f1'" onMouseOut="this.bgColor='#dddddd'"> 
                     <td align="right">每天发布信息数量</td>
                    <?php 
-				   data_seek($rs,0);
+				   mysqli_data_seek($rs,0);
 				   while ($row=fetch_array($rs)){?>
                     <td align="center"><?php echo $row["addinfo_number"]?>条/栏目/天</td>
                     <?php
@@ -61,7 +61,7 @@ echo "暂无信息";
                   <tr bgcolor="#dddddd" onmouseover="this.bgColor='#f1f1f1'" onmouseout="this.bgColor='#dddddd'"> 
                     <td align="right" >发布信息总数量</td>
                    <?php
-				   data_seek($rs,0);
+				   mysqli_data_seek($rs,0);
 				    while ($row=fetch_array($rs)){?>
                     <td align="center">总计<?php echo $row["addinfototle_number"]?>条/栏目</td>
                    <?php
@@ -71,7 +71,7 @@ echo "暂无信息";
                   <tr  bgcolor="#dddddd" onMouseOver="this.bgColor='#f1f1f1'" onMouseOut="this.bgColor='#dddddd'"> 
                     <td align="right" >用户注册信息的联系方式</td>
                    <?php 
-				   data_seek($rs,0);
+				   mysqli_data_seek($rs,0);
 				   while ($row=fetch_array($rs)){?>
                     <td align="center"><?php if (str_is_inarr($row["config"],'showcontact')=='yes') { echo "<image src='/image/dui2.png'>";} else{ echo "<image src='/image/error.gif'>";}?></td>
                     <?php } ?>
@@ -79,7 +79,7 @@ echo "暂无信息";
                   <tr  bgcolor="#dddddd" onMouseOver="this.bgColor='#f1f1f1'" onMouseOut="this.bgColor='#dddddd'"> 
                     <td align="right" >查看<?php echo channeldl?>商数据库联系方式</td>
                    <?php 
-				   data_seek($rs,0);
+				   mysqli_data_seek($rs,0);
 				   while ($row=fetch_array($rs)){?>
                     <td align="center"><?php if (str_is_inarr($row["config"],'look_dls_data')=='yes'){ echo "<image src='/image/dui2.png'>";} else{ echo "<image src='/image/error.gif'>";}?></td>
                     <?php } ?>
@@ -87,7 +87,7 @@ echo "暂无信息";
                   <tr  bgcolor="#dddddd" onMouseOver="this.bgColor='#f1f1f1'" onMouseOut="this.bgColor='#dddddd'"> 
                     <td align="right" >查看<?php echo channeldl?>商留言联系方式</td>
                    <?php 
-				   data_seek($rs,0);
+				   mysqli_data_seek($rs,0);
 				   while ($row=fetch_array($rs)){?>
                     <td align="center">
 					<?php if (str_is_inarr($row["config"],'look_dls_liuyan')=='yes') { echo "<image src='/image/dui2.png'>";} else{ echo "<image src='/image/error.gif'>";}?>
@@ -98,7 +98,7 @@ echo "暂无信息";
                   <tr bgcolor="#dddddd" onMouseOver="this.bgColor='#f1f1f1'" onMouseOut="this.bgColor='#dddddd'"> 
                     <td align="right" >打印<?php echo channeldl?>留言</td>
                    <?php 
-				   data_seek($rs,0);
+				   mysqli_data_seek($rs,0);
 				   while ($row=fetch_array($rs)){?>
                     <td align="center"> 
 					<?php if (str_is_inarr($row["config"],'dls_print')=='yes') { echo "<image src='/image/dui2.png'>";} else{ echo "<image src='/image/error.gif'>";}?>
@@ -108,7 +108,7 @@ echo "暂无信息";
                   <tr  bgcolor="#dddddd" onMouseOver="this.bgColor='#f1f1f1'" onMouseOut="this.bgColor='#dddddd'"> 
                     <td align="right" >下载<?php echo channeldl?>留言</td>
                   <?php
-				  data_seek($rs,0);
+				  mysqli_data_seek($rs,0);
 				   while ($row=fetch_array($rs)){?>
                     <td align="center"> 
 					<?php if (str_is_inarr($row["config"],'dls_download')=='yes') { echo "<image src='/image/dui2.png'>";} else{ echo "<image src='/image/error.gif'>";}?>
@@ -118,27 +118,18 @@ echo "暂无信息";
                   <tr  bgcolor="#dddddd" onMouseOver="this.bgColor='#f1f1f1'" onMouseOut="this.bgColor='#dddddd'"> 
                     <td align="right" >每天能查看<?php echo channeldl?>留言数</td>
                   <?php 
-				  data_seek($rs,0);
+				  mysqli_data_seek($rs,0);
 				  while ($row=fetch_array($rs)){?>
                     <td align="center"> 
                       <?php if ($row["looked_dls_number_oneday"]==999) { echo  "不限制";} else {echo  $row["looked_dls_number_oneday"];}?>
                     </td>
                     <?php } ?>
                   </tr>
-                  <tr  bgcolor="#dddddd" onMouseOver="this.bgColor='#f1f1f1'" onMouseOut="this.bgColor='#dddddd'"> 
-                    <td align="right" >绑定手机</td>
-                   <?php 
-				   data_seek($rs,0);
-				   while ($row=fetch_array($rs)){?>
-                    <td align="center">
-					<?php if (str_is_inarr($row["config"],'set_mobile')=='yes'){ echo "<image src='/image/dui2.png'>";} else{ echo "<image src='/image/error.gif'>";}?>
-					</td>
-                    <?php } ?>
-                  </tr>
+                 
                   <tr  bgcolor="#dddddd" onMouseOver="this.bgColor='#f1f1f1'" onMouseOut="this.bgColor='#dddddd'"> 
                     <td align="right" >抢占广告位</td>
                   <?php 
-				  data_seek($rs,0);
+				  mysqli_data_seek($rs,0);
 				  while ($row=fetch_array($rs)){?>
                     <td align="center"> 
 					<?php if (str_is_inarr($row["config"],'set_text_adv')=='yes'){ echo "<image src='/image/dui2.png'>";} else{ echo "<image src='/image/error.gif'>";}?>
@@ -148,7 +139,7 @@ echo "暂无信息";
                   <tr  bgcolor="#dddddd" onMouseOver="this.bgColor='#f1f1f1'" onMouseOut="this.bgColor='#dddddd'"> 
                     <td align="right" >置顶信息</td>
                     <?php
-					data_seek($rs,0);
+					mysqli_data_seek($rs,0);
 					 while ($row=fetch_array($rs)){?>
                     <td align="center">
 					<?php if (str_is_inarr($row["config"],'set_elite')=='yes'){ echo "<image src='/image/dui2.png'>";} else{ echo "<image src='/image/error.gif'>";}?>
@@ -158,7 +149,7 @@ echo "暂无信息";
                   <tr  bgcolor="#dddddd" onMouseOver="this.bgColor='#f1f1f1'" onMouseOut="this.bgColor='#dddddd'"> 
                     <td align="right" >信息显示</td>
                   <?php 
-				  data_seek($rs,0);
+				  mysqli_data_seek($rs,0);
 				  while ($row=fetch_array($rs)){?>
                     <td align="center">
 					<?php if ($row["groupid"]==1) { echo "按自然顺序显示";} else{ echo "优先显示";}?>
@@ -168,7 +159,7 @@ echo "暂无信息";
                   <tr  bgcolor="#dddddd" onMouseOver="this.bgColor='#f1f1f1'" onMouseOut="this.bgColor='#dddddd'"> 
                     <td align="right"  >刷新信息次数</td>
                    <?php 
-				   data_seek($rs,0);
+				   mysqli_data_seek($rs,0);
 				   while ($row=fetch_array($rs)){?>
                     <td align="center"><?php echo $row["refresh_number"]?>次</td>
                     <?php } ?>
@@ -176,7 +167,7 @@ echo "暂无信息";
                   <tr  bgcolor="#dddddd" onMouseOver="this.bgColor='#f1f1f1'" onMouseOut="this.bgColor='#dddddd'"> 
                     <td align="right"  >信息免审</td>
                    <?php
-				   data_seek($rs,0);
+				   mysqli_data_seek($rs,0);
 				    while ($row=fetch_array($rs)){?>
                     <td align="center">
 					<?php if (str_is_inarr($row["config"],'passed')=='yes'){ echo "<image src='/image/dui2.png'>";} else{ echo "<image src='/image/error.gif'>";}?>
@@ -186,7 +177,7 @@ echo "暂无信息";
                   <tr  bgcolor="#dddddd" onMouseOver="this.bgColor='#f1f1f1'" onMouseOut="this.bgColor='#dddddd'"> 
                     <td align="right"  >上传视频</td>
                    <?php
-				   data_seek($rs,0);
+				   mysqli_data_seek($rs,0);
 				    while ($row=fetch_array($rs)){?>
                     <td align="center">
 					<?php if (str_is_inarr($row["config"],'uploadflv')=='yes') { echo "<image src='/image/dui2.png'>";} else{ echo "<image src='/image/error.gif'>";}?>
@@ -197,7 +188,7 @@ echo "暂无信息";
 				  <tr  bgcolor="#dddddd" onMouseOver="this.bgColor='#f1f1f1'" onMouseOut="this.bgColor='#dddddd'"> 
                     <td align="right"  >上传多张产品图片</td>
                    <?php
-				   data_seek($rs,0);
+				   mysqli_data_seek($rs,0);
 				    while ($row=fetch_array($rs)){?>
                     <td align="center">
 					<?php if (str_is_inarr($row["config"],'uploadmoreimg')=='yes'){ echo "<image src='/image/dui2.png'>";} else{ echo "<image src='/image/error.gif'>";}?>
@@ -207,7 +198,7 @@ echo "暂无信息";
                   <tr  bgcolor="#dddddd" onMouseOver="this.bgColor='#f1f1f1'" onMouseOut="this.bgColor='#dddddd'"> 
                     <td align="right"  >展厅内是否显网站广告</td>
                    <?php
-				   data_seek($rs,0);
+				   mysqli_data_seek($rs,0);
 				    while ($row=fetch_array($rs)){?>
                     <td align="center">
 					<?php if (str_is_inarr($row["config"],'showad_inzt')=='yes') { echo "<image src='/image/dui2.png'>";} else{ echo "<image src='/image/error.gif'>";}?>
@@ -217,7 +208,7 @@ echo "暂无信息";
                   <tr  bgcolor="#dddddd" onMouseOver="this.bgColor='#f1f1f1'" onMouseOut="this.bgColor='#dddddd'"> 
                     <td align="right"  >装修展厅</td>
                     <?php
-					data_seek($rs,0);
+					mysqli_data_seek($rs,0);
 					 while ($row=fetch_array($rs)){?>
                     <td align="center">
 						<?php if (str_is_inarr($row["config"],'set_zt')=='yes') { echo "<image src='/image/dui2.png'>";} else{ echo "<image src='/image/error.gif'>";}?>
@@ -227,7 +218,7 @@ echo "暂无信息";
 				   <tr  bgcolor="#dddddd" onMouseOver="this.bgColor='#f1f1f1'" onMouseOut="this.bgColor='#dddddd'"> 
                     <td align="right"  >发布信息时进行SEO</td>
                     <?php
-					data_seek($rs,0);
+					mysqli_data_seek($rs,0);
 					 while ($row=fetch_array($rs)){?>
                     <td align="center">
 						<?php if (str_is_inarr($row["config"],'seo')=='yes') { echo "<image src='/image/dui2.png'>";} else{ echo "<image src='/image/error.gif'>";}?>
@@ -237,7 +228,7 @@ echo "暂无信息";
                   <tr> 
                     <td align="right" bgcolor="#FFFFFF"  >&nbsp;</td>
                    <?php 
-				   data_seek($rs,0);
+				   mysqli_data_seek($rs,0);
 				   while ($row=fetch_array($rs)){?>
                     <td align="center" bgcolor="#FFFFFF"><?php if ($row["groupid"]<>1) {?> 
 					<form name="groupid" id="groupid" method="get" action="/user/index.php">

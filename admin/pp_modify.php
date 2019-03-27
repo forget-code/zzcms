@@ -1,12 +1,12 @@
 <?php
 include("admin.php");
 ?>
-<html>
+<!DOCTYPE html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <title></title>
 <link href="style.css" rel="stylesheet" type="text/css">
-<script language="javascript" src="/js/gg.js"></script>
+<script language="javascript" src="../js/gg.js"></script>
 <script language = "JavaScript">
 function CheckForm(){
 if (document.myform.bigclassid.value==""){
@@ -25,7 +25,7 @@ if (document.myform.bigclassid.value==""){
 <body>  
 <div class="admintitle">修改品牌信息</div>
 <?php
-checkadminisdo("pp");
+//checkadminisdo("pp_modify");
 $page = isset($_GET['page'])?$_GET['page']:1;
 checkid($page);
 $id = isset($_GET['id'])?$_GET['id']:0;
@@ -34,14 +34,14 @@ $sqlzs="select * from zzcms_pp where id='$id'";
 $rszs=query($sqlzs);
 $rowzs=fetch_array($rszs);
 ?>
-<form action="pp_save.php" method="post" name="myform" id="myform" onSubmit="return CheckForm();">
+<form action="?do=save" method="post" name="myform" id="myform" onSubmit="return CheckForm();">
   <table width="100%" border="0" cellpadding="5" cellspacing="0">
     <tr> 
-      <td align="right" class="border">名称 <font color="#FF0000">*</font></td>
-      <td width="82%" class="border"> <input name="cpname" type="text" id="cpname" value="<?php echo $rowzs["ppname"]?>" size="45"></td>
+      <td width="15%" align="right" class="border">名称 <font color="#FF0000">*</font></td>
+      <td width="85%" class="border"> <input name="cpname" type="text" id="cpname" value="<?php echo $rowzs["ppname"]?>" size="45"></td>
     </tr>
     <tr> 
-      <td width="18%" align="right" class="border"> 类别 <font color="#FF0000">*</font></td>
+      <td align="right" class="border"> 类别 <font color="#FF0000">*</font></td>
       <td class="border"> 
         <?php
 $sql = "select classid,parentid,classname from zzcms_zsclass where parentid<>0 order by xuhao asc";
@@ -63,12 +63,8 @@ onecount=<?php echo $count ?>;
 
 function changelocation(locationid){
     document.myform.smallclassid.length = 1; 
-    var locationid=locationid;
-    var i;
-    for (i=0;i < onecount; i++)
-        {
-            if (subcat[i][1] == locationid)
-            { 
+    for (i=0;i < onecount; i++){
+            if (subcat[i][1] == locationid){ 
                 document.myform.smallclassid.options[document.myform.smallclassid.length] = new Option(subcat[i][0], subcat[i][2]);
             }        
         }
@@ -79,7 +75,7 @@ function changelocation(locationid){
     $rs=query($sql);
 	while($row = fetch_array($rs)){
 	?>
-          <option value="<?php echo trim($row["classid"])?>" <?php if ($row["classid"]==$rowzs["bigclassid"]) { echo "selected";}?>><?php echo trim($row["classname"])?></option>
+    <option value="<?php echo $row["classid"]?>" <?php if ($row["classid"]==$rowzs["bigclassid"]) { echo "selected";}?>><?php echo $row["classname"]?></option>
           <?php
 				}
 				?>
@@ -90,8 +86,8 @@ $sql="select classid,classname from zzcms_zsclass where parentid='" .$rowzs["big
 $rs=query($sql);
 while($row = fetch_array($rs)){
 ?>
-          <option value="<?php echo $row["classid"]?>" <?php if ($row["classid"]==$rowzs["smallclassid"]) { echo "selected";}?>><?php echo $row["classname"]?></option>
-          <?php 
+<option value="<?php echo $row["classid"]?>" <?php if ($row["classid"]==$rowzs["smallclassid"]) { echo "selected";}?>><?php echo $row["classname"]?></option>
+<?php 
 }
 ?>
         </select> </td>
@@ -99,7 +95,7 @@ while($row = fetch_array($rs)){
 	 
     <tr> 
       <td align="right" class="border">说明：</td>
-      <td class="border"> <textarea name="sm" cols="60" rows="3" id="sm"><?php echo $rowzs["sm"]?></textarea></td>
+      <td class="border"> <textarea name="sm" cols="60" rows="5" id="sm"><?php echo $rowzs["sm"]?></textarea></td>
     </tr>
     <tr> 
       <td align="right" class="border">图片： 
@@ -138,6 +134,39 @@ while($row = fetch_array($rs)){
     </tr>
   </table>
 </form>
+<?php
+$do=isset($_GET['do'])?$_GET['do']:'';
+if ($do=="save"){
+checkadminisdo("pp_modify");
 
+$page = isset($_POST['page'])?$_POST['page']:1;//只从修改页传来的值
+checkid($page);
+$cpid = isset($_POST['cpid'])?$_POST['cpid']:0;
+checkid($cpid,1);
+$passed = isset($_POST['passed'])?$_POST['passed']:0;
+checkid($passed,1);
+
+$bigclassid = isset($_POST['bigclassid'])?$_POST['bigclassid']:0;
+$smallclassid = isset($_POST['smallclassid'])?$_POST['smallclassid']:0;
+checkid($bigclassid,1);checkid($smallclassid,1);
+checkstr($img,"upload");//入库前查上传文件地址是否合格
+query("update zzcms_pp set bigclassid='$bigclassid',smallclassid='$smallclassid',ppname='$cpname',sm='$sm',img='$img',sendtime='$sendtime',passed='$passed' where id='$cpid'");
+
+if ($editor<>$oldeditor) {
+$rs=query("select comane,id from zzcms_user where username='".$editor."'");
+$row = num_rows($rs);
+	if ($row){
+	$row = fetch_array($rs);
+	$userid=$row["id"];
+	$comane=$row["comane"];
+	}else{
+	$userid=0;
+	$comane="";
+	}
+query("update zzcms_pp set editor='$editor',userid='$userid',comane='$comane',passed='$passed' where id='$cpid'");
+}
+echo "<script>location.href='pp_manage.php?page=".$page."'</script>";
+}
+?>
 </body>
 </html>

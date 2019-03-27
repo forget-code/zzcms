@@ -1,5 +1,4 @@
 <?php
-if(!isset($_SESSION)){session_start();} 
 include("../inc/conn.php");
 include("top.php");
 include("bottom.php");
@@ -58,7 +57,5 @@ $strout=str_replace("{#skin}",$skin,$strout);
 $strout=str_replace("{#gsjj}",$gsjj,$strout);
 $strout=str_replace("{#sitebottom}",$sitebottom,$strout);
 $strout=str_replace("{#sitetop}",$sitetop,$strout);
-
-session_write_close();
 echo  $strout;
 ?>

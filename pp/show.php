@@ -1,16 +1,12 @@
 <?php
-if(!isset($_SESSION)){session_start();} 
 include("../inc/conn.php");
 include("subpp.php");
 include("../inc/top.php");
 include("../inc/bottom.php");
 include("../label.php");
-if (isset($_GET["id"])){
-$cpid=trim($_GET["id"]);
-checkid($cpid);
-}else{
-$cpid=0;
-}
+
+$cpid = isset($_GET['id'])?$_GET['id']:0;
+checkid($cpid,1);
 
 $sql="select * from zzcms_pp where id='$cpid'";
 $rs=query($sql);
@@ -75,7 +71,6 @@ fclose($f);
 //dlform
 if (isset($_COOKIE["UserName"])) {
 $rsn=query("select * from zzcms_user where username='".trim($_COOKIE["UserName"])."'");
-session_write_close();
 $rown=fetch_array($rsn);
 $companyname=$rown["comane"];
 $somane=$rown["somane"];

@@ -1,17 +1,18 @@
 <?php 
 include("admin.php");
 ?>
-<html>
+<!DOCTYPE html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <link href="style.css" rel="stylesheet" type="text/css">
 <title></title>
 <?php
+checkadminisdo("label");
 $action = isset($_REQUEST['action'])?$_REQUEST['action']:"";
 $channel = isset($_GET['channel'])?$_GET['channel']:"";
 
 if ($action=="add") {
-checkadminisdo("label");
+checkadminisdo("label_add");
 $pic = isset($_POST['pic'])?$_POST['pic'][0]:0;
 $flv = isset($_POST['flv'])?$_POST['flv'][0]:0;
 $elite = isset($_POST['elite'])?$_POST['elite'][0]:0;
@@ -67,7 +68,7 @@ echo "<script>alert('".$msg."');location.href='?channel=".$channel."&labelname="
 }
 
 if ($action=="del") {
-checkadminisdo("label");
+checkadminisdo("label_del");
 $f="../template/".siteskin."/label/".$channel."/".nostr($_POST["title"]).".txt";
 	if (file_exists($f)){
 	unlink($f);
@@ -76,48 +77,8 @@ $f="../template/".siteskin."/label/".$channel."/".nostr($_POST["title"]).".txt";
 	}	
 }
 ?>
-<script language = "JavaScript">
-<?php
-if ($channel=='zsshow' || $channel=='ppshow' || $channel=='askshow'|| $channel=='zxshow'||$channel=='jobshow'||$channel=='specialshow'){
-	if ($channel=='askshow'){
-	$sql = "select parentid,classname,classid from zzcms_askclass order by classid asc";
-	}elseif($channel=='zxshow'){
-	$sql = "select parentid,classname,classid from zzcms_zxclass order by classid asc";
-	}elseif($channel=='specialshow'){
-	$sql = "select parentid,classname,classid from zzcms_specialclass order by classid asc";
-	}elseif($channel=='jobshow'){
-	$sql = "select parentid,classname,classid from zzcms_jobclass order by classid asc";
-	}else{
-	$sql = "select parentid,classname,classid from zzcms_zsclass order by classid asc";
-	}
-	$rs=query($sql);
-	?>
-	
-	var onecount;
-	subcat = new Array();
-	<?php
-	$count = 0;
-	while ($r=fetch_array($rs)){
-	?>
-	subcat[<?php echo $count?>] = new Array("<?php echo $r['classname']?>","<?php echo $r['parentid']?>","<?php echo $r['classid']?>");
-	<?php 
-	$count = $count + 1;
-	}
-	?>
-	onecount=<?php echo $count?>;
-	function changelocation(locationid){
-    document.myform.smallclassid.length = 1; 
-	var i;
-    for (i=0;i < onecount; i++){
-    	if (subcat[i][1] == locationid){ 
-			document.myform.smallclassid.options[document.myform.smallclassid.length] = new Option(subcat[i][0], subcat[i][2]);
-		}        
-	}
-	}	
-<?php 
-}
-?>
 
+<script language = "JavaScript">
 function CheckForm(){
 var re=/^[0-9a-zA-Z_]{1,20}$/; //只输入数字和字母的正则
 if (document.myform.title.value==""){
@@ -136,6 +97,45 @@ if (document.myform.bigclassid.value=="") {
 	return false;
   } 
 }  
+<?php
+if ($channel=='zsshow' || $channel=='ppshow' || $channel=='askshow'|| $channel=='zxshow'||$channel=='jobshow'||$channel=='specialshow'){
+	if ($channel=='askshow'){
+	$sql = "select parentid,classname,classid from zzcms_askclass where parentid<>0 order by classid asc";
+	}elseif($channel=='zxshow'){
+	$sql = "select parentid,classname,classid from zzcms_zxclass where parentid<>0 order by classid asc";
+	}elseif($channel=='specialshow'){
+	$sql = "select parentid,classname,classid from zzcms_specialclass where parentid<>0 order by classid asc";
+	}elseif($channel=='jobshow'){
+	$sql = "select parentid,classname,classid from zzcms_jobclass where parentid<>0 order by classid asc";
+	}else{
+	$sql = "select parentid,classname,classid from zzcms_zsclass where parentid<>0 order by classid asc";
+	}
+	$rs=query($sql);
+	?>
+	
+	var onecount;
+	subcat = new Array();
+	<?php
+	$count = 0;
+	while ($r=fetch_array($rs)){
+	?>
+	subcat[<?php echo $count?>] = new Array("<?php echo $r['classname']?>","<?php echo $r['parentid']?>","<?php echo $r['classid']?>");
+	<?php 
+	$count = $count + 1;
+	}
+	?>
+	onecount=<?php echo $count?>;
+	function changelocation(locationid){
+    document.myform.smallclassid.length = 1; 
+    for (i=0;i < onecount; i++){
+    	if (subcat[i][1] == locationid){ 
+			document.myform.smallclassid.options[document.myform.smallclassid.length] = new Option(subcat[i][0], subcat[i][2]);
+		}        
+	}
+	}	
+<?php 
+}
+?>
 </script>
 </head>
 <body>
@@ -171,7 +171,7 @@ while(($file = readdir($dir))!=false){
 }
 closedir($dir);	  
 }	
-$title='';$id='';$bigclassid='';$smallclassid='';$groupid='';$pic='';$flv='';$elite='';$typeid='';$saver='';$numbers='';$orderby='';$titlenum='';$cnum='';$column='';$start='';$mids='';$ends='';	
+$title='';$id='';$bigclassid='';$smallclassid='';$smallclassname='';$groupid='';$pic='';$flv='';$elite='';$typeid='';$saver='';$numbers='';$orderby='';$titlenum='';$cnum='';$column='';$start='';$mids='';$ends='';	
 //读取现有标签中的内容
 if (isset($_REQUEST["labelname"])){
 $fp="../template/".siteskin."/label/".$channel."/".$labelname;
@@ -268,7 +268,7 @@ if ($channel=='zsshow' ||$channel=='companyshow'|| $channel=='ppshow' || $channe
         <?php 
 	if ($bigclassid<>0 && $bigclassid<>"empty" && $bigclassid<>""){
 		if ($channel=='askshow'){
-		$sql="select classid,classname from zzcms_askclass where parentid=" . $bigclassid ." order by classid asc";
+		$sql="select classid,classname from zzcms_askclass where parentid='" . $bigclassid ."' order by classid asc";
 		}elseif ($channel=='zxshow'){
 		$sql="select classid,classname from zzcms_zxclass where parentid='" . $bigclassid ."' order by classid asc";
 		}elseif ($channel=='specialshow'){
@@ -280,9 +280,16 @@ if ($channel=='zsshow' ||$channel=='companyshow'|| $channel=='ppshow' || $channe
 		}
 			$rs=query($sql);
 			while($r=fetch_array($rs)){
+			  
+			if ($channel=='specialshow'){ 
 			?>
-          <option value="<?php echo $r["classid"]?>" <?php if ($r["classid"]==$smallclassid) { echo "selected";}?>><?php echo $r["classname"]?></option>
-          <?php   
+			<option value="<?php echo $r["classname"]?>" <?php if ($r["classname"]==$smallclassname) { echo "selected";}?>><?php echo $r["classname"]?></option>
+			<?php
+			}else{
+			?>
+			<option value="<?php echo $r["classid"]?>" <?php if ($r["classid"]==$smallclassid) { echo "selected";}?>><?php echo $r["classname"]?></option>
+          	<?php   
+			}
 			}
 	}
 			?>
@@ -407,16 +414,16 @@ if ($channel=='zsshow' ||$channel=='companyshow'|| $channel=='ppshow' || $channe
         （分几列显示）</td>
     </tr>
     <tr> 
-      <td align="right" class="border" >解释模板（开始）：</td>
+      <td align="right" class="border" >解释（开始）：</td>
       <td class="border" ><textarea name="start" cols="100" rows="6" id="start" style="width:100%"><?php echo $start?></textarea></td>
     </tr>
     <tr> 
-      <td align="right" class="border" >解释模板（循环）：</td>
+      <td align="right" class="border" >解释（循环）：</td>
       <td class="border" ><textarea name="mids" cols="100" rows="6" id="mids" style="width:100%"><?php echo $mids ?></textarea> 
       </td>
     </tr>
     <tr> 
-      <td align="right" class="border" >解释模板（结束）：</td>
+      <td align="right" class="border" >解释（结束）：</td>
       <td class="border" ><textarea name="ends" cols="100" rows="6" id="ends" style="width:100%"><?php echo $ends ?></textarea></td>
     </tr>
     <tr> 

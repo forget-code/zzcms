@@ -104,6 +104,50 @@ $strout=str_replace("{licence}".$licence."{/licence}",$licence2,$strout) ;
 $strout=str_replace("{licence}".$licence."{/licence}","暂无信息",$strout) ;
 }
 
+
+$pp=strbetween($strout,"{pp}","{/pp}");
+$sql="select * from zzcms_pp where editor='".$editor."' and passed=1 order by id desc limit 0,10";
+$rs = query($sql); 
+$row= num_rows($rs);//返回记录数
+if(!$row){
+$strout=str_replace("{pp}".$pp."{/pp}","暂无信息",$strout) ;
+}else{
+$pp2='';
+while ($row= fetch_array($rs)){
+if (whtml=="Yes"){
+$link="/brand/ppshow-".$row['id'].".htm";
+}else{
+$link="ppshow.php?cpid=".$row['id'] ;
+}
+$pp2 = $pp2. str_replace("{#link}" ,$link,$pp) ;
+$pp2 =str_replace("{#img}",$row['img'],$pp2) ;
+$pp2 =str_replace("{#ppname}",cutstr($row["ppname"],8),$pp2) ;
+$pp2 =str_replace("{#sm}",cutstr(nohtml($row['sm']),200),$pp2) ;
+}
+$strout=str_replace("{pp}".$pp."{/pp}",$pp2,$strout) ;
+}
+
+$news=strbetween($strout,"{news}","{/news}");
+$sql="select * from zzcms_zx where editor='".$editor."'and bigclassname='公司新闻' and passed=1 order by id desc limit 0,10";
+$rs = query($sql); 
+$row= num_rows($rs);  
+if(!$row){
+$strout=str_replace("{news}".$news."{/news}","暂无信息",$strout) ;
+}else{
+$news2='';
+while ($row= fetch_array($rs)){
+if (whtml=="Yes"){
+$link="newsshow-".$row['id'].".htm";
+}else{
+$link="newsshow.php?newsid=".$row['id'] ;
+}
+$news2 = $news2. str_replace("{#link}" ,$link,$news) ;
+$news2 =str_replace("{#title}",cutstr($row["title"],20),$news2) ;
+$news2 =str_replace("{#sendtime}",date("Y-m-d",strtotime($row['sendtime'])),$news2) ;				
+}
+$strout=str_replace("{news}".$news."{/news}",$news2,$strout) ;
+}
+
 function dlxx($editor){
 $sql="select count(*) as total from zzcms_dl where saver='".$editor."' and del=0";
 $rs = query($sql); 
@@ -157,6 +201,8 @@ $str= "暂无信息";
 }
 return $str;
 }
+
+
 
 //guestbook
 $guestbook=strbetween($strout,"{guestbook}","{/guestbook}");

@@ -1,16 +1,13 @@
 <?php
-if(!isset($_SESSION)){session_start();} 
 ob_start();//打开缓冲区，这样输出内容后还可以setcookie 
 include("../inc/conn.php");
 include("../inc/mail_class.php");
 include '../3/ucenter_api/config.inc.php';//集成ucenter
 include '../3/ucenter_api/uc_client/client.php';//集成ucenter
 ?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" lang="zh-CN">
+<!DOCTYPE html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-<meta http-equiv="X-UA-Compatible" content="IE=EmulateIE7" />
 <title></title>
 <link href="../template/<?php echo siteskin; ?>/style.css" rel="stylesheet" type="text/css">
 </head>
@@ -24,7 +21,7 @@ if (openuserreg=="No"){
 showmsg (openuserregwhy); 
 }
 
-checkyzm($_POST["yzm"]);
+//checkyzm($_POST["yzm"]);
 $daohang="网站首页,招商信息,品牌信息,公司简介,资质证书,联系方式,在线留言,招聘信息";
 $founderr=0;
 if ($username!='' && $password!=''){
@@ -52,7 +49,7 @@ $totlenum = $row['total'];
 	}	
 
 if ($somane!=''&& $phone!=''&& $email!=''){
-	checkstr($somane,'hanzi','姓名');
+	checkstr($somane,'quanhanzi','姓名');
 	checkstr($phone,'tel');
 	checkstr($email,'email');
 }else{
@@ -60,6 +57,7 @@ $founderr=1;
 $msg= "<li>联系人、电话、E-mail为必填项！</li>";
 }	
 
+if ($usersf=='公司'){
 if ($comane==''){
 	$founderr=1;
 	$msg= "请输入公司名";
@@ -112,7 +110,7 @@ if ($comane==''){
 	 }
 	 }
 }	
-	if (allowrepeatreg=="No" && $usersf!='个人'){
+	if (allowrepeatreg=="No"){
 	$sql="select comane from zzcms_user where comane='".$comane."' ";
 	$rs = query($sql); 
 	$row= num_rows($rs);//返回记录数
@@ -129,7 +127,7 @@ if ($comane==''){
 			$msg="此名称已存在，系统不允许重复注册用户！";	
 	}
 	}			
-	
+}	
 if ($founderr==1){
 WriteErrMsg($msg);
 }else{
@@ -180,10 +178,10 @@ echo "验证邮件发送失败。";
 
 }else{ //if(checkistrueemail=="Yes" )
 query("INSERT INTO zzcms_user (username,password,passwordtrue,usersf,comane,content,somane,sex,phone,email,img,totleRMB,regdate,lastlogintime)VALUES('$username','".md5($password)."','$password','$usersf','$comane','&nbsp;','$somane','1','$phone','$email','/image/nopic.gif','".jf_reg."','".date('Y-m-d H:i:s')."','".date('Y-m-d H:i:s')."')");
-query("INSERT INTO zzcms_usersetting (username,skin,skin_mobile,swf,daohang)VALUES('$username','tongyong','1','6.swf','$daohang')");
+query("INSERT INTO zzcms_usersetting (username,skin,skin_mobile,swf,daohang)VALUES('$username','".ztskin."','".ztskin_mobile."','6.swf','$daohang')");
 setcookie("UserName",$username,time()+3600*24*365,"/");//直接登录
 setcookie("PassWord",md5($password),time()+3600*24*365,"/");
-session_write_close();
+
 //集成ucenter
 if (bbs_set=='Yes'){
 $uid = uc_user_register($_POST['username'], $_POST['password'], $_POST['email']);

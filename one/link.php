@@ -1,12 +1,10 @@
 <?php
-if(!isset($_SESSION)){session_start();} 
 include("../inc/conn.php");
 include("../inc/top2.php");
 include("../inc/bottom.php");
 include("../label.php");
 if (isset($_REQUEST["action"])=="add"){
 checkyzm($_POST["yzm"]);
-session_write_close();
 $sitename = isset($_POST['sitename'])?$_POST['sitename']:"";
 $url = isset($_POST['url'])?addhttp($_POST['url']):"";
 $logo = isset($_POST['logo'])?addhttp($_POST['logo']):"";

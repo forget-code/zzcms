@@ -3,106 +3,42 @@ error_reporting(0); //加新参数后配置文件中，不用加同名空参数�
 define ("checkadminlogin",1);//当关网站时，如果是管理员登录时使链接正常打开。
 include("admin.php");
 ?>
-<html>
+<!DOCTYPE html>
 <head>
 <title></title>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <link href="style.css" rel="stylesheet" type="text/css">
-<script language = "JavaScript" src="/js/gg.js"></script>
+<script language = "JavaScript" src="../js/gg.js"></script>
 <script language="JavaScript" type="text/JavaScript">	
 function checkform(){
 //定义正则表达式部分
 var strP=/^\d+$/;
-if(!strP.test(document.form1.showadvdate.value)) {
-alert("只能填数字！"); 
-document.form1.showadvdate.focus(); 
-return false; 
-} 
-if(!strP.test(document.form1.jf_reg.value)) {
-alert("只能填数字！"); 
-document.form1.jf_reg.focus(); 
-return false; 
-} 
-if(!strP.test(document.form1.jf_login.value)) {
-alert("只能填数字！"); 
-document.form1.jf_login.focus(); 
-return false; 
-} 
-if(!strP.test(document.form1.jf_addreginfo.value)) {
-alert("只能填数字！"); 
-document.form1.jf_addreginfo.focus(); 
-return false; 
-} 
-if(!strP.test(document.form1.jf_lookmessage.value)) {
-alert("只能填数字！"); 
-document.form1.jf_lookmessage.focus(); 
-return false; 
-} 
-if(!strP.test(document.form1.jf_look_dl.value)) {
-alert("只能填数字！"); 
-document.form1.jf_look_dl.focus(); 
-return false; 
-} 
-if(!strP.test(document.form1.jf_set_adv.value)) {
-alert("只能填数字！"); 
-document.form1.jf_set_adv.focus(); 
-return false; 
-} 
-if(!strP.test(document.form1.jf_set_elite.value)) {
-alert("只能填数字！"); 
-document.form1.jf_set_elite.focus(); 
-return false; 
-} 
-if(!strP.test(document.form1.maximgsize.value)) {
-alert("只能填数字！"); 
-document.form1.maximgsize.focus(); 
-return false; 
-} 
-if(!strP.test(document.form1.maxflvsize.value)) {
-alert("只能填数字！"); 
-document.form1.maxflvsize.focus(); 
-return false; 
-} 
-if(!strP.test(document.form1.pagesize_qt.value)) {
-alert("只能填数字！"); 
-document.form1.pagesize_qt.focus(); 
-return false; 
-} 
-if(!strP.test(document.form1.pagesize_ht.value)) {
-alert("只能填数字！"); 
-document.form1.pagesize_ht.focus(); 
-return false; 
-} 
-if(!strP.test(document.form1.liuyanysnum.value)) {
-alert("只能填数字！"); 
-document.form1.liuyanysnum.focus(); 
-return false; 
-} 
-if(!strP.test(document.form1.cache_update_time.value)) {
-alert("只能填数字！"); 
-document.form1.cache_update_time.focus(); 
-return false; 
-}
-if(!strP.test(document.form1.html_update_time.value)) {
-alert("只能填数字！"); 
-document.form1.html_update_time.focus(); 
-return false; 
-}  
+if(!strP.test(document.form1.showadvdate.value)) {alert("只能填数字！"); document.form1.showadvdate.focus(); return false; } 
+if(!strP.test(document.form1.jf_reg.value)) {alert("只能填数字！"); document.form1.jf_reg.focus(); return false; } 
+if(!strP.test(document.form1.jf_login.value)) {alert("只能填数字！"); document.form1.jf_login.focus(); return false; } 
+if(!strP.test(document.form1.jf_addreginfo.value)) {alert("只能填数字！"); document.form1.jf_addreginfo.focus(); return false; } 
+if(!strP.test(document.form1.jf_lookmessage.value)) {alert("只能填数字！"); document.form1.jf_lookmessage.focus(); return false; } 
+if(!strP.test(document.form1.jf_look_dl.value)) {alert("只能填数字！"); document.form1.jf_look_dl.focus(); return false; } 
+if(!strP.test(document.form1.jf_set_adv.value)) {alert("只能填数字！"); document.form1.jf_set_adv.focus(); return false; } 
+if(!strP.test(document.form1.jf_set_elite.value)) {alert("只能填数字！"); document.form1.jf_set_elite.focus(); return false; } 
+if(!strP.test(document.form1.maximgsize.value)) {alert("只能填数字！"); document.form1.maximgsize.focus(); return false; } 
+if(!strP.test(document.form1.maxflvsize.value)) {alert("只能填数字！"); document.form1.maxflvsize.focus(); return false; } 
+if(!strP.test(document.form1.pagesize_qt.value)) {alert("只能填数字！"); document.form1.pagesize_qt.focus(); return false; } 
+if(!strP.test(document.form1.pagesize_ht.value)) {alert("只能填数字！"); document.form1.pagesize_ht.focus(); return false; } 
+if(!strP.test(document.form1.liuyanysnum.value)) {alert("只能填数字！"); document.form1.liuyanysnum.focus(); return false; } 
+if(!strP.test(document.form1.cache_update_time.value)) {alert("只能填数字！"); document.form1.cache_update_time.focus(); return false; }
+if(!strP.test(document.form1.html_update_time.value)) {alert("只能填数字！"); document.form1.html_update_time.focus(); return false; }  
 }
 </script>
 </head>
 <body>
 <div class="admintitle">网站设置</div>
-<table width="100%" border="0" cellpadding="5" cellspacing="0" class="border">
-  <tr> 
-    <td bgcolor="#FFFFFF" style="color:#999999"><a href="#SiteInfo">基本信息</a> 
-      | <a href="#siteskin">网站风格</a> | <a href="#SiteOption">功能参数</a> | <a href="#SiteOpen">运行状态</a> 
-      | <a href="#stopwords">限制字符</a> |  <a href="wjtset.php">文 件 头</a> | <a href="#sendmail">邮件设置</a> 
-      | <a href="#sendSms">手机短信</a>  <br> <a href="#qiangad">广告设置</a> | <a href="#userjf">积分功能</a> | <a href="#UpFile">上传文件</a> 
-      | <a href="#addimage">添加水印</a> | <a href="#alipay_set">支付接口</a> 
-      | <a href="#qqlogin_set">QQ登录</a> | <a href="#bbs_set">整合Discuz!论坛</a></td>
-  </tr>
-</table>
+<div class="border">
+<a href="#SiteInfo">基本信息</a> <a href="#siteskin">网站风格</a> <a href="#SiteOption">功能参数</a>
+<a href="#SiteOpen">运行状态</a> <a href="#stopwords">限制字符</a> <a href="wjtset.php">文 件 头</a> <a href="#sendmail">邮件设置</a> 
+<a href="#sendSms">手机短信</a><br><a href="#qiangad">广告设置</a> <a href="#userjf">积分功能</a> 
+<a href="#UpFile">上传文件</a> <a href="#addimage">添加水印</a> <a href="#alipay_set">支付接口</a> 
+<a href="#qqlogin_set">QQ登录</a> <a href="#bbs_set">整合Discuz!论坛</a></div>
 <?php
 $action = isset($_POST['action'])?$_POST['action']:'';
 if ($action=="saveconfig") {
@@ -136,7 +72,7 @@ function showconfig(){
       <td align="right" class="border">网站Logo地址</td>
       <td width="70%" class="border"> <input name="img" type="text" id="img" value="<?php echo logourl?>" size="50" maxlength="255">
       (提示：Logo地址前面要加上网址) 
- <table border="0" cellpadding="5" cellspacing="1" bgcolor="#999999">
+ <table border="0" cellpadding="5" cellspacing="1" bgcolor="#999999" style="margin-top:10px">
           <tr> 
             <td align="center" bgcolor="#FFFFFF" id="showimg" onClick="openwindow('/uploadimg_form.php?noshuiyin=1',400,300)"> 
               <?php 
@@ -236,27 +172,26 @@ function showconfig(){
         多选 </label> </td>
     </tr>
     <tr> 
-      <td align="right" class="border"><?php echo channelzs?>产品信息内显示<?php echo channeldl?>留言条数</td>
+      <td align="right" class="border">产品列表页内显留言条数</td>
       <td class="border"> <label><input type="radio" name="showdlinzs" value="Yes" <?php if ( showdlinzs=="Yes" ){ echo  "checked";}?>>
         开  </label>
         <label><input type="radio" name="showdlinzs" value="No" <?php if ( showdlinzs=="No" ){ echo  "checked";}?>>
-        关（<span style="color:#FF0000"><?php echo channelzs.channeldl?>信息量大时建议关闭此功能，避免联表查寻导致<?php echo channelzs?>列表页打开太慢</span>）
-		 </label></td>
+        关<span style="color:#FF0000">留言信息量大时建议关闭此功能，避免联表查寻导致列表页打开太慢</span>		 </label></td>
     </tr>
     <tr>
       <td align="right" class="border">网站缓存更新时间</td>
       <td class="border"><input name="cache_update_time" type="text" id="cache_update_time" value="<?php echo cache_update_time?>" size="4" maxlength="4">
-        天（关闭缓存功能设为0，<span style="color:#FF0000">信息量大时建议开启缓存功能，避免页面打开太慢。</span>）</td>
+        天（关闭缓存功能设为0）<span style="color:#FF0000">信息量大时建议开启缓存功能，避免页面打开太慢。</span></td>
     </tr>
     <tr>
       <td align="right" class="border">静态页更新时间</td>
       <td class="border"><input name="html_update_time" type="text" id="html_update_time" value="<?php echo html_update_time?>" size="4" maxlength="4">
-        天（关闭静态页功能设为0，<span style="color:#FF0000">信息量大时建议开启缓存功能，避免页面打开太慢。</span>）</td>
+        天（关闭静态页功能设为0）<span style="color:#FF0000">信息量大时建议开启缓存功能，避免页面打开太慢。</span></td>
     </tr>
     <tr>
       <td align="right" class="border">发给VIP会员的<?php echo channeldl?>留言延时显示在代理库</td>
       <td class="border"><input name="liuyanysnum" type="text" id="liuyanysnum" value="<?php echo liuyanysnum?>" size="4" maxlength="4">
-        天（如不延时设为0，<span style="color:#FF0000"><?php echo channeldl?>信息量大时建议设为0关闭此功能，避免<?php echo channeldl?>列表页打开太慢</span>）</td>
+        天（如不延时设为0）<span style="color:#FF0000">留言信息量大时建议设为0关闭此功能，避免<?php echo channeldl?>列表页打开太慢</span></td>
     </tr>
     <tr> 
       <td align="right" class="border">个人用户权限管理<a name="usergr_power"></a></td>
@@ -298,13 +233,17 @@ function showconfig(){
         <label><input name="channel[]" type="checkbox"  value="baojia"  <?php if(str_is_inarr(channel,'baojia')=='yes') { echo"checked";}?>>
         行情 </label>
 		 <label><input name="channel[]" type="checkbox"  value="ask"  <?php if(str_is_inarr(channel,'ask')=='yes') { echo"checked";}?>>
-        问答 </label>
-		</td>
+        问答 </label>		</td>
     </tr>
     <tr>
       <td align="right" class="border">产品更多属性设置</td>
       <td class="border"><input name="shuxing_name" type="text" id="shuxing_name" value="<?php echo shuxing_name?>" size="50" maxlength="255">
         （以“|”分开，前台模板中以{#shuxing0}，{#shuxing1}，{#shuxing2}...，这样的标签做调用）</td>
+    </tr>
+    <tr>
+      <td align="right" class="border">投资额度设置</td>
+      <td class="border"><input name="tz" type="text" id="tz" value="<?php echo tz?>" size="50" maxlength="255">
+        （以“|”分开）</td>
     </tr>
     <tr>
       <td align="right" class="border">&nbsp;</td>
@@ -343,10 +282,10 @@ function showconfig(){
       <td colspan="2" align="right" class="admintitle2"><a name="siteskin" id="siteskin"></a>网站风格      </td>
     </tr>
     <tr> 
-      <td align="right" class="border">网站电脑版模板</td>
+      <td align="right" class="border">网站电脑端模板</td>
       <td class="border"><select name="siteskin" id="siteskin">
           <?php
-$dir = opendir("../template/");
+$dir = opendir("../template");
 while(($file = readdir($dir))!=false){
   if ($file!="." && $file!=".." && $file!='test.txt' && strpos($file,".zip")==false && strpos($file,".rar")==false ) { //不读取. ..
 	?>
@@ -356,17 +295,50 @@ while(($file = readdir($dir))!=false){
 }
 closedir($dir);
 ?>
-        </select></td>
+        </select>
+      （如果要在管理后台编辑手机端标签或模板，这里选中手机端模板）</td>
     </tr>
     <tr>
-      <td align="right" class="border">网站手机版模板</td>
+      <td align="right" class="border">网站手机端模板</td>
       <td class="border"><select name="siteskin_mobile" id="siteskin_mobile">
           <?php
-$dir = opendir("../template/mobile");
+$dir = opendir("../template");
+while(($file = readdir($dir))!=false){
+if ($file!="." && $file!=".." && $file!='test.txt' && strpos($file,".zip")==false && strpos($file,".rar")==false  && strpos($file,"mobile")!==false) { //不读取. ..
+	?>
+          <option value="<?php echo $file?>" <?php if (siteskin_mobile==$file){ echo  "selected";}?>><?php echo $file?></option>
+          <?php
+}
+}
+closedir($dir);
+?>
+      </select></td>
+    </tr>
+    <tr>
+      <td align="right" class="border">展厅电脑端默认模板</td>
+      <td class="border"><select name="ztskin" id="ztskin">
+          <?php
+$dir = opendir("../skin");
 while(($file = readdir($dir))!=false){
   if ($file!="." && $file!=".." && $file!='test.txt' && strpos($file,".zip")==false && strpos($file,".rar")==false ) { //不读取. ..
 	?>
-          <option value="<?php echo $file?>" <?php if (siteskin_mobile==$file){ echo  "selected";}?>><?php echo $file?></option>
+          <option value="<?php echo $file?>" <?php if (ztskin==$file){ echo  "selected";}?>><?php echo $file?></option>
+          <?php
+}
+}
+closedir($dir);
+?>
+      </select></td>
+    </tr>
+    <tr>
+      <td align="right" class="border">展厅手机端默认模板</td>
+      <td class="border"><select name="ztskin_mobile" id="ztskin_mobile">
+          <?php
+$dir = opendir("../skin");
+while(($file = readdir($dir))!=false){
+  if ($file!="." && $file!=".." && $file!='test.txt' && strpos($file,".zip")==false && strpos($file,".rar")==false && strpos($file,"mobile")!==false ) { //不读取. ..
+	?>
+          <option value="<?php echo $file?>" <?php if (ztskin_mobile==$file){ echo  "selected";}?>><?php echo $file?></option>
           <?php
 }
 }
@@ -654,7 +626,7 @@ closedir($dir);
     </tr>
     <tr> 
       <td align="right" class="border">水印图片地址</td>
-      <td class="border"><a href="/image/sy.png"></a>
+      <td class="border">
 	  <input name="syurl" type="text" id="syurl" value="<?php echo syurl?>" size="50" maxlength="255">
 	  （必须为png格式的图片，地址前不能加 /）
 	   <script type="text/javascript">
@@ -664,10 +636,10 @@ document.getElementById("syurl").value=value;
 document.getElementById("syimg").innerHTML="<img src='"+value+"' width=120>";
 }
 </script>
-        <table border="0" cellpadding="5" cellspacing="1" bgcolor="#999999">
+        <table border="0" cellpadding="5" cellspacing="1" bgcolor="#999999" style="margin-top:10px">
           <tr>
             <td align="center" bgcolor="#FFFFFF" id="syimg" onClick="openwindow('/uploadimg_form.php?noshuiyin=1&imgid=2',400,300)">
-			<?php echo "<img src='/".syurl."' border=0 width=200 /><br>点击可更换图片";?>			 </td>
+			<?php echo "<img src='/".syurl."' border='0' width='200' /><br>点击可更换图片";?></td>
           </tr>
         </table></td>
     </tr>
@@ -775,8 +747,7 @@ $channel=substr($channel,0,strlen($channel)-1);//去除最后面的"#"
 	$fcontent=$fcontent. "define('sqlpwd','".html_entity_decode($_POST['sqlpwd'])."');//密码\r\n";//html_entity_decode针对&被转变成&amp;
 	$fcontent=$fcontent. "define('sqlhost','".$_POST['sqlhost']."');//连接服务器,本机填localhost，外地填IP地址\r\n";
 	$fcontent=$fcontent. "define('sqlport','".$_POST['sqlport']."');//端口（默认为:3306）\r\n";
-	$fcontent=$fcontent. "define('zzcmsver','Powered By <a target=_blank style=font-weight:bold href=http://www.zzcms.net><font color=#FF6600 face=Arial>ZZ</font><font color=#025BAD face=Arial>CMS8.3</font></a>');//版本\r\n";
-	$fcontent=$fcontent. "define('zzcmsver','');//版本\r\n";
+	$fcontent=$fcontent. "define('zzcmsver','Powered By <a target=_blank style=\"font-weight:bold;letter-spacing:1px;text-shadow:-1px 0 #FFF,0 1px #FFF,1px 0 #FFF,0 -1px #FFF;\" href=http://www.zzcms.net><font color=#FF6600 face=Arial>ZZ</font><font color=#025BAD face=Arial>CMS2018</font></a>');//版本\r\n";
 	$fcontent=$fcontent. "define('sitename','". $_POST['sitename']."') ;//网站名称\r\n";
 	$fcontent=$fcontent. "define('siteurl','". $_POST['siteurl']."') ;//网站地址\r\n";
 	$fcontent=$fcontent. "define('logourl','". $_POST['img']."') ;//Logo地址\r\n";
@@ -811,6 +782,7 @@ $channel=substr($channel,0,strlen($channel)-1);//去除最后面的"#"
 	$fcontent=$fcontent. "define('channel','". $channel."') ;//功能模块开关\r\n";
 	$fcontent=$fcontent. "define('usergr_power','". $usergr_power."') ;//个人用户权限\r\n";
 	$fcontent=$fcontent. "define('shuxing_name','". CutFenGeXian($_POST['shuxing_name'],"|")."') ;//产品更多属性设置\r\n";
+	$fcontent=$fcontent. "define('tz','". CutFenGeXian($_POST['tz'],"|")."') ;//投资额度设置\r\n";	
 	$fcontent=$fcontent. "define('wordsincomane','". CutFenGeXian($_POST['wordsincomane'],"|")."') ;//公司名称中必填行业性关键字\r\n";	
 	$fcontent=$fcontent. "define('lastwordsincomane','". CutFenGeXian($_POST['lastwordsincomane'],"|")."') ;//公司名称中必填公司类型性关键字\r\n";
 	$fcontent=$fcontent. "define('nowordsincomane','". CutFenGeXian($_POST['nowordsincomane'],"|")."') ;//公司名称中禁用关键字\r\n";	
@@ -819,7 +791,9 @@ $channel=substr($channel,0,strlen($channel)-1);//去除最后面的"#"
 	$fcontent=$fcontent. "define('showdlinzs','". $_POST['showdlinzs']."') ;//招商信息内是否显示代理留言数\r\n";
 	$fcontent=$fcontent. "define('zsliststyle','". $_POST['zsliststyle']."') ;//招商列表页默认显示格式\r\n";
 	$fcontent=$fcontent. "define('siteskin','". $_POST['siteskin']."') ;//网站电脑端模板\r\n";	
-	$fcontent=$fcontent. "define('siteskin_mobile','". $_POST['siteskin_mobile']."') ;//网站手机端模板\r\n";	
+	$fcontent=$fcontent. "define('siteskin_mobile','". $_POST['siteskin_mobile']."') ;//网站手机端模板\r\n";
+	$fcontent=$fcontent. "define('ztskin','". $_POST['ztskin']."') ;//展厅电脑端默认模板\r\n";
+	$fcontent=$fcontent. "define('ztskin_mobile','". $_POST['ztskin_mobile']."') ;//展厅手机端默认模板\r\n";	
 	$fcontent=$fcontent. "define('siteskin_usercenter','". $_POST['siteskin_usercenter']."') ;//用户中心样式\r\n";
 	$fcontent=$fcontent. "define('checksqlin','". $_POST['checksqlin']."') ;//是否开启防SQL注入功能\r\n";	
 	$fcontent=$fcontent. "define('cache_update_time','". $_POST['cache_update_time']."') ;//缓存更新周期\r\n";

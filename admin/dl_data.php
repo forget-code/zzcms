@@ -48,7 +48,7 @@ while(($file = readdir($dir))!=false){
  if ($file!="." && $file!="..") { //不读取. ..
     //$f = explode('.', $file);//用$f[0]可只取文件名不取后缀。
 	?>
-    <tr class="bgcolor1" onMouseOver="fSetBg(this)" onMouseOut="fReBg(this)"> 
+    <tr class="trcontent"> 
       <td  > 
         <?php
 		echo "<a>".$file."</a>";

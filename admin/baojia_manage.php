@@ -2,27 +2,25 @@
 include("admin.php");
 include("../inc/fy.php");
 ?>
-<html>
+<!DOCTYPE html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <title></title>
 <link href="style.css" rel="stylesheet" type="text/css">
-<script language="JavaScript" src="/js/gg.js"></script>
+<script language="JavaScript" src="../js/gg.js"></script>
 <?php
 checkadminisdo("baojia");
 
 $action=isset($_REQUEST["action"])?$_REQUEST["action"]:'';
-if( isset($_REQUEST["page"]) && $_REQUEST["page"]!="") {
-    $page=$_REQUEST['page'];
-	checkid($page);
-}else{
-    $page=1;
-}
+if (!isset($page)){$page=1;}
+checkid($page);
+
+if (!isset($b)){$b=0;}
+checkid($b,1);
+
 $shenhe=isset($_REQUEST["shenhe"])?$_REQUEST["shenhe"]:'';
 $keyword=isset($_REQUEST["keyword"])?$_REQUEST["keyword"]:'';
 $kind=isset($_REQUEST["kind"])?$_REQUEST["kind"]:'';
-$b=isset($_REQUEST["b"])?$_REQUEST["b"]:0;
-checkid($b);
 $showwhat=isset($_REQUEST["showwhat"])?$_REQUEST["showwhat"]:'';
 
 if ($action=="pass"){
@@ -76,11 +74,11 @@ echo "<a href=?b=".$row['classid'].">";
 	}else{
 	echo $row["classname"];
 	}
-	echo "</a> | ";  
- }
+	echo "</a>";  
+}
 } 
- ?>
-  </div>
+?>
+</div>
  
 <?php
 $page_size=pagesize_ht;  //每页多少条数据
@@ -90,8 +88,8 @@ $sql2='';
 if ($shenhe=="no") {  		
 $sql2=$sql2." and passed=0 ";
 }
-if ($b<>"") {
-$sql2=$sql2." and classid=".$b;
+if ($b<>0) {
+$sql2=$sql2." and classid='".$b."'";
 }
 
 if ($keyword<>"") {
@@ -124,33 +122,25 @@ if(!$totlenum){
 echo "暂无信息";
 }else{
 ?>
-<form name="myform" id="myform" method="post" action="">
-  <table width="100%" border="0" cellpadding="0" cellspacing="0" class="border">
-    <tr> 
-      <td><input name="submit4" type="submit"  onClick="myform.action='?action=pass';myform.target='_self'" value="【取消/审核】选中的信息"> 
-        <input type="submit" onClick="myform.action='del.php';myform.target='_self';return ConfirmDel()" value="删除选中的信息">
-        <input name="pagename" type="hidden"  value="baojia_manage.php?b=<?php echo $b?>&shenhe=<?php echo $shenhe?>&page=<?php echo $page ?>"> 
-      <input name="tablename" type="hidden"  value="zzcms_baojia"> </td>
-    </tr>
-  </table>
+<form name="myform" id="myform" method="post" action="" onSubmit="return anyCheck(this.form)">
   <table width="100%" border="0" cellpadding="5" cellspacing="1">
-    <tr> 
-      <td width="5%" align="center" class="border"> <label for="chkAll" style="text-decoration: underline;cursor: hand;">全选</label></td>
-      <td width="10%" class="border">类别</td>
-      <td width="10%" class="border">产品</td>
-      <td width="10%" class="border">价格</td>
-      <td width="10%" class="border">区域</td>
-      <td width="10%" class="border">联系人</td>
-      <td width="10%" class="border">电话</td>
-      <td width="10%" class="border">发布人</td>
-      <td width="10%" class="border">发布时间</td>
-      <td width="10%" align="center" class="border">信息状态</td>
-      <td width="5%" align="center" class="border">操作</td>
+    <tr class="trtitle"> 
+      <td width="5%" align="center"> <label for="chkAll" style="cursor: pointer;">全选</label></td>
+      <td width="10%">类别</td>
+      <td width="10%">产品</td>
+      <td width="10%">价格</td>
+      <td width="10%">区域</td>
+      <td width="10%">联系人</td>
+      <td width="10%">电话</td>
+      <td width="10%">发布人</td>
+      <td width="10%">发布时间</td>
+      <td width="10%" align="center">信息状态</td>
+      <td width="5%" align="center">操作</td>
     </tr>
     <?php
 while($row = fetch_array($rs)){
 ?>
-    <tr class="bgcolor1" onMouseOver="fSetBg(this)" onMouseOut="fReBg(this)"> 
+    <tr class="trcontent"> 
       <td align="center"> <input name="id[]" type="checkbox"  value="<?php echo $row["id"]?>">     </td>
       <td><a href="?b=<?php echo $row["classid"]?>" >
 	  <?php
@@ -175,17 +165,15 @@ while($row = fetch_array($rs)){
     <?php
 }
 ?>
-  </table>
-  <table width="100%" border="0" cellpadding="5" cellspacing="0" class="border">
-    <tr> 
-      <td> 
+  </table> 
+  <div class="border"> 
         <input name="chkAll" type="checkbox" id="chkAll" onClick="CheckAll(this.form)" value="checkbox">
-         <label for="chkAll" style="text-decoration: underline;cursor: hand;">全选</label>
+         <label for="chkAll" style="cursor: pointer;">全选</label>
          <input name="submit5" type="submit"  onClick="myform.action='?action=pass';myform.target='_self'" value="【取消/审核】选中的信息"> 
         <input name="submit3" type="submit" onClick="myform.action='del.php';myform.target='_self';return ConfirmDel()" value="删除选中的信息"> 
-      </td>
-    </tr>
-  </table>
+      <input name="pagename" type="hidden"  value="baojia_manage.php?b=<?php echo $b?>&shenhe=<?php echo $shenhe?>&page=<?php echo $page ?>">
+      <input name="tablename" type="hidden"  value="zzcms_baojia">
+  </div>
 </form>
 <div class="border center"><?php echo showpage_admin()?></div>
 <?php

@@ -33,12 +33,8 @@ setcookie("page_size_news",$page_size,time()+3600*24*360);
 	}
 }
 
-if( isset($_GET["page"]) && $_GET["page"]!="") {
-    $page=$_GET['page'];
-	checkid($page,0);
-}else{
-    $page=1;
-}
+$page=isset($page)?$page:1;
+checkid($page);
 $list=strbetween($strout,"{loop}","{/loop}");
 
 $sql="select * from zzcms_zx where editor='".$editor."'and bigclassname='公司新闻' and passed=1 ";

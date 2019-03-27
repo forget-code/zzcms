@@ -1,18 +1,14 @@
 <?php include("admin.php");?>
-<html>
+<!DOCTYPE html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <link href="style.css" rel="stylesheet" type="text/css">
-<script language="JavaScript" src="/js/gg.js"></script>
+<script language="JavaScript" src="../js/gg.js"></script>
 </head>
 <body>
 <?php
 checkadminisdo("badusermessage");
-if (isset($_REQUEST["action"])){
-$action=$_REQUEST["action"];
-}else{
-$action="";
-}
+$action=isset($_REQUEST["action"])?$_REQUEST["action"]:'';
 if ($action<>""){
 	$id="";
 	if(!empty($_POST['id'])){
@@ -46,16 +42,8 @@ query($sql);
 echo "<script>location.href='showbad.php'</script>";
 }
 ?>
-<table width="100%" border="0" cellpadding="0" cellspacing="0">
-  <tr>
-    <td align="center" class="admintitle">不良操作记录</td>
-  </tr>
-</table>
-<table width="100%" border="0" cellpadding="5" cellspacing="0" class="border">
-  <tr>
-    <td align="center"><a href="badip_add.php">添加IP</a></td>
-  </tr>
-</table>
+<div class="admintitle">不良操作记录</div>
+<div class="center border2"><input  type="submit" class="buttons" onClick="javascript:location.href='badip_add.php'" value="添加IP"></div>
 <?php
 $sql="select * from zzcms_bad order by id desc";
 $rs=query($sql);
@@ -65,21 +53,20 @@ echo "暂无信息";
 }else{
 ?>
 <form name="myform" method="post" action="">
-
-  <table width="100%" border="0" cellpadding="5" cellspacing="1">
-    <tr> 
-      <td width="5%" align="center" class="border">ID</td>
-      <td width="10%" class="border">用户名</td>
-      <td width="10%" class="border">IP</td>
-      <td width="10%" class="border">IP状态</td>
-      <td width="10%" class="border">备注</td>
-      <td width="10%" class="border">时间</td>
-      <td width="5%" align="center"class="border">操作</td>
+    <table width="100%" border="0" cellpadding="5" cellspacing="1">
+    <tr class="trtitle"> 
+      <td width="5%" align="center"><label for="chkAll" style="cursor: pointer;">全选</label></td>
+      <td width="10%">用户名</td>
+      <td width="10%">IP</td>
+      <td width="10%">IP状态</td>
+      <td width="10%">备注</td>
+      <td width="10%">时间</td>
+      <td width="5%" align="center">操作</td>
     </tr>
   <?php
 while($row = fetch_array($rs)){
 ?>
-    <tr class="bgcolor1" onMouseOver="fSetBg(this)" onMouseOut="fReBg(this)"> 
+    <tr class="trcontent"> 
       <td align="center" > 
         <input name="id[]" type="checkbox" value="<?php echo $row["id"]?>">
       </td>
@@ -97,14 +84,15 @@ while($row = fetch_array($rs)){
 }
 ?>
   </table>
-  <table width="100%" border="0" cellpadding="5" cellspacing="0" class="border">
-    <tr> 
-    <td> <input name="chkAll" type="checkbox" id="chkAll" onClick="CheckAll(this.form)" value="checkbox">
-        选中所有 
+
+    <div class="border"> <label><input name="chkAll" type="checkbox" id="chkAll" onClick="CheckAll(this.form)" value="checkbox">
+        全选 </label>
         <input name="del" type="submit" value="删除选中的信息" onClick="myform.action='?action=del';myform.target='_self'">
-        <input name="lockip" type="submit" value="封选中的IP" onClick="myform.action='?action=lockip';myform.target='_self'"></td>
-  </tr>
-</table>
+        <input name="lockip" type="submit" value="封选中的IP" onClick="myform.action='?action=lockip';myform.target='_self'">
+        <input name="pagename" type="hidden"  value="showbad.php?page=<?php echo $page ?>">
+        <input name="tablename" type="hidden"  value="zzcms_bad">
+  </div>
+
 </form>
 <?php
 }

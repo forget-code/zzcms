@@ -14,7 +14,8 @@ $editorinzsshow=$row["editor"];//供传值到top.php
 $title=$row['title'];
 $sendtime=date("Y-m-d",strtotime($row['sendtime']));
 $hit=$row["hit"];
-$sm=stripfxg($row["content"],true);
+$content=stripfxg($row["content"],true);
+
 include("top.php");
 include("bottom.php");
 include("left.php");
@@ -36,7 +37,7 @@ $strout=str_replace("{#title}",$title,$strout) ;
 $strout=str_replace("{#comane}",$comane,$strout) ;
 $strout=str_replace("{#hit}",$hit,$strout) ;
 $strout=str_replace("{#sendtime}",$sendtime,$strout) ;
-$strout=str_replace("{#content}",$sm,$strout) ;
+$strout=str_replace("{#content}",$content,$strout) ;
 $strout=str_replace("{#siteskin}",siteskin,$strout) ;
 $strout=str_replace("{#sitename}",sitename,$strout) ;
 $strout=str_replace("{#siteurl}",siteurl,$strout);

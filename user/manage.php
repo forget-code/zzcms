@@ -1,22 +1,60 @@
 ﻿<?php
 include("../inc/conn.php");
 include("check.php");
-$fpath="text/manage.txt";
-$fcontent=file_get_contents($fpath);
-$f_array=explode("|||",$fcontent) ;
 ?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" lang="zh-CN">
+<!DOCTYPE html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-<meta http-equiv="X-UA-Compatible" content="IE=EmulateIE7" />
-<title><?php echo $f_array[0]?></title>
+<title>修改注册信息</title>
 <link href="style/<?php echo siteskin_usercenter?>/style.css" rel="stylesheet" type="text/css">
-<script language = "JavaScript" src="/js/gg.js"></script>
-<script src="/js/swfobject.js" type="text/javascript"></script>
+<script language = "JavaScript" src="../js/gg.js"></script>
+<script src="../js/swfobject.js" type="text/javascript"></script>
 <script>
 function CheckForm(){
-<?php echo $f_array[1]?>
+if (document.myform.province.value==""){
+    alert("请选择公司所在省份！");
+	document.myform.province.focus();
+	return false;
+  } 
+  if (document.myform.city.value==""){
+    alert("请选择公司所在城市！");
+	document.myform.city.focus();
+	return false;
+  } 
+if (document.myform.content.value==""){
+    alert("请填写公司简介！");
+	return false;
+  }
+if (document.myform.content.value=="该公司暂无简介信息"){
+    alert("请填写公司简介！");
+	document.myform.content.focus();
+	return false;
+  }
+if (document.myform.b.value==""){
+    alert("请选择大类！");
+	document.myform.b.focus();
+	return false;
+  } 
+//定义正则表达式部分
+var strP=/^\d+$/;
+if(!strP.test(document.myform.qq.value)  && document.myform.qq.value!="") {
+alert("QQ只能填数字！"); 
+document.myform.qq.focus(); 
+return false; 
+}   
+
+if (document.myform.flv.value != "")//这里输入框不为空
+{
+var FileType = "flv,swf";   //这里是允许的后缀名，注意要小写
+var FileName = document.myform.flv.value
+FileName = FileName.substring(FileName.lastIndexOf('.')+1, FileName.length).toLowerCase(); //这里把后缀名转为小写了，不然一个后缀名会有很多种大小写组合
+if (FileType.indexOf(FileName) == -1){
+	document.myform.flv.focus();
+	document.myform.flv.style.backgroundColor="FFCC00";
+	alert("请填写flv或swf格式的文件地址！");
+	return false;
+	}
+}
 }
 </script>
 </head>
@@ -34,13 +72,16 @@ if ($action=="modify") {
 			$s = isset($_POST['s'])?$_POST['s']:'0';
 			$flv = isset($_POST['flv'])?$_POST['flv']:'';
 			$oldflv = isset($_POST['oldflv'])?$_POST['oldflv']:'';
-			checkstr($somane,'hanzi','联系人');
+			checkstr($img,"upload");//入库前查上传文件地址是否合格
+			checkstr($flv,"upload");//入库前查上传文件地址是否合格
+			checkstr($oldimg,"upload");
+			checkstr($somane,'quanhanzi','联系人');
 			checkstr($mobile,'tel');
 			checkstr($email,'email');	
 			if ($row["usersf"]=="公司"){
 				if ($content==""){//为防止输入空格
 				$founderr=1;
-				$errmsg=$errmsg . $f_array[2];
+				$errmsg=$errmsg ."<li>公司简介不能为空</li>";
 				}
 			}
 			if (allowrepeatreg=='no'){
@@ -48,7 +89,7 @@ if ($action=="modify") {
 			$r=num_rows($rsn);
 			if ($r){
 			$founderr=1;
-			$errmsg=$errmsg . $f_array[3];
+			$errmsg=$errmsg . "<li>此电话号码已被使用！</li>";
 			}
 			}
 			
@@ -77,7 +118,7 @@ if ($action=="modify") {
 				if ($qq<>$oldqq) {
 				query("Update zzcms_main set qq='" . $qq . "' where editor='" . $username . "'");
 				}
-				echo $f_array[4];
+				echo "<SCRIPT language=JavaScript>alert('会员资料修改成功！');location.href='manage.php'</SCRIPT>";
 			}
 }else{
 ?>
@@ -93,68 +134,68 @@ include("left.php");
 </div>
 <div class="right">
 <div class="content">
-<div class="admintitle"><?php echo $f_array[0]?></div>
+<div class="admintitle">修改注册信息</div>
 <FORM name="myform" action="?action=modify" method="post" onSubmit="return CheckForm()">              
           <table width="100%" border="0" cellpadding="3" cellspacing="1">
             <tr> 
-              <td width="15%" align="right" class="border2"><?php echo $f_array[5]?>：</td>
+              <td width="15%" align="right" class="border2">用户名：</td>
               <td width="85%" class="border2"><?php echo $row["username"]?></td>
             </tr>
             <tr> 
-              <td align="right" class="border"><?php echo $f_array[6]?>：</td>
+              <td align="right" class="border">姓名：</td>
               <td class="border"> <input name="somane" class="biaodan" value="<?php echo $row["somane"]?>" size="30" maxLength="50"></td>
             </tr>
             <tr > 
-              <td align="right" class="border2"><?php echo $f_array[7]?>：</td>
+              <td align="right" class="border2">性别：</td>
               <td class="border2"> <input type="radio" value="1" name="sex" <?php if ($row["sex"]==1) { echo "CHECKED";}?>>
-                <?php echo $f_array[8]?>
+               男
 <INPUT type="radio" value="0" name="sex" <?php if ($row["sex"]==0) { echo "CHECKED";}?>>
-               <?php echo $f_array[9]?></td>
+              女</td>
             </tr>
             <tr> 
-              <td align="right" class="border"><?php echo $f_array[10]?>：</td>
+              <td align="right" class="border">E-mail：</td>
               <td class="border"> <input name="email"  class="biaodan" value="<?php echo $row["email"]?>" size="30" maxLength="50"> 
               </td>
             </tr>
             <tr > 
-              <td align="right" class="border2"><?php echo $f_array[11]?>：</td>
+              <td align="right" class="border2">QQ：</td>
               <td class="border2"> <input name="qq" id="qq"  class="biaodan" value="<?php echo $row["qq"]?>" size="30" maxLength="50">
                 <input name="oldqq" type="hidden" id="oldqq" value="<?php echo $row["qq"]?>"></td>
             </tr>
             <tr> 
-              <td align="right" class="border"><?php echo $f_array[12]?>：</td>
+              <td align="right" class="border">QQ绑定登录网站：</td>
               <td class="border">
                 <?php if ($row["qqid"]<>"") { ?>
                 <input name="qqid" type="checkbox" id="qqid" value="1" checked>
-               <?php echo $f_array[13];
+               <?php echo "(已绑定。点击可取消绑定)";
 				}else{
-		echo $f_array[14];
+		echo "未绑定QQ登录";
 	}
 		?>
               </td>
             </tr>
             <tr > 
-              <td align="right" class="border2"><?php echo $f_array[15]?>：</td>
+              <td align="right" class="border2">手机：</td>
               <td class="border2"> 
                 <input name="mobile" id="mobile"  class="biaodan" value="<?php echo $row["mobile"]?>" size="30" maxLength="50"></td>
             </tr>
             <tr > 
               <td align="right" class="border">&nbsp;</td>
               <td class="border"> 
-                <input name="Submit2"   type="submit" class="buttons" id="Submit2" value="<?php echo $f_array[16]?>"></td>
+                <input name="Submit2"   type="submit" class="buttons" id="Submit2" value="修改"></td>
             </tr>
           </table>
 	  <?php 
 	  if ($row["usersf"]=="公司"){
 	  ?>     
- <div class="admintitle"><?php echo $f_array[17]?></div>
+ <div class="admintitle">修改公司信息</div>
         <table width="100%" border="0" cellpadding="3" cellspacing="1">
           <tr> 
-            <td width="15%" align="right" class="border2"><?php echo $f_array[18]?>：</td>
+            <td width="15%" align="right" class="border2">公司名称：</td>
             <td width="85%" class="border2"><?php echo $row["comane"]?></td>
           </tr>
           <tr> 
-            <td align="right" class="border"><?php echo $f_array[19]?>：</td>
+            <td align="right" class="border">企业类别：</td>
             <td class="border"><?php
 $sqln = "select classid,parentid,classname from zzcms_userclass where parentid<>'0' order by xuhao asc";
 $rsn=query($sqln);
@@ -174,53 +215,48 @@ subcat[<?php echo $count?>] = new Array("<?php echo trim($rown["classname"])?>",
 onecount=<?php echo $count ?>;
 function changelocation(locationid){
     document.myform.s.length = 1; 
-    var locationid=locationid;
-    var i;
-    for (i=0;i < onecount; i++)
-        {
-            if (subcat[i][1] == locationid){ 
-                document.myform.s.options[document.myform.s.length] = new Option(subcat[i][0], subcat[i][2]);
-            }        
-        }
+    for (i=0;i < onecount; i++){
+            if (subcat[i][1] == locationid){ document.myform.s.options[document.myform.s.length] = new Option(subcat[i][0], subcat[i][2]);}        
+    }
     }</script>
-              <select name="b" size="1" id="b"  class="biaodan" onchange="changelocation(document.myform.b.options[document.myform.b.selectedIndex].value)">
-                <option value="0" selected="selected"><?php echo $f_array[20]?></option>
+              <select name="b" size="1" id="b"  class="biaodan" onChange="changelocation(document.myform.b.options[document.myform.b.selectedIndex].value)">
+                <option value="0" selected="selected">请选择大类</option>
                 <?php
 	$sqln = "select classid,classname from zzcms_userclass where  parentid='0' order by xuhao asc";
     $rsn=query($sqln);
 	while($rown = fetch_array($rsn)){
 	?>
-                <option value="<?php echo trim($rown["classid"])?>" <?php if ($rown["classid"]==$row["bigclassid"]) { echo "selected";}?>><?php echo trim($rown["classname"])?></option>
+<option value="<?php echo $rown["classid"]?>" <?php if ($rown["classid"]==$row["bigclassid"]) { echo "selected";}?>><?php echo $rown["classname"]?></option>
                 <?php
 				}
 				?>
               </select>
               <select name="s"  class="biaodan">
-                <option value="0"><?php echo $f_array[21]?></option>
+                <option value="0">请选择小类</option>
                 <?php
 $sqln="select classid,classname from zzcms_userclass  where parentid='" .$row["bigclassid"]."' order by xuhao asc";
 $rsn=query($sqln);
 $rown= num_rows($rsn);//返回记录数
 if(!$rown){
 ?>
-                <option value="" ><?php echo $f_array[22]?></option>
+                <option value="" >下无子类</option>
                 <?php
 }else{
 while($rown = fetch_array($rsn)){
 ?>
-                <option value="<?php echo $rown["classid"]?>" <?php if ($rown["classid"]==$row["smallclassid"]) { echo "selected";}?>><?php echo $rown["classname"]?></option>
-                <?php 	  
+<option value="<?php echo $rown["classid"]?>" <?php if ($rown["classid"]==$row["smallclassid"]) { echo "selected";}?>><?php echo $rown["classname"]?></option>
+<?php 	  
 }
 }
 ?>
               </select></td>
           </tr>
           <tr class="border" > 
-            <td align="right" class="border2"><?php echo $f_array[23]?>：</td>
+            <td align="right" class="border2">所在地区：</td>
             <td class="border2"><select name="province" id="province"  class="biaodan"></select>
 <select name="city" id="city"  class="biaodan"></select>
 <select name="xiancheng" id="xiancheng"  class="biaodan"></select>
-<script src="/js/area.js"></script>
+<script src="../js/area.js"></script>
 <script type="text/javascript">
 new PCAS('province', 'city', 'xiancheng', '<?php echo $row['province']?>', '<?php echo $row["city"]?>', '<?php echo $row["xiancheng"]?>');
 </script>
@@ -228,32 +264,32 @@ new PCAS('province', 'city', 'xiancheng', '<?php echo $row['province']?>', '<?ph
   </td>
           </tr>
           <tr> 
-            <td align="right" class="border"><?php echo $f_array[24]?>：</td>
+            <td align="right" class="border">公司地址：</td>
             <td class="border"> <input name="address" id="address" class="biaodan" value="<?php echo $row["address"]?>" size="30" maxlength="50"> 
             </td>
           </tr>
           <tr > 
-            <td align="right" class="border2"><?php echo $f_array[25]?>：</td>
+            <td align="right" class="border2">公司网站：</td>
             <td class="border2"> <input name="homepage" id="homepage"  class="biaodan" value="<?php echo $row["homepage"]?>" size="30" maxLength="100"></td>
           </tr>
           <tr > 
-            <td align="right" class="border"><?php echo $f_array[26]?>：</td>
+            <td align="right" class="border">公司电话：</td>
             <td class="border"> <input name="phone"  class="biaodan" value="<?php echo $row["phone"]?>" size="30" maxLength="50"></td>
           </tr>
           <tr > 
-            <td align="right" class="border2"><?php echo $f_array[27]?>：</td>
+            <td align="right" class="border2">公司传真：</td>
             <td class="border2"> <input name="fox"  class="biaodan" value="<?php echo $row["fox"]?>" size="30" maxLength="50"></td>
           </tr>
           <tr> 
-            <td align="right" class="border2"><?php echo $f_array[28]?>：</td>
+            <td align="right" class="border2">公司简介：</td>
             <td class="border2"> 
 			<textarea name="content" id="content"><?php echo stripfxg($row["content"],true) ?></textarea> 
-             <script type="text/javascript" src="/3/ckeditor/ckeditor.js"></script>
+             <script type="text/javascript" src="../3/ckeditor/ckeditor.js"></script>
 			  <script type="text/javascript">CKEDITOR.replace('content');</script>   
             </td>
           </tr>
           <tr> 
-            <td height="50" align="right" class="border"> <?php echo $f_array[29]?>：<br> 
+            <td height="50" align="right" class="border"> 公司形象图片： 
               <input name="img" type="hidden" id="img" value="<?php echo $row["img"]?>">
               <input name="oldimg" type="hidden" id="oldimg" value="<?php echo $row["img"]?>">
              </td>
@@ -263,9 +299,9 @@ new PCAS('province', 'city', 'xiancheng', '<?php echo $row['province']?>', '<?ph
                   <td align="center" bgcolor="#FFFFFF" id="showimg" onClick="openwindow('/uploadimg_form.php',400,300)"> 
                     <?php
 				  if($row["img"]<>"" && $row["img"]<>"/image/nopic.gif"){
-				  echo "<img src='".$row["img"]."' border=0 width=200 /><br>".$f_array[30];
+				  echo "<img src='".$row["img"]."' border=0 width=120 /><br>点击可更换";
 				  }else{
-				  echo "<input name='Submit2' type='button'  value='". $f_array[31]."'/>";
+				  echo "<input name='Submit2' type='button'  value='上传图片'/>";
 				  }
 				  ?>
                   </td>
@@ -274,7 +310,7 @@ new PCAS('province', 'city', 'xiancheng', '<?php echo $row['province']?>', '<?ph
           </tr>
       
           <tr> 
-            <td align="right" class="border2" ><?php echo $f_array[32]?>： 
+            <td align="right" class="border2" >公司形象视频上传： 
               <input name="flv" type="hidden" id="flv" value="<?php echo $row["flv"]?>" />
               <input name="oldflv" type="hidden" id="oldflv" value="<?php echo $row["flv"]?>">
               </td>
@@ -301,9 +337,9 @@ if (check_user_power("uploadflv")=="yes"){
 				 }elseif (substr($row["flv"],-3)=="swf") {
 				 echo "<embed src='".$row["flv"]."' quality='high' pluginspage='http://www.macromedia.com/go/getflashplayer' type='application/x-shockwave-flash' width=200 height=200></embed>";
 				 }
-			echo "<br/>".$f_array[33];
+			echo "<br/>点击重新上传视频";
 			}else{
-			echo "<input name='Submit2' type='button'  value='".$f_array[34]."'/>";
+			echo "<input name='Submit2' type='button'  value='添加视频'/>";
 			}
 				  
 				  ?>
@@ -315,7 +351,9 @@ if (check_user_power("uploadflv")=="yes"){
 		  ?>
               <table width="140" height="140" border="0" cellpadding="5" cellspacing="1" bgcolor="#999999">
                 <tr align="center" bgcolor="#FFFFFF"> 
-                  <td onclick="javascript:window.location.href='vip_add.php'"> <?php echo $f_array[35]?></td>
+                  <td onClick="javascript:window.location.href='vip_add.php'"> 
+				  <p><img src="../image/jx.gif" width="48" height="48" /><br />仅限收费会员</p><p><span class='buttons'>现在审请？</span><br /></p>
+				  </td>
                 </tr>
               </table>
 			 <?php
@@ -326,7 +364,7 @@ if (check_user_power("uploadflv")=="yes"){
          
           <tr> 
             <td class="border">&nbsp;</td>
-            <td height="40" class="border"> <input name=Submit   type=submit class="buttons" id="Submit" value="<?php echo $f_array[16]?>"> 
+            <td height="40" class="border"> <input name=Submit   type=submit class="buttons" id="Submit" value="修改"> 
             </td>
           </tr>
         </table>
@@ -340,7 +378,6 @@ if (check_user_power("uploadflv")=="yes"){
 </div>
 <?php
 }
-unset ($f_array);
 ?>
 </body>
 </html>

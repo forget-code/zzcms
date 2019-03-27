@@ -2,12 +2,12 @@
 include("admin.php");
 include("../inc/fy.php");
 ?>
-<html>
+<!DOCTYPE html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <title></title>
 <link href="style.css" rel="stylesheet" type="text/css">
-<script language="JavaScript" src="/js/gg.js"></script>
+<script language="JavaScript" src="../js/gg.js"></script>
 <?php
 checkadminisdo("zx");
 $action=isset($_REQUEST["action"])?$_REQUEST["action"]:'';
@@ -43,13 +43,8 @@ echo "<script>location.href='?b=".$b."&keyword=".$keyword."&page=".$page."'</scr
 </head>
 <body>
 <div class="admintitle">资讯信息管理</div>
-<table width="100%" border="0" cellpadding="5" cellspacing="0">
-  <tr> 
-      <td class="border">
-<table width="100%" border="0" cellspacing="0" cellpadding="0">
-        <tr>
-            <td><input name="submit3" type="submit" class="buttons" onClick="javascript:location.href='zx_add.php'" value="发布资讯信息"></td>
-            <td align="right"> 
+<div class="border">
+<span style="float:right"> 
 			  <form name="form1" method="post" action="?">
               <input type="radio" name="kind" value="editor" <?php if ($kind=="editor") { echo "checked";}?>>
               按发布人 
@@ -58,31 +53,27 @@ echo "<script>location.href='?b=".$b."&keyword=".$keyword."&page=".$page."'</scr
               <input name="keyword" type="text" id="keyword" value="<?php echo $keyword?>"> 
               <input type="submit" name="Submit" value="查寻">
 			  </form>
-            </td>
-          </tr>
-        </table> </td>
-    
-  </tr>
-  <tr> 
-    <td class="border2">
+            </span>
+			 <input name="submit3" type="submit" class="buttons" onClick="javascript:location.href='zx.php?do=add'" value="发布资讯信息">
+</div>
+<div class="border2">
  
-    <?php	
-$sql="select classid,classname from zzcms_zxclass where parentid=0 order by xuhao";
-$rs = query($sql); 
+    <?php
+$str="";
+$rs = query("select classid,classname from zzcms_zxclass where parentid=0 order by xuhao"); 
 while($row = fetch_array($rs)){
-echo "<a href=?b=".$row['classid'].">";  
+$str=$str. "<a href=?b=".$row['classid'].">";  
 	if ($row["classid"]==$b) {
-	echo "<b>".$row["classname"]."</b>";
+	$str=$str."<b>".$row["classname"]."</b>";
 	}else{
-	echo $row["classname"];
+	$str=$str.$row["classname"];
 	}
-	echo "</a> | ";  
- }
+	$str=$str."</a>";  
+}
+if ($str==""){echo '暂无分类';}else{echo $str;} 
  ?>
+</div>
 
-	</td>
-  </tr>
-</table>
 <?php
 $page_size=pagesize_ht;  //每页多少条数据
 $offset=($page-1)*$page_size;
@@ -124,33 +115,24 @@ if(!$totlenum){
 echo "暂无信息";
 }else{
 ?>
-<form name="myform" method="post" action="">
-<table width="100%" border="0" cellpadding="5" cellspacing="0" class="border">
-    <tr> 
-      <td> 
-        
-          <input name="submit4" type="submit" onClick="myform.action='?action=pass'" value="【取消/审核】选中的信息">
-        <input name="submit42" type="submit" onClick="myform.action='del.php';myform.target='_self';return ConfirmDel()" value="删除选中的信息"> 
-        <input name="pagename" type="hidden"  value="zx_manage.php?b=<?php echo $b?>&shenhe=<?php echo $shenhe?>&page=<?php echo $page ?>"> 
-        <input name="tablename" type="hidden"  value="zzcms_zx"> </td>
-    </tr>
-  </table>
-  <table width="100%" border="0" cellspacing="1" cellpadding="3">
-    <tr> 
-      <td width="5%" align="center" class="border">  <label for="chkAll" style="text-decoration: underline;cursor: hand;">全选</label> </td>
-      <td width="10%" class="border">所属类别</td>
-      <td width="20%" class="border">标题</td>
-      <td width="10%" class="border">img</td>
-      <td width="5%" align="center" class="border">信息状态</td>
-      <td width="5%" align="center" class="border">发布时间</td>
-      <td width="10%" align="center" class="border">发布人</td>
-      <td width="5%" align="center" class="border">点击次数</td>
-      <td width="5%" align="center" class="border">操作</td>
+<form name="myform" method="post" action="" onSubmit="return anyCheck(this.form)"> 
+  
+  <table width="100%" border="0" cellspacing="1" cellpadding="5">
+    <tr class="trtitle"> 
+      <td width="2%" align="center">  <label for="chkAll" style="cursor: pointer;">全选</label> </td>
+      <td width="10%" >所属类别</td>
+      <td width="20%" >标题</td>
+      <td width="10%" >img</td>
+      <td width="5%" align="center">信息状态</td>
+      <td width="5%" align="center">发布时间</td>
+      <td width="10%" align="center">发布人</td>
+      <td width="5%" align="center">点击次数</td>
+      <td width="5%" align="center">操作</td>
     </tr>
 <?php
 while($row = fetch_array($rs)){
 ?>
-    <tr class="bgcolor1" onMouseOver="fSetBg(this)" onMouseOut="fReBg(this)"> 
+    <tr class="trcontent"> 
       <td align="center" class="docolor"> <input name="id[]" type="checkbox" id="id" value="<?php echo $row["id"]?>"></td>
       <td ><a href="?b=<?php echo $row["bigclassid"]?>"><?php echo $row["bigclassname"]?></a> - 
 	  <a href="?b=<?php echo $row["bigclassid"]?>&s=<?php echo $row["smallclassid"]?>"><?php echo $row["smallclassname"]?></a> </td>
@@ -161,26 +143,23 @@ while($row = fetch_array($rs)){
       <td align="center" title="<?php echo $row["sendtime"]?>"><?php echo date("Y-m-d",strtotime($row["sendtime"]))?></td>
       <td align="center"><?php echo $row["editor"]?></td>
       <td align="center"><?php echo $row["hit"]?></td>
-      <td align="center" class="docolor"><a href="zx_modify.php?id=<?php echo $row["id"]?>&b=<?php echo $b?>&page=<?php echo $page?>">修改</a></td>
+      <td align="center" class="docolor"><a href="zx.php?do=modify&id=<?php echo $row["id"]?>&b=<?php echo $b?>&page=<?php echo $page?>">修改</a></td>
     </tr>
     <?php
 }
 ?>
   </table>
-  <table width="100%" border="0" cellpadding="5" cellspacing="0" class="border">
-    <tr> 
-      <td> <input name="chkAll" type="checkbox" id="chkAll" onClick="CheckAll(this.form)" value="checkbox">
+  <div class="border"> <input name="chkAll" type="checkbox" id="chkAll" onClick="CheckAll(this.form)" value="checkbox">
         <label for="chkAll">全选</label>
         <input name="submit5" type="submit" onClick="myform.action='?action=pass'" value="【取消/审核】选中的信息">
         <input name="submit422" type="submit" onClick="myform.action='del.php';myform.target='_self';return ConfirmDel()" value="删除选中的信息"> 
-      </td>
-    </tr>
-  </table>
+      <input name="pagename" type="hidden"  value="zx_manage.php?b=<?php echo $b?>&shenhe=<?php echo $shenhe?>&page=<?php echo $page ?>">
+      <input name="tablename" type="hidden"  value="zzcms_zx">
+  </div>
 </form>
 <div class="border center"><?php echo showpage_admin()?></div>
 <?php
 }
-
 ?>
 </body>
 </html>

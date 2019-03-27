@@ -6,25 +6,29 @@ include ("../3/mobile_msg/inc.php");
 //include ("../inc/top2.php");
 //include ("../inc/bottom.php");
 ?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" lang="zh-CN">
+<!DOCTYPE html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-<meta http-equiv="X-UA-Compatible" content="IE=EmulateIE7" />
 <title></title>
 <link href="../template/<?php echo siteskin?>/style.css" rel="stylesheet" type="text/css">
 <body>
 <div class="main" >
 <?php
 //echo sitetop();
-checkyzm($_POST["yzm"]);
+//checkyzm($_POST["yzm"]);
+
+//if ($_POST['token'] != $_COOKIE['token'] || $_POST['token']=='' ){    
+//showmsg('非法提交','back');
+//}
+
 if ($_POST['token'] != $_SESSION['token'] || $_POST['token']=='' ){    
 showmsg('非法提交','back');
 }else{
 unset($_SESSION['token']);
 }
+session_write_close();
 
-checkid($bigclassid);
+checkid($bigclassid,1);
 checkid($cpid);
 $province="";
 if(!empty($_POST['province'])){
@@ -39,14 +43,14 @@ $province='全国';
 $city = isset($_POST['city'])?$_POST['city']:"";
 $contents=$_POST["contents"];
 $company = isset($_POST['dlsf'])?$_POST['dlsf']:"";
-if ($company=="个人"){
+if ($company=="个人" || $company==""){
 $companyname="";
 }
 $dlsname=$_POST["name"];
 $saver=$_POST["fbr"];
 
-checkstr($dlsname,'hanzi','联系人',$_SERVER['HTTP_REFERER']);
-checkstr($tel,'tel','',$_SERVER['HTTP_REFERER']);
+checkstr($dlsname,'quanhanzi','联系人',$_SERVER['HTTP_REFERER']);
+checkstr($tel,'tel','电话号码',$_SERVER['HTTP_REFERER']);
 
 $rs=query("select groupid from zzcms_user where username='".$saver."' ");
 $row=fetch_array($rs);
@@ -105,7 +109,6 @@ showmsg('成功提交',$_SERVER['HTTP_REFERER']);
 }
 //}
 }
-session_write_close();
 ?>
 </div>
 </body>

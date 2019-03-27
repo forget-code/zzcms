@@ -204,26 +204,15 @@ if ($row){
 	$smallclassid=$row["classid"];
 }
 }
-
-if( isset($_GET["page"]) && $_GET["page"]!="") {
-    $page=$_GET['page'];
-	checkid($page);
-}else{
-    $page=1;
-}
-
+if( isset($_GET["page"]) && $_GET["page"]!="") {$page=$_GET['page'];}else{$page=1;}
+checkid($page);
 		function formbigclass(){
 		$str="";
         $sql = "select classzm,classname from zzcms_zsclass where parentid=0";
         $rs=query($sql);
-		$row=num_rows($rs);
-		if (!$row){
-		$str= "请先添加类别名称。";
-		}else{
 			while($row=fetch_array($rs)){
 			$str=$str. "<a href=?b=".$row["classzm"].">".$row["classname"]."</a>&nbsp;&nbsp;";
 			}
-		}
 		return $str;
 		}
 		
@@ -232,12 +221,9 @@ if( isset($_GET["page"]) && $_GET["page"]!="") {
 		$str="";
         $sql="select classzm,classname from zzcms_zsclass where parentid='" .$b. "' order by xuhao asc";
         $rs=query($sql);
-		$row=num_rows($rs);
-		if ($row){
 			while($row=fetch_array($rs)){
 			$str=$str. "<a href=?s=".$row["classzm"].">".$row["classname"]."</a>&nbsp;&nbsp;";
 			}
-		}	
 		return $str;
 		}
 		}	
@@ -400,19 +386,22 @@ $totlenum = $row['total'];
 $offset=($page-1)*$page_size;//$page_size在上面被设为COOKIESS 
 $totlepage=ceil($totlenum/$page_size);
 
-$sql="select id,proname,prouse,shuxing_value,img,province,city,xiancheng,sendtime,editor,elite,userid,comane,qq,groupid,renzheng,tag from zzcms_main where passed=1 ";
+$sql="select id,proname,prouse,shuxing_value,img,tz,province,city,xiancheng,province_user,city_user,xiancheng_user,sendtime,editor,elite,userid,comane,qq,groupid,renzheng,tag from zzcms_main where passed=1 ";
 $sql=$sql.$sql2;
 $sql=$sql." order by groupid desc,elite desc,".$px." desc limit $offset,$page_size";
 //echo $sql;
 $rs = query($sql); 
 
 $zs=strbetween($strout,"{zs}","{/zs}");
-$list_list=strbetween($strout,"{loop_list}","{/loop_list}");
-$list_window=strbetween($strout,"{loop_window}","{/loop_window}");
+$loop_list=strbetween($strout,"{loop_list}","{/loop_list}");
+$loop_window=strbetween($strout,"{loop_window}","{/loop_window}");
+
 if ($ys=="window"){
-$proname_num=strbetween($list_window,"{#proname:","}");
+$proname_num=strbetween($loop_window,"{#proname:","}");
+$prouse_num=strbetween($loop_window,"{#prouse:","}");
 }else{
-$proname_num=strbetween($list_list,"{#proname:","}");
+$proname_num=strbetween($loop_list,"{#proname:","}");
+$prouse_num=strbetween($loop_list,"{#prouse:","}");
 }
 
 if(!$totlenum){
@@ -423,19 +412,24 @@ $i=0;
 $list2='';
 	while($row= fetch_array($rs)){
 	if ($ys=="window"){
-	$list2 = $list2. str_replace("{#id}",$row["id"],$list_window) ;
+	$list2 = $list2. str_replace("{#id}",$row["id"],$loop_window) ;
 	}else{
-	$list2 = $list2. str_replace("{#id}",$row["id"],$list_list) ;
+	$list2 = $list2. str_replace("{#id}",$row["id"],$loop_list) ;
 	}
 	$list2 =str_replace("{#i}" ,$i,$list2) ;
 	$list2 =str_replace("{#url}" ,getpageurl("zs",$row["id"]),$list2) ;
 	$list2 =str_replace("{#proname:".$proname_num."}",cutstr($row["proname"],$proname_num),$list2) ;
+	$list2 =str_replace("{#prouse:".$prouse_num."}",cutstr($row["prouse"],$prouse_num),$list2) ;
 	$list2 =str_replace("{#img}" ,getsmallimg($row["img"]),$list2) ;
 	$list2 =str_replace("{#imgbig}" ,$row["img"],$list2) ;
 	$list2 =str_replace("{#comane}" ,$row["comane"],$list2) ;
 	$list2 =str_replace("{#province}" ,$row["province"],$list2) ;
 	$list2 =str_replace("{#city}" ,$row["city"],$list2) ;
 	$list2 =str_replace("{#xiancheng}" ,$row["xiancheng"],$list2) ;
+	$list2 =str_replace("{#tz}",$row["tz"],$list2);
+	$list2 =str_replace("{#province_company}",$row["province_user"],$list2) ;
+	$list2 =str_replace("{#city_company}",$row["city_user"],$list2) ;
+	$list2 =str_replace("{#xiancheng_company}",$row["xiancheng_user"],$list2) ;
 	$list2 =str_replace("{#groupid}" ,$row["groupid"],$list2) ;
 	$list2 =str_replace("{#userid}" ,$row["userid"],$list2) ;
 	$list2 =str_replace("{#zturl}",getpageurlzt($row["editor"],$row["userid"]),$list2) ;//展厅地址
@@ -459,10 +453,17 @@ $list2='';
 	$list2 =str_replace("{#qq}","",$list2) ;
 	}	
 	
+	if ($row["shuxing_value"]==''){
+	for ($a=0; $a< 6;$a++){
+	$list2=str_replace("{#shuxing".$a."}",'',$list2);
+	}
+	}else{
 	$shuxing_value = explode("|||",$row["shuxing_value"]);
 	for ($n=0; $n< count($shuxing_value);$n++){
 	$list2=str_replace("{#shuxing".$n."}",$shuxing_value[$n],$list2);
 	}
+	}
+	
 	$list2 =str_replace("{#prouse}" ,cutstr($row["prouse"],20),$list2) ;
 	$list2 =str_replace("{#sendtime}" ,$row["sendtime"],$list2) ;
 
@@ -482,11 +483,11 @@ $list2='';
 	$i=$i+1;
 	}
 if ($ys=="window"){	
-$strout=str_replace("{loop_window}".$list_window."{/loop_window}",$list2,$strout) ;
-$strout=str_replace("{loop_list}".$list_list."{/loop_list}","",$strout) ;
+$strout=str_replace("{loop_window}".$loop_window."{/loop_window}",$list2,$strout) ;
+$strout=str_replace("{loop_list}".$loop_list."{/loop_list}","",$strout) ;
 }else{
-$strout=str_replace("{loop_list}".$list_list."{/loop_list}",$list2,$strout) ;
-$strout=str_replace("{loop_window}".$list_window."{/loop_window}","",$strout) ;
+$strout=str_replace("{loop_list}".$loop_list."{/loop_list}",$list2,$strout) ;
+$strout=str_replace("{loop_window}".$loop_window."{/loop_window}","",$strout) ;
 }
 $strout=str_replace("{#fenyei}",showpage1(),$strout) ;
 $strout=str_replace("{zs}","",$strout) ;

@@ -1,14 +1,11 @@
 <?php
-if(!isset($_SESSION)){session_start();} 
 ob_start();//打开缓冲区，这样输出内容后还可以setcookie
 include("../inc/conn.php"); 
 ?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" lang="zh-CN">
+<!DOCTYPE html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
-<meta http-equiv="X-UA-Compatible" content="IE=EmulateIE7" />
-<link href="/template/<?php echo siteskin?>/style.css" rel="stylesheet" type="text/css">
+<link href="../template/<?php echo siteskin?>/style.css" rel="stylesheet" type="text/css">
 </head>
 <body>
 正在登录中，请稍候……
@@ -25,7 +22,7 @@ if ($row){
 $jgsj=jgsj/60;
 showmsg("密码错误次数过多，请于".$jgsj."分钟后再试！");
 }
-checkyzm($_POST["yzm"]);
+//checkyzm($_POST["yzm"]);
 $go=0;
 $username=nostr(trim($_POST["username"]));
 $password=md5(trim($_POST["password"]));
@@ -51,11 +48,11 @@ if(!$row){
 			if ($rown){
 				$rown= fetch_array($rsn);	
 				if ($rown['count']>=trytimes && strtotime(date("Y-m-d H:i:s"))-strtotime($rown['sendtime'])>jgsj){//15分钟前登录过的归0
-				query("UPDATE zzcms_login_times SET count = 0 WHERE ip='$ip'");
+				query("update zzcms_login_times set count = 0 where ip='$ip'");
 				}
-			query("UPDATE zzcms_login_times SET count = count+1,sendtime='".date('Y-m-d H:i:s')."' WHERE ip='$ip'");//有记录的更新
+			query("update zzcms_login_times set count = count+1,sendtime='".date('Y-m-d H:i:s')."' where ip='$ip'");//有记录的更新
 			}else{
-			query("INSERT INTO zzcms_login_times (count,sendtime,ip)VALUES(1,'".date('Y-m-d H:i:s')."','$ip')");
+			query("insert into zzcms_login_times (count,sendtime,ip)values(1,'".date('Y-m-d H:i:s')."','$ip')");
 			}
 		
 		$sqln="select * from zzcms_login_times where ip='$ip'";
@@ -79,15 +76,15 @@ if(!$row){
 		echo "<script>alert('用户被锁定！');history.go(-1)</script>";
 		}else{
 		query("delete from zzcms_login_times where ip='$ip'");//登录成功后，把登录次数记录删了
-		query("UPDATE zzcms_user SET showlogintime = lastlogintime WHERE username='".$username."'");//更新上次登录时间
-		query("UPDATE zzcms_user SET showloginip = loginip WHERE username='".$username."'");//更新上次登录IP
-		query("UPDATE zzcms_user SET logins = logins+1 WHERE username='".$username."'");
-		query("UPDATE zzcms_user SET loginip = '".getip()."' WHERE username='".$username."'");//更新最后登录IP
-		if (strtotime(date("Y-m-d H:i:s"))-strtotime($row['lastlogintime'])>86400){
-		query("UPDATE zzcms_user SET totleRMB = totleRMB+".jf_login." WHERE username='".$username."'");//登录时加积分
+		query("update zzcms_user set showlogintime = lastlogintime where username='".$username."'");//更新上次登录时间
+		query("update zzcms_user set showloginip = loginip where username='".$username."'");//更新上次登录IP
+		query("update zzcms_user set logins = logins+1 where username='".$username."'");
+		query("update zzcms_user set loginip = '".getip()."' where username='".$username."'");//更新最后登录IP
+		if (date('Y-m-d')>date('Y-m-d',strtotime($row['lastlogintime']))){
+		query("update zzcms_user set totleRMB = totleRMB+".jf_login." where username='".$username."'");//登录时加积分
 		query("insert into zzcms_pay (username,dowhat,RMB,mark,sendtime) values('$username','每天登录用户中心送积分','+".jf_login."','','".date('Y-m-d H:i:s')."')");//记录积分
 		}
-		query("UPDATE zzcms_user SET lastlogintime = '".date('Y-m-d H:i:s')."' WHERE username='".$username."'");//更新最后登录时间
+		query("update zzcms_user set lastlogintime = '".date('Y-m-d H:i:s')."' where username='".$username."'");//更新最后登录时间
 		
 		if ($CookieDate==1){
 		setcookie("UserName",$username,time()+3600*24*365,"/");
@@ -124,7 +121,7 @@ if (bbs_set=='Yes'){
 		}
 		}
 }	
-session_write_close();			
+	
 ?>
 </body>
 </html>

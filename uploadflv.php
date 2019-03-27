@@ -1,9 +1,7 @@
 ﻿<?php 
-if(!isset($_SESSION)){session_start();}
 set_time_limit(1800) ;
 include("inc/config.php");
-if (!isset($_COOKIE["UserName"]) && !isset($_SESSION["admin"])){
-session_write_close();
+if (!isset($_COOKIE["UserName"]) && !isset($_COOKIE["admin"])){
 echo "<script>alert('登录后才能上传');window.close();</script>";
 }
 //上传图片的类--------------------------------------------------------------
@@ -15,13 +13,13 @@ public $fdir ;//上传文件路径
 public $bImg; //大图的全路径
 public $datu; //大图的命名
 function upfile() {
-//是否存在文件
-if (!is_uploaded_file(@$this->fileName[tmp_name])){
-   echo "<script>alert('请点击“浏览”，选择您要上传的文件！\\n\\n支持的图片类型为：swf,\\n\\n如果选择后还出此提示，可能是你的服务器只能上传2M以下的文件');parent.window.close();</script>";exit;
+if (!is_uploaded_file(@$this->fileName[tmp_name])){//是否存在文件
+   echo "<script>alert('请点击“浏览”，选择您要上传的文件！\\n\\n支持的图片类型为：swf,\\n\\n如果选择后还出此提示，可能是你的服务器只能上传2M以下的文件');parent.window.close();</script>";
+   exit;
 }
-//检查文件大小
-if ($this->max_file_size*1024*1024 < $this->fileName["size"]){
-   echo "<script>alert('文件大小超过了限制！最大只能上传 ".$this->max_file_size." M的文件');parent.window.close();</script>";exit;
+if ($this->max_file_size*1024*1024 < $this->fileName["size"]){//检查文件大小
+   echo "<script>alert('文件大小超过了限制！最大只能上传 ".$this->max_file_size." M的文件');parent.window.close();</script>";
+   exit;
 }
 //检查文件类型
 if (!in_array($this->fileName["type"], $this->uptypes)) {
@@ -41,10 +39,10 @@ $fType = $fType["extension"];
 
 $newName =$this->fdir.$this->datu;
 if (!move_uploaded_file($tempName, $newName)) {
-   echo "<script>alert('移动文件出错');parent.window.close();</script>";exit;
+   echo "<script>alert('移动文件出错');parent.window.close();</script>"; exit;
 }else{
 	$data=GetImageSize($newName);//取得SWF图片属性，返回数组，图形的宽度[0],图形的高度[1]，文件类型[2]
-	if($data[2]!=4){//4为swf格式，同上传图片功能一样加了这一步判断，为防止程序文件通过改文件头伪装成swf文件，由此步FLV文件是上传不了的。
+	if($data[2]!=4 && $data[2]!=13){//4为swf格式，同上传图片功能一样加了这一步判断，为防止程序文件通过改文件头伪装成swf文件，由此步FLV文件是上传不了的。
 	unlink($newName);
 	echo "<script>alert('".$data[2]."经判断上传的文件不是swf格式文件，已删除。');parent.window.close();</script>";exit;
 	} 

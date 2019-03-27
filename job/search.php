@@ -141,9 +141,7 @@ if ($b<>0){
 $sql="select classname from zzcms_jobclass where classid='".$b."'";
 $rs=query($sql);
 $row=fetch_array($rs);
-if ($row){
 $bigclassname=$row["classname"];
-}
 }
 
 $smallclassname='';
@@ -151,9 +149,7 @@ if ($s<>0) {
 $sql="select classname from zzcms_jobclass where classid='".$s."'";
 $rs=query($sql);
 $row=fetch_array($rs);
-if ($row){
-	$smallclassname=$row["classname"];
-	}
+$smallclassname=$row["classname"];
 }
 
 $pagetitle=joblisttitle;
@@ -162,12 +158,8 @@ $pagedescription=joblistdescription;
 
 $station=getstation($b,$bigclassname,$s,$smallclassname,"","","job");
 
-if( isset($_GET["page"]) && $_GET["page"]!="") {
-    $page=$_GET['page'];
-	checkid($page);
-}else{
-    $page=1;
-}
+if( isset($_GET["page"]) && $_GET["page"]!="") {$page=$_GET['page'];}else{$page=1;}
+checkid($page);
 
 		function formbigclass(){
 		$str="";

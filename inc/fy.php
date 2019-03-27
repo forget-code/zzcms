@@ -1,8 +1,4 @@
 <?php
-$fpath="../inc/text/fy.txt";
-$fcontent=file_get_contents($fpath);
-$f_array_fy=explode("\n",$fcontent) ;
-
 function showpage_admin(){
 global $page,$totlepage,$totlenum,$page_size,$shenhe,$b,$s,$kind,$keyword,$showwhat;
 $cs="";
@@ -32,31 +28,31 @@ return $str;
 }
 
 function showpage($b='no'){
-global $page,$totlepage,$totlenum,$page_size,$bigclassid,$f_array_fy;
-$str=$f_array_fy[0]."<strong><font color=#CC0033>".$page."</font>/".$totlepage."　</strong> ";
-$str=$str." <strong>".$page_size."</strong>".$f_array_fy[1]."&nbsp;".$f_array_fy[2]."<strong>".$totlenum."</strong>".$f_array_fy[3];		 
+global $page,$totlepage,$totlenum,$page_size,$bigclassid;
+$str="页次：<strong><font color=#CC0033>".$page."</font>/".$totlepage."　</strong> ";
+$str=$str." <strong>".$page_size."</strong>条/页&nbsp;共<strong>".$totlenum."</strong>条";		 
   
 if ($page!=1){
 	if ($b=="yes"){
-	$str=$str."<a href=?page=1&bigclassid=".$bigclassid.">".$f_array_fy[4]."</a> ";
-	$str=$str."<a href=?page=".($page-1)."&bigclassid=".$bigclassid.">".$f_array_fy[5]."</a> ";
+	$str=$str."<a href=?page=1&bigclassid=".$bigclassid.">【首页】</a> ";
+	$str=$str."<a href=?page=".($page-1)."&bigclassid=".$bigclassid.">【上一页】</a> ";
 	}else{
-	$str=$str."<a href=?page=1>".$f_array_fy[4]."</a> ";
-	$str=$str."<a href=?page=".($page-1).">".$f_array_fy[5]."</a> ";
+	$str=$str."<a href=?page=1>【首页】</a> ";
+	$str=$str."<a href=?page=".($page-1).">【上一页】</a> ";
 	}
 }else{
-$str=$str.$f_array_fy[4].$f_array_fy[5];
+$str=$str."【首页】【上一页】";
 }
 if ($page!=$totlepage){
 	if ($b=="yes"){
-	$str=$str."<a href=?page=".($page+1)."&bigclassid=".$bigclassid.">".$f_array_fy[6]."</a> ";
-	$str=$str."<a href=?page=".$totlepage."&bigclassid=".$bigclassid.">".$f_array_fy[7]."</a>";
+	$str=$str."<a href=?page=".($page+1)."&bigclassid=".$bigclassid.">【下一页】</a> ";
+	$str=$str."<a href=?page=".$totlepage."&bigclassid=".$bigclassid.">【尾页】</a>";
 	}else{	
-	$str=$str."<a href=?page=".($page+1).">".$f_array_fy[6]."</a> ";
-	$str=$str."<a href=?page=".$totlepage.">".$f_array_fy[7]."</a>";
+	$str=$str."<a href=?page=".($page+1).">【下一页】</a> ";
+	$str=$str."<a href=?page=".$totlepage.">【尾页】</a>";
 	}
 }else{
-$str=$str.$f_array_fy[6].$f_array_fy[7];
+$str=$str."【下一页】【尾页】";
 }
 return $str;
 }

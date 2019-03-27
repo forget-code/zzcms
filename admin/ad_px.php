@@ -1,12 +1,12 @@
 <?php
 include ("admin.php");
 ?>
-<html>
+<!DOCTYPE html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <title></title>
 <link href="style.css" rel="stylesheet" type="text/css">
-<script language="JavaScript" src="/js/gg.js"></script>
+<script language="JavaScript" src="../js/gg.js"></script>
 </head>
 <body>
 <?php
@@ -35,54 +35,40 @@ query("update zzcms_ad set xuhao=$xuhao where id=".$row['id']."");
 }
 ?>
 <div class="admintitle">广告排序</div>
-<table width="100%" border="0" cellpadding="5" cellspacing="0">
-  <tr> 
-    <td class="border"><table width="100%" border="0" cellpadding="5" cellspacing="0" bgcolor="#FFFFFF">
-        <tr> 
-          <td style="color:#999999"> 
-            <?php	
-$sql="select * from zzcms_adclass where parentid='A' order by xuhao";
+<div class="border"> 
+<?php	
+$str="大类：";
+$sql="select classname from zzcms_adclass where parentid='A' order by xuhao";
 $rs = query($sql); 
-$row = num_rows($rs);
-if (!$row){
-echo '暂无分类';
-}else{
-echo "大类：";
 while($row = fetch_array($rs)){
-echo "<a href=?b=".$row['classname'].">";  
+$str=$str."<a href=?b=".$row['classname'].">";  
 	if ($row["classname"]==$b) {
-	echo "<b>".$row["classname"]."</b>";
+	$str=$str."<b>".$row["classname"]."</b>";
 	}else{
-	echo $row["classname"];
+	$str=$str. $row["classname"];
 	}
-	echo "</a> | ";  
- }
-} 
-echo "<br>";
+	$str=$str. "</a>";  
+}
+echo $str;
 
-$sql="select * from zzcms_adclass where parentid='".$b."' order by xuhao";
+if ($b<>''){
+$str="<br>小类：";
+$sql="select classname from zzcms_adclass where parentid='".$b."' order by xuhao";
 $rs = query($sql); 
-$row = num_rows($rs);
-if (!$row){
-echo '暂无分类';
-}else{
-echo "小类：";
 while($row = fetch_array($rs)){
-echo "<a href=?b=".$b."&s=".$row['classname'].">";  
+$str=$str."<a href=?b=".$b."&s=".$row['classname'].">";  
 	if ($row["classname"]==$s) {
-	echo "<b>".$row["classname"]."</b>";
+	$str=$str."<b>".$row["classname"]."</b>";
 	}else{
-	echo $row["classname"];
+	$str=$str.$row["classname"];
 	}
-	echo "</a> | ";  
- }
+	$str=$str."</a>";  
+}
+echo $str;
 } 
  ?>
-          </td>
-        </tr>
-      </table></td>
-  </tr>
-</table>
+        
+</div>
 <?php
 $sql="select * from zzcms_ad where id<>0 ";
 if ($b<>"") {  		
@@ -99,7 +85,7 @@ echo "暂无信息";
 }else{
 ?>
 <form name="myform" id="myform" method="post" action="?action=px">
-  <div class="border"> 
+  <div class="border2"> 
     <input name="submit2" type="submit" class="buttons" id="submit22"  value="更新序号">
     <input name="b" type="hidden" id="b" value="<?php echo $b?>">
 	<input name="s" type="hidden" id="s" value="<?php echo $s?>">
@@ -107,18 +93,18 @@ echo "暂无信息";
     <input name="submit22" type="submit" class="buttons" id="submit23"  value="更新序号">
   </div>
   <table width="100%" border="0" cellspacing="1" cellpadding="5">
-    <tr> 
-      <td width="5%" align="center" class="border">序号</td>
-      <td width="10%" class="border">所属类别</td>
-      <td width="10%" class="border">标题</td>
-      <td width="5%" class="border">图片</td>
-      <td width="5%" class="border">&nbsp;</td>
+    <tr class="trtitle"> 
+      <td width="5%" align="center">序号</td>
+      <td width="10%">所属类别</td>
+      <td width="20%">标题</td>
+      <td width="10%">图片</td>
+      <td width="5%">操作</td>
     </tr>
     <?php
 $n=1;
 while($row = fetch_array($rs)){
 ?>
-    <tr class="bgcolor1" onMouseOver="fSetBg(this)" onMouseOut="fReBg(this)"> 
+    <tr class="trcontent"> 
       <td align="center"><input name='<?php echo "xuhao".$row["id"]?>' type="text" value="<?php echo $row["xuhao"]?>" size="4" maxlength="4"></td>
       <td><a href=?b=<?php echo $row['bigclassname']?>><?php echo $row["bigclassname"]?></a>
 	  -
@@ -140,7 +126,7 @@ if ($row["img"]<>""){
 	echo "文字广告-无图片";
 }	
 	?>      </td>
-      <td> <a href="ad_modify.php?b=<?php echo $b?>&id=<?php echo $row["id"]?>">修改</a></td>
+      <td> <a href="ad.php?do=modify&b=<?php echo $b?>&id=<?php echo $row["id"]?>">修改</a></td>
     </tr>
     <?php
 $n++;

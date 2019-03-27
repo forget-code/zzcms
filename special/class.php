@@ -11,7 +11,7 @@ checkid($b);
 }
 $bigclassname="";
 if ($b<>"") {
-$sql="select classname,title,keyword,discription from zzcms_specialclass where classid='".$b."'";
+$sql="select classname,title,keyword,description from zzcms_specialclass where classid='".$b."'";
 $rs=query($sql);
 $row=num_rows($rs);
 	if ($row){
@@ -19,7 +19,7 @@ $row=num_rows($rs);
 	$bigclassname=$row["classname"];
 	$classtitle=$row["title"];
 	$classkeyword=$row["keyword"];
-	$classdiscription=$row["discription"];
+	$classdescription=$row["description"];
 	}
 }
 

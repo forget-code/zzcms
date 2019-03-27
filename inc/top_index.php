@@ -1,12 +1,12 @@
 <?php
-if (isset($_REQUEST["skin"])){
-$siteskin=$_REQUEST["skin"];
+if (isset($_GET["skin"])){
+$siteskin=$_GET["skin"];
 }else{
 $siteskin=siteskin;
 //php判断客户端是否为手机 
 $agent = $_SERVER['HTTP_USER_AGENT']; 
 if(strpos($agent,"NetFront") || strpos($agent,"iPhone") || strpos($agent,"MIDP-2.0") || strpos($agent,"Opera Mini") || strpos($agent,"UCWEB") || strpos($agent,"Android") || strpos($agent,"Windows CE") || strpos($agent,"SymbianOS")) {
-$siteskin='mobile/'.siteskin_mobile;
+$siteskin=siteskin_mobile;
 }
 
 }

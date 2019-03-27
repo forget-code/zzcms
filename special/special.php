@@ -14,19 +14,17 @@ $page_size=$_GET["page_size"];
 checkid($page_size);
 setcookie("page_size_zt",$page_size,time()+3600*24*360);
 }else{
-$page_size=isset($_COOKIE["page_size_zt"])?$_COOKIE["page_size_zt"]:pagesize_qt;
+$page_size=isset($_COOKIE["page_size_zt"])?$_COOKIE["page_size_zt"]:pagesize_qt;	
 }
 
-$b=isset($_GET["b"])?$_GET["b"]:0;
-checkid($b,1);
-
-$s=isset($_GET["s"])?$_GET["s"]:0;
-checkid($s,1);
+$b=isset($_GET['b'])?$_GET['b']:0;
+$s=isset($_GET['s'])?$_GET['s']:0;
+checkid($b,1);checkid($s,1);
 
 $bigclassname="";
 $classtitle="";
 $classkeyword="";
-$classdiscription="";
+$classdescription="";
 $smallclassname="";
 if ($b<>0){
 $sql="select * from zzcms_specialclass where classid='".$b."'";
@@ -37,7 +35,7 @@ if ($row){
 $bigclassname=$row["classname"];
 $classtitle=$row["title"];
 $classkeyword=$row["keyword"];
-$classdiscription=$row["discription"];
+$classdescription=$row["description"];
 }
 }
 
@@ -52,21 +50,17 @@ $smallclassname=$row["classname"];
 
 $pagetitle=$classtitle;
 $pagekeyword=$classkeyword;
-$pagedescription=$classdiscription;
+$pagedescription=$classdescription;
 
-if( isset($_GET["page"]) && $_GET["page"]!="") {
-    $page=$_GET['page'];
-	checkid($page);
-}else{
-    $page=1;
-}
+if( isset($_GET["page"]) && $_GET["page"]!="") {$page=$_GET['page'];}else{$page=1;}
+checkid($page);
 $list=strbetween($strout,"{loop}","{/loop}");
 $sql="select count(*) as total from zzcms_special where passed<>0 ";
 $sql2='';
-if ($b<>0) {
+if ($b<>'') {
 $sql2=$sql2." and bigclassid='".$b."' ";
 }
-if ($s<>0) {
+if ($s<>'') {
 $sql2=$sql2." and smallclassid='".$s."' ";
 }
 $rs =query($sql.$sql2); 
@@ -88,6 +82,7 @@ $shuxing="";
 $i=0;
 
 while($row= fetch_array($rs)){
+
 if ($row["elite"]>0) {
 $listimg="<font color=red>[置顶]</font>&nbsp;";
 }elseif (time()-strtotime($row["sendtime"])<3600*24){
@@ -131,5 +126,6 @@ $strout=str_replace("{#smallclass}",smallclass(10,$b,$s),$strout);
 $strout=str_replace("{#sitebottom}",sitebottom(),$strout);
 $strout=str_replace("{#sitetop}",sitetop(),$strout);
 $strout=showlabel($strout);
+
 echo  $strout;
 ?>

@@ -58,7 +58,7 @@ $skin_mobile=$row["skin_mobile"];
 $tongji=$row["tongji"];
 $baidu_map=$row["baidu_map"];
 }else{
-$skin="tongyong";
+$skin=ztskin;
 $tongji='';
 $baidu_map='http://j.map.baidu.com/dYCQy';
 }
@@ -66,7 +66,7 @@ $baidu_map='http://j.map.baidu.com/dYCQy';
 //php判断客户端是否为手机,这暂不用，用JS判断的  
 $agent = $_SERVER['HTTP_USER_AGENT']; 
 if(strpos($agent,"NetFront") || strpos($agent,"iPhone") || strpos($agent,"MIDP-2.0") || strpos($agent,"Opera Mini") || strpos($agent,"UCWEB") || strpos($agent,"Android") || strpos($agent,"Windows CE") || strpos($agent,"SymbianOS")) {
-$skin="mobile/".$skin_mobile;
+$skin=$skin_mobile;
 }
 
 if (isset($_REQUEST["skin"])){$skin=$_REQUEST["skin"];}//演示模板用

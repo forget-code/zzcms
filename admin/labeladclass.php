@@ -1,16 +1,32 @@
 <?php
 include("admin.php");
 ?>
-<html>
+<!DOCTYPE html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <link href="style.css" rel="stylesheet" type="text/css">
 <title></title>
+<script language = "JavaScript">
+function CheckForm(){
+var re=/^[0-9a-zA-Z_]{1,20}$/; //只输入数字和字母的正则
+if (document.myform.title.value==""){
+    alert("标签名称不能为空！");
+	document.myform.title.focus();
+	return false;
+  }
+if(document.myform.title.value.search(re)==-1)  {
+    alert("标签名称只能用字母，数字，_ 。且长度小于20个字符！");
+	document.myform.title.focus();
+	return false;
+  }       
+}  
+</script>
 <?php
+checkadminisdo("label");
 $action = isset($_REQUEST['action'])?$_REQUEST['action']:"";
 $classname = isset($_REQUEST['classname'])?$_REQUEST['classname']:"";
 if ($action=="add") {
-checkadminisdo("label");
+checkadminisdo("label_add");
 $title=nostr(trim($_POST["title"]));
 checkstr($numbers,'num','调用记录数');
 checkstr($column,'num','列数');
@@ -28,8 +44,8 @@ echo "<script>alert('".$msg."');location.href='?labelname=".$title.".txt'</scrip
 }
 
 if ($action=="del") {
-checkadminisdo("label");//可查看不可修改
-$f="../template/".siteskin."/label/adclass/".nostr($_POST["title"]).".txt";
+checkadminisdo("label_del");
+$f="../template/".siteskin."/label/adclass/".nostr(trim($_POST["title"])).".txt";
 	if (file_exists($f)){
 	unlink($f);
 	}else{
@@ -37,23 +53,6 @@ $f="../template/".siteskin."/label/adclass/".nostr($_POST["title"]).".txt";
 	}	
 }
 ?>
-<script language = "JavaScript">
-function CheckForm()
-{
-var re=/^[0-9a-zA-Z_]{1,20}$/; //只输入数字和字母的正则
-if (document.myform.title.value=="")
-  {
-    alert("标签名称不能为空！");
-	document.myform.title.focus();
-	return false;
-  }
-if(document.myform.title.value.search(re)==-1)  {
-    alert("标签名称只能用字母，数字，_ 。且长度小于20个字符！");
-	document.myform.title.focus();
-	return false;
-  }       
-}  
-</script>
 </head>
 <body>
 <div class="admintitle">广告类别标签添加</div>
@@ -134,15 +133,15 @@ $title=$f[0];$bigclassid=$f[1];$numbers=$f[2];$column=$f[3];$start=$f[4];$mids=$
         （分几列显示）</td>
     </tr>
     <tr> 
-      <td align="right" class="border" >解释模板（开始）：</td>
+      <td align="right" class="border" >解释（开始）：</td>
       <td class="border" ><textarea name="start" cols="100" rows="6" id="start" style="width:100%"><?php echo $start?></textarea></td>
     </tr>
     <tr> 
-      <td align="right" class="border" >解释模板（循环）：</td>
+      <td align="right" class="border" >解释（循环）：</td>
       <td class="border" ><textarea name="mids" cols="100" rows="6" id="mids" style="width:100%"><?php echo $mids?></textarea>      </td>
     </tr>
     <tr> 
-      <td align="right" class="border" >解释模板（结束）：</td>
+      <td align="right" class="border" >解释（结束）：</td>
       <td class="border" ><textarea name="ends" cols="100" rows="6" id="ends" style="width:100%"><?php echo $ends?></textarea></td>
     </tr>
     <tr> 

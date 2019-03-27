@@ -62,7 +62,7 @@ $totlepage=ceil($totlenum/$page_size);
 
 $sql=" select * from zzcms_main where editor='".$editor."' and passed=1 ";
 $sql=$sql.$sql2;
-$sql=$sql." order by xuhao desc limit $offset,$page_size";
+$sql=$sql." order by xuhao desc,id desc limit $offset,$page_size";
 $rs = query($sql); 
 
 //echo $sql;

@@ -1,8 +1,6 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" lang="zh-CN">
+<!DOCTYPE html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<meta http-equiv="X-UA-Compatible" content="IE=EmulateIE7" />
 <title>{#pagetitle}</title>
 <meta content="{#pagedescription}" name="description" />
 <meta content="{#pagekeywords}" name="keywords" />
@@ -101,7 +99,7 @@
 
 {loop_list}
 <div id='Layer{#i}' class='hiddiv'></div>
-<table  width='100%' border='0' cellspacing='0' cellpadding='0' >
+<table  width='100%' border='0' cellspacing='0' cellpadding='0' class="zslist">
 <tr onClick='setbgcolor(this)'> 
 <td width='30' align='center'> <input name='id[]' type='checkbox' id='id' value='{#id}' onClick="return anyCheck(this.form,'xuanzhe')"> 
 </td>
@@ -119,12 +117,11 @@
 <tr>
 <td width='60%' valign='top' style='padding-right:10px'> 包装规格：{#shuxing0}<br>
 产品特点：{#prouse}<br>零售价格：{#shuxing1} 
-<div>
-<a href='{#zturl}#contact' target='_blank'><img src='/image/lxfs.gif' width='80' height='20' border='0'></a>
-<a href='{#url}#dl_liuyan' target='_blank'><img src='/image/ico_dl.gif' width='80' height='20' border='0'></a>
-<a href=javascript:window.external.addFavorite('{#siteurl}/{#url}','{#proname}')><img src='/image/ico_sc.gif' width='80' height='20'  border='0'></a> 
-{#qq}
-</div></td>
+<div class="zslist_button">
+  <li><div class="lxfs"><a href='{#url}#contact' target='_blank'></a></div></li>
+  <li><div class="liuyan"><a href='{#url}#dl_liuyan' target='_blank'></a></div></li>
+  <li><div class="shoucang"><a href="javascript:void(0)" rel="sidebar" onClick="shoucang('{#siteurl}{#url}','{#proname}')"></a></div></li>
+  <li>{#qq}</li>  </div></td>
 <td width='40%' valign='top'> <a href='{#zturl}' target='_blank'>{#comane}</a>
 {#grouppic}{#renzheng}
 <br>招商区域：{#province}{#city} <br>

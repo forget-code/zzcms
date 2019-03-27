@@ -22,12 +22,20 @@ return $str;
 }
 
 function showppsmallclass($b,$s,$column,$num){
+
+$bigclassid=0;
+if ($b<>""){
+$rs=query("select classid from zzcms_zsclass where classzm='".$b."'");
+$row=fetch_array($rs);
+$bigclassid=$row["classid"];
+}
+
 $str="";
 $n=1;
 if ($num<>""){
-$sql="select classname,classid,classzm from zzcms_zsclass where parentid='". $b ."' order by xuhao limit 0,$num";
+$sql="select classname,classid,classzm from zzcms_zsclass where parentid='". $bigclassid ."' order by xuhao limit 0,$num";
 }else{
-$sql="select classname,classid,classzm from zzcms_zsclass where parentid='". $b ."' order by xuhao";
+$sql="select classname,classid,classzm from zzcms_zsclass where parentid='". $bigclassid ."' order by xuhao";
 }
 $rs=query($sql);
 $row=num_rows($rs);

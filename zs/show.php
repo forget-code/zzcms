@@ -1,4 +1,5 @@
 <?php
+ob_start();//打开缓冲区.label.php zsshow,dlshow有用
 if(!isset($_SESSION)){session_start();} 
 include("../inc/conn.php");
 include("../inc/top.php");
@@ -7,15 +8,16 @@ include("../label.php");
 include("../zx/subzx.php");
 include("subzs.php");
 
+//$token = md5(uniqid(rand(), true)); 
+//setcookie("token",$token,time()+3600,"/zs");
+
 $token = md5(uniqid(rand(), true));    
 $_SESSION['token']= $token;  
+session_write_close();
 
-if (isset($_REQUEST["id"])){
-$cpid=trim($_REQUEST["id"]);
-checkid($cpid);
-}else{
-$cpid=0;
-}
+$cpid = isset($_GET['id'])?$_GET['id']:0;
+checkid($cpid,1);
+
 if (isset($_COOKIE["zzcmscpid"])){
 	if ($cpid<>$_COOKIE["zzcmscpid"]){
 	setcookie("zzcmscpid",$cpid.",".$_COOKIE["zzcmscpid"],time()+3600*24*360);
@@ -37,7 +39,7 @@ $editor=$row["editor"];
 $cpmc=$row["proname"];
 $imgbig=$row["img"];
 $img=getsmallimg($row["img"]);
-$array_img=getimgincontent($row["sm"],2);
+$array_img=getimgincontent(stripfxg($row["sm"],true),2);
 //print_r ($array_img);
 $img2=isset($array_img[0])?$array_img[0]:'/image/nopic.gif';
 $img3=isset($array_img[1])?$array_img[1]:'/image/nopic.gif';
@@ -56,13 +58,16 @@ $hit=$row["hit"];
 $title=$row["title"];
 $keywords=$row["keywords"];
 $description=$row["description"];
-$prouse=$row["prouse"];
+$prouse=nl2br($row["prouse"]);
 $sm=stripfxg($row["sm"],true);
 $yq=stripfxg($row["yq"],false,true);
 $zc=stripfxg($row["zc"],false,true);
 $province=$row["province"];
 $city=$row["city"];
 $xiancheng=$row["xiancheng"];
+
+$tz=$row["tz"];
+
 $groupid=$row["groupid"];
 $skin=$row["skin"];
 
@@ -93,22 +98,22 @@ $rs=query($sql);
 $row=fetch_array($rs);
 $startdate=$row["startdate"];
 $comane=$row["comane"];
-$gsjj=$row["content"];
+$gsjj=stripfxg($row["content"],false,false);
 $kind=$row["bigclassid"];
 $province_company=$row["province"];
 $city_company=$row["city"];
 $xiancheng_company=$row["xiancheng"];
+
 $somane=$row["somane"];
 $userid=$row["id"];
 $sex=$row["sex"];
-$phone=$row["phone"];
 $tel=$row["phone"];//项目单页中有用，避免被下面产品留言中的$phone覆盖这里另取名$tel
 $fox=$row["fox"];
 $mobile=$row["mobile"];
 $qq=$row["qq"];
 $email=$row["email"];
-//显示公司联系方式
-$contact=showcontact("zs",$cpid,$startdate,$comane,$kind,$editor,$userid,$groupid,$somane,$sex,$phone,$qq,$email,$mobile,$fox);
+
+$contact=showcontact("zs",$cpid,$startdate,$comane,$kind,$editor,$userid,$groupid,$somane,$sex,$tel,$qq,$email,$mobile,$fox);//显示公司联系方式，注意这里有用checkid
 
 function liuyannum($cpid){
 $rsdl=query("select id from zzcms_dl where cpid=$cpid and passed=1");
@@ -159,6 +164,17 @@ $f = fopen($fp,'r');
 $strout = fread($f,filesize($fp));
 fclose($f);
 
+/*
+$fp="../web/".$editor."/".$id."/index.htm";
+if (file_exists($fp)==false){
+WriteErrMsg($fp.'目录不存在');
+exit;
+}
+$f = fopen($fp,'r');
+$sm = fread($f,filesize($fp));
+fclose($f);
+*/
+
 //liuyan
 $liuyan=strbetween($strout,"{liuyan}","{/liuyan}");
 $list=strbetween($liuyan,"{loop}","{/loop}");
@@ -180,8 +196,30 @@ $strout=str_replace("{/liuyan}","",$strout) ;
 }else{
 $strout=str_replace("{liuyan}".$liuyan."{/liuyan}","暂无信息",$strout) ;
 }
-//代理表单
 
+//licence
+$licence=strbetween($strout,"{licence}","{/licence}");
+$rs=query("select img,title,passed,editor from zzcms_licence where editor='" .$editor. "' and passed=1");
+$row=num_rows($rs);
+if ($row){
+$n=0;
+$licence2='';
+while ($row=fetch_array($rs)){
+$licence2 = $licence2. str_replace("{#img}",getsmallimg($row['img']),$licence) ;
+$licence2 =str_replace("{#imgbig}",siteurl.$row['img'],$licence2) ;
+$licence2 =str_replace("{#link}",siteurl.$row['img'],$licence2) ;
+$licence2 =str_replace("{#title}",cutstr($row["title"],6),$licence2) ;
+
+$n=$n+1;
+($n % 6==0)?$tr="<tr>":$tr="";
+$licence2 =str_replace("{tr}",$tr,$licence2) ;
+}
+$strout=str_replace("{licence}".$licence."{/licence}",$licence2,$strout) ;
+}else{
+$strout=str_replace("{licence}".$licence."{/licence}","暂无信息",$strout) ;
+}
+
+//代理表单
 $strout=str_replace("{textarea}","<textarea rows=5 cols=30 name='contents' id='contents' onfocus='check_contents()' onblur='check_contents()'>我对这个产品感兴趣，请与我联系。</textarea>",$strout);
 $strout=str_replace("{#proname}",str_replace(',','',$cpmc),$strout);
 $strout=str_replace("{#cpid}",$cpid,$strout);
@@ -212,11 +250,12 @@ $strout=str_replace("{#email}",$email,$strout);
 
 //访客地理位置
 $cuestip=getip(); 
-$cuest_city=getIPLoc_sina($cuestip); 
-$cuest_city=str_replace('联通','',str_replace('网通','',str_replace('电信','',$cuest_city)));
+//$cuest_city=getIPLoc_sina($cuestip); 
+//$cuest_city=str_replace('联通','',str_replace('网通','',str_replace('电信','',$cuest_city)));
 
 $strout=str_replace("{#siteskin}",$siteskin,$strout) ;
 $strout=str_replace("{#sitename}",sitename,$strout) ;
+$strout=str_replace("{#siteurl}",siteurl,$strout) ;
 //$strout=str_replace("{#station}",getstation($bigclasszm,$bigclassname,$smallclasszm,$smallclassname,$cpmc,"","zs"),$strout) ;
 $strout=str_replace("{#station}",getstation($bigclasszm,$bigclassname,$smallclasszm,$smallclassname,"","","zs"),$strout) ;//把产品名设为空，导航里不再显示产品名
 if ($title<>"") {
@@ -239,22 +278,38 @@ $strout=str_replace("{#sendtime}",$sendtime,$strout);
 $strout=str_replace("{#hit}",$hit,$strout);
 $strout=str_replace("{#dl_num}",liuyannum($cpid),$strout);
 $strout=str_replace("{#flv}",showflv($flv),$strout);
-$strout=str_replace("{#cuest_city}",$cuest_city,$strout);
+
+$strout=str_replace("{#bigclassname}",$bigclassname,$strout);
+$strout=str_replace("{#smallclassname}",$smallclassname,$strout);
+
+//$strout=str_replace("{#cuest_city}",$cuest_city,$strout);
+$strout=str_replace("{#cuest_city}",'',$strout);
 $strout=str_replace("{#province_company}",$province_company,$strout);
 $strout=str_replace("{#city_company}",$city_company,$strout);
 $strout=str_replace("{#xiancheng_company}",$xiancheng_company,$strout);
 $strout=str_replace("{#province}",$province,$strout);
 $strout=str_replace("{#city}",$city,$strout);
 $strout=str_replace("{#xiancheng}",$xiancheng,$strout);
+
+$strout=str_replace("{#tz}",$tz,$strout);
+
 $strout=str_replace("{#sm}",$sm,$strout);
 $strout=str_replace("{#zc}",$zc,$strout);
 $strout=str_replace("{#yq}",$yq,$strout);
 $strout=str_replace("{#contact}",$contact,$strout);
 $strout=str_replace("{#editor}",$editor,$strout);
 $strout=str_replace("{#tel}",$tel,$strout);
+$strout=str_replace("{#mobile}",$mobile,$strout);
+$strout=str_replace("{#kfqq}",kfqq,$strout);
 
+if (count($shuxing_value)<3){
+	for ($a=0; $a< 6;$a++){
+	$strout=str_replace("{#shuxing".$a."}",'',$strout);
+	}
+}else{
 for ($i=0; $i< count($shuxing_value);$i++){
 $strout=str_replace("{#shuxing".$i."}",$shuxing_value[$i],$strout);
+}
 }
 
 $strout=str_replace("{#sitebottom}",sitebottom(),$strout);
@@ -263,5 +318,4 @@ $strout=str_replace("{#sitetop}",sitetop(),$strout);
 $strout=showlabel($strout);
 echo  $strout;
 }
-session_write_close();
 ?>

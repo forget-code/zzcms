@@ -1,26 +1,21 @@
 <?php
 include("../inc/conn.php");
 include("check.php");
-$fpath="text/ztconfig_skin.txt";
-$fcontent=file_get_contents($fpath);
-$f_array=explode("|||",$fcontent) ;
 ?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" lang="zh-CN">
+<!DOCTYPE html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<meta http-equiv="X-UA-Compatible" content="IE=EmulateIE7" />
-<title><?php echo $f_array[0]?></title>
+<title>展厅模板设置</title>
 <link href="style/<?php echo siteskin_usercenter?>/style.css" rel="stylesheet" type="text/css">
 <?php
 if (str_is_inarr(usergr_power,'zt')=="no" && $usersf=='个人'){
-echo $f_array[1];
+echo "<script>alert('个人用户没有此权限');history.back(-1);</script>";
 exit;
 }
 $action = isset($_GET['action'])?$_GET['action']:"";
 if($action=="modify"){
 query("update zzcms_usersetting set skin='$skin' where username='".$username."'");			
-echo $f_array[2];
+echo "<script>alert('成功更新设置');location.href='ztconfig_skin.php'</script>";
 }
 ?>
 </head>
@@ -37,7 +32,7 @@ include("left.php");
 </div>
 <div class="right">
 <div class="content">
-<div class="admintitle"><?php echo $f_array[0]?></div>
+<div class="admintitle">展厅模板设置</div>
 <form name="myform" method="post" action="?action=modify"> 
 <table width="100%" border="0" cellpadding="5" cellspacing="1" class="bgcolor">
                   <tr>        
@@ -64,7 +59,7 @@ while(($file = readdir($dir))!=false){
                         <tr> 
                           <td align="center" bgcolor="#FFFFFF"> <input name="skin" type="radio" id='<?php echo $file?>' value="<?php echo $file?>" <?php if($row["skin"]==$file){ echo"checked";}?>/> 
                             <label for='<?php echo $file?>'><?php echo $file?></label><br />
-<input name="Submit" type="submit" class="buttons" value="<?php echo $f_array[3]?>" />
+<input name="Submit" type="submit" class="buttons" value="更新设置" />
 </td>
                         </tr>
                     </table></td>
@@ -76,7 +71,6 @@ while(($file = readdir($dir))!=false){
 				}
 				}	
 closedir($dir);
-unset ($f_array);
 				?>
            </table>  
 

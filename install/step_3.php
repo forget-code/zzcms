@@ -39,10 +39,10 @@ $files_array=array("../inc/config.php","../inc/wjt.php","../skin/test.txt","../t
 <form action="index.php" method="post" id="myform">
 <input type="hidden" name="step" value="4"/>
 <input name="token" type="hidden"  value="<?php echo $token?>"/>
-    <input type="button" value="上一步" class="btn" onclick="history.back(-1);"/>
-    <input type="submit" value="下一步" class="btn" <?php if(!$pass) echo ' disabled';?>/>
+    <input type="button" value="上一步"  onclick="history.back(-1);"/>
+    <input type="submit" value="下一步"  <?php if(!$pass) echo ' disabled';?>/>
 &nbsp;&nbsp;
-    <input type="button" value="取消" class="btn" onclick="if(confirm('您确定要退出安装向导吗？')) window.close();"/>
+    <input type="button" value="取消"  onclick="if(confirm('您确定要退出安装向导吗？')) window.close();"/>
 </form>
 </div>
 <?php

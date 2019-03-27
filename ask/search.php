@@ -19,7 +19,7 @@ setcookie("page_size_ask",$page_size,time()+3600*24*360);
 $page_size=isset($_COOKIE['page_size_ask'])?$_COOKIE['page_size_ask']:pagesize_qt;
 }
 $keyword=isset($_POST['keyword'])?$_POST['keyword']:'';
-$typeid=isset($_POST['typeid'])?$_POST['typeid']:999;
+$typeid=isset($_GET['typeid'])?$_GET['typeid']:999;
 checkid($typeid,1);
 
 $elite=isset($_GET['elite'])?$_GET['elite']:0;
@@ -165,7 +165,6 @@ $sql = $sql . " order by jifen desc,id desc ";
 
 $sql=$sql." limit $offset,$page_size";
 $rs = query($sql); 
-
 if(!$totlenum){
 $strout=str_replace("{#fenyei}","",$strout) ;
 $strout=str_replace("{loop}".$list."{/loop}","暂无信息",$strout) ;
@@ -185,10 +184,6 @@ $listimg="[普通]&nbsp;";
 }
 
 $link=getpageurl("ask",$row["id"]);
-
-if ($row["img"]<>"") {
-	$shuxing="<font color='#FF6600'>(图)</font>";
-}	
 
 $list2 = $list2. str_replace("{#link}",$link,$list) ;
 $list2 =str_replace("{#title}",cutstr($row["title"],30),$list2) ;

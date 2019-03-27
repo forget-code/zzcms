@@ -32,7 +32,7 @@ exit;
 if (strpos($id,",")>0){
 $sql="select * from zzcms_dl where saver<>'' and id in (". $id .")";//没有接收人的，非留言类代理不用发提示邮件。
 }else{
-$sql="select * from zzcms_dl where saver<>'' and id=".$id."";
+$sql="select * from zzcms_dl where saver<>'' and id='".$id."'";
 }
 $rs=query($sql);
 $row=num_rows($rs);

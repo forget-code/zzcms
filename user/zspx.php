@@ -1,18 +1,13 @@
 <?php
 include("../inc/conn.php");
 include("check.php");
-$fpath="text/zspx.txt";
-$fcontent=file_get_contents($fpath);
-$f_array=explode("|||",$fcontent) ;
 ?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" lang="zh-CN">
+<!DOCTYPE html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-<meta http-equiv="X-UA-Compatible" content="IE=EmulateIE7" />
-<title></title>
+<title>排序</title>
 <link href="style/<?php echo siteskin_usercenter?>/style.css" rel="stylesheet" type="text/css">
-<script language="JavaScript" src="/js/gg.js"></script>
+<script language="JavaScript" src="../js/gg.js"></script>
 </head>
 <body>
 <div class="main">
@@ -45,31 +40,29 @@ query("update zzcms_main set xuhao=$xuhao where id=".$row['id']."");
 }
 ?>
 <div class="content">
-<div class="admintitle"><?php echo channelzs.$f_array[0]?></div>
+<div class="admintitle"><?php echo channelzs?>信息排序</div>
  <?php
 $sql="select * from zzcms_main where editor='".$username."' order by xuhao desc";
 $rs = query($sql); 
 ?>
 <form action="?action=px" method="post" name="form" id="form" >
-  <table width="100%" border="0" cellspacing="0" cellpadding="0">
-    <tr> 
-      <td> <table width="100%" border="0" cellpadding="3" cellspacing="1">
-          <tr> 
-            <td class="border"> 
-              <input name="submit2" type="submit" class="buttons" id="submit22"  value="<?php echo $f_array[1]?>">
-              <?php echo $f_array[2]?>
-              <input name="submit22" type="submit" class="buttons" id="submit23"  value="<?php echo $f_array[1]?>">
-              </td>
-          </tr>
-        </table>
+  
+            <div class="border"> 
+              <input type="submit" class="buttons"  value="更新序号">
+             提示：在表单内填上每条信息的序号（0-9999）数字越大显示越向前，然后点击
+              <input name="submit22" type="submit" class="buttons" id="submit23"  value="更新序号">
+              </div>
+      
         <table width="100%" border="0" cellpadding="5" cellspacing="1" class="bgcolor">
-          <tr> 
-            <?php echo $f_array[3]?>
+          <tr class="trtitle"> 
+            <td width="10%" align="center" class="border">序号</td>
+            <td width="40%" class="border">产品名称</td>
+            <td width="40%" align="center" class="border">产品图片</td>
           </tr>
          <?php
 		 while($row = fetch_array($rs)){
 		 ?>
-          <tr class="bgcolor1" onMouseOver="fSetBg(this)" onMouseOut="fReBg(this)"> 
+          <tr class="trcontent"> 
             <td width="75" align="center"> <input name='<?php echo "xuhao".$row["id"]?>' type="text" value="<?php echo $row["xuhao"]?>" size="4" maxlength="4"> 
             </td>
             <td width="431"><a href="<?php echo getpageurl("zs",$row["id"])?>" target="_blank"><?php echo $row["proname"]?></a></td>
@@ -79,16 +72,12 @@ $rs = query($sql);
 		}
 		?>
         </table>
-        <table width="100%" border="0" cellpadding="5" cellspacing="1" class="border">
-          <tr > 
-            <td> <input name="submit" type="submit" class="buttons" id="submit"  value="<?php echo $f_array[1]?>">
-                    <?php echo $f_array[2]?>
-<input name="submit23" type="submit" class="buttons" id="submit24"  value="<?php echo $f_array[1]?>">
-              </td>
-          </tr>
-        </table></td>
-    </tr>
-  </table>
+        
+            <div class="border"> <input name="submit" type="submit" class="buttons" id="submit"  value="更新序号">
+                 提示：在表单内填上每条信息的序号（0-9999）数字越大显示越向前，然后点击
+<input type="submit" class="buttons"  value="更新序号">
+              </div>
+      
 </form>
 </div>
 </div>

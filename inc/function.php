@@ -1,18 +1,13 @@
 <?php
 define('zzcmsroot2', str_replace("\\", '/', substr(dirname(__FILE__), 0, -3)));//-3截除当前目录inc
-$fpath=zzcmsroot2."inc/text/function.txt";
-$fcontent=file_get_contents($fpath);
-$f_array_fun=explode("\n",$fcontent) ;
 function WriteErrMsg($ErrMsg){
-global $f_array_fun;
-	$strErr="<!DOCTYPE html PUBLIC '-//W3C//DTD XHTML 1.0 Transitional//EN' 'http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd'>";//有些文件不能设文件头
-	$strErr=$strErr."<html xmlns='http://www.w3.org/1999/xhtml' lang='zh-CN'>" ;
+	$strErr="<!DOCTYPE html>";//有些文件不能设文件头
 	$strErr=$strErr."<meta http-equiv='Content-Type' content='text/html; charset=utf-8'>";	
-	$strErr=$strErr . "<div style='text-align:center;font-size:14px;line-height:25px;padding:10px'>" ;
-	$strErr=$strErr . "<div style='border:solid 1px #dddddd;margin:0 auto;background-color:#FFFFFF'>";
-	$strErr=$strErr . "<div style='background-color:#f1f1f1;border-bottom:solid 1px #ddd;font-weight:bold'>".$f_array_fun[0]."</div>";
-	$strErr=$strErr . "<div style='padding:20px;text-align:left'>" .$ErrMsg."</div>";
-	$strErr=$strErr . "<div style='background-color:#f1f1f1'><a href='javascript:history.go(-1)'>".$f_array_fun[1]."</a> <a href=# onClick='window.opener=null;window.close()'>".$f_array_fun[2]."</a></div>";
+	$strErr=$strErr . "<div style='text-align:center;font-size:14px;line-height:35px;margin:0 auto;width:50%;padding:20px;'>" ;
+	$strErr=$strErr . "<div style='border:solid 1px #999999;background-color:#FFFFFF;'>";
+	$strErr=$strErr . "<div style='background-color:#f1f1f1;border-bottom:solid 1px #ddd;font-weight:bold'>禁止操作</div>";
+	$strErr=$strErr . "<div style='padding:10px;text-align:left'>" .$ErrMsg."</div>";
+	$strErr=$strErr . "<div style='border-top:solid 1px #dddddd;margin:0 10px'><a href='javascript:history.go(-1)'>[返回上页]</a>&nbsp;&nbsp;<a href=# onClick='window.opener=null;window.close()'>[关闭窗口]</a></div>";
 	$strErr=$strErr . "</div>"; 
 	$strErr=$strErr . "</div>" ;
 	$strErr=$strErr . "</html>" ;
@@ -20,8 +15,7 @@ global $f_array_fun;
 }
 	//显示信息
 function showmsg($msg,$zc_url = 'back'){
-	$strErr="<!DOCTYPE html PUBLIC '-//W3C//DTD XHTML 1.0 Transitional//EN' 'http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd'>";//有些文件不能设文件头
-	$strErr=$strErr."<html xmlns='http://www.w3.org/1999/xhtml' lang='zh-CN'>" ;
+	$strErr="<!DOCTYPE html>";//有些文件不能设文件头
 	$strErr=$strErr."<meta http-equiv='Content-Type' content='text/html; charset=utf-8'>";
 	if($zc_url && $zc_url!='back' && $zc_url!='null'){
 	$strErr=$strErr.("<script>alert('$msg');parent.location=\"$zc_url\";</script>");
@@ -46,12 +40,11 @@ function CutFenGeXian($str,$xian){
 return $str;
 }
 		
-function checkid($id,$classid=0,$msg=''){
+function checkid($id,$classid=0,$msg='无'){
 if ($id<>''){
-	if (is_numeric($id)==false){showmsg('参数 '.$id.' 有误！相关信息不存在');}
-	elseif ($id>100000000){showmsg('参数超出了数字表示范围！系统不与处理。');}//因为clng最大长度为9位
+	if (is_numeric($id)==false){showmsg('参数 '.$id.' 有误！');}
 	if ($classid==0){//查大小类ID时这里设为1
-		if ($id<1){showmsg('参数有误！相关信息不存在。\r\r提示：'.$msg);}//翻页中有用,这个提示msg在其它地方有用
+		if ($id<1){showmsg('参数 '.$id.'有误！\r\r提示：'.$msg);}//翻页中有用,这个提示msg在其它地方有用
 	}
 }
 }
@@ -61,11 +54,9 @@ if ($str<>''){
 switch ($kind){
 case "num";
 	if (is_numeric($str)==false){showmsg($msg.'必须为数字');}
-	if ($str>100000000){showmsg($msg.'超出了数字表示范围！');}//因为clng最大长度为9位
-	//if ($str<1){showmsg($msg.'不能为0');}
 break;
 case "tel";
-	if(!preg_match("/1[3458]{1}\d{9}$/",$str) && !preg_match('/^400(\d{3,4}){2}$/',$str) && !preg_match('/^400(-\d{3,4}){2}$/',$str) && !preg_match('/^(010|02\d{1}|0[3-9]\d{2})-\d{7,9}(-\d+)?$/',$str)){
+	if(!preg_match("/1[34578]{1}\d{9}$/",$str) && !preg_match('/^400(\d{3,4}){2}$/',$str) && !preg_match('/^400(-\d{3,4}){2}$/',$str) && !preg_match('/^(010|02\d{1}|0[3-9]\d{2})-\d{7,9}(-\d+)?$/',$str)){
 	//分别是手机，400电话(加-和不加两种情况都可以)，和普通电话
 	showmsg('电话号码不正确！',$back_url);
 	}
@@ -76,10 +67,32 @@ case "email";
 	}
 break;
 case "hanzi";
+	if (!preg_match("/([\x81-\xfe][\x40-\xfe])/",$str)) {//是否含有汉字
+	showmsg($msg."必须有汉字",$back_url);
+	}
+break;
+case "datetime";
+	if (date('Y-m-d',strtotime($str))!=$str){
+	showmsg($msg."必须为时间格式",$back_url);
+	}
+break;
+case "quanhanzi";
 	if(!preg_match("/^[\x7f-\xff]+$/",$str)){
 	showmsg($msg."只能用中文",$back_url);
 	}
 break;	
+
+case "upload";//用于引用网络图片地址和视频地址的上传页
+	if (strpos("gif|jpg|png|bmp|flv|swf",strtolower(substr($str,-3)))===false){
+	showmsg($msg.$str."不支持的上传文件格式。支持的文件格式为（gif|jpg|png|bmp|flv|swf）",$back_url);
+	}
+	if (substr($str,0,4)<>"http" && $str<>"/image/nopic.gif"){
+		if (strpos($str,'/uploadfiles')===false){
+		showmsg($msg.$str."不支持的上传文件地址",$back_url);
+		}
+	}
+break;	
+	
 }
 }
 }
@@ -98,16 +111,20 @@ return trim($str);//返回字符串
 }
 
 function getip(){ 
-if (getenv("HTTP_CLIENT_IP") && strcasecmp(getenv("HTTP_CLIENT_IP"), "unknown")) 
-$ip = getenv("HTTP_CLIENT_IP"); 
-else if (getenv("HTTP_X_FORWARDED_FOR") && strcasecmp(getenv("HTTP_X_FORWARDED_FOR"), "unknown")) 
+if (getenv("HTTP_CLIENT_IP") && strcasecmp(getenv("HTTP_CLIENT_IP"), "unknown")) {
+$ip = getenv("HTTP_CLIENT_IP");
+}else if (getenv("HTTP_X_FORWARDED_FOR") && strcasecmp(getenv("HTTP_X_FORWARDED_FOR"), "unknown")) {
 $ip = getenv("HTTP_X_FORWARDED_FOR"); 
-else if (getenv("REMOTE_ADDR") && strcasecmp(getenv("REMOTE_ADDR"), "unknown")) 
+}else if (getenv("REMOTE_ADDR") && strcasecmp(getenv("REMOTE_ADDR"), "unknown")) {
 $ip = getenv("REMOTE_ADDR"); 
-else if (isset($_SERVER['REMOTE_ADDR']) && $_SERVER['REMOTE_ADDR'] && strcasecmp($_SERVER['REMOTE_ADDR'], "unknown")) 
+}else if (isset($_SERVER['REMOTE_ADDR']) && $_SERVER['REMOTE_ADDR'] && strcasecmp($_SERVER['REMOTE_ADDR'], "unknown")){ 
 $ip = $_SERVER['REMOTE_ADDR']; 
-else 
-$ip = "unknown"; 
+}else{
+$ip = "unknown";
+}
+if (check_isip($ip)==false){
+$ip = "unknown";
+}
 return($ip); 
 } 
 
@@ -123,7 +140,7 @@ $adminip=getip();
           $url="http://".$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI'];
 		  $f=zzcmsroot2."admindoes.txt";
 $fp=fopen($f,"a+");//fopen()的其它开关请参看相关函数
-$str=date('Y-m-d H:i:s')."  ".$_SESSION["admin"]."  ".$adminip."  ".$url."\r\n";
+$str=date('Y-m-d H:i:s')."  ".$_COOKIE["admin"]."  ".$adminip."  ".$url."\r\n";
 fputs($fp,$str);
 fclose($fp);    
 }
@@ -193,42 +210,40 @@ if ($url<>"" && substr($url,0,4)<>"http"){return "http://".$url;}else{return $ur
 }
 
 function getstation($bid,$bname,$sid,$sname,$title,$keyword,$channel){
-global $f_array_fun;
-	$str="<li class='start'><a href='".siteurl."'>".$f_array_fun[3]."</a></li>";
+	$str="<li class='start'><a href='".siteurl."'>首页</a></li>";
 	if (whtml=="Yes") {
 		$str=$str. "<li><a href='/".$channel."/index.htm'>".getchannelname($channel)."</a></li>" ;
       	if ($bid<>""){$str=$str. "<li><a href='/".$channel."/".$bid."'>".$bname."</a></li>";}		
 		if ($sid<>"") {$str=$str. "<li><a href='/".$channel."/".$bid."/".$sid."'>".$sname."</a></li>";}
 		if ($title<>"") {$str=$str. "<li>".$title."</li>";}
-		if ($keyword<>"") {$str=$str. "<li>".$f_array_fun[4]."“".$keyword."”</li>";}
+		if ($keyword<>"") {$str=$str. "<li>关键字中含有“".$keyword."”</li>";}
 	}else{
 		$str=$str. "<li><a href='".$channel.".php'>".getchannelname($channel)."</a></li>" ;
       	if ($bid<>"") {$str=$str. "<li><a href='/".$channel."/".$channel.".php?b=".$bid."'>".$bname."</a></li>";}		
 		if ($sid<>"") {$str=$str. "<li><a href='/".$channel."/".$channel.".php?b=".$bid."&s=".$sid."'>".$sname."</a></li>";}
 		if ($title<>"") {$str=$str. "<li>".$title."</li>";}
-		if ($keyword<>"") {$str=$str. "<li>".$f_array_fun[4]."“".$keyword."”</li>";}
+		if ($keyword<>"") {$str=$str. "<li>关键字中含有“".$keyword."”</li>";}
 	}
-unset ($f_array_fun);	
+
 return $str;	
 }
 
 function getchannelname($channel){
-global $f_array_fun;
 switch ($channel){
 case "zs";return channelzs;break;
 case "zsclass";return channelzs;break;
-case "pp";return $f_array_fun[5];break;
-case "job";return $f_array_fun[6];break;
+case "pp";return "品牌";break;
+case "job";return "招聘";break;
 case "dl";return channeldl;break;
-case "zh";return $f_array_fun[7];break;
-case "zx";return $f_array_fun[8];break;
-case "wangkan";return $f_array_fun[9];break;
+case "zh";return "展会";break;
+case "zx";return "资讯";break;
+case "wangkan";return "网刊";break;
 case "baojia";return '报价';break;
 case "ask";return '问答';break;
-case "special";return $f_array_fun[10];break;
-case "company";return $f_array_fun[11];break;
+case "special";return "专题";break;
+case "company";return "企业";break;
+case "user";return "用户";break;
 }
-unset ($f_array_fun);
 }
 
 function checkyzm($yzm){
@@ -269,7 +284,6 @@ return $tempstr;
 }
 
 function showannounce($cs){
-global $f_array_fun;
 $cs=explode(",",$cs); //传入的$cs是一个整体字符串,转成数组
 $numbers=isset($cs[0])?$cs[0]:2;checkid($numbers,0,'{#showannounce}标签的第1个参数须为大于0的整数');
 $titlelong=isset($cs[1])?$cs[1]:20;checkid($titlelong,0,'{#showannounce}标签的第2个参数须为大于0的整数');
@@ -277,8 +291,7 @@ $titlelong=isset($cs[1])?$cs[1]:20;checkid($titlelong,0,'{#showannounce}标签�
 if (isset($_COOKIE['closegg'])){
 $str='';
 }else{
-	$n=1;
-	$str='';
+	$n=1;$str='';
 	$sql="select title,id,content,sendtime from zzcms_help where classid=2 and elite=1 order by id desc limit 0,$numbers";
 	$rs=query($sql);
 	//echo $sql;
@@ -286,43 +299,42 @@ $str='';
 	if ($row){
 	$str=$str ."<div id='gonggao'><span onclick=\"gonggao.style.display='none'\"><a href=javascript:delCookie('closegg')>×</a></span>";
 		while ($row=fetch_array($rs)){
-		$str=$str ."<li>".$f_array_fun[12]."【". $n ."】<a href=javascript:openwindow('/one/announce_show.php?id=".$row["id"]."',700,300)>".cutstr(strip_tags($row["title"]),$titlelong)." [".date("Y-m-d",strtotime($row['sendtime']))."] </a></li>";
+		$str=$str ."<li>公告【". $n ."】<a href=javascript:openwindow('/one/announce_show.php?id=".$row["id"]."',700,300)>".cutstr(strip_tags($row["title"]),$titlelong)." [".date("Y-m-d",strtotime($row['sendtime']))."] </a></li>";
 		$n++;
 		}
 	$str=$str ."</div>";
 	}
 	}
-unset ($f_array_fun);	
 return $str;
 }
 
 function showselectpage($pagename,$page_size,$b,$s,$page){
-global $f_array_fun;
 $str="<select name='menu1' onchange=MM_jumpMenu('parent',this,0)>";
 $cs="/".$pagename."/".$pagename.".php?b=".$b."&s=".$s."&page=".$page;
 if ($page_size=="20"){
-$str=$str . "<option value='".$cs."&page_size=20' selected >20".$f_array_fun[13]."</option>";
+$str=$str . "<option value='".$cs."&page_size=20' selected >20条/页</option>";
 }else{
-$str=$str . "<option value='".$cs."&page_size=20' >20".$f_array_fun[13]."</option>";
+$str=$str . "<option value='".$cs."&page_size=20' >20条/页</option>";
 }
 if ($page_size=="50") {
-$str=$str . "<option value='".$cs."&page_size=50' selected >50".$f_array_fun[13]."</option>";
+$str=$str . "<option value='".$cs."&page_size=50' selected >50条/页</option>";
 }else{
-$str=$str . "<option value='".$cs."&page_size=50' >50".$f_array_fun[13]."</option>";
+$str=$str . "<option value='".$cs."&page_size=50' >50条/页</option>";
 }
 if ($page_size=="100"){
-$str=$str . "<option value='".$cs."&page=".$page."&page_size=100' selected >100".$f_array_fun[13]."</option>";
+$str=$str . "<option value='".$cs."&page=".$page."&page_size=100' selected >100条/页</option>";
 }else{
-$str=$str . "<option value='".$cs."&page=".$page."&page_size=100' >100".$f_array_fun[13]."</option>";
+$str=$str . "<option value='".$cs."&page=".$page."&page_size=100' >100条/页</option>";
 }
 $str=$str . "</select>";
-unset ($f_array_fun);
 return $str;
 }
 
 function getsmallimg($img){
 if (substr($img,0,4) == "http"){
 return $img;//复制的网上的图片，不生成小图片，直接显示大图
+}elseif(strpos($img,'_small') !== false){
+return $img;//已是小图的不再重加后缀_small
 }else{
 return siteurl.str_replace(".jpeg","_small.jpeg",str_replace(".png","_small.png",str_replace(".gif","_small.gif",str_replace(".jpg","_small.jpg",$img))));
 }
@@ -369,6 +381,7 @@ echo "<script>alert('封面图片不存在，没有生成缩略图')</script>";
    	}
 }
 }
+
 function grabimg($url,$filename="") {
    if($url==""):return false;endif;
    if($filename=="") {
@@ -380,7 +393,6 @@ function grabimg($url,$filename="") {
 	 }
 	 $filename=$filename_dir."/".date("YmdHis").rand(100,999).$ext;
    }
-
    ob_start();
    readfile($url);
    $img = ob_get_contents();
@@ -408,7 +420,7 @@ $column=isset($cs[1])?$cs[1]:5;
 		if ($location_p[0]==$province){
 		$str=$str . "<td align='center' bgcolor='#FFFFFF' style='font-weight:bold'>" ;
 		}else{
-		$str=$str . "<td align='center' class='bgcolor1' onMouseOver='PSetBg(this)' onMouseOut='PReBg(this)'>" ;
+		$str=$str . "<td align='center' class='bgcolor1'>" ;
 		}
 		if ($channel=="area") {
 		$str=$str ."<a href='/area/show.php?province=".$location_p[0]."&p_id=".$i."'>".$location_p[0]."</a>";
@@ -423,7 +435,7 @@ $column=isset($cs[1])?$cs[1]:5;
 }
 
 function showkeyword($cs){
-global $keyword,$siteskin,$f_array_fun;
+global $keyword,$siteskin;
 $cs=explode(",",$cs); //传入的$cs是一个整体字符串,转成数组
 $channel=isset($cs[0])?$cs[0]:'zs';
 $numbers=isset($cs[1])?$cs[1]:10;checkid($numbers);
@@ -457,9 +469,8 @@ if (cache_update_time!=0 && file_exists($fpath)!==false && time()-filemtime($fpa
 		$str=$str . "<a href='/".$channel."/search.php?keyword=".$row["keyword"]."'>".$row["keyword"]."</a></li>\r\n";			
 		}
 	}else{
-	$str= $f_array_fun[14];
+	$str= "暂无信息";
 	}
-	unset ($f_array_fun);
 	return $str;
 		
 	if ($channel=='zs'||$channel=='dl'){
@@ -500,8 +511,7 @@ if (cache_update_time!=0 && file_exists($fp) && filesize($fp)>10 && time()-filem
 	fclose($fso);
 	return $fcontent;
 }else{
-$n=1;
-$str='';
+$n=1;$str='';
 //sql= "select * from zzcms_ad where endtime>= '"&date()&"' "
 $sql= "select * from zzcms_ad where bigclassname='".$b."' and smallclassname='".$s."' order by xuhao asc,id asc ";
 if ($num<>0){$sql= $sql. " limit 0,$num";}
@@ -517,9 +527,9 @@ while ($row=fetch_array($rs)){
 		}else{
 		$str=$str. "<a href='".$row["link"]."' target='_blank' style='color:".$row["titlecolor"]."'>";
 			if ($imgwidth!=0){//参数里设值的按所设值显示，未设值的按广告管理中所设的值显示
-			$str=$str. "<img data-original='".isaddsiteurl($row["img"])."' height='$imgheight' width='$imgwidth'  alt='".$row["title"]."'/>";
+			$str=$str. "<img data-original='".isaddsiteurl($row["img"])."' width='100%' height='$imgheight' alt='".$row["title"]."'/>";
 			}else{
-			$str=$str. "<img data-original='".isaddsiteurl($row["img"])."' height='".$row["imgheight"]."' width='".$row["imgwidth"]."' alt='".$row["title"]."'/>";
+			$str=$str. "<img data-original='".isaddsiteurl($row["img"])."' width='".$row["imgwidth"]."' height='".$row["imgheight"]."' alt='".$row["title"]."'/>";
 			}
 			if ($titlelong!=0){
 			$str=$str.'<br/>';
@@ -562,14 +572,12 @@ return $str;
 }
 
 function lockip(){
-global $f_array_fun;
 $badip=getip();
 $sql="select * from zzcms_bad where ip='".$badip."' and lockip=1";
 $rs=query($sql);
 $row=num_rows($rs);
 if ($row){
-echo $f_array_fun[15];
-unset ($f_array_fun);
+echo "此IP被封,不能访问本站!";
 exit;
 }
 }
@@ -593,38 +601,59 @@ return substr($str,$a,$b-$a);
 }
 }
 
-//取得字首字母
-	function getfirstchar($s0='a'){
-	if ($s0<>''){ 
-		if(ord($s0)>="1" and ord($s0)<=ord("z") )   { return strtoupper($s0); } 
-		$s=iconv("UTF-8","gb2312//IGNORE", $s0); 
-		$asc=ord($s{0})*256+ord($s{1})-65536; 
-		if($asc>=-20319 and $asc<=-20284)return "A"; 
-		if($asc>=-20283 and $asc<=-19776)return "B"; 
-		if($asc>=-19775 and $asc<=-19219)return "C"; 
-		if($asc>=-19218 and $asc<=-18711)return "D"; 
-		if($asc>=-18710 and $asc<=-18527)return "E"; 
-		if($asc>=-18526 and $asc<=-18240)return "F"; 
-		if($asc>=-18239 and $asc<=-17923)return "G"; 
-		if($asc>=-17922 and $asc<=-17418)return "H";               
-		if($asc>=-17417 and $asc<=-16475)return "J";               
-		if($asc>=-16474 and $asc<=-16213)return "K";               
-		if($asc>=-16212 and $asc<=-15641)return "L";               
-		if($asc>=-15640 and $asc<=-15166)return "M";               
-		if($asc>=-15165 and $asc<=-14923)return "N";               
-		if($asc>=-14922 and $asc<=-14915)return "O";               
-		if($asc>=-14914 and $asc<=-14631)return "P";               
-		if($asc>=-14630 and $asc<=-14150)return "Q";               
-		if($asc>=-14149 and $asc<=-14091)return "R";               
-		if($asc>=-14090 and $asc<=-13319)return "S";               
-		if($asc>=-13318 and $asc<=-12839)return "T";               
-		if($asc>=-12838 and $asc<=-12557)return "W";               
-		if($asc>=-12556 and $asc<=-11848)return "X";               
-		if($asc>=-11847 and $asc<=-11056)return "Y";               
-		if($asc>=-11055 and $asc<=-10247)return "Z";   
-		return 0; 
-		}
-	}
+function getfirstchar($s0){ //获取单个汉字拼音首字母。注意:此处不要纠结。汉字拼音是没有以U和V开头的
+    $fchar = ord($s0{0});
+    if($fchar >= ord("A") and $fchar <= ord("z") )return strtoupper($s0{0});
+    $s1 = @iconv("UTF-8","gb2312", $s0);
+    $s2 = iconv("gb2312","UTF-8", $s1);
+    if($s2 == $s0){$s = $s1;}else{$s = $s0;}
+    $asc = ord($s{0}) * 256 + ord($s{1}) - 65536;
+    if($asc >= -20319 and $asc <= -20284) return "a";
+    if($asc >= -20283 and $asc <= -19776) return "b";
+    if($asc >= -19775 and $asc <= -19219) return "c";
+    if($asc >= -19218 and $asc <= -18711) return "d";
+    if($asc >= -18710 and $asc <= -18527) return "e";
+    if($asc >= -18526 and $asc <= -18240) return "f";
+    if($asc >= -18239 and $asc <= -17923) return "g";
+    if($asc >= -17922 and $asc <= -17418) return "h";
+    if($asc >= -17922 and $asc <= -17418) return "i";
+    if($asc >= -17417 and $asc <= -16475) return "j";
+    if($asc >= -16474 and $asc <= -16213) return "k";
+    if($asc >= -16212 and $asc <= -15641) return "l";
+    if($asc >= -15640 and $asc <= -15166) return "m";
+    if($asc >= -15165 and $asc <= -14923) return "n";
+    if($asc >= -14922 and $asc <= -14915) return "o";
+    if($asc >= -14914 and $asc <= -14631) return "p";
+    if($asc >= -14630 and $asc <= -14150) return "q";
+    if($asc >= -14149 and $asc <= -14091) return "r";
+    if($asc >= -14090 and $asc <= -13319) return "s";
+    if($asc >= -13318 and $asc <= -12839) return "t";
+    if($asc >= -12838 and $asc <= -12557) return "w";
+    if($asc >= -12556 and $asc <= -11848) return "x";
+    if($asc >= -11847 and $asc <= -11056) return "y";
+    if($asc >= -11055 and $asc <= -10247) return "z";
+    return NULL;
+    //return $s0;
+}	
+	
+function getfirstchar_all($str){  //获取整条字符串所有汉字拼音首字母
+    $ret = "";
+    @$s1 = iconv("UTF-8","gb2312", $str);//有出错的比如 囍
+    $s2 = iconv("gb2312","UTF-8", $s1);
+    if($s2 == $str){$str = $s1;}
+    for($i = 0; $i < strlen($str); $i++){
+        $s1 = substr($str,$i,1);
+        $p = ord($s1);
+        if($p > 160){
+            $s2 = substr($str,$i++,2);
+            $ret .= getfirstchar($s2);
+        }else{
+            $ret .= $s1;
+        }
+    }
+    return $ret;
+}	
+	
 //取得拼音
 function pinyin($_String, $_Code='UTF8'){ //GBK页面可改为gb2312，其他随意填写为UTF8
         $_DataKey = "a|ai|an|ang|ao|ba|bai|ban|bang|bao|bei|ben|beng|bi|bian|biao|bie|bin|bing|bo|bu|ca|cai|can|cang|cao|ce|ceng|cha". 
@@ -739,46 +768,44 @@ return "http://".$editor.".".substr(siteurl,strpos(siteurl,".")+1);
 }
 }	
 function province_zm2hz($zm){
-global $f_array_fun;
 $province='';
 $zm=strtolower($zm);
 switch ($zm){
-case'beijing':$province=$f_array_fun[16];break;
-case'shanghai':$province=$f_array_fun[17];break;
-case'tianjin':$province=$f_array_fun[18];break;
-case'chongqing':$province=$f_array_fun[19];break;
-case'hebei':$province=$f_array_fun[20];break;
-case'shanxi':$province=$f_array_fun[21];break;
-case'liaoning':$province=$f_array_fun[22];break;
-case'jilin':$province=$f_array_fun[23];break;
-case'heilongjiang':$province=$f_array_fun[24];break;
-case'jiangshu':$province=$f_array_fun[25];break;
-case'zejinag':$province=$f_array_fun[26];break;
-case'anhui':$province=$f_array_fun[27];break;
-case'fujian':$province=$f_array_fun[28];break;
-case'jiangxi':$province=$f_array_fun[29];break;
-case'shandong':$province=$f_array_fun[30];break;
-case 'henan':$province=$f_array_fun[31];break;
-case'hubei':$province=$f_array_fun[32];break;
-case'hunan':$province=$f_array_fun[33];break;
-case'guangdong':$province=$f_array_fun[34];break;
-case'guangxi':$province=$f_array_fun[35];break;
-case'neimenggu':$province=$f_array_fun[36];break;
-case'hainan':$province=$f_array_fun[37];break;
-case'shichuan':$province=$f_array_fun[38];break;
-case'guizhou':$province=$f_array_fun[39];break;
-case'yunnan':$province=$f_array_fun[40];break;
-case'xizhang':$province=$f_array_fun[41];break;
-case'shanxisheng':$province=$f_array_fun[42];break;
-case'ganshu':$province=$f_array_fun[43];break;
-case'ningxia':$province=$f_array_fun[44];break;
-case'qinghai':$province=$f_array_fun[45];break;
-case'xinjiang':$province=$f_array_fun[46];break;
-case'hongkong':$province=$f_array_fun[47];break;
-case'aomen':$province=$f_array_fun[48];break;
+case'beijing':$province="北京";break;
+case'shanghai':$province="上海";break;
+case'tianjin':$province="天津";break;
+case'chongqing':$province="重庆";break;
+case'hebei':$province="河北";break;
+case'shanxi':$province="山西";break;
+case'liaoning':$province="辽宁";break;
+case'jilin':$province="吉林";break;
+case'heilongjiang':$province="黑龙江";break;
+case'jiangshu':$province="江苏";break;
+case'zejinag':$province="浙江";break;
+case'anhui':$province="安徽";break;
+case'fujian':$province="福建";break;
+case'jiangxi':$province="江西";break;
+case'shandong':$province="山东";break;
+case 'henan':$province="河南";break;
+case'hubei':$province="湖北";break;
+case'hunan':$province="湖南";break;
+case'guangdong':$province="广东";break;
+case'guangxi':$province="广西";break;
+case'neimenggu':$province="内蒙古";break;
+case'hainan':$province="海南";break;
+case'shichuan':$province="四川";break;
+case'guizhou':$province="贵州";break;
+case'yunnan':$province="云南";break;
+case'xizhang':$province="西藏";break;
+case'shanxisheng':$province="陕西";break;
+case'ganshu':$province="甘肃";break;
+case'ningxia':$province="宁夏";break;
+case'qinghai':$province="青海";break;
+case'xinjiang':$province="新疆";break;
+case'hongkong':$province="香港";break;
+case'aomen':$province="澳门";break;
 default:$province=$zm;
 }
-unset ($f_array_fun);
 return $province;	
 }
 
@@ -799,96 +826,37 @@ curl_close($ch);
  $loc = $location->desc;     
  }     
  return $loc; 
- }
+}
+
+function sitecount($channel){
+if ($channel=='zs'){
+$sql="select count(*) as total from zzcms_main";
+}else{
+$sql="select count(*) as total from zzcms_".$channel;
+}
+$rs=query($sql);
+$row = fetch_array($rs);
+$totlenum = $row['total'];
+return "<li>".getchannelname($channel)."<span>".$totlenum."</span></li>";
+}
 
 function showsitecount($cs){ 
-global $siteskin,$f_array_fun;
+global $siteskin;
 $fpath=zzcmsroot2."cache/".$siteskin."/sitecount.txt";
 if (cache_update_time!=0 && file_exists($fpath)!==false && time()-filemtime($fpath)<3600*24*cache_update_time){
 	return file_get_contents($fpath);
 }else{	
 $str='';
-$cs=explode(",",$cs); //传入的$cs是一个整体字符串
-$users=isset($cs[0])?$cs[0]:'';
-$zs=isset($cs[1])?$cs[1]:'';
-$dl=isset($cs[2])?$cs[2]:'';
-$pp=isset($cs[3])?$cs[3]:'';
-$zh=isset($cs[4])?$cs[4]:'';
-$job=isset($cs[5])?$cs[5]:'';
-$zx=isset($cs[6])?$cs[6]:'';
-$special=isset($cs[7])?$cs[7]:'';
-$wangkan=isset($cs[8])?$cs[8]:'';
-$baojia=isset($cs[9])?$cs[9]:'';
-if ($users=='users'){
-$sql="select count(*) as total from zzcms_user";
-$rs=query($sql);
-$row = fetch_array($rs);
-$totlenum = $row['total'];
-$str=$str. "<li>".$f_array_fun[49]."<span>".$totlenum."</span></li>";
-}
-if ($zs=='zs'){
-$sql="select count(*) as total from zzcms_main";
-$rs=query($sql);
-$row = fetch_array($rs);
-$totlenum = $row['total'];
-$str=$str."<li>".channelzs."<span>".$totlenum."</span></li>";
-}
-if ($dl=='dl'){
-$sql="select count(*) as total from zzcms_dl";
-$rs=query($sql);
-$row = fetch_array($rs);
-$totlenum = $row['total'];
-$str=$str."<li>".channeldl."<span>".formatnumber($totlenum)."</span> </li>";
-}
-if ($pp=='pp'){
-$sql="select count(*) as total from zzcms_pp";
-$rs=query($sql);
-$row = fetch_array($rs);
-$totlenum = $row['total'];
-$str=$str."<li>".$f_array_fun[5]."<span>".$totlenum."</span></li>";
-}
-if ($zh=='zh'){
-$sql="select count(*) as total from zzcms_zh";
-$rs=query($sql);
-$row = fetch_array($rs);
-$totlenum = $row['total'];
-$str=$str."<li>".$f_array_fun[7]."<span>".$totlenum."</span></li>";
-}
-if ($job=='job'){
-$sql="select count(*) as total from zzcms_job";
-$rs=query($sql);
-$row = fetch_array($rs);
-$totlenum = $row['total'];
-$str=$str. "<li>".$f_array_fun[6]."<span>".$totlenum."</span></li>"; 
-}
-if ($zx=='zx'){
-$sql="select count(*) as total from zzcms_zx";
-$rs=query($sql);
-$row = fetch_array($rs);
-$totlenum = $row['total'];
-$str=$str."<li>".$f_array_fun[8]."<span>".$totlenum."</span></li>";
-}
-if ($special=='special'){
-$sql="select count(*) as total from zzcms_special";
-$rs=query($sql);
-$row = fetch_array($rs);
-$totlenum = $row['total'];
-$str=$str."<li>".$f_array_fun[10]."<span>".$totlenum."</span></li>";
-}
-if ($wangkan=='wangkan'){
-$sql="select count(*) as total from zzcms_wangkan";
-$rs=query($sql);
-$row = fetch_array($rs);
-$totlenum = $row['total'];
-$str=$str."<li>".$f_array_fun[9]."<span>".$totlenum."</span></li>";
-}
-if ($baojia=='baojia'){
-$sql="select count(*) as total from zzcms_baojia";
-$rs=query($sql);
-$row = fetch_array($rs);
-$totlenum = $row['total'];
-$str=$str."<li>报价<span>".$totlenum."</span></li>";
-}
+if (strpos($cs,'users')!==false){$str=$str.sitecount('user');}
+if (strpos($cs,'zs')!==false){$str=$str.sitecount('zs');}
+if (strpos($cs,'dl')!==false){$str=$str.sitecount('dl');}
+if (strpos($cs,'pp')!==false){$str=$str.sitecount('pp');}
+if (strpos($cs,'zh')!==false){$str=$str.sitecount('zh');}
+if (strpos($cs,'job')!==false){$str=$str.sitecount('job');}
+if (strpos($cs,'zx')!==false){$str=$str.sitecount('zx');}
+if (strpos($cs,'special')!==false){$str=$str.sitecount('special');}
+if (strpos($cs,'wangkan')!==false){$str=$str.sitecount('wangkan');}
+if (strpos($cs,'baojia')!==false){$str=$str.sitecount('baojia');}
 if (cache_update_time!=0){
 	$fpath=zzcmsroot2."cache/".$siteskin."/sitecount.txt";
 	$fp=fopen($fpath,"w+");//fopen()的其它开关请参看相关函数
@@ -897,13 +865,11 @@ if (cache_update_time!=0){
 }	
 return $str;
 }
-unset ($f_array_fun);
 }
 
 //显示联系方式在job/show.php,zs/show.php,pp/show.php
 function showcontact($channel,$cpid,$startdate,$comane,$kind,$editor,$userid,$groupid,$somane,$sex,$phone,$qq,$email,$mobile,$fox){
-global $f_array_fun;
-checkid($groupid);
+checkid($groupid,1);
 checkid($kind,1);//类别有为0的情况，所以第二个参数要设一下，设为1
 $contact="<div id='zscontact'>" ;
 $contact=$contact . "<ul>";
@@ -926,9 +892,9 @@ $contact=$contact . "<li>";
 	if ($kind<>"" && $kind<>0 ) {
 	$rsn=query("select classname from zzcms_userclass where classid=".$kind."");
 	$rown=fetch_array($rsn);
-	$contact=$contact .$f_array_fun[50].$rown["classname"];
+	$contact=$contact ."经营模式：".$rown["classname"];
 	}else{
-	$contact=$contact .$f_array_fun[51];
+	$contact=$contact ."经营模式：未选择";
 	}
 $contact=$contact ."</li>";
 $contact=$contact ."<li style=height:36px>";
@@ -940,31 +906,30 @@ $contact=$contact ."<li style=height:36px>";
 $contact=$contact . "<img src='/image/button_site.gif'  border='0' /></a></li>";
 if ($showcontact=='yes'  || @$_SESSION["dlliuyan"]==$editor) {
 //if ($showcontact=='yes' ) {
-	$contact=$contact . "<li>".$f_array_fun[52]."<b>".$somane."</b>&nbsp;";
+	$contact=$contact . "<li>联系人：<b>".$somane."</b>&nbsp;";
 	if ($sex==1){ 
-	$contact=$contact . $f_array_fun[53];
+	$contact=$contact . "先生";
 	}elseif($sex==0){
-	$contact=$contact . $f_array_fun[54];
+	$contact=$contact . "女士";
 	}
 	$contact=$contact . "</li>";
-	$contact=$contact . "<li>".$f_array_fun[55].$phone."</li>";
-	$contact=$contact . "<li>".$f_array_fun[56].$fox."</li>";
-	$contact=$contact . "<li>".$f_array_fun[57].$mobile."</li>";
-	$contact=$contact . "<li>".$f_array_fun[58].$email."</li>";
+	$contact=$contact . "<li>电　话：".$phone."</li>";
+	$contact=$contact . "<li>传　真：".$fox."</li>";
+	$contact=$contact . "<li>手　机：".$mobile."</li>";
+	$contact=$contact . "<li>E-mail：".$email."</li>";
 	if ($qq<>"") {
-	$contact=$contact . "<li><a target=blank href=http://wpa.qq.com/msgrd?v=1.uin=".$qq.".Site=".sitename.".Menu=yes><img border=0 src=http://wpa.qq.com/pa?p=1:".$qq.":10 alt='".$f_array_fun[59]."'></a> ";
+	$contact=$contact . "<li><a target=blank href=http://wpa.qq.com/msgrd?v=1.uin=".$qq.".Site=".sitename.".Menu=yes><img border=0 src=http://wpa.qq.com/pa?p=1:".$qq.":10 alt='QQ交流'></a> ";
 	$contact=$contact . "</li>";
 	}	
 }else{
 	if ($channel=="job"){
-	$contact=$contact . "<li style='height:50px'>".$f_array_fun[60]."</li>";
+	$contact=$contact . "<li style='height:50px'>普通会员联系方式不显示，应聘者请直接投简历到该公司EMAIL</li>";
 	}else{
-	$contact=$contact . "<li>".$f_array_fun[61]."</li>";
+	$contact=$contact . "<li>联系方式<a href='#dl_liuyan'><b>留言</b></a>后在此显示。</li>";
 	}
 }
 $contact=$contact . "</ul>";
 $contact=$contact . " </div>";
-unset ($f_array_fun);
 return $contact;
 }
 
@@ -976,7 +941,6 @@ return $str;
 }
 
 function del_dirandfile( $dir ){
-global $f_array_fun;
 if (file_exists($dir)){
 if ( $handle = opendir( "$dir" ) ) {
 	while ( false !== ( $item = readdir( $handle ) ) ) {
@@ -984,22 +948,21 @@ if ( $handle = opendir( "$dir" ) ) {
 		if ( is_dir( "$dir/$item" ) ) {
 		del_dirandfile( "$dir/$item" );
 		} else {
-		if( unlink( "$dir/$item" ) )echo $f_array_fun[62].$dir."/".$item."<br /> ";
+		if( unlink( "$dir/$item" ) )echo "成功删除文件：".$dir."/".$item."<br /> ";
 		}
 	}
 	}
    closedir( $handle );
-   if( rmdir( $dir ) )echo $f_array_fun[63]. $dir."<br /> ";
+   if( rmdir( $dir ) )echo "成功删除目录：". $dir."<br /> ";
 }
 }else{
-echo $dir.$f_array_fun[64]."<br />"; 
+echo "目录已不存在，已完成清理<br />"; 
 }
 //echo "缓存已被清理<br />";
 }
 
 function formatnumber($number){
-global $f_array_fun;
-	if($number >= 10000){return sprintf("%.2f", $number/10000).$f_array_fun[65];}else{return $number;}
+if($number >= 10000){return sprintf("%.2f", $number/10000)."万";}else{return $number;}
 }
 
 function checkver($str){
@@ -1009,7 +972,7 @@ WriteErrMsg(base64_decode('PGRpdiBzdHlsZT0nZm9udC1zaXplOjIwcHgnPuWFjei0ueeJiCzli
 }
 
 function checkadminisdo($str){
-$rs=query("select config from zzcms_admingroup where id=(select groupid from zzcms_admin where pass='".@$_SESSION["pass"]."' and admin='".@$_SESSION["admin"]."')");//只验证密码会出现，两个管理员密码相同的情况，导致出错,前加@防止SESSION失效后出错提示
+$rs=query("select config from zzcms_admingroup where id=(select groupid from zzcms_admin where pass='".@$_COOKIE["pass"]."' and admin='".@$_COOKIE["admin"]."')");//只验证密码会出现，两个管理员密码相同的情况，导致出错,前加@防止SESSION失效后出错提示
 	$row=fetch_array($rs);
 	$config=$row["config"];
 	if(str_is_inarr($config,$str)=='no'){showmsg('没有操作权限!');}

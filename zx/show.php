@@ -1,5 +1,4 @@
 <?php
-if(!isset($_SESSION)){session_start();} 
 include("../inc/conn.php");
 include("../inc/top.php");
 include("../inc/bottom.php");
@@ -180,7 +179,7 @@ $zxcontent=showcontent();
 	}
 }
 
-$sql="select id,title from zzcms_zx where id < ".$zxid." and passed=1 and bigclassid in (select classid from zzcms_zxclass where isshowininfo=1 and parentid=0) order by id desc limit 0,1";
+$sql="select * from zzcms_zx where id < ".$zxid." and passed=1 and bigclassid in (select classid from zzcms_zxclass where isshow=1 and parentid=0) order by id desc limit 0,1";
 $rs=query($sql);
 $row=fetch_array($rs);
 if ($row){
@@ -189,7 +188,7 @@ $nextid="上一篇文章：<a href=".getpageurl("zx",$row["id"]).">".$row["title
 $nextid="上一篇文章：没有了<br/>";
 }
 	
-$sql="select id,title from zzcms_zx where id > ".$zxid." and passed=1 and bigclassid in (select classid from zzcms_zxclass where isshowininfo=1 and parentid=0) order by id asc limit 0,1";
+$sql="select * from zzcms_zx where id > ".$zxid." and passed=1 and bigclassid in (select classid from zzcms_zxclass where isshow=1 and parentid=0) order by id asc limit 0,1";
 $rs=query($sql);
 $row=fetch_array($rs);
 if ($row){
@@ -241,7 +240,7 @@ $strout=str_replace("{#sitebottom}",sitebottom(),$strout);
 $strout=str_replace("{#sitetop}",sitetop(),$strout);
 $strout=showlabel($strout);
 
-session_write_close();
+
 echo  $strout;
 }
 ?>

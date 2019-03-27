@@ -4,10 +4,6 @@
 //}
 
 if (isset($_COOKIE["UserName"])){
-
-$fpath="text/left.txt";
-$fcontent=file_get_contents($fpath);
-$f_array_left=explode("\n",$fcontent) ;
 $current_url=$_SERVER['PHP_SELF'];
 $c_name= substr( $current_url,strrpos($current_url,'/')+1);  
 ?>
@@ -30,113 +26,113 @@ function Confirmdeluser(){
 //-->
 </script>
 <div id="left1" style="display:block"  class="leftcontent"> 
-<div class="lefttitle"><img src="image/ico/ico4.gif"> <?php echo $f_array_left[0]?> </div>
+<div class="lefttitle"><img src="image/ico/ico4.gif"> 发布信息 </div>
 <div>
 <ul>
 <?php
 if (str_is_inarr(usergr_power,'zs')=='yes'|| $usersf=='公司'){
-	if ($c_name=='zsadd.php'||$c_name=='zsmanage.php'||$c_name=='zsmodify.php'||$c_name=='zspx.php'||$c_name=='zs_elite.php'){
+	if ($c_name=='zs.php'||$c_name=='zsmanage.php'||$c_name=='zspx.php'||$c_name=='zs_elite.php'){
 	echo "<li class='current2'>";
 	}else{
 	echo "<li class='current1'>";
 	}
-echo "<a href='zsadd.php' target='_self'>".$f_array_left[1].channelzs."</a> | <a href='zsmanage.php' target='_self'>".$f_array_left[2]."</a></li> ";
+echo "<a href='zs.php?do=add' target='_self'>发".channelzs."</a> | <a href='zsmanage.php' target='_self'>管理</a></li> ";
 }
 
 if (str_is_inarr(channel,'pp')=='yes'){
 if (str_is_inarr(usergr_power,'pp')=='yes'|| $usersf=='公司'){
-	if ($c_name=='ppadd.php'||$c_name=='ppmanage.php'||$c_name=='ppmodify.php'){
+	if ($c_name=='pp.php'||$c_name=='ppmanage.php'){
 	echo "<li class='current2'>";
 	}else{
 	echo "<li class='current1'>";
 	}
-echo "<a href='ppadd.php' target='_self'>".$f_array_left[3]."</a> | <a href='ppmanage.php' target='_self'>".$f_array_left[2]."</a></li> ";	
+echo "<a href='pp.php?do=add' target='_self'>发品牌</a> | <a href='ppmanage.php' target='_self'>管理</a></li> ";	
 }
 }
 
 if (str_is_inarr(usergr_power,'dl')=='yes'|| $usersf=='公司'){
-	if ($c_name=='dladd.php'||$c_name=='dlmanage.php'||$c_name=='dlmodify.php'){
+	if ($c_name=='dl.php'||$c_name=='dlmanage.php'){
 	echo "<li class='current2'>";
 	}else{
 	echo "<li class='current1'>";
 	}
-echo "<a href='dladd.php' target='_self'>".$f_array_left[1].channeldl."</a> | <a href='dlmanage.php' target='_self'>".$f_array_left[2]."</a></li> ";
+echo "<a href='dl.php?do=add' target='_self'>发".channeldl."</a> | <a href='dlmanage.php' target='_self'>管理</a></li> ";
 }
 
 if (str_is_inarr(channel,'baojia')=='yes'){
 if (str_is_inarr(usergr_power,'baojia')=='yes'|| $usersf=='公司'){
-	if ($c_name=='baojiaadd.php'||$c_name=='baojiamanage.php'||$c_name=='baojiamodify.php'){
+	if ($c_name=='baojia.php'||$c_name=='baojiamanage.php'){
 	echo "<li class='current2'>";
 	}else{
 	echo "<li class='current1'>";
 	}
-echo "<a href='baojiaadd.php' target='_self'>发报价</a> | <a href='baojiamanage.php' target='_self'>管理</a></li> ";
+echo "<a href='baojia.php?do=add' target='_self'>发报价</a> | <a href='baojiamanage.php' target='_self'>管理</a></li> ";
 }
 }
 
 if (str_is_inarr(channel,'zh')=='yes'){
 if (str_is_inarr(usergr_power,'zh')=='yes'|| $usersf=='公司'){
-	if ($c_name=='zhadd.php'||$c_name=='zhmanage.php'||$c_name=='zhmodify.php'){
+	if ($c_name=='zh.php'||$c_name=='zhmanage.php'){
 	echo "<li class='current2'>";
 	}else{
 	echo "<li class='current1'>";
 	}
-echo "<a href='zhadd.php' target='_self'>".$f_array_left[4]."</a> | <a href='zhmanage.php' target='_self'>".$f_array_left[2]."</a></li> ";
+echo "<a href='zh.php?do=add' target='_self'>发展会</a> | <a href='zhmanage.php' target='_self'>管理</a></li> ";
 }
 }
 
 if (str_is_inarr(channel,'wangkan')=='yes'){
 if (str_is_inarr(usergr_power,'wangkan')=='yes'|| $usersf=='公司'){
-	if ($c_name=='wangkanadd.php'||$c_name=='wangkanmanage.php'||$c_name=='wangkanmodify.php'){
+	if ($c_name=='wangkan.php'||$c_name=='wangkanmanage.php'){
 	echo "<li class='current2'>";
 	}else{
 	echo "<li class='current1'>";
 	}
-echo "<a href='wangkanadd.php' target='_self'>".$f_array_left[42]."</a> | <a href='wangkanmanage.php' target='_self'>".$f_array_left[2]."</a></li> ";
+echo "<a href='wangkan.php?do=add' target='_self'>发网刊</a> | <a href='wangkanmanage.php' target='_self'>管理</a></li> ";
 }
 }
 
 if (str_is_inarr(channel,'zx')=='yes'){
 if (str_is_inarr(usergr_power,'zx')=='yes'|| $usersf=='公司'){
-	if ($c_name=='zxadd.php'||$c_name=='zxmanage.php'||$c_name=='zxmodify.php'){
+	if ($c_name=='zx.php'||$c_name=='zxmanage.php'){
 	echo "<li class='current2'>";
 	}else{
 	echo "<li class='current1'>";
 	}
-echo "<a href='zxadd.php' target='_self'>".$f_array_left[5]."</a> | <a href='zxmanage.php' target='_self'>".$f_array_left[2]."</a></li> ";
+echo "<a href='zx.php?do=add' target='_self'>发资讯</a> | <a href='zxmanage.php' target='_self'>管理</a></li> ";
 }
 }
 
 if (str_is_inarr(channel,'special')=='yes'){
 if (str_is_inarr(usergr_power,'special')=='yes'|| $usersf=='公司'){
-	if ($c_name=='specialadd.php'||$c_name=='specialmanage.php'||$c_name=='specialmodify.php'){
+	if ($c_name=='special.php'||$c_name=='specialmanage.php'){
 	echo "<li class='current2'>";
 	}else{
 	echo "<li class='current1'>";
 	}
-echo "<a href='specialadd.php' target='_self'>".$f_array_left[6]."</a> | <a href='specialmanage.php' target='_self'>".$f_array_left[2]."</a></li> ";
+echo "<a href='special.php?do=add' target='_self'>发专题</a> | <a href='specialmanage.php' target='_self'>管理</a></li> ";
 }
 }
 
 if (str_is_inarr(channel,'ask')=='yes'){
 if (str_is_inarr(usergr_power,'ask')=='yes'|| $usersf=='公司'){
-	if ($c_name=='askadd.php'||$c_name=='askmanage.php'||$c_name=='askmodify.php'){
+	if ($c_name=='ask.php'||$c_name=='askmanage.php'){
 	echo "<li class='current2'>";
 	}else{
 	echo "<li class='current1'>";
 	}
-echo "<a href='askadd.php' target='_self'>发问答</a> | <a href='askmanage.php' target='_self'>".$f_array_left[2]."</a></li> ";
+echo "<a href='ask.php?do=add' target='_self'>发问答</a> | <a href='askmanage.php' target='_self'>管理</a></li> ";
 }
 }
 
 if (str_is_inarr(channel,'job')=='yes'){
 if (str_is_inarr(usergr_power,'job')=='yes'|| $usersf=='公司'){
-	if ($c_name=='jobadd.php'||$c_name=='jobmanage.php'||$c_name=='jobmodify.php'){
+	if ($c_name=='job.php'||$c_name=='jobmanage.php'){
 	echo "<li class='current2'>";
 	}else{
 	echo "<li class='current1'>";
 	}
-echo "<a href='jobadd.php' target='_self'>".$f_array_left[7]."</a> | <a href='jobmanage.php' target='_self'>".$f_array_left[2]."</a></li> ";
+echo "<a href='job.php?do=add' target='_self'>发招聘</a> | <a href='jobmanage.php' target='_self'>管理</a></li> ";
 }
 }
 
@@ -145,22 +141,22 @@ $rs_left=query($sql_left);
 $row_left=fetch_array($rs_left);
 
 if (str_is_inarr(channel,'zx')=='yes'){
-if (str_is_inarr(usergr_power,'zx')=='yes'|| $usersf=='公司'){
+if ($usersf=='公司'){
 	if ($c_name=='zxadd.php'||$c_name=='zxmanage.php'||$c_name=='zxmodify.php'){
 	echo "<li class='current2'>";
 	}else{
 	echo "<li class='current1'>";
 	}
-echo "<a href='index.php?gotopage=zxadd.php&b=".$row_left['classid']."' target='_self'>".$f_array_left[8]."</a> | <a href='zxmanage.php?bigclassid=".$row_left['classid']."' target='_self'>".$f_array_left[2]."</a></li> ";
+echo "<a href='index.php?gotopage=zx.php?do=add&b=".$row_left['classid']."' target='_self'>发公司新闻</a> | <a href='zxmanage.php?bigclassid=".$row_left['classid']."' target='_self'>管理</a></li> ";
 }
 }
 
-if ($c_name=='advadd.php'||$c_name=='advmanage.php'||$c_name=='advmodify.php'){
+if ($c_name=='advzt.php'||$c_name=='advzt_manage.php'){
 	echo "<li class='current2'>";
 	}else{
 	echo "<li class='current1'>";
 	}
-echo "<a href='advadd.php' target='_self'>".$f_array_left[9]."</a> | <a href='advmanage.php' target='_self'>".$f_array_left[2]."</a></li> ";
+echo "<a href='advzt.php?do=add' target='_self'>发广告</a> | <a href='advzt_manage.php' target='_self'>管理</a></li> ";
 ?>
 </ul>
 </div>
@@ -168,16 +164,16 @@ echo "<a href='advadd.php' target='_self'>".$f_array_left[9]."</a> | <a href='ad
 
 <?php if (str_is_inarr(usergr_power,'zs')=='yes'|| $usersf=='公司'){?>
 <div id="left2" style="display:block" class="leftcontent">
-<div class="lefttitle"><img src="image/ico/ico8.gif"> <?php echo $f_array_left[10]?></div>
+<div class="lefttitle"><img src="image/ico/ico8.gif"> 查看留言</div>
 <div>
 <ul>
 <?php
-if ($c_name=='dls_message_manage.php'){
+if ($c_name=='dls.php'){
 	echo "<li class='current2'>";
 	}else{
 	echo "<li class='current1'>";
 	}
-echo "<a href='dls_message_manage.php' target='_self'>".$f_array_left[11]."</a> ";		  
+echo "<a href='dls.php' target='_self'>意向产品留言</a> ";		  
 $sql_left="select id from zzcms_dl where saver='".@$username."' and looked=0 and del=0 and passed=1";
 $rs_left=query($sql_left);
 $row_left=num_rows($rs_left);
@@ -191,7 +187,7 @@ if ($c_name=='ztliuyan.php'){
 	}else{
 	echo "<li class='current1'>";
 	}
-echo "<a href='ztliuyan.php?show=all' target='_self'>".$f_array_left[12]."</a> ";
+echo "<a href='ztliuyan.php?show=all' target='_self'>展厅留言</a> ";
 
 $sql_left="select id from zzcms_guestbook where saver='".@$username."' and looked=0 and passed=1";
 $rs_left=query($sql_left);
@@ -207,11 +203,11 @@ echo "</li>";
 <?php }?>
 
 <div id="left3" style="display:block" class="leftcontent"> 		
-<div class="lefttitle"> <img src="image/ico/ico9.gif" width="12" height="16"> <?php echo $f_array_left[13]?></div>
+<div class="lefttitle"> <img src="image/ico/ico9.gif" width="12" height="16"> 抢广告位</div>
 <div> 
 <ul>
-<li><a href="adv.php" target="_self"><?php echo $f_array_left[14]?></a></li>
-<li><a href="adv2.php" target="_self"><?php echo $f_array_left[15]?></a><img src="image/ico/ico6.gif" width="23" height="12"></li>
+<li><a href="adv.php" target="_self">设置/更换广告词</a></li>
+<li><a href="adv2.php" target="_self">抢占广告位</a><img src="image/ico/ico6.gif" width="23" height="12"></li>
 </ul>
 </div>
 </div>
@@ -220,11 +216,11 @@ echo "</li>";
 if ($usersf=="公司"){ 
 ?>	
 <div id="left4" style="display:block" class="leftcontent"> 
-<div class="lefttitle"><img src="image/ico/ico5.gif" width="16" height="16"> <?php echo $f_array_left[16]?></div>
+<div class="lefttitle"><img src="image/ico/ico5.gif" width="16" height="16">资质管理</div>
 <div>
 <ul>			
-<li><a href="licence_add.php" target="_self"> <?php echo $f_array_left[17]?></a></li> 
-<li><a href="licence.php" target="_self" ><?php echo $f_array_left[18]?></a></li>
+<li><a href="licence.php?do=add" target="_self">资质证书添加</a></li> 
+<li><a href="licence_manage.php" target="_self" >资质证书管理</a></li>
 </ul>
 </div>
 </div>
@@ -232,37 +228,37 @@ if ($usersf=="公司"){
 }
 ?>
 <div id="left5" style="display:block" class="leftcontent"> 
-<div class="lefttitle"><img src="image/ico/ico7.gif" width="16" height="15"> <?php echo $f_array_left[19]?></div>
+<div class="lefttitle"><img src="image/ico/ico7.gif" width="16" height="15">财务管理</div>
 <div>
 <ul>	
-<li><a href="/3/alipay/" target="_blank"> <?php echo $f_array_left[20]?></a></li>
-<li><a href="/3/tenpay/" target="_blank"> <?php echo $f_array_left[21]?></a></li>
-<li><a href="pay_manage.php" target="_self"> <?php echo $f_array_left[22]?></a></li>
+<li><a href="/3/alipay/" target="_blank">用支付宝充值</a></li>
+<li><a href="/3/tenpay/" target="_blank"> 用财富通充值</a></li>
+<li><a href="pay_manage.php" target="_self">我的财务记录</a></li>
 </ul>
 </div>
 </div>
 			
 <div id="left6" style="display:block" class="leftcontent"> 
-<div class="lefttitle"><img src="image/ico/ico10.gif" width="16" height="16"> <?php echo $f_array_left[23]?></div>
+<div class="lefttitle"><img src="image/ico/ico10.gif" width="16" height="16">用户设置</div>
 <div>
 <ul>
-<li><a href="vip_add.php" target="_self"><?php echo $f_array_left[24]?></a></li> 
-<li><a href="vip_xufei.php" target="_self"><?php echo $f_array_left[25]?></a></li> 
-<li><a href="manage.php" target="_self"><?php echo $f_array_left[26]?></a></li>
-<li><a href="managepwd.php" target="_self"><?php echo $f_array_left[27]?></a></li>
-<li><a href="/one/vipuser.php" target="_blank"><?php echo $f_array_left[28]?></a></li>
-<li><a href="index.php" target="_self"><?php echo $f_array_left[29]?></a></li> 
+<li><a href="vip_add.php" target="_self">会员自助升级</a></li> 
+<li><a href="vip_xufei.php" target="_self">会员自助续费</a></li> 
+<li><a href="manage.php" target="_self">修改注册信息</a></li>
+<li><a href="managepwd.php" target="_self">修改登录密码</a></li>
+<li><a href="/one/vipuser.php" target="_blank">查看我的权限</a></li>
+<li><a href="index.php" target="_self">查看帐号信息</a></li> 
 </ul>
 </div>
 </div>
 <?php if ($usersf=="公司"){ ?>
 <div id="left7" style="display:block" class="leftcontent"> 
-<div class="lefttitle"><img src="image/ico/ico10.gif" width="16" height="16"> <?php echo $f_array_left[30]?></div>
+<div class="lefttitle"><img src="image/ico/ico10.gif" width="16" height="16"> 展厅设置</div>
 <div>
 <ul>
-<li><a href="ztconfig_skin.php" target="_self"> <?php echo $f_array_left[31]?></a></li>
-<li><a href="ztconfig_skin_mobile.php" target="_self"><?php echo $f_array_left[32]?></a></li>
-<li><a href="ztconfig.php" target="_self"> <?php echo $f_array_left[33]?></a></li>
+<li><a href="ztconfig_skin.php" target="_self"> 模板更换</a></li>
+<li><a href="ztconfig_skin_mobile.php" target="_self">手机版模板更换</a></li>
+<li><a href="ztconfig.php" target="_self"> 用户展厅设置</a></li>
 <li><a href="domain_manage.php" target="_self"> 绑定顶级域名</a></li>
 </ul>
 </div>
@@ -271,27 +267,26 @@ if ($usersf=="公司"){
 }
 ?>				
 <div id="left8" style="display:block" class="leftcontent">			
-<div class="lefttitle"><img src="image/ico/ico8.gif"> <?php echo $f_array_left[34]?></div>
+<div class="lefttitle"><img src="image/ico/ico8.gif"> 群发信息</div>
 <div>
 <ul>
-<li><a href="msg_manage.php" target="_self" ><?php echo $f_array_left[35]?></a></li>
-<li><a href="../dl/dl.php" target="_blank"><?php echo str_replace("{#channeldl}",channeldl,$f_array_left[36])?></a></li>			
+<li><a href="msg_manage.php" target="_self" >邮件/短信内容设置</a></li>
+<li><a href="../dl/dl.php" target="_blank">给<?php echo channeldl?>商群发信息</a></li>			
 </ul>		
 </div>
 </div>		
 
 <div id="left9" style="display:block" class="leftcontent"> 
-<div class="lefttitle"><img src="image/ico/ico3.gif"> <?php echo $f_array_left[37]?></div>
+<div class="lefttitle"><img src="image/ico/ico3.gif"> 需要帮助</div>
 <div>
 <ul>
-<li><a target=blank href=http://wpa.qq.com/msgrd?v=1&uin=<?php echo kfqq?>&Site=<?php echo sitename?>&Menu=yes><img border="0" src=http://wpa.qq.com/pa?p=1:<?php echo kfqq ?>:4><?php echo $f_array_left[38]?></a></li>
-<li><a href="#"><?php echo $f_array_left[39].kftel?></a></li>
-<li><a href="/one/help.php" target="_blank"><?php echo $f_array_left[40]?></a></li>
-<li><a href="message.php"><?php echo $f_array_left[41]?></a></li>
+<li><a target=blank href=http://wpa.qq.com/msgrd?v=1&uin=<?php echo kfqq?>&Site=<?php echo sitename?>&Menu=yes><img border="0" src=http://wpa.qq.com/pa?p=1:<?php echo kfqq ?>:4>在线客服QQ</a></li>
+<li><a href="###">电话：<?php echo kftel?></a></li>
+<li><a href="/one/help.php" target="_blank">常见问题解答</a></li>
+<li><a href="message.php">给管理员发信息</a></li>
 </ul>
 </div>
 </div>
 <?php 
 }
-unset ($f_array_left);
 ?>

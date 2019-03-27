@@ -1,14 +1,16 @@
-<?php include("admin.php"); ?>
-<html>
+<?php 
+include("admin.php");
+?>
+<!DOCTYPE html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <title></title>
 <link href="style.css" rel="stylesheet" type="text/css">
-<script language = "JavaScript" src="/js/gg.js"></script>
+<script language = "JavaScript" src="../js/gg.js"></script>
 </head>
 <body>
 <?php
-checkadminisdo("advtext");
+checkadminisdo("adv_user");
 $action = isset($_POST['action'])?$_POST['action']:'';
 $page = isset($_GET['page'])?$_GET['page']:1;
 checkid($page);
@@ -16,6 +18,8 @@ $id = isset($_GET['id'])?$_GET['id']:0;
 checkid($id,1);
 
 if ($action=="modify"){
+checkstr($img,"upload");//入库前查上传文件地址是否合格
+checkstr($oldimg,"upload");
 query("update zzcms_textadv set adv='$adv',advlink='$advlink',img='$img',passed=1 where id='$id'");
 $rs=query("select * from zzcms_textadv where id='$id'");
 $row=fetch_array($rs);

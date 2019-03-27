@@ -1,10 +1,9 @@
 <?php
-session_start();
 include("../inc/conn.php");
 $last = isset($_POST['last'])?$_POST['last']:0;
 $amount = isset($_POST['amount'])?$_POST['amount']:20;
-$b=$_SESSION['zx_b'];
-$s=$_SESSION['zx_s'];
+$b=$_COOKIE['zx_b'];
+$s=$_COOKIE['zx_s'];
 
 $sql="select id,title,elite,sendtime,img,link,content,hit,editor from zzcms_zx where passed=1"; 
 

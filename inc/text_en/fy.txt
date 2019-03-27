@@ -1,8 +1,0 @@
-﻿Page:
-Bar/page
-total
-records
-【first page】
-【last page】
-【next page】
-【End page】

@@ -12,7 +12,7 @@ checkid($b);
 $skin='';
 $bigclassname="";
 if ($b<>"") {
-$sql="select classname,title,keyword,discription,skin from zzcms_zxclass where classid='".$b."'";
+$sql="select classname,title,keyword,description,skin from zzcms_zxclass where classid='".$b."'";
 $rs=query($sql);
 $row=num_rows($rs);
 	if ($row){
@@ -20,7 +20,7 @@ $row=num_rows($rs);
 	$bigclassname=$row["classname"];
 	$classtitle=$row["title"];
 	$classkeyword=$row["keyword"];
-	$classdiscription=$row["discription"];
+	$classdescription=$row["description"];
 	$skin=explode("|",$row["skin"]);
 	$skin=$skin[0];
 	}

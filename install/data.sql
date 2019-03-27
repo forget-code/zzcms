@@ -34,11 +34,11 @@ DROP TABLE IF EXISTS `zzcms_admingroup`;
 CREATE TABLE `zzcms_admingroup` (
   `id` int(11) NOT NULL auto_increment,
   `groupname` char(50) default NULL,
-  `config` varchar(500) NOT NULL default '0',
+  `config` varchar(1000) NOT NULL default '0',
   PRIMARY KEY  (`id`)
 ) ENGINE=MyISAM AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
-replace into `zzcms_admingroup` values('1','超级管理员','zs#zsclass#zskeyword#dl#zh#zhclass#zx#zxclass#zxpinglun#zxtag#pp#job#jobclass#special#specialclass#adv#advclass#advtext#userreg#usernoreg#userclass#usergroup#guestbook#licence#badusermessage#fankui#uploadfiles#sendmessage#sendmail#sendsms#announcement#helps#bottomlink#friendlink#siteconfig#label#adminmanage#admingroup');
-replace into `zzcms_admingroup` values('2','管理员(演示用)','zs#zskeyword#dl#zh#zx#zxpinglun#zxtag#pp#job#special#userreg#usernoreg#usergroup#guestbook#licence#badusermessage#fankui#sendmessage#sendmail#sendsms');
+replace into `zzcms_admingroup` values('1','超级管理员','zs#zs_modify#zs_del#zsclass#zskeyword#dl#dl_add#dl_modify#dl_del#guestbook#zh#zh_add#zh_modify#zh_del#zhclass#zx#zx_add#zx_modify#zx_del#zxclass#zxpinglun#zxtag#pp#pp_modify#pp_del#job#job_modify#job_del#jobclass#special#special_add#special_modify#special_del#specialclass#wangkan#wangkan_add#wangkan_modify#wangkan_del#wangkanclass#baojia#baojia_modify#baojia_del#ask#ask_add#ask_modify#ask_del#askclass#adv#adv_add#adv_modify#adv_del#advclass#adv_user#user#user_modify#user_del#usernoreg#userclass#usergroup#friendlink#friendlink_add#friendlink_modify#friendlink_del#about#about_add#about_modify#about_del#label#label_add#label_modify#label_del#licence#fankui#badusermessage#uploadfiles#sendmessage#sendmail#sendsms#announcement#helps#siteconfig#adminmanage#admingroup');
+replace into `zzcms_admingroup` values('2','管理员(演示用)','zs#zs_modify#zskeyword#dl#dl_add#dl_modify#guestbook#zh#zh_add#zh_modify#zx#zx_add#zx_modify#zxpinglun#zxtag#pp#pp_modify#job#job_modify#special#special_add#special_modify#wangkan#wangkan_add#wangkan_modify#baojia#baojia_modify#ask#ask_add#ask_modify#adv#user#usernoreg#friendlink#about#label#licence#fankui#badusermessage#sendmessage#sendmail#sendsms');
 
 DROP TABLE IF EXISTS `zzcms_bad`;
 CREATE TABLE `zzcms_bad` (
@@ -55,20 +55,23 @@ DROP TABLE IF EXISTS `zzcms_main`;
 CREATE TABLE `zzcms_main` (
   `id` int(4) NOT NULL auto_increment,
   `proname` char(50) default NULL,
-  `szm` char(10) default NULL,
+  `szm` char(100) default NULL,
   `prouse` char(255) default NULL,
   `procompany` char(50) default NULL,
+  `tz` char(25) default NULL,
   `sm` text,
   `xuhao` int(4) default NULL,
   `bigclassid` tinyint(4) default 0,
   `smallclassid` tinyint(4) default 0,
   `smallclassids` char(50) default NULL,
-  `shuxing`  int(4) default NULL,
   `img` char(255) default NULL,
   `flv` char(255) default NULL,
   `province` char(50) default NULL,
   `city` char(50) default NULL,
   `xiancheng` char(50) default NULL,
+  `province_user` char(50) default NULL,
+  `city_user` char(50) default NULL,
+  `xiancheng_user` char(50) default NULL,
   `zc` char(255) default NULL,
   `yq` char(255) default NULL,
   `other` char(255) default NULL,
@@ -93,7 +96,7 @@ CREATE TABLE `zzcms_main` (
   `ppid` int(11) default '0',
   `gjzpm` tinyint(4) default '0',
   `tag` char(255) default NULL,
-  `skin` char(25) default NULL,
+  `skin` char(25) default NULL,  
   PRIMARY KEY  (`id`)
 ) ENGINE=MyISAM AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
 ALTER TABLE  `zzcms_main` ADD INDEX (  `province` ,  `city` ,  `xiancheng` ) ;
@@ -233,14 +236,6 @@ CREATE TABLE `zzcms_looked_dls_number_oneday` (
   PRIMARY KEY  (`id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
-DROP TABLE IF EXISTS `zzcms_zsclass_shuxing`;
-CREATE TABLE `zzcms_zsclass_shuxing` (
-  `bigclassid` int(11) NOT NULL auto_increment,
-  `bigclassname` char(50) default NULL,
-  `xuhao` int(11) default '0',
-  PRIMARY KEY  (`bigclassid`)
-) ENGINE=MyISAM AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
-
 DROP TABLE IF EXISTS `zzcms_pp`;
 CREATE TABLE `zzcms_pp` (
   `id` int(11) NOT NULL auto_increment,
@@ -262,9 +257,16 @@ ALTER TABLE  `zzcms_pp` ADD INDEX (  `bigclassid` ) ;
 DROP TABLE IF EXISTS `zzcms_jobclass`;
 CREATE TABLE `zzcms_jobclass` (
   `classid` int(11) NOT NULL auto_increment,
-  `classname` char(255) default NULL,
+  `classname` char(50) default NULL,
   `parentid` int(11) default '0',
+  `classzm` char(50) default NULL,
+  `img` char(50) default NULL,
+  `skin` char(50) default NULL,
+  `title` char(255) default NULL,
+  `keyword` char(255) default NULL,
+  `description` char(255) default NULL,
   `xuhao` int(11) default '0',
+  `isshow` tinyint(4) default '0',
   PRIMARY KEY  (`classid`)
 ) ENGINE=MyISAM AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
 
@@ -465,13 +467,20 @@ CREATE TABLE `zzcms_userclass` (
   `classid` int(11) NOT NULL auto_increment,
   `parentid` int(11) default '0',
   `classname` char(50) NOT NULL,
+  `classzm` char(50) default NULL,
+  `img` char(50) default NULL,
+  `skin` char(50) default NULL,
+  `title` char(255) default NULL,
+  `keyword` char(255) default NULL,
+  `description` char(255) default NULL,
+  `isshow` tinyint(4) default '0',
   `xuhao` int(11) NOT NULL default '0',
   PRIMARY KEY  (`classid`)
 ) ENGINE=MyISAM AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
-replace into `zzcms_userclass` values('1','0','生产单位','0');
-replace into `zzcms_userclass` values('2','0','经销单位','0');
-replace into `zzcms_userclass` values('4','0','展会承办单位','0');
-replace into `zzcms_userclass` values('5','0','其它相关行业','0');
+replace into `zzcms_userclass` values('1','0','生产单位','','','','','','','1','0');
+replace into `zzcms_userclass` values('2','0','经销单位','','','','','','','1','0');
+replace into `zzcms_userclass` values('4','0','展会承办单位','','','','','','','1','0');
+replace into `zzcms_userclass` values('5','0','其它相关行业','','','','','','','1','0');
 
 DROP TABLE IF EXISTS `zzcms_usermessage`;
 CREATE TABLE `zzcms_usermessage` (
@@ -574,10 +583,11 @@ CREATE TABLE `zzcms_zsclass` (
   `classname` char(50) NOT NULL,
   `classzm` char(50) default NULL,
   `img` char(50) NOT NULL default '0',
+  `skin` char(50) default NULL,
   `xuhao` int(11) NOT NULL default '0',
   `title` char(255) default NULL,
   `keyword` char(255) default NULL,
-  `discription` char(255) default NULL,
+  `description` char(255) default NULL,
   `isshow` tinyint(4) NOT NULL default '1',
   PRIMARY KEY  (`classid`)
 ) ENGINE=MyISAM AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
@@ -605,26 +615,23 @@ CREATE TABLE `zzcms_zx` (
   `jifen` int(11) default '0',
   PRIMARY KEY  (`id`)
 ) ENGINE=MyISAM AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
-ALTER TABLE  `zzcms_zx` ADD INDEX (  `bigclassid` ) ;
+ALTER TABLE  `zzcms_zx` ADD INDEX (`bigclassid`) ;
 
 DROP TABLE IF EXISTS `zzcms_zxclass`;
 CREATE TABLE `zzcms_zxclass` (
   `classid` int(11) NOT NULL auto_increment,
-  `classname` char(50) default NULL,
   `parentid` int(11) default '0',
+  `classname` char(50) default NULL,
+  `classzm` char(50) default NULL,
+  `img` char(50) default NULL,
+  `skin` char(50) default NULL,
   `xuhao` int(11) default '0',
-  `isshowforuser` tinyint(4) default '1',
-  `isshowininfo` tinyint(4) default '1',
+  `isshow` tinyint(4) default '1',
   `title` char(255) default NULL,
   `keyword` char(255) default NULL,
-  `discription` char(255) default NULL,
-  `skin` char(50) default NULL,
+  `description` char(255) default NULL,
   PRIMARY KEY  (`classid`)
 ) ENGINE=MyISAM AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
-replace into `zzcms_zxclass` values('1','公司新闻','0','0','1','1','','','','');
-replace into `zzcms_zxclass` values('2','大类二','0','0','1','1','','','','');
-replace into `zzcms_zxclass` values('3','大类三','0','0','1','1','','','','');
-replace into `zzcms_zxclass` values('4','大类四','0','0','1','1','','','','');
 
 DROP TABLE IF EXISTS `zzcms_ask`;
 CREATE TABLE `zzcms_ask` (
@@ -650,14 +657,16 @@ ALTER TABLE  `zzcms_ask` ADD INDEX (  `bigclassid` ) ;
 DROP TABLE IF EXISTS `zzcms_askclass`;
 CREATE TABLE `zzcms_askclass` (
   `classid` int(11) NOT NULL auto_increment,
-  `classname` char(50) default NULL,
   `parentid` int(11) default '0',
+  `classname` char(50) default NULL,
+  `classzm` char(50) default NULL,
+  `img` char(50) default NULL,
+  `skin` char(50) default NULL,
   `xuhao` int(11) default '0',
-  `isshowforuser` tinyint(4) default '1',
-  `isshowininfo` tinyint(4) default '1',
+  `isshow` tinyint(4) default '1',
   `title` char(255) default NULL,
   `keyword` char(255) default NULL,
-  `discription` char(255) default NULL,
+  `description` char(255) default NULL,
   PRIMARY KEY  (`classid`)
 ) ENGINE=MyISAM AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
 
@@ -704,21 +713,23 @@ DROP TABLE IF EXISTS `zzcms_specialclass`;
 CREATE TABLE `zzcms_specialclass` (
   `classid` int(11) NOT NULL auto_increment,
   `classname` char(50) default NULL,
+  `classzm` char(50) default NULL,
+  `img` char(50) default NULL,
+  `skin` char(50) default NULL,
   `parentid` int(11) default '0',
   `xuhao` int(11) default '0',
-  `isshowforuser` tinyint(4) default '1',
-  `isshowininfo` tinyint(4) default '1',
+  `isshow` tinyint(4) default '1',
   `title` char(255) default NULL,
   `keyword` char(255) default NULL,
-  `discription` char(255) default NULL,
+  `description` char(255) default NULL,
   PRIMARY KEY  (`classid`)
 ) ENGINE=MyISAM AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
-replace into `zzcms_specialclass` values('1','2015广西药交会','0','0','1','1','','','');
-replace into `zzcms_specialclass` values('2','访谈','1','0','1','1','','','');
-replace into `zzcms_specialclass` values('3','名企直击','1','0','1','1','','','');
-replace into `zzcms_specialclass` values('4','展会现场','1','0','1','1','','','');
-replace into `zzcms_specialclass` values('5','展会简介','1','0','1','1','','','');
-replace into `zzcms_specialclass` values('6','大背景图','1','0','1','1','','','');
+replace into `zzcms_specialclass` values('1','2015广西药交会','','','','0','0','1','','','');
+replace into `zzcms_specialclass` values('2','访谈','','','','1','1','1','','','');
+replace into `zzcms_specialclass` values('3','名企直击','','','','1','1','1','','','');
+replace into `zzcms_specialclass` values('4','展会现场','','','','1','1','1','','','');
+replace into `zzcms_specialclass` values('5','展会简介','','','','1','1','1','','','');
+replace into `zzcms_specialclass` values('6','大背景图','','','','1','1','1','','','');
 
 DROP TABLE IF EXISTS `zzcms_msg`;
 CREATE TABLE `zzcms_msg` (

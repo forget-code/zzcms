@@ -2,15 +2,16 @@
 include("admin.php");
 include("../inc/fy.php");
 ?>
-<html>
+<!DOCTYPE html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <title></title>
 <link href="style.css" rel="stylesheet" type="text/css">
-<script language="JavaScript" src="/js/gg.js"></script>
+<script language="JavaScript" src="../js/gg.js"></script>
 </head>
 <body>
 <?php
+checkadminisdo("adv");
 $action=isset($_REQUEST["action"])?$_REQUEST["action"]:'';
 $page=isset($_REQUEST["page"])?$_REQUEST["page"]:1;
 checkid($page);
@@ -20,13 +21,8 @@ $b=isset($_REQUEST["b"])?$_REQUEST["b"]:'';
 $s=isset($_REQUEST["s"])?$_REQUEST["s"]:'';
 ?>
 <div class="admintitle">广告管理</div>
-<table width="100%" border="0" cellspacing="0" cellpadding="5">
-  <tr>
-    <td align="center" class="border"> 
-      <table width="100%" border="0" cellspacing="0" cellpadding="0">
-        <tr> 
-          <td><input name="submit3" type="submit" class="buttons" onClick="javascript:location.href='ad_add.php'" value="添加广告"></td>
-          <td align="right">
+<div  class="border"> 
+<span style="float:right">
 <form name="form1" method="post" action="?">
               <input name="kind" type="radio" id="kind_ggz" value="ggz"  <?php if ($kind=='ggz'){ echo 'checked';}?>>
               <label for="kind_ggz">按广告主</label>
@@ -34,67 +30,51 @@ $s=isset($_REQUEST["s"])?$_REQUEST["s"]:'';
               <label for="kind_title">按标题</label>
               <input name="keyword" type="text" id="keyword" value="<?php echo $keyword?>">
               <input type="submit" name="Submit" value="查寻">
-              <a href="?action=showendtime">到期的广告</a> </form></td>
-        </tr>
-      </table></td>
-  </tr>
-</table>
-<table width="100%" border="0" cellpadding="5" cellspacing="0">
-  <tr> 
-    <td class="border"><table width="100%" border="0" cellpadding="5" cellspacing="0" bgcolor="#FFFFFF">
-        <tr> 
-          <td style="color:#999999">
+              <a href="?action=showendtime">到期的广告</a> </form>
+</span>
+<input type="submit" class="buttons" onClick="javascript:location.href='ad.php?do=add'" value="添加广告"> 
+</div>
+
+<div class="border">
 <?php	
+$str="大类：";
 $sql="select classname from zzcms_adclass where parentid='A' order by xuhao";
 $rs = query($sql); 
-$row = num_rows($rs);
-if (!$row){
-echo '暂无分类';
-}else{
-echo "大类：";
 while($row = fetch_array($rs)){
-echo "<a href=?b=".$row['classname'].">";  
+$str=$str."<a href=?b=".$row['classname'].">";  
 	if ($row["classname"]==$b) {
-	echo "<b>".$row["classname"]."</b>";
+	$str=$str."<b>".$row["classname"]."</b>";
 	}else{
-	echo $row["classname"];
+	$str=$str. $row["classname"];
 	}
-	echo "</a> | ";  
- }
-} 
-echo "<br>";
+	$str=$str. "</a>";  
+}
+echo $str;
 
+if ($b<>''){
+$str="<br>小类：";
 $sql="select classname from zzcms_adclass where parentid='".$b."' order by xuhao";
 $rs = query($sql); 
-$row = num_rows($rs);
-if (!$row){
-echo '';
-}else{
-echo "小类：";
 while($row = fetch_array($rs)){
-echo "<a href=?b=".$b."&s=".$row['classname'].">";  
+$str=$str."<a href=?b=".$b."&s=".$row['classname'].">";  
 	if ($row["classname"]==$s) {
-	echo "<b>".$row["classname"]."</b>";
+	$str=$str."<b>".$row["classname"]."</b>";
 	}else{
-	echo $row["classname"];
+	$str=$str.$row["classname"];
 	}
-	echo "</a> | ";  
- }
-} 
+	$str=$str."</a>";  
+}
+echo $str;
+}
  ?>	
- 
- 	 </td>
-        </tr>
-      </table></td>
-  </tr>
-  <tr> 
-    <td bgcolor="#FFFFFF" class="border2"> <strong>前台调用代码示例：</strong> 
+</div>
+
+<div class="border2"> <strong>前台调用代码示例：</strong> 
 <input name="js" type="text" id="js" style="width:240px" value="{#showad:b,s,40,198,117,12,yes}" size="40" maxlength="255">
 把这个代码放到网站模板页中，广告就可以在网页中显示了。<img src="../image/help.gif" alt="help" width="45" height="18" onMouseOver="showfilter2(help)" onMouseOut="showfilter2(help)">
-<div id="help">参数说明：<br>b：广告大类名<br>s：广告小类名<br>40：显示前40条数（设为0则不限制）<br>198：图片宽度（设为0则按每个广告所设的值显示）<br>117：图片高度<br>12：广告标题长度（设为0则不显示文字）<br>yes：是否显示广告标题前的数字序号(yes,no)</div>
-</td>
-  </tr>
-</table>
+<div id="help">参数说明：<br>b：广告大类名<br>s：广告小类名<br>40：显示前40条数，0为不限制<br>198：图片宽度，设为0，则按每个广告所设的值显示<br>117：图片高度<br>12：广告标题长度，设为0则不显示文字<br>yes：是否显示广告标题前的数字序号(yes,no)</div>
+</div>
+
 <?php
 $page_size=pagesize_ht;  //每页多少条数据
 $offset=($page-1)*$page_size;
@@ -139,28 +119,23 @@ if(!$totlenum){
 echo "暂无信息";
 }else{
 ?>
-<form name="myform" id="myform" method="post" action="">
-  <div class="border">
-        <input type="submit" onClick="myform.action='del.php';myform.target='_self';return ConfirmDel()" value="删除选中的信息">
-    <input name="pagename" type="hidden"  value="ad_manage.php?b=<?php echo $b?>&page=<?php echo $page ?>">
-    <input name="tablename" type="hidden"  value="zzcms_ad">
-  </div>
+<form name="myform" id="myform" method="post" action="" onSubmit="return anyCheck(this.form)">
 <table width="100%" border="0" cellspacing="1" cellpadding="5">
-  <tr> 
-      <td width="45" align="center" class="border">选择</td>
-    <td width="156" class="border">所属类别</td>
-    <td width="277" class="border">标题</td>
-    <td width="243" class="border">图片</td>
-    <td width="142" class="border">广告主用户名</td>
-    <td width="96" class="border">是否可抢占</td>
-    <td width="246" align="center" class="border">广告期限</td>
-    <td width="141" align="center" class="border">操作</td>
+  <tr class="trtitle"> 
+      <td width="45" align="center" ><label for="chkAll" style="cursor: pointer;">全选</label></td>
+    <td width="156" >所属类别</td>
+    <td width="277" >标题</td>
+    <td width="243" >图片</td>
+    <td width="142" >广告主用户名</td>
+    <td width="96" >是否可抢占</td>
+    <td width="246" align="center">广告期限</td>
+    <td width="141" align="center">操作</td>
   </tr>
 <?php
 $n=1;
 while($row = fetch_array($rs)){
 ?>
-  <tr class="bgcolor1" onMouseOver="fSetBg(this)" onMouseOut="fReBg(this)"> 
+  <tr class="trcontent"> 
       <td width="45" align="center"><input name="id[]" type="checkbox"  value="<?php echo $row["id"]?>"></td>
     <td width="156"><a href=?b=<?php echo $row['bigclassname']?>> <?php echo $row["bigclassname"]?></a>
 	- <a href=?b=<?php echo $row['bigclassname']?>&s=<?php echo $row['smallclassname']?>><?php echo $row["smallclassname"]?></a></td>
@@ -194,7 +169,7 @@ if ($row["img"]<>""){
 	}
 	?> </td>
     <td width="246" align="center"><?php echo date("Y-m-d",strtotime($row["starttime"]))?>至<?php echo date("Y-m-d",strtotime($row["endtime"]))?></td>
-      <td width="141" align="center" class="docolor"> <a href="ad_modify.php?b=<?php echo $b?>&page=<?php echo $page?>&id=<?php echo $row["id"]?>">修改</a> 
+      <td width="141" align="center" class="docolor"> <a href="ad.php?do=modify&b=<?php echo $b?>&page=<?php echo $page?>&id=<?php echo $row["id"]?>">修改</a> 
         | <a href="ad_px.php?b=<?php echo $row['bigclassname']?>&s=<?php echo $row['smallclassname']?>">排序</a> 
       </td>
   </tr>
@@ -204,9 +179,11 @@ $n++;
 ?>
 </table>
 <div class="border">
-<input name="chkAll" type="checkbox" id="chkAll" onClick="CheckAll(this.form)" value="checkbox">
-全选 <input type="submit" onClick="myform.action='del.php';myform.target='_self';return ConfirmDel()" value="删除选中的信息">
-  </div>
+<label><input name="chkAll" type="checkbox" id="chkAll" onClick="CheckAll(this.form)" value="checkbox">
+全选 </label><input type="submit" onClick="myform.action='del.php';myform.target='_self';return ConfirmDel()" value="删除选中的信息">
+  <input name="pagename" type="hidden"  value="ad_manage.php?b=<?php echo $b?>&page=<?php echo $page ?>">
+  <input name="tablename" type="hidden"  value="zzcms_ad">
+</div>
 </form>
 <div class="border center"><?php echo showpage_admin()?></div>
 <?php

@@ -3,14 +3,12 @@ include("../inc/conn.php");
 include("../inc/fy.php");
 include("check.php");
 ?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" lang="zh-CN">
+<!DOCTYPE html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-<meta http-equiv="X-UA-Compatible" content="IE=EmulateIE7" />
 <title>报价信息管理</title>
 <link href="style/<?php echo siteskin_usercenter?>/style.css" rel="stylesheet" type="text/css">
-<script language="JavaScript" src="/js/gg.js"></script>
+<script language="JavaScript" src="../js/gg.js"></script>
 </head>
 <body>
 <div class="main">
@@ -26,15 +24,11 @@ include("left.php");
 <div class="right">
 <div class="content">
 <div class="admintitle"><span><form name="form1" method="post" action="?">
-产品名称：<input name="cpmc" type="text" id="cpmc2"> <input type="submit" name="Submit" value="查找">
+名称：<input name="cpmc" type="text" id="cpmc2"> <input type="submit" name="Submit" value="查找">
 </form></span>报价信息管理</div>
 <?php
-if( isset($_GET["page"]) && $_GET["page"]!="") {
-    $page=$_GET['page'];
-	checkid($page,0);
-}else{
-    $page=1;
-}
+$page=isset($_GET["page"])?$_GET["page"]:1;
+checkid($page);
 
 $cpmc = isset($_POST['cpmc'])?trim($_POST['cpmc']):"";
 $page_size=pagesize_ht;  //每页多少条数据
@@ -57,9 +51,9 @@ if(!$totlenum){
 echo '暂无信息';
 }else{
 ?>
-<form name="myform" method="post" action="del.php">
+<form name="myform" method="post" action="del.php" onSubmit="return anyCheck(this.form)">
         <table width="100%" border="0" cellpadding="5" cellspacing="1" class="bgcolor">
-          <tr> 
+          <tr class="trtitle"> 
             <td width="10%" height="25" class="border">产品名称或标题</td>
             <td width="5%" align="center" class="border">价格</td>
             <td width="5%" align="center" class="border">区域</td>
@@ -68,7 +62,7 @@ echo '暂无信息';
           <?php
 while($row = fetch_array($rs)){
 ?>
-          <tr class="bgcolor1" onMouseOver="fSetBg(this)" onMouseOut="fReBg(this)"> 
+          <tr class="trcontent"> 
             <td><a href="<?php echo getpageurl("baojia",$row["id"])?>" target="_blank"><?php echo $row["cp"]?></a></td>
             <td align="center" title='<?php echo $row["city"]?>'><?php echo $row["price"].$row["danwei"]?></td>
             <td align="center" title='<?php echo $row["city"]?>'> <?php echo $row["province"].$row["city"].$row["xiancheng"]?></td>
@@ -79,7 +73,7 @@ while($row = fetch_array($rs)){
 	
 	  ?>            </td>
             <td align="center" > 
-              <a href="baojiamodify.php?id=<?php echo $row["id"]?>&page=<?php echo $page?>">修改</a></td>
+              <a href="baojia.php?do=modify&id=<?php echo $row["id"]?>&page=<?php echo $page?>">修改</a></td>
             <td align="center" ><input name="id[]" type="checkbox" id="id" value="<?php echo $row["id"]?>" /></td>
           </tr>
           <?php
@@ -99,7 +93,6 @@ while($row = fetch_array($rs)){
   </form>
 <?php
 }
-
 ?>
 </div>
 </div>

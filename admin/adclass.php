@@ -1,7 +1,7 @@
 <?php
 include("admin.php");
 ?>
-<html>
+<!DOCTYPE html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <link href="style.css" rel="stylesheet" type="text/css">
@@ -26,8 +26,9 @@ if (document.form1.classname.value==""){
     alert("名称不能为空！");
 	document.form1.classname.focus();
 	return false;
-  }
 }
+}
+
 //动态增加表单元素大类。
 function AddElement_big(){   
 //得到需要被添加的html元素。
@@ -95,7 +96,7 @@ function showclass(){
 $action=isset($_REQUEST['action'])?$_REQUEST['action']:'';
 if ($action=="px") {
 checkadminisdo("advclass");
-$sql="Select * From zzcms_adclass where parentid='A'";
+$sql="select * from zzcms_adclass where parentid='A'";
 $rs=query($sql);
 while ($row=fetch_array($rs)){
 $xuhao=$_POST["xuhao".$row["classid"].""];//表单名称是动态显示的，并于FORM里的名称相同。
@@ -107,7 +108,7 @@ $xuhao=$_POST["xuhao".$row["classid"].""];//表单名称是动态显示的，并
 	       $xuhao = $xuhao;
 	   }
 query("update zzcms_adclass set xuhao='$xuhao' where classid='".$row['classid']."'");
-$sqln="Select * From zzcms_adclass where parentid='".$row["classname"]."'";
+$sqln="select * from zzcms_adclass where parentid='".$row["classname"]."'";
 $rsn=query($sqln);
 while ($rown=fetch_array($rsn)){
 $xuhaos=$_POST["xuhaos".$rown["classid"].""];//表单名称是动态显示的，并于FORM里的名称相同。
@@ -143,13 +144,13 @@ checkid($smallclassid);
 if ($smallclassid<>"") {
 	query("delete from zzcms_adclass where classid='" . $smallclassid. "'");
 }  
-echo "<script>location.href='?#B".$_REQUEST["bigclassid"]."'</script>";
+echo "<script>location.href='?#B".$_GET["bigclassid"]."'</script>";
 }
 ?> 
 <div class="admintitle">广告类别设置</div>
-<div class="border center"><input name="submit3" type="submit" class="buttons" onClick="javascript:location.href='?dowhat=addbigclass'" value="添加大类"></div>
+<div class="border2 center"><input name="submit3" type="submit" class="buttons" onClick="javascript:location.href='?dowhat=addbigclass'" value="添加大类"></div>
 <?php
-$sql="Select * From zzcms_adclass where parentid='A' order by xuhao";
+$sql="select * from zzcms_adclass where parentid='A' order by xuhao";
 $rs=query($sql);
 $row=num_rows($rs);
 if (!$row){
@@ -158,13 +159,13 @@ echo "暂无分类信息";
 ?>
 <form name="form1" method="post" action="?action=px">
   <table width="100%" border="0" align="center" cellpadding="5" cellspacing="1">
-    <tr> 
-      <td width="22%" class="border" ><strong>类别名称</strong></td>
-      <td width="25%" class="border" ><strong>排序</strong></td>
-      <td width="28%" class="border" ><strong>操作</strong></td>
+    <tr class="trtitle"> 
+      <td width="22%" >类别名称</td>
+      <td width="25%" >排序</td>
+      <td width="28%">操作</td>
     </tr>
     <?php while ($row=fetch_array($rs)){?>
-    <tr bgcolor="#F1F1F1"> 
+    <tr class="trcontent"> 
       <td style="font-weight:bold"><a name="B<?php echo $row["classid"]?>"></a><img src="image/icobig.gif" width="9" height="9"> 
         <?php echo $row["classname"]?></td>
       <td width="25%" > <input name="<?php echo "xuhao".$row["classid"]?>" type="text"  value="<?php echo $row["xuhao"]?>" size="4"> 
@@ -176,13 +177,11 @@ echo "暂无分类信息";
     </tr>
     <?php
 	$n=0;
-	$sqln="Select * From zzcms_adclass Where parentid='" . $row["classname"] . "' order by xuhao";
+	$sqln="select * from zzcms_adclass where parentid='" . $row["classname"] . "' order by xuhao";
 	$rsn=query($sqln);
-	$rown=num_rows($rsn);
-	if ($rown){
 	while ($rown=fetch_array($rsn)){
 	?>
-    <tr class="bgcolor1" onMouseOver="fSetBg(this)" onMouseOut="fReBg(this)">  
+    <tr class="trcontent">  
       <td ><a name="S<?php echo $rown["classid"]?>"></a><img src="image/icosmall.gif" width="23" height="11"> 
         <?php echo $rown["classname"]?></td>
       <td><input name="<?php echo "xuhaos".$rown["classid"]?>" type="text"  value="<?php echo $rown["xuhao"]?>" size="4"> 
@@ -194,7 +193,6 @@ echo "暂无分类信息";
     <?php
 		$n=$n+1;
 		}
-	 }
 	}
 	  ?>
   </table>
@@ -221,34 +219,34 @@ if ($action=="add"){
 for($i=0; $i<count($_POST['classname']);$i++){
 	$classname=($_POST['classname'][$i]);
 	if ($classname!=''){
-	$sql="Select * From zzcms_adclass Where classname='" . $classname . "'";
+	$sql="select * from zzcms_adclass where classname='" . $classname . "'";
 	$rs=query($sql);
 	$row=num_rows($rs);
-		if (!$row) {
-		query("insert into zzcms_adclass (classname,parentid)values('$classname','A')");	
+		if ($row) {
+		$FoundErr=1;
+		$ErrMsg=$ErrMsg."<li>类别名称已存在</li>";
+		}else{
+		query("insert into zzcms_adclass (classname,parentid)values('$classname','A')");
+		$bcid=insert_id();
+		echo "<script>location.href='?#B".$bcid."'</script>";	
 		}
 	}
 }	
-$rsbcid=query("select classid from zzcms_adclass where classname='".$classname."'");
-$rowbcid=fetch_array($rsbcid);
-$bcid=$rowbcid["classid"];
-echo "<script>location.href='?#B".$bcid."'</script>";	
 }
 if ($FoundErr==1){
 WriteErrMsg($ErrMsg);
 }else{
 ?>
 <div class="admintitle">添加大类</div>
-<form name="form1" method="post" action="?dowhat=addbigclass" onSubmit="return CheckForm();">
+<form name="form1" method="post" action="?dowhat=addbigclass">
   <table width="100%" border="0" cellpadding="5" cellspacing="0">
     <tr> 
       <td width="100%" class="border">
 <div id="add">
 	  <input name="classname[]" type="text" id="classname[]" size="50" maxlength="50"  value='大类别名称' >
-	  <label for='isshowininfo'></label>
 	  <hr/>
 	  </div>	  
-	   <img src="image/icobigx.gif" width="23" height="11"> <a href="#" onClick='AddElement()'><img src='image/icobig.gif' border="0"> 添加新类别</a>
+	   <img src="image/icobigx.gif"> <a href="javascript:void(0)" onClick='AddElement_big()'><img src='image/icobig.gif' border="0"> 添加新类别</a>
 	  <input name="action" type="hidden" id="action" value="add"> 
         <input name="add" type="submit" value="提交">
 	  </td>
@@ -260,41 +258,40 @@ WriteErrMsg($ErrMsg);
 }
 
 function addsmallclass(){
+global $bigclassid;
 $action=isset($_REQUEST['action'])?$_REQUEST['action']:'';
-$bigclassid=trim($_REQUEST["bigclassid"]);
 $FoundErr=0;
 $ErrMsg="";
 if ($action=="add") {
     for($i=0; $i<count($_POST['classname']);$i++){
     $classname=($_POST['classname'][$i]);
 		if ($classname!=''){
-		$sql="Select * From zzcms_adclass Where parentid='" . $bigclassid . "' AND classname='" . $classname . "'";
+		$sql="select * from zzcms_adclass where parentid='" . $bigclassid . "' and classname='" . $classname . "'";
 		$rs=query($sql);
 		$row=num_rows($rs);
-			if (!$row) {
+			if ($row) {
+			$FoundErr=1;
+			$ErrMsg=$ErrMsg."<li>类别名称已存在</li>";
+			}else{
 			query("insert into zzcms_adclass (parentid,classname)values('$bigclassid','$classname')");
+			echo "<script>location.href='?#B".$bigclassid."'</script>";	
 			}
 		}
 	}	
-    echo "<script>location.href='?#B".$bigclassid."'</script>";	
 }
 if ($FoundErr==1){
 WriteErrMsg($ErrMsg);
 }else{
 ?>
 <div class="admintitle">添加小类</div>
-<form name="form" method="post" action="?dowhat=addsmallclass" onSubmit="return CheckForm();">
+<form name="form" method="post" action="?dowhat=addsmallclass">
   <table width="100%" border="0" align="center" cellpadding="5" cellspacing="0">
     <tr> 
-      <td width="26%" align="right" class="border">所属大类：</td>
-      <td width="74%" class="border"> 
+      <td width="25%" align="right" class="border">所属大类</td>
+      <td width="75%" class="border"> 
         <?php
-		$sqlb = "Select * From zzcms_adclass where parentid='A'";
+		$sqlb = "select * from zzcms_adclass where parentid='A'";
 	    $rsb=query($sqlb);
-        $rowb=num_rows($rsb);
-		if (!$rowb){
-			echo "请先添加大类。";
-		}else{
 		?>
 		<select name="bigclassid" id="bigclassid">
                 <option value="" selected="selected">请选择类别</option>
@@ -304,18 +301,16 @@ WriteErrMsg($ErrMsg);
 		  }
 		  ?>
         </select>
-		<?php
-		}
-		?>		 </td>
+	 </td>
     </tr>
     <tr class="tdbg"> 
-      <td height="10" align="right" class="border">&nbsp;</td>
+      <td align="right" class="border">&nbsp;</td>
       <td class="border">
 <div id="add">
 	   <input name="classname[]" type="text" size="50" maxlength="50" value="小类别名称" style="margin:4px 0">
 <hr/>
 	  </div> 
-	  <img src="image/icobigx.gif" width="23" height="11"> <a href="#" onClick='AddElement()'><img src='image/icobig.gif' border="0"> 添加新类别</a>	   
+	  <img src="image/icobigx.gif" width="23" height="11"> <a href="#" onClick='AddElement_small()'><img src='image/icobig.gif' border="0"> 添加新类别</a>	   
       <input name="action" type="hidden" id="action3" value="add">
       <input name="add2" type="submit" value="提交"></td>
     </tr>
@@ -326,18 +321,17 @@ WriteErrMsg($ErrMsg);
 }
 
 function modifybigclass(){
+global $classid;
+checkid($classid);
 $action=isset($_REQUEST['action'])?$_REQUEST['action']:'';
-$classid=isset($_REQUEST['classid'])?$_REQUEST['classid']:0;
-checkid($classid,1);
+
 $FoundErr=0;
 $ErrMsg="";
-if ($classid==0){
-echo "<script>location.href='?'</script>";
-}
+
 if ($action=="modify"){
 $classname=trim($_POST["classname"]);
 $oldclassname=trim($_POST["oldclassname"]);
-	$sql="Select * from zzcms_adclass where classid='" .$classid."'";
+	$sql="select * from zzcms_adclass where classid='" .$classid."'";
 	$rs=query($sql);
 	$row=num_rows($rs);
 	if (!$row){
@@ -345,7 +339,7 @@ $oldclassname=trim($_POST["oldclassname"]);
 	$ErrMsg=$ErrMsg . "<li>此大类不存在！</li>";
 	}
 	if ($classname<>$oldclassname) {
-	$sqln="Select * from zzcms_adclass where parentid='A' and classname='".$classname."'";
+	$sqln="select * from zzcms_adclass where parentid='A' and classname='".$classname."'";
 	$rsn=query($sqln);
 	$rown=num_rows($rsn);
 	if ($rown){
@@ -359,7 +353,7 @@ $oldclassname=trim($_POST["oldclassname"]);
 	
 		if ($classname<>$oldclassname) {//类名改变的情况下
 			query("update zzcms_adclass set parentid='".$classname."' where parentid='".$oldclassname."'");
-			query("Update zzcms_ad set bigclassname='" . $classname . "'  where bigclassname='" . $oldclassname . "' ");	
+			query("update zzcms_ad set bigclassname='" . $classname . "'  where bigclassname='" . $oldclassname . "' ");	
 			
 		}	
 		echo "<script>location.href='?#B".$classid."'</script>";
@@ -369,7 +363,7 @@ $oldclassname=trim($_POST["oldclassname"]);
 if ($FoundErr==1){
 WriteErrMsg($ErrMsg);
 }else{
-$sql="Select * from zzcms_adclass where classid=" .$classid."";
+$sql="select * from zzcms_adclass where classid='" .$classid."'";
 $rs=query($sql);
 $row=fetch_array($rs);
 ?>
@@ -377,11 +371,11 @@ $row=fetch_array($rs);
 <form name="form1" method="post" action="?dowhat=modifybigclass" onSubmit="return CheckForm();">
   <table width="100%" border="0" cellpadding="5" cellspacing="0">
     <tr> 
-      <td width="322" align="right" class="border">大类ID：</td>
-      <td class="border"><?php echo $row["classid"]?> <input name="classid" type="hidden" id="classid" value="<?php echo $row["classid"]?>">      </td>
+      <td width="25%" align="right" class="border">大类ID</td>
+      <td width="75%" class="border"><?php echo $row["classid"]?> <input name="classid" type="hidden" id="classid" value="<?php echo $row["classid"]?>"></td>
     </tr>
     <tr> 
-      <td align="right" class="border">大类名称：</td>
+      <td align="right" class="border">大类名称</td>
       <td class="border"> <input name="classname" type="text" id="classname" value="<?php echo $row["classname"]?>" size="60" maxlength="30"> 
         <input name="oldclassname" type="hidden" id="oldclassname" value="<?php echo $row["classname"]?>" size="60" maxlength="30"></td>
     </tr>
@@ -397,12 +391,13 @@ $row=fetch_array($rs);
 }
 
 function modifysmallclass(){
+global $classid;
+checkid($classid);
 $action=isset($_REQUEST['action'])?$_REQUEST['action']:'';
-$classid=isset($_REQUEST['classid'])?$_REQUEST['classid']:0;
-checkid($classid,1);
+
 $FoundErr=0;
 $ErrMsg="";
-if ($classid==0){echo "<script>location.href='?'</script>";}
+
 if ($action=="modify"){
 $bigclassid=trim($_POST["bigclassid"]);
 $oldbigclassid=trim($_POST["oldbigclassid"]);
@@ -425,12 +420,12 @@ $oldclassname=trim($_POST["oldclassname"]);
 	}
 	}
 	if ($FoundErr==0) {
-	query("update zzcms_adclass set parentid='$bigclassid',classname='$classname' where  classid=" .$classid."");
+	query("update zzcms_adclass set parentid='$bigclassid',classname='$classname' where  classid='" .$classid."'");
 			if ($bigclassid<>$oldbigclassid) {//小类别改变所属大类情况下
 				query("Update zzcms_ad set bigclassname='".$bigclassid ."' where bigclassname='" .$oldbigclassid ."' and smallclassname='" . $classname ."'");
 			}
 			if ($classname<>$oldclassname) {//小类名改变的情况下
-				query("Update zzcms_ad set smallclassname='".$classname ."' where bigclassname='".$bigclassid ."' and smallclassname='".$oldclassname . "'");
+				query("update zzcms_ad set smallclassname='".$classname ."' where bigclassname='".$bigclassid ."' and smallclassname='".$oldclassname . "'");
 			}
 			echo "<script>location.href='?#S".$classid."'</script>";
 	}
@@ -438,7 +433,7 @@ $oldclassname=trim($_POST["oldclassname"]);
 if ($FoundErr==1){
 WriteErrMsg($ErrMsg);
 }else{
-$sql="Select * from zzcms_adclass where classid='".$classid."'";
+$sql="select * from zzcms_adclass where classid='".$classid."'";
 $rs=query($sql);
 $row=fetch_array($rs);
 ?>
@@ -446,36 +441,29 @@ $row=fetch_array($rs);
 <form name="form1" method="post" action="?dowhat=modifysmallclass" onSubmit="return CheckForm();">
   <table width="100%" border="0" cellpadding="5" cellspacing="0">
     <tr> 
-      <td width="327" height="22" align="right" class="border">所属大类：</td>
-      <td class="border"> 
+      <td width="25%" align="right" class="border">所属大类</td>
+      <td width="75%" class="border"> 
 	    <?php
-		$sqlb = "Select * From zzcms_adclass where parentid='A'";
+		$sqlb = "select * from zzcms_adclass where parentid='A'";
 	    $rsb=query($sqlb);
-        $rowb=num_rows($rsb);
-		if (!$rowb){
-			echo "请先添加大类。";
-		}else{
 		?>
 		<select name="bigclassid" id="bigclassid">
                 <option value="" selected="selected">请选择类别</option>
                 <?php while($rowb= fetch_array($rsb)){?>
-                <option value="<?php echo $rowb["classname"]?>" <?php if ($rowb["classname"]==$row["parentid"]) { echo "selected";}?>><?php echo $rowb["classname"]?></option>
-                <?php
+  <option value="<?php echo $rowb["classname"]?>" <?php if ($rowb["classname"]==$row["parentid"]) { echo "selected";}?>><?php echo $rowb["classname"]?></option>
+          <?php
 		  }
 		  ?>
-        </select>
-		<?php
-		}
-		?>    
+        </select>  
     <input name="oldbigclassid" type="hidden" id="oldbigclassid" value="<?php echo $row["parentid"]?>"></td>
     </tr>
     <tr> 
-      <td height="11" align="right" class="border">小类名称：</td>
+      <td align="right" class="border">小类名称</td>
       <td class="border"> <input name="classname" type="text" id="classname" value="<?php echo $row["classname"]?>" size="60" maxlength="30">
         <input name="oldclassname" type="hidden" id="oldclassname" value="<?php echo $row["classname"]?>"></td>
     </tr>
     <tr> 
-      <td height="22" class="border">&nbsp;</td>
+      <td class="border">&nbsp;</td>
       <td class="border"> <input name="classid" type="hidden" id="classid" value="<?php echo $row["classid"]?>">
         <input name="action" type="hidden" id="action4" value="modify"> 
         <input name="save" type="submit" id="save" value=" 修 改 "> </td>

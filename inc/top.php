@@ -3,15 +3,15 @@
 if (@$_POST["action"]=="search"){
 echo "<script>location.href='".@$_POST["lb"]."/search.php?keyword=".@$_POST["keyword"]."'</script>";
 }
-if (isset($_REQUEST["skin"])){
-$siteskin=$_REQUEST["skin"];
+if (isset($_GET["skin"])){
+$siteskin=$_GET["skin"];
 }else{
 $siteskin=siteskin;
 
 //php判断客户端是否为手机 
 $agent = $_SERVER['HTTP_USER_AGENT']; 
 if(strpos($agent,"NetFront") || strpos($agent,"iPhone") || strpos($agent,"MIDP-2.0") || strpos($agent,"Opera Mini") || strpos($agent,"UCWEB") || strpos($agent,"Android") || strpos($agent,"Windows CE") || strpos($agent,"SymbianOS")) {
-$siteskin='mobile/'.siteskin_mobile;
+$siteskin=siteskin_mobile;
 }
 
 }
@@ -61,11 +61,7 @@ $strout=str_replace("{#bigclass}",zxbigclass($b),$strout);//招商显示页有�
 }else{
 $strout=str_replace("{#bigclass}",bigclass($b),$strout);
 }
-if ($channel=='zs'||$channel=='zsclass'){
-$strout=str_replace("{#shuxing}",showsx($sx),$strout);
-}else{
-$strout=str_replace("{#shuxing}","",$strout);
-}
+
 if (strpos("zs,dl,zh,company,zx,wangkan,baojia,special,ask,pp,job",$channel)!==false) {
 $strout=str_replace("{#".$channel."_style}","class='current_search'",$strout);
 $strout=str_replace("{#".$channel."_style2} style='display:none'","",$strout);

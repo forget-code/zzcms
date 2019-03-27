@@ -2,15 +2,16 @@
 include("admin.php");
 include("../inc/fy.php");
 ?>
-<html>
+<!DOCTYPE html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <title></title>
 <link href="style.css" rel="stylesheet" type="text/css">
-<script language="JavaScript" src="/js/gg.js"></script>
+<script language="JavaScript" src="../js/gg.js"></script>
 </head>
 <body>
 <?php
+checkadminisdo("friendlink");
 $action=isset($_GET["action"])?$_GET["action"]:'';
 $page=isset($_GET["page"])?$_GET["page"]:1;
 checkid($page);
@@ -19,7 +20,6 @@ $keyword=isset($_POST["keyword"])?$_POST["keyword"]:'';
 $b=isset($_GET["b"])?$_GET["b"]:0;
 checkid($b,1);
 if ($action<>""){
-checkadminisdo("friendlink");
 if(!empty($_POST['id'])){
     for($i=0; $i<count($_POST['id']);$i++){
     $id=$_POST['id'][$i];
@@ -45,9 +45,9 @@ if(!empty($_POST['id'])){
 		query("update zzcms_link set elite=0 where id ='$id'");
 		}
 	break;
-	case "del";
-	query("delete from zzcms_link where id ='$id'");
-	break;	
+	//case "del";
+	//query("delete from zzcms_link where id ='$id'");
+	//break;	
 	}	
 	}
 }else{
@@ -57,22 +57,16 @@ echo "<script>location.href='?keyword=".$keyword."&page=".$page."'</script>";
 }
 ?>
 <div class="admintitle">友情链接管理</div>
-      <div class="border"> 
-        <table width="100%" border="0" cellspacing="0" cellpadding="0">
-          <tr>
-            <td>
-              <input name="submit3" type="submit" class="buttons" onClick="javascript:location.href='link_add.php'" value="添加友情链接">
-             </td>
-            <td align="right">
+<div class="border2">
+<span style="float:right">
 			<form name="form1" method="post" action="?">
 			网站名称： 
               <input name="keyword" type="text" id="keyword" value="<?php echo $keyword?>"> 
               <input type="submit" name="Submit" value="查找">
 			  </form>
-            </td>
-          </tr>
-        </table> </div>
-   
+            </span>
+           <input name="submit3" type="submit" class="buttons" onClick="javascript:location.href='link.php?do=add'" value="添加友情链接">
+</div>
 <?php
 $page_size=pagesize_ht;  //每页多少条数据
 $offset=($page-1)*$page_size;
@@ -82,7 +76,7 @@ if ($shenhe=="no") {
 $sql2=$sql2." and passed=0 ";
 }
 if ($b<>"") {
-$sql2=$sql2. " and bigclassid =".$b." ";
+$sql2=$sql2. " and bigclassid ='".$b."' ";
 }
 if ($keyword<>"") {
 $sql2=$sql2. " and sitename like '%".$keyword."%' ";
@@ -100,29 +94,21 @@ if(!$totlenum){
 echo "暂无信息";
 }else{
 ?>
-<form name="myform" id="myform" method="post" action="">
-  <table width="100%" border="0" cellpadding="5" cellspacing="0" class="border">
-    <tr>
-      <td><input name="submit2" type="submit" onClick="myform.action='?action=pass'" value="【取消/审核】选中的信息">
-          <input name="submit22" type="submit" onClick="myform.action='?action=elite'" value="【取消/推荐】选中的信息">
-          <input name="submit" type="submit" onClick="myform.action='?action=del'" value="删除选中的信息">
-      <input name="page" type="hidden" id="page" value="<?php echo $page?>"> <input name="shenhe" type="hidden" id="shenhe" value="<?php echo $shenhe?>">      </td></tr>
-</table>
-
-  <table width="100%" border="0" cellpadding="5" cellspacing="1">
-    <tr> 
-      <td width="5%" align="center" class="border"><label for="chkAll" style="text-decoration: underline;cursor: hand;">全选</label> </td>
-      <td width="5%" class="border">类型</td>
-      <td width="10%" class="border">网站名称</td>
-      <td width="10%" class="border">网站描述</td>
-      <td width="10%" class="border">申请时间</td>
-      <td width="5%" align="center" class="border">信息状态</td>
-      <td width="5%" align="center" class="border">操作</td>
+<form name="myform" id="myform" method="post" action="" onSubmit="return anyCheck(this.form)">
+      <table width="100%" border="0" cellpadding="5" cellspacing="1">
+    <tr class="trtitle"> 
+      <td width="2%" align="center"><label for="chkAll" style="cursor: pointer;">全选</label></td>
+      <td width="5%">类型</td>
+      <td width="10%">网站名称</td>
+      <td width="10%">网站描述</td>
+      <td width="10%">申请时间</td>
+      <td width="5%" align="center">信息状态</td>
+      <td width="5%" align="center">操作</td>
     </tr>
 <?php
 while($row = fetch_array($rs)){
 ?>
-    <tr bgcolor="#FFFFFF" onMouseOver="this.bgColor='#E6E6E6'" onMouseOut="this.bgColor='#FFFFFF'"> 
+	<tr class="trcontent">  
       <td align="center" > <input name="id[]" type="checkbox" id="id" value="<?php echo $row["id"]?>"></td>
       <td ><a href="?b=<?php echo $row["bigclassid"]?>">
 	  <?php
@@ -141,18 +127,22 @@ while($row = fetch_array($rs)){
       <td><?php echo $row["sendtime"]?></td>
       <td align="center" > 
 <?php if ($row["passed"]==1) { echo"已审核";} else{ echo"<font color=red>未审核</font>";}?><br><?php if ($row["elite"]==1) { echo"已推荐";} else{ echo"未推荐";}?></td>
-      <td align="center" class="docolor"><a href="link_modify.php?id=<?php echo $row["id"]?>&page=<?php echo $page ?>">修改</a>      </td>
+      <td align="center" class="docolor"><a href="link.php?do=modify&id=<?php echo $row["id"]?>&page=<?php echo $page ?>">修改</a>      </td>
     </tr>
 <?php
 }
 ?>
   </table>
       <div class="border"><input name="chkAll" type="checkbox" id="chkAll" onClick="CheckAll(this.form)" value="checkbox">
-        <label for="chkAll" style="text-decoration: underline;cursor: hand;">全选</label>
-        <input name="submit23" type="submit" onClick="myform.action='?action=pass'" value="【取消/审核】选中的信息">
-        <input name="submit222" type="submit" onClick="myform.action='?action=elite'" value="【取消/推荐】选中的信息">
-      <input name="submit4" type="submit" onClick="myform.action='?action=del'" value="删除选中的信息">
-	  </div>
+        <label for="chkAll" style="cursor: pointer;">全选</label>
+        <input  type="submit" onClick="myform.action='?action=pass'" value="【取消/审核】选中的信息">
+        <input  type="submit" onClick="myform.action='?action=elite'" value="【取消/推荐】选中的信息">
+      <input  type="submit" onClick="myform.action='del.php';myform.target='_self';return ConfirmDel()" value="删除选中的信息">
+	   <input name="pagename" type="hidden"  value="linkmanage.php?b=<?php echo $b?>&shenhe=<?php echo $shenhe?>&page=<?php echo $page ?>">
+      <input name="tablename" type="hidden"  value="zzcms_link">
+	  <input name="page" type="hidden" id="page" value="<?php echo $page?>">
+      <input name="shenhe" type="hidden" id="shenhe" value="<?php echo $shenhe?>">
+      </div>
 <div class="border center"><?php echo showpage_admin()?></div>
 </form>
 <?php

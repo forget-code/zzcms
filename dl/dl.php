@@ -6,12 +6,8 @@ include("../inc/top.php");
 include("../inc/bottom.php");
 include("subdl.php");
 include("../label.php");
-if( isset($_GET["page"]) && $_GET["page"]!="") {
-    $page=$_GET['page'];
-	checkid($page);
-}else{
-    $page=1;
-}
+if( isset($_GET["page"]) && $_GET["page"]!="") {$page=$_GET['page'];}else{$page=1;}
+checkid($page);
 $b=isset($_GET["b"])?$_GET["b"]:'';
 if ($b!=''){
 $f="../html/".$siteskin."/dl/".$b."/".$page.".html";
@@ -42,7 +38,7 @@ $bigclassid=0;
 if ($b<>""){
 $sql="select classname,classid from zzcms_zsclass where classzm='".$b."'";
 $rs=query($sql);
-$row=mysqli_fetch_assoc($rs);
+$row=fetch_array($rs);
 if ($row){
 $bigclassname=$row["classname"];
 $bigclassid=$row["classid"];
@@ -52,27 +48,6 @@ $bigclassid=$row["classid"];
 $pagetitle=$province.$bigclassname.dllisttitle."-".sitename;
 $pagekeyword=$province.$bigclassname.dllistkeyword."-".sitename;
 $pagedescription=$province.$bigclassname.dllistdescription."-".sitename;
-
-//if (isset($_COOKIE["UserName"])){//开启静态页时，登陆地址会固定生成MsgBox登陆，所以交到下载页判断是否登陆
-$dl_download_url="form1.action='/dl/dl_download.php'";
-$dl_print_url="form1.action='/dl/dl_print.php'";
-$dl_sendmail_url="form1.action='/dl/dl_sendmail.php'";
-$dl_sendsms_url="form1.action='/dl/dl_sendsms.php'";
-$buttontype="submit";
-//}else{
-//$dl_download_url="MsgBox('用户登录','/user/login2.php?fromurl=http://".$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI']."',460,196,1)";
-//$dl_print_url="MsgBox('用户登录','/user/login2.php?fromurl=http://".$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI']."',460,196,1)";
-//$dl_sendmail_url="MsgBox('用户登录','/user/login2.php?fromurl=http://".$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI']."',460,196,1)";
-//$dl_sendsms_url="MsgBox('用户登录','/user/login2.php?fromurl=http://".$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI']."',460,196,1)";
-//$buttontype="button";
-//}
-$strout=str_replace("{#dl_download_url}",$dl_download_url,$strout) ;
-$strout=str_replace("{#dl_print_url}",$dl_print_url,$strout) ;
-$strout=str_replace("{#dl_sendmail_url}",$dl_sendmail_url,$strout) ;
-$strout=str_replace("{#dl_sendsms_url}",$dl_sendsms_url,$strout) ;
-$strout=str_replace("{#buttontype}",$buttontype,$strout) ;
-
-
 
 	$sql="select count(*) as total from zzcms_dl where passed<>0 ";
 	$sql2='';
@@ -90,24 +65,21 @@ if ($province<>""){
 $sql2=$sql2." and province ='".$province."' ";
 }
 
-$strout=str_replace("{#sql}",$sql.$sql2,$strout) ;
 $rs =query($sql.$sql2); 
-$row = mysqli_fetch_assoc($rs);
+$row = fetch_array($rs);
 $totlenum = $row['total'];
 $offset=($page-1)*$page_size;
 $totlepage=ceil($totlenum/$page_size);
 
 $sql="select id,cp,dlsname,province,city,xiancheng,content,tel,sendtime,saver from zzcms_dl where passed<>0 ";
-$sql2='';
 
 if ($b<>"") {
-$sql2=" and classid=$bigclassid";
+$sql=$sql." and classid=$bigclassid";
 }
-
-$sql=$sql.$sql2;
 $sql=$sql." order by id desc limit $offset,$page_size";
-$rs = query($sql,MYSQLI_STORE_RESULT);   //MYSQLI_USE_RESULT默认为MYSQLI_STORE_RESULT这种模式，全部读入到内存。
-//echo $sql;
+
+$rs = query($sql);   //MYSQLI_USE_RESULT默认为MYSQLI_STORE_RESULT这种模式，全部读入到内存。
+
 $dl=strbetween($strout,"{dl}","{/dl}");
 $dllist=strbetween($strout,"{loop}","{/loop}");
 
@@ -116,7 +88,7 @@ $strout=str_replace("{dl}".$dl."{/dl}","暂无信息",$strout) ;
 }else{
 $i=0;
 $dllist2='';
-while($row= mysqli_fetch_assoc($rs)){
+while($row= fetch_array($rs)){
 
 $dllist2 = $dllist2. str_replace("{#id}" ,$row["id"],$dllist) ;
 
@@ -131,7 +103,7 @@ if ($row["saver"]<>"") {
 	$rsn=query("select comane,id from zzcms_user where username='".$row["saver"]."'");
 	$r=num_rows($rsn);
 	if ($r){
-	$r=mysqli_fetch_assoc($rsn);
+	$r=fetch_array($rsn);
 	$gs="<a href='".getpageurl("zt",$r["id"])."'>".cutstr($r["comane"],6)."</a> ";
 	}else{
 	$gs="不存在该公司信息";

@@ -1,16 +1,38 @@
 <?php
 include("admin.php");
 ?>
-<html>
+<!DOCTYPE html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <link href="style.css" rel="stylesheet" type="text/css">
 <?php
-$action = isset($_REQUEST['action'])?$_REQUEST['action']:"";
-$ml=@$_GET['ml'];
-if ($action=="add") {
 checkadminisdo("label");
-$ml=$_POST["ml"];
+$action = isset($_REQUEST['action'])?$_REQUEST['action']:"";
+$ml = isset($_GET['ml'])?$_GET['ml']:"";
+if ($ml==""){
+$ml = isset($_POST['ml'])?$_POST['ml']:"";
+}
+
+if ($ml!=""){
+$dirs='';
+$dirskin = opendir("../skin");
+while(($dir = readdir($dirskin))!=false){
+	if ($dir!="." && $dir!="..") { //不读取. ..
+		$dirs=$dirs.$dir."#";
+	} 
+}
+closedir($dirskin);	
+$dirs=substr($dirs,0,strlen($dirs)-1);//去除最后面的"#"
+//echo $dirs;
+if (str_is_inarr($dirs,$ml)=='no'){
+showmsg($ml.'参数有误');
+}
+
+}
+
+if ($action=="add") {
+checkadminisdo("label_add");
+
 $title=nostr($_POST["title"]);
 $title_old=$_POST["title_old"];
 if (substr($title,-3)!='css' and substr($title,-3)!='htm'){
@@ -30,14 +52,18 @@ echo "<script>alert('".$msg."');location.href='?ml=".$ml."&title=".$title."'</sc
 }
 
 if ($action=="del"){ 
-checkadminisdo("label");
-$ml=trim($_POST["ml"]);
-$f="../skin/".$ml."/".nostr($_POST["title"]);
+checkadminisdo("label_del");
+$title=nostr($_POST["title"]);
+if (substr($title,-3)!='css' and substr($title,-3)!='htm'){
+showmsg('只能是htm或css这两种格式,模板名称：后面加上.htm或.css');
+}
+$f="../skin/".$ml."/".$title;
 	if (file_exists($f)){
-	unlink($f)?showmsg('删除成功',"?ml=".$ml):showmsg('失败');
+	unlink($f)?$msg='成功删除':$msg='删除失败';
 	}else{
-	showmsg('请选择要删除的模板');
+	$msg='请选择要删除的文件';
 	}
+echo "<script>alert('".$msg."');location.href='?ml=".$ml."'</script>";	
 }
 ?>
 <script language = "JavaScript">
@@ -69,6 +95,7 @@ if (document.myform.start.value==""){
 </script>
 </head>
 <body>
+
 <div class="admintitle">模板管理</div>
 <form action="" method="post" name="myform" id="myform" onSubmit="return CheckForm();">
   <table width="100%" border="0" cellpadding="5" cellspacing="0">
@@ -79,10 +106,10 @@ if (document.myform.start.value==""){
 $dirskin = opendir("../skin");
 while(($dir = readdir($dirskin))!=false){
 	if ($dir!="." && $dir!="..") { //不读取. ..
-		if (strpos($ml,$dir)!==false){
-  		echo "<li><a href='?ml=../skin/".$dir."' style='color:#000000;background-color:#FFFFFF'>".$dir."</a></li>";
+		if ($ml==$dir){
+  		echo "<li><a href='?ml=".$dir."' style='color:#000000;background-color:#FFFFFF'>".$dir."</a></li>";
 		}else{
-		echo "<li><a href='?ml=../skin/".$dir."'>".$dir."</a></li>";
+		echo "<li><a href='?ml=".$dir."'>".$dir."</a></li>";
 		}
 	} 
 }
@@ -91,13 +118,12 @@ closedir($dirskin);
       </div></td>
     </tr>
 <?php 
-if (isset($_GET['ml'])){
+if ($ml<>''){
 ?>	
     <tr>
       <td align="right" class="border" >模板文件：</td>
       <td class="border" ><div class="boxlink">
         <?php 
-$ml=$_GET['ml'];
 $title="";
 $fcontent="";
 if (isset($_GET['title'])){
@@ -106,7 +132,7 @@ if (substr($title,-3)!='css' and substr($title,-3)!='htm'){
 showmsg('只能是htm或css这两种格式');//防止直接输入php 文件地址显示PHP代码
 }
 }
-	$dir2 = opendir($ml);
+	$dir2 = opendir("../skin/".$ml);
 	while(($file = readdir($dir2))!=false){
   		if ($file!="." && $file!=".." && $file!='image') { //不读取. ..
 			if ($title==$file){

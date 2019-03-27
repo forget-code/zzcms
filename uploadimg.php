@@ -1,9 +1,7 @@
 ﻿<?php
-if(!isset($_SESSION)){session_start();} 
 set_time_limit(1800) ;
 include("inc/config.php");
-if (!isset($_COOKIE["UserName"]) && !isset($_SESSION["admin"])){
-session_write_close();
+if (!isset($_COOKIE["UserName"]) && !isset($_COOKIE["admin"])){
 echo "<script>alert('登录后才能上传');window.close();</script>";
 }
 //上传图片的类--------------------------------------------------------------

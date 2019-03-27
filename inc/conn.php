@@ -25,7 +25,7 @@ $conn=mysqli_connect(sqlhost,sqluser,sqlpwd,sqldb,sqlport) or showmsg ("数据�
 mysqli_real_query($conn,"SET NAMES 'utf8'"); //必不可少，用来设置客户端送给MySQL服务器的数据的字符集
 mysqli_select_db($conn,sqldb) or showmsg ("没有".sqldb."这个数据库,或是被管理员断开了链接,请稍后再试");
 //lockip();
-//if (isset($_SESSION["admin"])){
+//if (isset($_COOKIE["admin"])){
 //admindo();//如果管理员登录，记录管理员操作记录
 //}
 
@@ -47,8 +47,5 @@ return mysqli_num_rows($rs);
 function insert_id() {
 global $conn;
 return mysqli_insert_id($conn);
-}
-function data_seek($rs,$num) {
-return mysqli_data_seek($rs,$num);
 }
 ?>

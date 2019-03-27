@@ -12,21 +12,17 @@ fclose($f);
 
 if (isset($_REQUEST["page_size"])){
 $page_size=$_REQUEST["page_size"];
-checkid(page_size);
+checkid($page_size);
 setcookie("page_size_zh",$page_size,time()+3600*24*360);
 }else{
 $page_size=isset($_COOKIE["page_size_zh"])?$_COOKIE["page_size_zh"]:pagesize_qt;
 }
 
-$b='';
-if (isset($_GET['b'])){
-$b=$_GET['b'];
-if ($b<>""){
-checkid($b);
-}
-}
+$b=isset($_GET['b'])?$_GET['b']:0;
+checkid($b,1);
+
 $bigclassname="";
-if ($b<>""){
+if ($b<>"0"){
 $sql="select classname from zzcms_zhclass where classid='$b'";
 $rs=query($sql);
 $row=fetch_array($rs);

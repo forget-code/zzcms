@@ -2,23 +2,25 @@
 include("admin.php");
 include("../inc/fy.php");
 ?>
-<html>
+<!DOCTYPE html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <title></title>
 <link href="style.css" rel="stylesheet" type="text/css">
-<script language="JavaScript" src="/js/gg.js"></script>
+<script language="JavaScript" src="../js/gg.js"></script>
 <?php
 checkadminisdo("dl");
 
 $action=isset($_REQUEST["action"])?$_REQUEST["action"]:'';
 $page=isset($page)?$page:1;
 checkid($page);
+
+if (!isset($b)){$b=0;}
+checkid($b,1);
+
 $shenhe=isset($_REQUEST["shenhe"])?$_REQUEST["shenhe"]:'';
 $keyword=isset($_REQUEST["keyword"])?$_REQUEST["keyword"]:'';
 $kind=isset($_REQUEST["kind"])?$_REQUEST["kind"]:'';
-$b=isset($_REQUEST["b"])?$_REQUEST["b"]:0;
-checkid($b);
 $showwhat=isset($_REQUEST["showwhat"])?$_REQUEST["showwhat"]:'';
 
 $isread=isset($_REQUEST["isread"])?$_REQUEST["isread"]:'';
@@ -26,10 +28,7 @@ $isread=isset($_REQUEST["isread"])?$_REQUEST["isread"]:'';
 if ($action=="pass"){
 if(!empty($_POST['id'])){
     for($i=0; $i<count($_POST['id']);$i++){
-    $ids=$_POST['id'][$i];
-	$ids=explode("|",$ids);
-	$id=$ids[0];
-	$classid=$ids[1];
+    $id=$_POST['id'][$i];
 	checkid($id);
 	$sql="select passed from zzcms_dl where id ='$id'";
 	$rs = query($sql); 
@@ -51,17 +50,17 @@ echo "<script>location.href='?keyword=".$keyword."&page=".$page."'</script>";
 <div class="admintitle"><?php echo channeldl?>商信息库管理</div>
 <table width="100%" border="0" cellpadding="0" cellspacing="0" class="border">
   <tr> 
-      <td width="45%"><input name="submit32" type="submit" class="buttons" onClick="javascript:location.href='dl_add.php'" value="发布<?php echo channeldl?>信息">      </td>
+      <td width="45%"><input name="submit32" type="submit" class="buttons" onClick="javascript:location.href='dl.php?do=add'" value="发布<?php echo channeldl?>信息">      </td>
     <td width="55%" align="right"> 
       <form name="form1" method="post" action="?">
-	   <input type="radio" name="kind" value="cpmc" <?php if ($kind=="cpmc") { echo "checked";}?>>
-        按产品名称 
-        <input name="kind" type="radio" value="tel" <?php if ($kind=="tel") { echo "checked";}?> >
-        按电话 
-        <input type="radio" name="kind" value="editor" <?php if ($kind=="editor") { echo "checked";}?>>
-        按发布人 
-        <input type="radio" name="kind" value="saver" <?php if ($kind=="saver") { echo "checked";}?>>
-        按接收人 
+	  <label> <input type="radio" name="kind" value="cpmc" <?php if ($kind=="cpmc") { echo "checked";}?>>
+        按产品名称 </label> 
+        <label> <input name="kind" type="radio" value="tel" <?php if ($kind=="tel") { echo "checked";}?> >
+        按电话 </label> 
+        <label> <input type="radio" name="kind" value="editor" <?php if ($kind=="editor") { echo "checked";}?>>
+        按发布人</label>  
+       <label>  <input type="radio" name="kind" value="saver" <?php if ($kind=="saver") { echo "checked";}?>>
+        按接收人 </label> 
         <input name="keyword" type="text" id="keyword2" value="<?php echo $keyword?>"> 
         <input type="submit" name="Submit" value="查找">
         <a href="?isread=no">未查看的</a> 
@@ -80,7 +79,7 @@ while($row = fetch_array($rs)){
 	}else{
 	$str=$str.$row["classname"];
 	}
-	$str=$str."</a> | ";  
+	$str=$str."</a>";  
 }
 } 
 if ($str==""){echo '暂无分类';}else{echo $str;}
@@ -95,7 +94,7 @@ $sql2='';
 if ($shenhe=="no") {  		
 $sql2=$sql2." and passed=0 ";
 }
-if ($b<>"") {
+if ($b<>0) {
 $sql2=$sql2." and classid='".$b."'";
 }
 if ($isread=="no") {
@@ -134,37 +133,35 @@ if(!$totlenum){
 echo "暂无信息";
 }else{
 ?>
-<form name="myform" id="myform" method="post" action="">
-  <table width="100%" border="0" cellpadding="0" cellspacing="0" class="border">
-    <tr> 
-      <td> 
+<form name="myform" id="myform" method="post" action="" onSubmit="return anyCheck(this.form)">
+
+      <div class="border2"> 
         <input name="submit" type="submit" onClick="myform.action='dl_sendmail.php';myform.target='_blank' "  value="给接收者发邮件提醒">
         <input name="submit23" type="submit" onClick="myform.action='dl_sendsms.php';myform.target='_blank' "  value="给接收者发手机短信提醒">
         <input name="submit4" type="submit"  onClick="myform.action='?action=pass';myform.target='_self'" value="【取消/审核】选中的信息"> 
         <input type="submit" onClick="myform.action='del.php';myform.target='_self';return ConfirmDel()" value="删除选中的信息">
         <input name="pagename" type="hidden"  value="dl_manage.php?b=<?php echo $b?>&shenhe=<?php echo $shenhe?>&page=<?php echo $page ?>"> 
-        <input name="tablename" type="hidden"  value="zzcms_dl"> </td>
-    </tr>
-  </table>
+        <input name="tablename" type="hidden"  value="zzcms_dl"> </div>
+
   <table width="100%" border="0" cellpadding="5" cellspacing="1">
-    <tr> 
-      <td width="5%" align="center" class="border"> <label for="chkAll" style="text-decoration: underline;cursor: hand;">全选</label></td>
-      <td width="10%" class="border">类别</td>
-      <td width="10%" class="border"><?php echo channeldl?>品种</td>
-      <td width="10%" class="border"><?php echo channeldl?>区域</td>
-      <td width="10%" class="border">联系人</td>
-      <td width="10%" class="border">电话</td>
-      <td width="10%" class="border">发布人</td>
-      <td width="10%" align="center" class="border">接收者</td>
-      <td width="10%" class="border">发布时间</td>
-      <td width="10%" align="center" class="border">信息状态</td>
-      <td width="5%" align="center" class="border">操作</td>
+    <tr class="trtitle"> 
+      <td width="4%" align="center"> <label for="chkAll" style="cursor: pointer;">全选</label></td>
+      <td width="10%">类别</td>
+      <td width="10%"><?php echo channeldl?>品种</td>
+      <td width="10%"><?php echo channeldl?>区域</td>
+      <td width="10%">联系人</td>
+      <td width="10%">电话</td>
+      <td width="10%">发布人</td>
+      <td width="10%" align="center">接收者</td>
+      <td width="10%">发布时间</td>
+      <td width="10%" align="center">信息状态</td>
+      <td width="5%" align="center">操作</td>
     </tr>
     <?php
 while($row = fetch_array($rs)){
 ?>
-    <tr class="bgcolor1" onMouseOver="fSetBg(this)" onMouseOut="fReBg(this)"> 
-      <td align="center"> <input name="id[]" type="checkbox"  value="<?php echo $row["id"]?>|<?php echo $row["classid"]?>">
+    <tr class="trcontent"> 
+      <td align="center"> <input name="id[]" type="checkbox"  value="<?php echo $row["id"]?>">
      </td>
       <td><a href="?b=<?php echo $row["classid"]?>">
 	  <?php
@@ -197,24 +194,20 @@ while($row = fetch_array($rs)){
 	echo '非留言';
 	}
 		?>      </td>
-      <td align="center" class="docolor"> <a href="dl_modify.php?id=<?php echo $row["id"]?>&page=<?php echo $page ?>">修改</a>      </td>
+      <td align="center" class="docolor"> <a href="dl.php?do=modify&id=<?php echo $row["id"]?>&page=<?php echo $page ?>">修改</a>      </td>
     </tr>
     <?php
 }
 ?>
   </table>
-  <table width="100%" border="0" cellpadding="5" cellspacing="0" class="border">
-    <tr> 
-      <td> 
+      <div class="border"> 
         <input name="chkAll" type="checkbox" id="chkAll" onClick="CheckAll(this.form)" value="checkbox">
-         <label for="chkAll" style="text-decoration: underline;cursor: hand;">全选</label>
+         <label for="chkAll" style="cursor: pointer;">全选/不选</label>
         <input name="submit2" type="submit" onClick="myform.action='dl_sendmail.php';myform.target='_blank' "  value="给接收者发邮件提醒">
         <input name="submit232" type="submit" onClick="myform.action='dl_sendsms.php';myform.target='_blank' "  value="给接收者发手机短信提醒">
         <input name="submit5" type="submit"  onClick="myform.action='?action=pass';myform.target='_self'" value="【取消/审核】选中的信息"> 
         <input name="submit3" type="submit" onClick="myform.action='del.php';myform.target='_self';return ConfirmDel()" value="删除选中的信息"> 
-      </td>
-    </tr>
-  </table>
+      </div>
 </form>
 <div class="border center"><?php echo showpage_admin()?></div>
 <?php

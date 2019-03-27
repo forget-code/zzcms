@@ -16,15 +16,11 @@ setcookie("page_size_wangkan",$page_size,time()+3600*24*360);
 }else{
 $page_size=isset($_COOKIE["page_size_wangkan"])?$_COOKIE["page_size_wangkan"]:pagesize_qt;
 }
-$b='';
-if (isset($_GET['b'])){
-$b=$_GET['b'];
-if ($b<>""){
-checkid($b);
-}
-}
+$b=isset($_GET["b"])?$_GET["b"]:0;
+checkid($b,1);
+
 $bigclassname="";
-if ($b<>""){
+if ($b<>0){
 $sql="select classname from zzcms_wangkanclass where classid='$b'";
 $rs=query($sql);
 $row=fetch_array($rs);
@@ -34,16 +30,13 @@ $pagetitle=$bigclassname.wangkanlisttitle."-".sitename;
 $pagekeyword=$bigclassname.wangkanlistkeyword."-".sitename;
 $pagedescription=$bigclassname.wangkanlistdescription."-".sitename;
 
-if( isset($_GET["page"]) && $_GET["page"]!="") {
-    $page=$_GET['page'];
-	checkid($page);
-}else{
-    $page=1;
-}
+if( isset($_GET["page"]) && $_GET["page"]!="") {$page=$_GET['page'];}else{$page=1;}
+checkid($page);
+
 $list=strbetween($strout,"{loop}","{/loop}");
 $sql="select count(*) as total from zzcms_wangkan where passed<>0 ";
 $sql2='';
-if ($b<>""){
+if ($b<>0){
 $sql2=$sql2." and bigclassid='".$b."' ";
 }
 $rs =query($sql.$sql2); 

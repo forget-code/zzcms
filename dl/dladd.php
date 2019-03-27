@@ -1,59 +1,17 @@
 <?php
-if(!isset($_SESSION)){session_start();} 
 include("../inc/conn.php");
 ?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" lang="zh-CN">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-<meta http-equiv="X-UA-Compatible" content="IE=EmulateIE7" />
-<title></title>
+<title>发布<?php echo channeldl?>信息</title>
 <link href="/template/<?php echo siteskin?>/style.css" rel="stylesheet" type="text/css">
-<script type="text/javascript" src="/js/jquery.js"></script>
 <script>
-$(function(){
-$("#getcode_math").click(function(){
-		$(this).attr("src",'/one/code_math.php?' + Math.random());
-	});
-});
-
-$(document).ready(function(){  
-	$("#sendyzm").click(function() { //jquery 中blur,change函数  
-	//$("#ts_yzm_mobile").load(encodeURI("/ajax/dladd_send_yzm_ajax.php&id="+$("#tel").val()));
-	$("#ts_yzm_mobile").load(encodeURI("/ajax/dladd_send_yzm_ajax.php?id="+document.myform.tel.value));
-	}); 	
-});  
-
-var wait=60;
-function time(o) {
-	if (document.myform.tel.value ==""){
-	alert("请先输入你的手机号码");
-	document.myform.tel.focus();
-	return false;
-	}
-	
-	if (wait == 0) {
-			o.removeAttribute("disabled");			
-			o.value="获取验证码";
-			wait = 60;
-	} else {
-			o.setAttribute("disabled", true);
-			o.value="重新发送(" + wait + ")";
-			wait--;
-			setTimeout(function() {
-				time(o)
-			},
-			1000)
-		}
-	}
-
 function check_truename(){
 if (document.myform.truename.value !=""){
-	 //创建正则表达式
     var re=/^[\u4e00-\u9fa5]{2,10}$/; //只输入汉字的正则
-    if(document.myform.truename.value.search(re)==-1)
-    {
-	
+    if(document.myform.truename.value.search(re)==-1){
 	alert("联系人只能为汉字，字符介于2到10个。");
 	document.myform.truename.value="";
 	document.myform.truename.focus();
@@ -123,8 +81,7 @@ document.myform.cityforadd.value=v;
 
 function showsubmenu(sid){
 whichEl = eval("submenu" + sid);
-if (whichEl.style.display == "none")
-{
+if (whichEl.style.display == "none"){
 eval("submenu" + sid + ".style.display=\"\";");
 }
 }
@@ -137,11 +94,12 @@ eval("submenu" + sid + ".style.display=\"none\";");
 </SCRIPT>
 </head>
 <body>
+
+<div class="main">
 <?php
 include("../inc/top2.php");
 echo sitetop();
 ?>
-<div class="main">
 <div class="pagebody">
 <div class="titles">发布<?php echo channeldl?>信息</div>
 <div class="content">
@@ -207,7 +165,7 @@ destList.options[i] = null;
                    
 <select name="province" id="province"></select>
 <select name="city" id="city"></select>
-<select name="xiancheng" id="xiancheng" onchange="addSrcToDestList()"></select>
+<select name="xiancheng" id="xiancheng" onChange="addSrcToDestList()"></select>
 <script src="/js/area.js"></script>
 <script type="text/javascript">
 new PCAS('province', 'city', 'xiancheng', '<?php echo @$_SESSION['province']?>', '<?php echo @$_SESSION["city"]?>', '');
@@ -215,24 +173,10 @@ new PCAS('province', 'city', 'xiancheng', '<?php echo @$_SESSION['province']?>',
                
                 <td  align="center" valign="top">已选城市<br />
                   <select name="destList" size="3" multiple="multiple" style='width:100px'>
-                    <?php 
-			  if (isset($_SESSION['city'])){
-			  		if (strpos($_SESSION["city"],",")==0) {?>
-                     <option value="<?php echo $_SESSION["city"]?>"><?php echo $_SESSION["city"]?></option>
-                     <?php 
-					 }else{
-			  		$selectedcity=explode(",",$_SESSION["city"]);
-						for ($i=0;$i<count($selectedcity);$i++){    ?>
-                  		<option value="<?php echo $selectedcity[$i]?>"><?php echo $selectedcity[$i]?></option>
-                      	<?php 
-						}
-					}
-			}
-			?>
                     </select>
                     <input name="cityforadd" type="hidden" id="cityforadd" />
                     <br />
-                  <input name="button" type="button" onclick="javascript:deleteFromDestList();" value="删除已选城市" /></td>
+                  <input name="button" type="button" onClick="javascript:deleteFromDestList();" value="删除已选城市" /></td>
               </tr>
             </table></td>
     </tr>
@@ -248,9 +192,9 @@ new PCAS('province', 'city', 'xiancheng', '<?php echo @$_SESSION['province']?>',
 	?>
     <tr> 
       <td align="right" class="border"><?php echo channeldl?>身份：</td>
-      <td class="border"><input name="dlsf" id="dlsf_company" type="radio" value="公司" onclick="showsubmenu(1)">
+      <td class="border"><input name="dlsf" id="dlsf_company" type="radio" value="公司" onClick="showsubmenu(1)">
          <label for="dlsf_company">公司 </label>
-        <input name="dlsf" type="radio" id="dlsf_person" onclick="hidesubmenu(1)" value="个人" checked>
+        <input name="dlsf" type="radio" id="dlsf_person" onClick="hidesubmenu(1)" value="个人" checked>
           <label for="dlsf_person">个人</label></td>
     </tr>
     <tr style="display:none" id='submenu1'>
@@ -260,11 +204,11 @@ new PCAS('province', 'city', 'xiancheng', '<?php echo @$_SESSION['province']?>',
     <tr> 
       <td align="right" class="border2">真实姓名 <font color="#FF0000">*</font></td>
       <td class="border2">
-<input name="truename" type="text" id="truename" value="<?php echo $row["somane"]?>" size="45" maxlength="255" onblur="check_truename"/></td>
+<input name="truename" type="text" id="truename" value="<?php echo $row["somane"]?>" size="45" maxlength="255" onBlur="check_truename"/></td>
     </tr>
     <tr> 
       <td align="right" class="border">手机 <font color="#FF0000">*</font></td>
-      <td class="border"><input name="tel" type="text" id="tel" value="<?php echo $row["phone"]?>" size="45" maxlength="255" onblur="check_tel"/></td>
+      <td class="border"><input name="tel" type="text" id="tel" value="<?php echo $row["phone"]?>" size="45" maxlength="255" onBlur="check_tel"/></td>
     </tr>
     <tr> 
       <td align="right" class="border2">地址：</td>
@@ -278,9 +222,9 @@ new PCAS('province', 'city', 'xiancheng', '<?php echo @$_SESSION['province']?>',
 	<?php }else{?>
 	 <tr> 
       <td align="right" class="border"><?php echo channeldl?>身份：</td>
-      <td class="border"><input name="dlsf" id="dlsf_company" type="radio" value="公司" onclick="showsubmenu(1)">
+      <td class="border"><input name="dlsf" id="dlsf_company" type="radio" value="公司" onClick="showsubmenu(1)">
          <label for="dlsf_company">公司 </label>
-        <input name="dlsf" type="radio" id="dlsf_person" onclick="hidesubmenu(1)" value="个人" checked>
+        <input name="dlsf" type="radio" id="dlsf_person" onClick="hidesubmenu(1)" value="个人" checked>
           <label for="dlsf_person">个人</label></td>
     </tr>
     <tr style="display:none" id='submenu1'>
@@ -290,11 +234,11 @@ new PCAS('province', 'city', 'xiancheng', '<?php echo @$_SESSION['province']?>',
     <tr> 
       <td align="right" class="border2">真实姓名 <font color="#FF0000">*</font></td>
       <td class="border2">
-<input name="truename" type="text" id="truename"  size="45" maxlength="255" onblur="check_truename()"/></td>
+<input name="truename" type="text" id="truename"  size="45" maxlength="255" onBlur="check_truename()"/></td>
     </tr>
     <tr> 
       <td align="right" class="border">手机 <font color="#FF0000">*</font></td>
-      <td class="border"><input name="tel" type="text" id="tel"  size="45" maxlength="255" onblur="check_tel()"/></td>
+      <td class="border"><input name="tel" type="text" id="tel"  size="45" maxlength="255" onBlur="check_tel()"/></td>
     </tr>
     <tr> 
       <td align="right" class="border2">地址：</td>
@@ -308,26 +252,6 @@ new PCAS('province', 'city', 'xiancheng', '<?php echo @$_SESSION['province']?>',
 	<?php 
 	}
 	?>
-    <tr> 
-    <td align="right" class="border2">答案 <font color="#FF0000">*</font></td>      
-    <td class="border2">
-	<input name="yzm" type="text" class="biaodan2" id="yzm" tabindex="10" value="" size="10" maxlength="50" style="width:60px"/>
-    <img src="/one/code_math.php" align="absmiddle" id="getcode_math" title="看不清，点击换一张" /></td>
-    </tr>
-    <tr>
-	<?php
-	if (sendsms=="Yes"){
-	?>
-      <td align="right" class="border2">验证码<font color="#FF0000"> *</font> </td>
-      <td class="border2">
-        <input name="yzm_mobile" id="yzm_mobile"type="text" class="biaodan"  size="20" maxlength="50" style="width:60px"/>
-<input name="yzm_mobile2" id="yzm_mobile2" style="display:none" />
-<span id="ts_yzm_mobile"></span>
-<input name="sendyzm" type="button" id="sendyzm" value="获取验证码"  onclick="time(this)"/>	  </td>
-<?php
-}
-?>
-    </tr>
     <tr> 
       <td align="right" class="border">&nbsp;</td>
       <td class="border"> 
@@ -343,14 +267,7 @@ $city=$_POST["cityforadd"];
 $companyname=isset($_POST["companyname"])?$_POST["companyname"]:'';
 if ($dlsf=="个人" ){$companyname="";}
 
-checkyzm($_POST["yzm"]);
-if (sendsms=="Yes"){
-	$yzm_mobile=$_POST["yzm_mobile"];
-	if(time()-intval(@$_SESSION['yzm_sendtime'])>60){showmsg('请重新获取验证码','back');}
-	if($yzm_mobile!=@$_SESSION["yzm_mobile"]){showmsg('验证码错误！','back');}
-}
-
-checkstr($truename,'hanzi');
+checkstr($truename,'quanhanzi');
 checkstr($tel,'tel');
 
 if ($cp<>'' && $truename<>'' && $tel<>''){
@@ -361,11 +278,7 @@ echo showmsg('发布成功，审核后显示。');
 }else{
 echo showmsg('发布失败！');
 }
-$_SESSION['content']=$content;
-$_SESSION['bigclassid']=$classid;
-$_SESSION['province']=$province;
-$_SESSION['city']=$city;
-session_write_close();
+
 }	
 ?>
 </div>

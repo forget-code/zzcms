@@ -1,5 +1,4 @@
 <?php
-if(!isset($_SESSION)){session_start();} 
 include("../inc/conn.php");
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
@@ -162,7 +161,7 @@ echo sitetop();
 <select name="xiancheng" id="xiancheng"></select>
 <script src="/js/area.js"></script>
 <script type="text/javascript">
-new PCAS('province', 'city', 'xiancheng', '<?php echo @$_SESSION['province']?>', '<?php echo @$_SESSION["city"]?>', '<?php echo @$_SESSION["xiangcheng"]?>');
+new PCAS('province', 'city', 'xiancheng', '', '', '');
 </script>             </td>
     </tr>
     <tr> 
@@ -292,11 +291,8 @@ echo showmsg('发布成功，审核后显示。');
 }else{
 echo showmsg('发布失败！');
 }
-$_SESSION['bigclassid']=$classid;
-$_SESSION['province']=$province;
-$_SESSION['city']=$city;
-$_SESSION['xiangcheng']=$xiangcheng;
-session_write_close();
+
+
 }	
 ?>
 </div>

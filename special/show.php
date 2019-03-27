@@ -1,5 +1,4 @@
 <?php
-if(!isset($_SESSION)){session_start();} 
 include("../inc/conn.php");
 include("../inc/top.php");
 include("../inc/bottom.php");
@@ -8,7 +7,6 @@ include("../label.php");
 
 if (@$_REQUEST["action"]=="addpinglun"){
 checkyzm($_POST["yzm"]);
-session_write_close();
 $about=trim($_POST["about"]);
 $content=substr(trim($_POST["content"]),0,200);
 $face=@$_POST["face"];
@@ -161,7 +159,7 @@ $zxcontent=showcontent();
 }
 
 
-$sql="select * from zzcms_special where id < ".$zxid." and passed=1 and bigclassid in (select classid from zzcms_zxclass where isshowininfo=1 and parentid=0) order by id desc limit 0,1";
+$sql="select * from zzcms_special where id < ".$zxid." and passed=1 and bigclassid in (select classid from zzcms_zxclass where isshow=1 and parentid=0) order by id desc limit 0,1";
 $rs=query($sql);
 $row=fetch_array($rs);
 if ($row){
@@ -170,7 +168,7 @@ $nextid="上一篇文章：<a href=".getpageurl("zx",$row["id"]).">".$row["title
 $nextid="上一篇文章：没有了<br/>";
 }
 	
-$sql="select * from zzcms_special where id > ".$zxid." and passed=1 and bigclassid in (select classid from zzcms_zxclass where isshowininfo=1 and parentid=0) order by id asc limit 0,1";
+$sql="select * from zzcms_special where id > ".$zxid." and passed=1 and bigclassid in (select classid from zzcms_zxclass where isshow=1 and parentid=0) order by id asc limit 0,1";
 $rs=query($sql);
 $row=fetch_array($rs);
 if ($row){

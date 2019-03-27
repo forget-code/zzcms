@@ -1,7 +1,7 @@
 <?php
 include ("admin.php");
 ?>
-<html>
+<!DOCTYPE html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <title>后前管理首页</title>
@@ -9,12 +9,7 @@ include ("admin.php");
 </head>
 
 <body>
-<table width="100%" height="100%" border="0" cellpadding="0" cellspacing="0">
-  <tr> 
-    <td valign="top"> 
-      <table width="100%" border="0" cellpadding="10" cellspacing="0">
-        <tr> 
-          <td class="border" style="font-size:14px;line-height:25px;"> 
+<div class="border" style="font-size:14px;line-height:25px"> 
 <?php
 echo  "请先看看下面是否有需要您处理的工作。<br>";			
 function checkisendsever()
@@ -158,30 +153,18 @@ $sql="select id from zzcms_bad";
 $rs=query($sql);
 $row=num_rows($rs);
 echo "不良操作记录 ".$row." 条 [ <a href='showbad.php'>查看</a> ]<br>";
-?> </td>
-        </tr>
-        <tr>
-          <td class="border" style="font-size:14px;line-height:25px;">
+?>
+</div>
+<div class="border">
 <?php 
-if (isset($_REQUEST["action"])){
-$action=$_REQUEST["action"];
-}else{
-$action="";
-}
-if ($action=="check") {
+if (@$action=="check") {
 checkisendsever();
 }else{
 ?>
 <a href="?action=check">检查处理到期的注册用户，到期的<?php echo channelzs?>产品取消推荐</a>
 <?php
 }
-
 ?>	 
-		  </td>
-        </tr>
-      </table>
-    </td>
-  </tr>
-</table>
+</div>  
 </body>
 </html>

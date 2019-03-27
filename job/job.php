@@ -19,41 +19,34 @@ setcookie("page_size_job",$page_size,time()+3600*24*360);
 $page_size=isset($_COOKIE["page_size_job"])?$_COOKIE["page_size_job"]:pagesize_qt;
 }
 
-$b=isset($_GET["b"])?$_GET["b"]:'';
-$s=isset($_GET["s"])?$_GET["s"]:'';
+$b=isset($_GET["b"])?$_GET["b"]:0;
+$s=isset($_GET["s"])?$_GET["s"]:0;
+checkid($b,1);checkid($s,1);
 
 $bigclassname='';
-if ($b<>""){
+if ($b<>0){
 $sql="select classname from zzcms_jobclass where classid='".$b."'";
 $rs=query($sql);
 $row=fetch_array($rs);
-if ($row){
 $bigclassname=$row["classname"];
-}
 }
 
 $smallclassname='';
-if ($s<>"") {
+if ($s<>0) {
 $sql="select classname from zzcms_jobclass where classid='".$s."'";
 $rs=query($sql);
 $row=fetch_array($rs);
-if ($row){
-	$smallclassname=$row["classname"];
-	}
+$smallclassname=$row["classname"];
 }
 
 $pagetitle=joblisttitle;
 $pagekeyword=joblistkeyword;
 $pagedescription=joblistdescription;
 $station=getstation($b,$bigclassname,$s,$smallclassname,"","","job");
-if( isset($_GET["page"]) && $_GET["page"]!="") {
-    $page=$_GET['page'];
-	checkid($page);
-}else{
-    $page=1;
-}
+if( isset($_GET["page"]) && $_GET["page"]!="") {$page=$_GET['page'];}else{$page=1;}
+checkid($page);
 
-if ($b=="") {
+if ($b==0) {
 $class=bigclass($b);
 }else{
 $class= showjobsmallclass($b,$s,8,'');
@@ -62,10 +55,10 @@ $class= showjobsmallclass($b,$s,8,'');
 $list=strbetween($strout,"{loop}","{/loop}");
 $sql="select count(*) as total from zzcms_job where passed<>0 ";
 $sql2='';
-if ($b<>""){
+if ($b<>0){
 $sql2=$sql2. "and bigclassid='".$b."' ";
 }
-if ($s<>"") {
+if ($s<>0) {
 $sql2=$sql2." and smallclassid ='".$s."'  ";
 }
 $rs =query($sql.$sql2); 

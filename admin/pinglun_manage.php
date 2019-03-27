@@ -2,12 +2,12 @@
 include("admin.php");
 include("../inc/fy.php");
 ?>
-<html>
+<!DOCTYPE html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <title></title>
 <link href="style.css" rel="stylesheet" type="text/css">
-<script language="JavaScript" src="/js/gg.js"></script>
+<script language="JavaScript" src="../js/gg.js"></script>
 </head>
 <body>
 <?php
@@ -75,29 +75,21 @@ if(!$totlenum){
 echo "暂无信息";
 }else{
 ?>
-<form name="myform" method="post" action="">
-<table width="100%" border="0" cellpadding="5" cellspacing="0" class="border">
-    <tr> 
-      <td> 
-        <input type="submit" onClick="pass(this.form)" value="【取消/审核】选中的信息"> 
-        <input type="submit" onClick="del(this.form)" value="删除选中的信息">
-      </td>
-    </tr>
-  </table>
+<form name="myform" method="post" action="" onSubmit="return anyCheck(this.form)">
   <table width="100%" border="0" cellspacing="1" cellpadding="5">
-    <tr> 
-      <td width="5%" align="center" class="border"><label for="chkAll" style="text-decoration: underline;cursor: hand;">全选</label></td>
-      <td width="10%" class="border">评论内容</td>
-      <td width="5%" class="border">被评文章ID</td>
-      <td width="5%" align="center" class="border">是否审核</td>
-      <td width="10%" align="center" class="border">发布时间</td>
-      <td width="10%" align="center" class="border">评论人</td>
-      <td width="10%" align="center" class="border">评论人IP</td>
+    <tr class="trtitle"> 
+      <td width="5%" align="center"><label for="chkAll" style="cursor: pointer;">全选</label></td>
+      <td width="15%">评论内容</td>
+      <td width="15%">被评文章ID</td>
+      <td width="15%" align="center">是否审核</td>
+      <td width="15%" align="center">发布时间</td>
+      <td width="15%" align="center">评论人</td>
+      <td width="15%" align="center">评论人IP</td>
     </tr>
 <?php
 while($row = fetch_array($rs)){
 ?>
-    <tr class="bgcolor1" onMouseOver="fSetBg(this)" onMouseOut="fReBg(this)"> 
+    <tr class="trcontent"> 
       <td align="center" class="docolor"> <input name="id[]" type="checkbox" id="id" value="<?php echo $row["id"]?>"></td>
       <td ><?php echo $row["content"]?></td>
       <td ><a href="<?php echo getpageurl("zx",$row["about"])?>" target="_blank"><?php echo $row["about"]?></a></td>
@@ -110,15 +102,13 @@ while($row = fetch_array($rs)){
 }
 ?>
   </table>
-  <table width="100%" border="0" cellpadding="5" cellspacing="0" class="border">
-    <tr> 
-      <td> <input name="chkAll" type="checkbox" id="chkAll" onClick="CheckAll(this.form)" value="checkbox">
-        <label for="chkAll" style="text-decoration: underline;cursor: hand;">全选</label> 
-        <input type="submit" onClick="pass(this.form)" value="【取消/审核】选中的信息"> 
-        <input type="submit" onClick="del(this.form)" value="删除选中的信息"> 
-        <input name="page" type="hidden" id="page" value="<?php echo $page?>"></td>
-    </tr>
-  </table>
+      <div class="border"> <input name="chkAll" type="checkbox" id="chkAll" onClick="CheckAll(this.form)" value="checkbox">
+        <label for="chkAll" style="cursor: pointer;">全选</label> 
+        <input type="submit" onClick="myform.action='?action=pass';myform.target='_self'" value="【取消/审核】选中的信息"> 
+        <input type="submit" onClick="myform.action='del.php';myform.target='_self';return ConfirmDel()" value="【删除】选中的信息"> 
+		 <input name="tablename" type="hidden"  value="zzcms_pinglun">   
+	 <input name="pagename" type="hidden"  value="pinglun_manage.php?page=<?php echo $page ?>">
+      </div>
 </form>
 <div class="border center"><?php echo showpage_admin()?></div>
 <?php

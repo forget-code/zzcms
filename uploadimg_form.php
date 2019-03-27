@@ -1,7 +1,5 @@
 <?php
-if(!isset($_SESSION)){session_start();}
-if (!isset($_COOKIE["UserName"]) && !isset($_SESSION["admin"])){
-session_write_close();
+if (!isset($_COOKIE["UserName"]) && !isset($_COOKIE["admin"])){
 echo "No Login!";
 exit;
 }

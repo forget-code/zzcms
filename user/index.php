@@ -1,21 +1,17 @@
 <?php
 include("../inc/conn.php");
 include("check.php");
-$fpath="text/index.txt";
-$fcontent=file_get_contents($fpath);
-$f_array=explode("\n",$fcontent) ;
 ?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" lang="zh-CN">
+<!DOCTYPE html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-<meta http-equiv="X-UA-Compatible" content="IE=EmulateIE7" />
 <link href="style/<?php echo siteskin_usercenter?>/style.css" rel="stylesheet" type="text/css">
-<title><?php echo $f_array[0]?></title>
+<title>用户中心</title>
 <?php
 //接收通过此页跳转页的代码
 $gotopage = isset($_GET['gotopage'])?$_GET['gotopage']:'';
-$gotopage=substr($gotopage,0,strpos($gotopage,".php")+4);
+//$gotopage=substr($gotopage,0,strpos($gotopage,".php")+4);
+
 $canshu = isset($_GET['canshu'])?$_GET['canshu']:'';
 $b = isset($_GET['b'])?$_GET['b']:0;
 $s = isset($_GET['s'])?$_GET['s']:0;
@@ -43,7 +39,9 @@ document.gotopage.submit();
 </head>
 <body   <?php if ($gotopage<>""){echo "onLoad='gotopage()'";}?>  >
 <div class="main">
+
 <?php
+echo $gotopage;
 include ("top.php");
 ?>
 <div class="pagebody">
@@ -58,10 +56,10 @@ $sql="select * from zzcms_message where sendto='' or  sendto='".@$username."'  o
 $rs=query($sql);
 $row=num_rows($rs);
 if($row){
-$str="<div class='content' style='margin-bottom:10px'><div class='admintitle'>".$f_array[1]."</div>";
+$str="<div class='content' style='margin-bottom:10px'><div class='admintitle'>系统信息</div>";
 while ($row=fetch_array($rs)){
 $str=$str."<div class='box' style='margin-bottom:5px'>";
-$str=$str."<div style='font-weight:bold' title='".$f_array[2]."'>".$row["sendtime"]."</div>";
+$str=$str."<div style='font-weight:bold' title='发送时间'>".$row["sendtime"]."</div>";
 $str=$str.$row["content"];
 $str=$str."</div>";
 }
@@ -70,11 +68,11 @@ echo $str;
 }
 ?>
 <div class="content">
-<div class="admintitle"><?php echo $f_array[3]?></div>
+<div class="admintitle">用户信息</div>
 <table width="100%" border="0" cellpadding="3" cellspacing="1">
   <tr> 
-    <td width="13%" height="50" align="right" bgcolor="#FFFFFF" class="border2"><?php echo $f_array[4]?></td>
-    <td width="87%" bgcolor="#FFFFFF" class="border2"> 
+    <td width="13%" height="50" align="right" class="border2">注册时间：</td>
+    <td width="87%"  class="border2"> 
 	<?php
   $sql="select * from zzcms_user where username='".@$username."'";
   $rs=query($sql);
@@ -83,27 +81,27 @@ echo $str;
   ?> </td>
   </tr>
   <tr> 
-    <td height="50" align="right" bgcolor="#FFFFFF" class="border"><?php echo $f_array[5]?></td>
-    <td bgcolor="#FFFFFF" class="border"><b><?php echo $row["totleRMB"]?></b><br>
-      <?php echo $f_array[6]?></td>
+    <td height="50" align="right"  class="border">您的积分：</td>
+    <td  class="border"><b><?php echo $row["totleRMB"]?></b><br>
+     说明： <a href="/one/help.php#1032" target="_blank">关于积分</a></td>
   </tr>
   <tr> 
-    <td height="50" align="right" bgcolor="#FFFFFF" class="border2"><?php echo $f_array[7]?></td>
-    <td bgcolor="#FFFFFF" class="border2"><b><?php echo $row["logins"]?></b><br>
-      <?php echo $f_array[8]?></td>
+    <td height="50" align="right"  class="border2">登录次数：</td>
+    <td  class="border2"><b><?php echo $row["logins"]?></b><br>
+    提示：若感到登录次数不对，那么请及时 <a href="managepwd.php" target="_self">[更换登录密码]</a> </td>
   </tr>
   <tr> 
-    <td height="50" align="right" bgcolor="#FFFFFF" class="border"><?php echo $f_array[9]?></td>
-    <td bgcolor="#FFFFFF" class="border"><b>
+    <td height="50" align="right"  class="border">上次登录IP：</td>
+    <td  class="border"><b>
       <?php if ($row["showloginip"]<>"") {echo $row['showloginip'] ;}else{ echo "空" ;}?>
       </b><br>
-      <?php echo $f_array[10]?>
+      提示：若并没有用此IP登录过网站，那么请及时 <a href="managepwd.php" target="_self">[更换登录密码]</a> 
     </td>
   </tr>
   <tr> 
-    <td height="50" align="right" bgcolor="#FFFFFF" class="border2"><?php echo $f_array[11]?></td>
-    <td bgcolor="#FFFFFF" class="border2"><b><?php echo $row["showlogintime"]?></b><br>
-      <?php echo $f_array[12]?></td>
+    <td height="50" align="right"  class="border2">上次登录时间：</td>
+    <td  class="border2"><b><?php echo $row["showlogintime"]?></b><br>
+     提示：若在以上时间并没有登录过网站，那么请及时 <a href="managepwd.php" target="_self">[更换登录密码]</a></td>
   </tr>
 </table>
 <?php
@@ -113,29 +111,22 @@ $row=num_rows($rs);
 if($row){
 ?>
 <script>
-<?php echo $f_array[13]?>	
+if(confirm("有新意向产品留言，要查看么？")) {window.location.href="dls.php" }	
 </script>
-	 <div class="box"> 
-      <?php echo $f_array[14]?><b><?php echo $row ?></b>  <?php echo $f_array[15]?>[ <a href='dls_message_manage.php'><?php echo $f_array[16]?></a> ] 
-      <embed src=/image/sound.swf loop=false hidden=true volume=50 autostart=true width=0 height=0  name=foobar mastersound=mastersound></embed> 
-	  </div> 
+<div class="box">新意向产品留言 <b><?php echo $row ?></b> 条 [ <a href='dls'>查看</a> ] </div>	 
+<embed src="../image/sound.swf" loop="false" hidden="true" volume="50" autostart="true" width="0" height="0"  mastersound="mastersound"></embed>  
 <?php
 }
-
-?>
-      <?php
 $sql="select id from zzcms_guestbook where saver='".@$username."' and looked=0 and passed=1";
 $rs=query($sql);
 $row=num_rows($rs);
 if($row){
 ?>
 <script>
-<?php echo $f_array[17]?>		
+if(confirm("有新的留言本留言，要查看么？")){window.location.href="ztliuyan.php" }	
 </script>
-	 <div class="box"> 
-       <?php echo $f_array[14]?> <b><?php echo $row ?></b>  <?php echo $f_array[18]?>[ <a href='ztliuyan.php'><?php echo $f_array[16]?></a> ] 
-      <embed src=/image/sound.swf loop=false hidden=true volume=50 autostart=true width=0 height=0  name=foobar mastersound=mastersound></embed> 
-	  </div> 
+<div class="box">新的留言本留言 <b><?php echo $row ?></b> 条 [ <a href='ztliuyan.php'>查看</a> ] </div>	 
+<embed src="../image/sound.swf" loop="false" hidden="true" volume="50" autostart="true" width="0" height="0"  mastersound="mastersound"></embed>
 <?php
 }
 ?>

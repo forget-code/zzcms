@@ -1,7 +1,7 @@
 <?php
 include("admin.php");
 ?>
-<html>
+<!DOCTYPE html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <title></title>
@@ -9,13 +9,11 @@ include("admin.php");
 </head>
 <body>
 <?php
-checkadminisdo("userreg");
-$pageurl=trim($_POST["pageurl"]);
+checkadminisdo("user_del");
+$pageurl=isset($_POST["pageurl"])?$_POST["pageurl"]:'';
 ?>
 <div class="admintitle">删除用户执行结果如下</div>
-<table width="100%" border="0" cellpadding="10" cellspacing="1" class="border">
-  <tr> 
-    <td bgcolor="#FFFFFF" class="px14"> 
+<div class="border px14"> 
 <?php
 $id="";
 if(!empty($_POST['id'])){
@@ -36,13 +34,13 @@ $rs=query($sql);
 while($row=fetch_array($rs)){	
 	$editor=$row["username"];
 	if ($editor<>''){
-	$sqln="select img,flv from zzcms_main where editor='".$editor."'";
+	$sqln="select img,flv,sm from zzcms_main where editor='".$editor."'";
 	$rsn=query($sqln);
 	$rown=num_rows($rsn);
 	
 	if ($rown){
 	while($rown=fetch_array($rsn)){
-	if ($rown["img"]<>"/image/nopic.gif" && substr($rown["img"],0,4)<>"http"){
+	if ($rown["img"]<>"/image/nopic.gif" && substr($rown["img"],0,4)<>"http" && strpos($rown["img"],'/uploadfiles')!==false){
 		$f="../".$rown["img"]."";
 		if (file_exists($f)){
 		unlink($f);		
@@ -52,11 +50,21 @@ while($row=fetch_array($rs)){
 		unlink($fs);		
 		}
 	}	
-	if ($rown["flv"]<>'' && substr($rown["flv"],0,4)<>"http"){
+	if ($rown["flv"]<>'' && substr($rown["flv"],0,4)<>"http" && strpos($rown["flv"],'/uploadfiles')!==false){
 		$f="../".$rown["flv"]."";
 		if (file_exists($f)){
 		unlink($f);		
 		}
+	}
+	
+	$imgs=getimgincontent(stripfxg($rown["sm"],true),2);//删内容中的图片
+	if (is_array($imgs)){
+	foreach ($imgs as $value) {
+		if ($value<>"" && substr($value,0,4) !== "http"  && strpos($value,'/uploadfiles')!==false){
+		$f="../".substr($value,1)."";
+		if (file_exists($f)){unlink($f);}
+		}
+	}
 	}
 	
 	}
@@ -72,7 +80,7 @@ while($row=fetch_array($rs)){
 	
 	if ($rown){
 	while($rown=fetch_array($rsn)){
-	if ($rown["img"]<>"/image/nopic.gif" && substr($rown["img"],0,4)<>"http"){
+	if ($rown["img"]<>"/image/nopic.gif" && substr($rown["img"],0,4)<>"http" && strpos($value,'/uploadfiles')!==false){
 		$f="../".$rown["img"]."";
 		if (file_exists($f)){
 		unlink($f);		
@@ -114,7 +122,7 @@ while($row=fetch_array($rs)){
 	if ($rown){
 	while($rown=fetch_array($rsn)){
 	
-	if ($rown["img"]<>"/image/nopic.gif" && substr($rown["img"],0,4)<>"http"){
+	if ($rown["img"]<>"/image/nopic.gif" && substr($rown["img"],0,4)<>"http" && strpos($rown["img"],'/uploadfiles')!==false){
 		$f="../".$rown["img"]."";
 		if (file_exists($f)){
 		unlink($f);		
@@ -144,13 +152,13 @@ while($row=fetch_array($rs)){
 	query("delete from zzcms_usersetting where username='".$editor."'");
 	echo "此用户的相关配置信息已被删除<br>";				
 	
-	$sqln="select img,flv from zzcms_user where username='".$editor."'";
+	$sqln="select img,flv,content from zzcms_user where username='".$editor."'";
 	$rsn=query($sqln);
 	$rown=num_rows($rsn);
 	if ($rown){
 	while($rown=fetch_array($rsn)){
 	
-	if ($rown["img"]<>"/image/nopic.gif" && substr($rown["img"],0,4)<>"http"){
+	if ($rown["img"]<>"/image/nopic.gif" && substr($rown["img"],0,4)<>"http" && strpos($rown["img"],'/uploadfiles')!==false){
 		$f="../".$rown["img"]."";
 		if (file_exists($f)){
 		unlink($f);		
@@ -161,11 +169,22 @@ while($row=fetch_array($rs)){
 		}
 	}
 	
-	if ($rown["flv"]<>'' && substr($rown["flv"],0,4)<>"http"){
+	if ($rown["flv"]<>'' && substr($rown["flv"],0,4)<>"http" && strpos($rown["flv"],'/uploadfiles')!==false){
 		$f="../".$rown["flv"]."";
 		if (file_exists($f)){
 		unlink($f);		
 		}
+	}
+	
+	
+	$imgs=getimgincontent(stripfxg($rown["content"],true),2);//删内容中的图片
+	if (is_array($imgs)){
+	foreach ($imgs as $value) {
+		if ($value<>"" substr($value,0,4) !== "http"  && strpos($value,'/uploadfiles')!==false){
+		$f="../".substr($value,1)."";
+		if (file_exists($f)){unlink($f);}
+		}
+	}
 	}
 	
 	}
@@ -178,11 +197,8 @@ while($row=fetch_array($rs)){
 }
 //echo "<script>location.href=\"$pagename\"<//script>"; 
 ?>
-    </td>
-  </tr>
-  <tr>
-    <td bgcolor="#FFFFFF" class="docolor"><a href="<?php echo $pageurl ?>">返回</a></td>
-  </tr>
-</table>
+</div>
+<div class="border"><a href="<?php echo $pageurl ?>">返回</a></div>
+
 </body>
 </html>

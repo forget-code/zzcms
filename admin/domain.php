@@ -1,12 +1,10 @@
 <?php
 include("admin.php");
-checkadminisdo("userreg");
+checkadminisdo("user");
 ?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" lang="zh-CN">
+<!DOCTYPE html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-<meta http-equiv="X-UA-Compatible" content="IE=EmulateIE7" />
 <link href="style.css" rel="stylesheet" type="text/css">
 <?php
 $go=0;
@@ -32,7 +30,7 @@ if ($action=="savedata" ){
 if ($action=="add") {
 ?>
 <div class="admintitle">绑定顶级域名</div>
-<form action="?action=savedata&saveas=add" method="POST" name="myform" id="myform">
+<form action="?action=save&saveas=add" method="POST" name="myform" id="myform">
   <table width="100%" border="0" cellpadding="5" cellspacing="1">
     <tr> 
       <td width="10%" align="right" class="border">域名：</td>
@@ -44,18 +42,18 @@ if ($action=="add") {
 <?php
 }
 if ($action=="modify") {
-$sql="select * from zzcms_userdomain where id=".$_REQUEST["id"]."";
+$sql="select * from zzcms_userdomain where id='".$id."'";
 $rs=query($sql);
 $row=fetch_array($rs);
 ?>
 <div class="admintitle">修改域名</div>  
-<form action="?action=savedata&saveas=modify" method="POST" name="myform" id="myform">
+<form action="?action=save&saveas=modify" method="POST" name="myform" id="myform">
   <table width="100%" border="0" cellpadding="5" cellspacing="1">
     <tr> 
       <td width="10%" align="right" class="border">域名：</td>
       <td class="border"><input name="domain"  value="<?php echo $row["domain"]?>" type="text" />
         <input type="submit" name="Submit2" class="buttons" value="提交" />
-        <input name="id" type="hidden" id="id2" value="<?php echo $row["id"]?>" /></td>
+        <input name="id" type="hidden" value="<?php echo $row["id"]?>" /></td>
     </tr>
 </table>
   </form>

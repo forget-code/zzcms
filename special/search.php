@@ -43,17 +43,13 @@ if ($b<>0){
 $sql="select * from zzcms_specialclass where classid='$b'";
 $rs=query($sql);
 $row=fetch_array($rs);
-if ($row){
 $bigclassname=$row["classname"];
-}
 }
 if ($s<>0) {
 $sql="select * from zzcms_specialclass where classid='$s'";
 $rs=query($sql);
 $row=fetch_array($rs);
-if ($row){
-	$smallclassname=$row["classname"];
-	}	
+$smallclassname=$row["classname"];	
 }
 if (isset($_GET['delb'])){
 setcookie("ztb","xxx",1);
@@ -112,12 +108,8 @@ if ($b<>0 || $s<>0 ) {
 		}else{
 		$selected="";
 		}
-if( isset($_GET["page"]) && $_GET["page"]!="") {
-    $page=$_GET['page'];
-	checkid($page);
-}else{
-    $page=1;
-}
+if( isset($_GET["page"]) && $_GET["page"]!="") {$page=$_GET['page'];}else{$page=1;}
+checkid($page);
 
 $list=strbetween($strout,"{loop}","{/loop}");
 $sql="select count(*) as total from zzcms_special where passed<>0 ";

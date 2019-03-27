@@ -7,17 +7,12 @@ include("../inc/fy.php");
 <title></title>
 <link href="style.css" rel="stylesheet" type="text/css">
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-<script language="JavaScript" src="/js/gg.js"></script>
+<script language="JavaScript" src="../js/gg.js"></script>
 <?php
-$action=isset($_REQUEST["action"])?$_REQUEST["action"]:'';
-if( isset($_REQUEST["page"]) && $_REQUEST["page"]!="") {
-    $page=$_REQUEST['page'];
-	checkid($page,0);
-}else{
-    $page=1;
-}
+$action=isset($_GET["action"])?$_GET["action"]:'';
+$page=isset($page)?$page:1;
+checkid($page);
 $shenhe=isset($_REQUEST["shenhe"])?$_REQUEST["shenhe"]:'';
-
 $keyword=isset($_REQUEST["keyword"])?$_REQUEST["keyword"]:'';
 if ($action=="pass"){
 checkadminisdo("licence");
@@ -42,7 +37,7 @@ echo "<script>location.href='?keyword=".$keyword."&page=".$page."'</script>";
 </head>
 <body>
 <div class="admintitle">资质证书管理</div>
-<div  class="border">
+<div  class="border2">
 <form action="?" name="form1" method="post"> 
 标题： <input name="keyword" type="text" id="keyword" value="<?php echo $keyword?>"> <input type="submit" name="Submit" value="查找">
 </form> 
@@ -72,27 +67,18 @@ echo "暂无信息";
 }else{
 ?>
 <form name="myform" method="post" action="">
-  <table width="100%" border="0" cellpadding="5" cellspacing="0" class="border">
-    <tr> 
-      <td>
-<input name="submit"  type="submit" onClick="pass(this.form)" value="【取消/审核】选中的信息">
-        <input name="submit4" type="submit" onClick="myform.action='del.php';myform.target='_self';return ConfirmDel()" value="删除选中的信息"> 
-        <input name="pagename" type="hidden"  value="licence.php?shenhe=<?php echo $shenhe?>&page=<?php echo $page ?>"> 
-        <input name="tablename" type="hidden"  value="zzcms_licence"> </td>
-    </tr>
-  </table>
-  <table width="100%" border="0" cellpadding="5" cellspacing="1">
-    <tr> 
-      <td width="5%" align="center" class="border"> <label for="chkAll" style="text-decoration: underline;cursor: hand;">全选</label></td>
-      <td width="20%" class="border">证件</td>
-      <td width="20%" class="border">资质证书名称</td>
-      <td width="5%" class="border">用户</td>
-      <td width="5%" class="border">状态</td>
+    <table width="100%" border="0" cellpadding="5" cellspacing="1">
+    <tr class="trtitle"> 
+      <td width="5%" align="center"> <label for="chkAll" style="cursor: pointer;">全选</label></td>
+      <td width="20%">证件</td>
+      <td width="20%">资质证书名称</td>
+      <td width="5%">用户</td>
+      <td width="5%">状态</td>
     </tr>
 <?php
 while($row = fetch_array($rs)){
 ?>
-   <tr class="bgcolor1" onMouseOver="fSetBg(this)" onMouseOut="fReBg(this)"> 
+   <tr class="trcontent"> 
       <td align="center" class="docolor"> <input name="id[]" type="checkbox" id="id" value="<?php echo $row["id"]?>"></td>
       <td><a href="<?php echo $row["img"]?>" target="_blank"><img src="<?php echo $row["img"]?>" border="0" width="100"></a>      </td>
       <td><?php echo $row["title"]?></td>
@@ -103,20 +89,17 @@ while($row = fetch_array($rs)){
 }
 ?>
   </table>
-<table width="100%" border="0" cellpadding="5" cellspacing="0" class="border">
-  <tr> 
-    <td> <input name="chkAll" type="checkbox" id="chkAll" onClick="CheckAll(this.form)" value="checkbox">
-       <label for="chkAll" style="text-decoration: underline;cursor: hand;">全选</label> 
-      <input name="submit2"  type="submit" onClick="pass(this.form)" value="【取消/审核】选中的信息">
-        <input name="submit42" type="submit" onClick="myform.action='del.php';myform.target='_self';return ConfirmDel()" value="删除选中的信息"> 
-      </td>
-  </tr>
-</table>
+    <div class="border"> <input name="chkAll" type="checkbox" id="chkAll" onClick="CheckAll(this.form)" value="checkbox">
+       <label for="chkAll" style="cursor: pointer;">全选</label> 
+      <input  type="submit" onClick="myform.action='?action=pass';myform.target='_self'" value="【取消/审核】选中的信息">
+        <input  type="submit" onClick="myform.action='del.php';myform.target='_self';return ConfirmDel()" value="删除选中的信息"> 
+        <input name="pagename" type="hidden"  value="licence.php?shenhe=<?php echo $shenhe?>&page=<?php echo $page ?>">
+        <input name="tablename" type="hidden"  value="zzcms_licence">
+  </div>
 </form>
 <div class="border center"><?php echo showpage_admin()?></div>
 <?php
 }
-
 ?>
 </body>
 </html>

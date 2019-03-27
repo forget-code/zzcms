@@ -14,11 +14,7 @@ $page_size=$_GET["page_size"];
 checkid($page_size);
 setcookie("page_size_zh",$page_size,time()+3600*24*360);
 }else{
-	if (isset($_COOKIE["page_size_zh"])){
-	$page_size=$_COOKIE["page_size_zh"];
-	}else{
-	$page_size=pagesize_qt;
-	}
+$page_size=isset($_COOKIE["page_size_zh"])?$_COOKIE["page_size_zh"]:pagesize_qt;
 }
 $keyword=isset($_GET['keyword'])?$_GET['keyword']:'';
 $province=isset($_GET['province'])?$_GET['province']:'';
@@ -32,9 +28,7 @@ if ($b<>0){
 $sql="select bigclassname from zzcms_zhclass where classid='".$b."' ";
 $rs=query($sql);
 $row=fetch_array($rs);
-if ($row){
 $bigclassname=$row["classname"];
-}
 }
 
 $pagetitle=sitename.zhlisttitle;
@@ -44,10 +38,6 @@ $pagedescription=sitename.zhlistdescription;
 function formbigclass($b){
 $sql = "select classid,classname from zzcms_zhclass  ";
 $rs=query($sql);
-$row=num_rows($rs);
-if (!$row){
-$str= "请先添加类别名称。";
-}else{
 $str="<option value=''>不限类别</option>";
 	while($row=fetch_array($rs)){
 		if ($row["classid"]==$b){
@@ -56,7 +46,6 @@ $str="<option value=''>不限类别</option>";
 		$str=$str."<option value='".$row["classid"]."'>".$row["classname"]."</option>";
 		}
 	}
-}
 return $str;
 }
 
@@ -103,12 +92,8 @@ if ($b<>0){
 $sql2=$sql2." and bigclassid ='".$b."' ";
 }
 
-if( isset($_GET["page"]) && $_GET["page"]!="") {
-    $page=$_GET['page'];
-	checkid($page);
-}else{
-    $page=1;
-}
+if( isset($_GET["page"]) && $_GET["page"]!="") {$page=$_GET['page'];}else{$page=1;}
+checkid($page);
 $list=strbetween($strout,"{loop}","{/loop}");
 
 $rs =query($sql.$sql2); 

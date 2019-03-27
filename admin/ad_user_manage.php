@@ -1,7 +1,15 @@
 <?php
 include("admin.php");
 include("../inc/fy.php");
-checkadminisdo("advtext");
+?>
+<!DOCTYPE html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title></title>
+<link href="style.css" rel="stylesheet" type="text/css">
+<script language="JavaScript" src="../js/gg.js"></script>
+<?php
+checkadminisdo("adv_user");
 
 $action=isset($_GET["action"])?$_GET["action"]:'';
 $shenhe=isset($_GET["shenhe"])?$_GET["shenhe"]:'';
@@ -10,14 +18,7 @@ checkid($page);
 
 $keyword=isset($_GET["keyword"])?$_GET["keyword"]:'';
 $kind=isset($_POST["kind"])?$_POST["kind"]:'';
-?>
-<html>
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-<title></title>
-<link href="style.css" rel="stylesheet" type="text/css">
-<script language="JavaScript" src="/js/gg.js"></script>
-<?php
+
 if ($action=="del") {
 if(!empty($_POST['id'])){
 for($i=0; $i<count($_POST['id']);$i++){
@@ -87,18 +88,16 @@ echo "<script>location.href='ad_user_manage.php?shenhe=no&page=".$page."'</scrip
 <body>
 <div class="admintitle">用户审请的文字广告管理</div>
 <form name="form1" method="post" action="?">
-<table width="100%" border="0" cellpadding="5" cellspacing="0">
-    <tr> 
-      <td class="border"> 
+
+      <div class="border2"> 
         <input name="kind" type="radio" value="username" <?php if ($kind=="username") { echo "checked";}?>>
         按发布人 
         <input type="radio" name="kind" value="title" <?php if ($kind=="title") { echo "checked";}?>>
         按广告词 
         <input name="keyword" type="text" id="keyword" value="<?php echo $keyword?>"> 
         <input type="submit" name="Submit" value="查找">
-      　 </td>
-    </tr>
-</table>
+      　 </div>
+
 </form>
   <?php
 $page_size=pagesize_ht;  //每页多少条数据
@@ -129,30 +128,21 @@ if(!$totlenum){
 echo "暂无信息";
 }else{ 
 ?> 
-<form name="myform" id="myform" method="post" action="">  
-  <table width="100%" border="0" cellpadding="5" cellspacing="0" class="border">
-    <tr>
-      <td><input name="submit" type="submit"  onClick="myform.action='?action=pass';myform.target='_self'" value="审核选中的信息">
-      <input name="submit" type="submit" onClick="myform.action='?action=del';myform.target='_self';return ConfirmDel()" value="删除选中的信息">
-	  <input name="pagename" type="hidden"  value="ad_user_manage.php?shenhe=<?php echo $shenhe?>&page=<?php echo $page ?>"> 
-        <input name="tablename" type="hidden"  value="zzcms_textadv">
-	  </td>
-    </tr>
-  </table>
-<table width="100%" border="0" cellspacing="1" cellpadding="5">
-  <tr> 
-    <td width="5%" align="center" class="border"><label for="chkAll" style="text-decoration: underline;cursor: hand;">全选</label></td>
-    <td width="10%" class="border">广告词</td>
-    <td width="10%" class="border">图片</td>
-    <td width="10%" class="border">是否审核</td>
-    <td width="10%" align="center" class="border">发布时间</td>
-    <td width="10%" align="center" class="border">发布人</td>
-    <td width="5%" align="center" class="border">操作</td>
+<form name="myform" id="myform" method="post" action="">
+  <table width="100%" border="0" cellspacing="1" cellpadding="5">
+  <tr class="trtitle"> 
+    <td width="2%" align="center"><label for="chkAll" style="cursor: pointer;">全选</label></td>
+    <td width="10%">广告词</td>
+    <td width="10%">图片</td>
+    <td width="10%">是否审核</td>
+    <td width="10%" align="center">发布时间</td>
+    <td width="10%" align="center">发布人</td>
+    <td width="5%" align="center">操作</td>
   </tr>
   <?php
 while($row = fetch_array($rs)){
 ?>
-  <tr bgcolor="#FFFFFF" onMouseOver="fSetBg(this)" onMouseOut="fReBg(this)"> 
+  <tr class="trcontent"> 
     <td align="center">
       <input name="id[]" type="checkbox"  value="<?php echo $row["id"]?>"></td>
     <td><a href='<?php echo $row["advlink"]?>' target="_blank"><?php echo $row["adv"]?></a></td>
@@ -182,15 +172,13 @@ if ($row["img"]<>""){
 }
 ?>
 </table>
-<table width="100%" border="0" cellpadding="5" cellspacing="0" class="border">
-  <tr>
-    <td><input name="chkAll" type="checkbox" id="chkAll" onClick="CheckAll(this.form)" value="checkbox">
-        <label for="chkAll" style="text-decoration: underline;cursor: hand;">全选</label>
+  <div class="border"><input name="chkAll" type="checkbox" id="chkAll" onClick="CheckAll(this.form)" value="checkbox">
+        <label for="chkAll" style="cursor: pointer;">全选</label>
         <input name="submit2" type="submit"  onClick="myform.action='?action=pass';myform.target='_self'" value="审核选中的信息">
         <input name="submit3" type="submit" onClick="myform.action='del.php';myform.target='_self';return ConfirmDel()" value="删除选中的信息">
-    </td>
-  </tr>
-</table>
+        <input name="pagename" type="hidden"  value="ad_user_manage.php?shenhe=<?php echo $shenhe?>&page=<?php echo $page ?>">
+        <input name="tablename" type="hidden"  value="zzcms_textadv">
+    </div>
 </form>
 <div class="border center"><?php echo showpage_admin()?></div>
 <?php

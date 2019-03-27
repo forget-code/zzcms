@@ -1,5 +1,4 @@
 <?php
-ob_start();   //打开缓存区 
 include("../inc/conn.php");
 $founderr=0;
 $ErrMsg="";
@@ -28,7 +27,7 @@ $FileExt="xls";
 
 if (check_user_power("dls_download")=="no"){
 $founderr=1;
-$ErrMsg=$ErrMsg."<li>您所在的用户组没有下载".channeldl."信息的权限！<br><input  type=button value=升级成VIP会员 onclick=\"location.href='/one/vipuser.php'\"/></li>";
+$ErrMsg=$ErrMsg."<li>您所在的用户组没有下载".channeldl."信息的权限！<br><a href='../one/vipuser.php'>升级成VIP会员</a></li>";
 }
 //判断查看代理条数
 $rslookedlsnumber=query("select looked_dls_number_oneday from zzcms_usergroup where groupid=(select groupid from zzcms_user where username='".$username."')");
@@ -39,7 +38,7 @@ $rown=num_rows($rslookedlsnumbers);
 if ($rown){
 	if ($rown["looked_dls_number_oneday"]+$i>$lookedlsnumber){
 	$founderr=1;
-	$ErrMsg="<li>您所在的用户组每天只能下载 ".$lookedlsnumber." 条".channeldl."信息<br><input  type=button value=升级为高级会员 onclick=location.href='/one/vipuser.php'/></li>";
+	$ErrMsg="<li>您所在的用户组每天只能下载 ".$lookedlsnumber." 条".channeldl."信息<br><a href='../one/vipuser.php'>升级为高级会员</a></li>";
 	}
 }
 if ($founderr==1){

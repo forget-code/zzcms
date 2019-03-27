@@ -130,24 +130,15 @@ $pagetitle=$province.$bigclassname.dllisttitle."-".sitename;
 $pagekeyword=$province.$bigclassname.dllisttitle."-".sitename;
 $pagedescription=$province.$bigclassname.dllistdescription."-".sitename;
 
-if( isset($_GET["page"]) && $_GET["page"]!="") {
-    $page=$_GET['page'];
-	checkid($page);
-}else{
-    $page=1;
-}
+if( isset($_GET["page"]) && $_GET["page"]!="") {$page=$_GET['page'];}else{$page=1;}
+checkid($page);
 function formbigclass(){
 		$str="";
         $sql = "select * from zzcms_zsclass where parentid=0";
         $rs=query($sql);
-		$row=num_rows($rs);
-		if (!$row){
-		$str= "请先添加类别名称。";
-		}else{
 			while($row=fetch_array($rs)){
 			$str=$str. "<a href=?b=".$row["classzm"].">".$row["classname"]."</a>&nbsp;&nbsp;";
 			}
-		}
 		return $str;
 		}
 	function formprovince(){

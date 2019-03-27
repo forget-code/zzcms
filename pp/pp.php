@@ -27,10 +27,8 @@ if ($b<>""){
 $sql="select classname,classid from zzcms_zsclass where classzm='".$b."'";
 $rs=query($sql);
 $row=fetch_array($rs);
-if ($row){
 $bigclassname=$row["classname"];
 $bigclassid=$row["classid"];
-}
 }
 
 $smallclassname='';
@@ -38,10 +36,8 @@ if ($s<>"") {
 $sql="select classname,classid from zzcms_zsclass where classzm='".$s."'";
 $rs=query($sql);
 $row=fetch_array($rs);
-if ($row){
-	$smallclassname=$row["classname"];
-	$smallclassid=$row["classid"];
-	}
+$smallclassname=$row["classname"];
+$smallclassid=$row["classid"];
 }
 
 $pagetitle=pplisttitle;
@@ -49,12 +45,8 @@ $pagekeyword=pplistkeyword;
 $pagedescription=pplistdescription;
 $station=getstation($b,$bigclassname,$s,$smallclassname,"","","pp");
 
-if( isset($_GET["page"]) && $_GET["page"]!="") {
-    $page=$_GET['page'];
-	checkid($page,0);
-}else{
-    $page=1;
-}
+$page=isset($page)?$page:1;
+checkid($page);
 
 if ($b=="") {
 $ppclass=bigclass($b);

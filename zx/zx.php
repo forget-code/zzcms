@@ -1,5 +1,5 @@
 <?php
-session_start();//为向AJAX/zx.php中传b,s值
+ob_start();//打开缓冲区，可以setcookie为向AJAX/zx.php中传b,s值
 include("../inc/conn.php");
 include("../inc/fy.php");
 include("../inc/top.php");
@@ -17,15 +17,15 @@ $page_size=isset($_COOKIE['page_size_zx'])?$_COOKIE['page_size_zx']:pagesize_qt;
 
 $b=isset($_GET["b"])?$_GET["b"]:0;
 checkid($b,1);
-$_SESSION['zx_b']=$b;
+setcookie("zx_b",$b,time()+3600*24,"/");
 $s=isset($_GET["s"])?$_GET["s"]:0;
 checkid($s,1);
-$_SESSION['zx_s']=$s;
+setcookie("zx_s",$s,time()+3600*24,"/");
 
 $bigclassname="";
 $classtitle="";
 $classkeyword="";
-$classdiscription="";
+$classdescription="";
 $smallclassname="";
 if ($b<>0){
 $sql="select * from zzcms_zxclass where classid='".$b."'";
@@ -36,7 +36,7 @@ if ($row){
 $bigclassname=$row["classname"];
 $classtitle=$row["title"];
 $classkeyword=$row["keyword"];
-$classdiscription=$row["discription"];
+$classdescription=$row["description"];
 $skin=explode("|",$row["skin"]);
 $skin=@$skin[1];//列表页是第二个参数
 }
@@ -49,23 +49,17 @@ if ($s<>0){
 $sql="select * from zzcms_zxclass where classid='".$s."'";
 $rs=query($sql);
 $row=fetch_array($rs);
-if ($row){
 $smallclassname=$row["classname"];
-}
 }
 
 $pagetitle=$classtitle.zxlisttitle;
 $pagekeyword=$classkeyword.zxlistkeyword;
-$pagedescription=$classdiscription.zxlistdescription;
+$pagedescription=$classdescription.zxlistdescription;
 
-if( isset($_GET["page"]) && $_GET["page"]!="") {
-    $page=$_GET['page'];
-	checkid($page,0);
-}else{
-    $page=1;
-}
+$page=isset($page)?$page:1;
+checkid($page);
 
-if ($b=="") {
+if ($b==0) {
 $zxclass=zxbigclass($b,2);
 }else{
 $zxclass=zxsmallclass($b,$s);
@@ -83,7 +77,7 @@ fclose($f);
 $list=strbetween($strout,"{loop}","{/loop}");
 $sql="select count(*) as total from zzcms_zx where passed<>0 ";
 $sql2='';
-if ($b<>'') {
+if ($b<>0) {
 $sql2=$sql2." and bigclassid='".$b."' ";
 }
 if ($s<>'') {
@@ -98,6 +92,7 @@ $totlepage=ceil($totlenum/$page_size);
 $sql="select id,title,elite,sendtime,img,link,content,hit from zzcms_zx where passed=1"; 
 $sql=$sql.$sql2;
 $sql=$sql." order by elite desc,id desc limit $offset,$page_size";
+
 $rs = query($sql); 
 if(!$totlenum){
 $strout=str_replace("{#fenyei}","",$strout) ;
@@ -133,8 +128,6 @@ $list2 =str_replace("{#id}",$row["id"],$list2) ;
 $list2 =str_replace("{#title}",cutstr($row["title"],30),$list2) ;
 $list2 =str_replace("{#imgbig}",$row["img"],$list2) ;
 $list2 =str_replace("{#img}",getsmallimg($row["img"]),$list2) ;
-$contentnum=strbetween($list2,"{#content:","}");
-$list2 =str_replace("{#content:".$contentnum."}", cutstr(nohtml(stripfxg($row["content"],true)),$contentnum),$list2);
 $list2 =str_replace("{#content}",stripfxg($row["content"],true),$list2) ;
 $list2 =str_replace("{#sendtime}",date("Y-m-d",strtotime($row["sendtime"])),$list2) ;
 $list2 =str_replace("{#listimg}" ,$listimg,$list2) ;

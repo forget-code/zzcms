@@ -67,7 +67,8 @@ $str="暂无分类";
 return $str;
 }
 
-function showzssmallclass($b,$s,$column,$num){
+function showzssmallclass($b,$s,$num=''){
+$bigclassid='';
 if ($b<>""){
 $rs=query("select classid from zzcms_zsclass where classzm='".$b."'");
 $row=fetch_array($rs);
@@ -100,30 +101,6 @@ while ($row=fetch_array($rs)){
 $n=$n+1;		
 }
 if ($num<>""){$str=$str. "<li><a href='".getpageurl2("zs",$b,"")."'>更多...</a></li>";}
-}
-return $str;
-}
-
-function showsx($sxid){
-$str="";
-$n=1;
-$rs = query("select * from zzcms_zsclass_shuxing order by xuhao asc"); 
-$row= num_rows($rs);
-if (!$row){
-$str="";//为空时不要输出内容
-}else{
-	while ($row=fetch_array($rs)){
-	if($row['bigclassid']==$sxid){$str=$str."<li class='current'>";}else{$str=$str."<li>";}
-	
-	if (whtml=="Yes") {
-	$str=$str."<a href='/zs/sx-".$row["bigclassid"].".htm'>".$row["bigclassname"]."</a>";
-	}else{
-	$str=$str."<a href='/zs/zs_list.php?sx=".$row["bigclassid"]."'>".$row["bigclassname"]."</a>";
-	}
-	
-	$str=$str."</li>\n";
-	$n=$n+1;		
-	}
 }
 return $str;
 }

@@ -33,12 +33,8 @@ setcookie("page_size_job",$page_size,time()+3600*24*360);
 	}
 }
 
-if( isset($_GET["page"]) && $_GET["page"]!="") {
-    $page=$_GET['page'];
-	checkid($page,0);
-}else{
-    $page=1;
-}
+$page=isset($page)?$page:1;
+checkid($page);
 $job=strbetween($strout,"{job}","{/job}");
 $list=strbetween($job,"{loop}","{/loop}");
 $sql="select * from zzcms_job where editor='".$editor."' and passed=1 ";

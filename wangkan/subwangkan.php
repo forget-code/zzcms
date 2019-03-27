@@ -11,7 +11,7 @@ $str="暂无分类";
 
 while ($row=fetch_array($rs)){
 $str=$str."<li>";
-	if($row['bigclassid']==$b){
+	if($row['classid']==$b){
 	$str=$str."<a href='".getpageurl2("wangkan",$row["classid"],"")."' class='current'>".$row["classname"]."</a>";
 	}else{
 	$str=$str."<a href='".getpageurl2("wangkan",$row["classid"],"")."'>".$row["classname"]."</a>";

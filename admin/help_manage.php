@@ -2,22 +2,18 @@
 include("admin.php");
 include("../inc/fy.php");
 ?>
-<html>
+<!DOCTYPE html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <title></title>
 <link href="style.css" rel="stylesheet" type="text/css">
-<script language="JavaScript" src="/js/gg.js"></script>
+<script language="JavaScript" src="../js/gg.js"></script>
 </head>
 <body>
 <?php
 $action=isset($_REQUEST["action"])?$_REQUEST["action"]:'';
-if( isset($_REQUEST["page"]) && $_REQUEST["page"]!="") {
-    $page=$_REQUEST['page'];
-	checkid($page);
-}else{
-    $page=1;
-}
+if (!isset($page)){$page=1;}
+checkid($page);
 $keyword=isset($_REQUEST["keyword"])?$_REQUEST["keyword"]:'';
 $b=isset($_REQUEST["b"])?$_REQUEST["b"]:0;
 checkid($b,1);
@@ -42,27 +38,21 @@ echo "<script>location.href='?b=".$b."&keyword=".$keyword."&page=".$page."'</scr
 }
 ?>
 <div class="admintitle"><?php if ($b==1 ){echo"帮助"; }else{ echo"公告";}?>信息管理</div>
-<table width="100%" border="0" cellpadding="5" cellspacing="0">
-  <tr> 
-    <td class="border"> <table width="100%" border="0" cellspacing="0" cellpadding="0">
-        <tr> 
-          <td>
+<div class="border2">
+       <span style="float:right">
+		  <form name="form1" method="post" action="?b=<?php echo $b?>">
+              <input name="keyword" type="text" id="keyword" value="<?php echo $keyword?>">
+              <input type="submit" name="Submit" value="查寻">
+            </form></span>
 		  <?php if ($b==1) { ?>
-		  <input name="submit3" type="submit" class="buttons" onClick="javascript:location.href='help_add.php?b=1'" value="发布帮助信息">
+		  <input name="submit3" type="submit" class="buttons" onClick="javascript:location.href='help.php?do=add&b=1'" value="发布帮助信息">
 		  <?php }elseif ($b==2) { ?>
-		  <input name="submit3" type="submit" class="buttons" onClick="javascript:location.href='help_add.php?b=2'" value="发布公告信息">
+		  <input name="submit3" type="submit" class="buttons" onClick="javascript:location.href='help.php?do=add&b=2'" value="发布公告信息">
 		  <?php
 		  }
 		  ?>
-		  </td>
-          <td align="right"> <form name="form1" method="post" action="?b=<?php echo $b?>">
-              <input name="keyword" type="text" id="keyword" value="<?php echo $keyword?>">
-              <input type="submit" name="Submit" value="查寻">
-            </form></td>
-        </tr>
-      </table></td>
-  </tr>
-</table>
+
+</div>	  
 <?php
 $page_size=pagesize_ht;  //每页多少条数据
 $offset=($page-1)*$page_size;
@@ -80,46 +70,36 @@ if(!$totlenum){
 echo "暂无信息";
 }else{
 ?>
-<form name="myform" method="post" action="?action=del&b=<?php echo $b?>">
-<table width="100%" border="0" cellpadding="5" cellspacing="0" class="border">
-    <tr> 
-      <td> 
-		<input type="submit" onClick="myform.action='del.php';myform.target='_self';return ConfirmDel()" value="删除选中的信息">
-        <input name="submit2" type="submit" onClick="myform.action='?action=elite&b=<?php echo $b?>'" value="【取消/首页显示】选中的信息">
-        <input name="pagename" type="hidden"  value="help_manage.php?b=<?php echo $b?>&page=<?php echo $page ?>"> 
-        <input name="tablename" type="hidden"  value="zzcms_help"> </td>
-    </tr>
-  </table>
+<form name="myform" method="post" action="">
   <table width="100%" border="0" cellspacing="1" cellpadding="5">
-    <tr> 
-      <td width="5%" align="center" class="border"><label for="chkAll" style="text-decoration: underline;cursor: hand;">全选</label></td>
-      <td width="10%" class="border">标题</td>
-      <td width="5%" align="center" class="border">首页显示</td>
-      <td width="10%" align="center" class="border">发布时间</td>
-      <td width="5%" align="center" class="border">操作</td>
+    <tr class="trtitle"> 
+      <td width="2%" align="center"><label for="chkAll" style="cursor: pointer;">全选</label></td>
+      <td width="10%">标题</td>
+      <td width="5%" align="center">首页显示</td>
+      <td width="10%" align="center">发布时间</td>
+      <td width="5%" align="center">操作</td>
     </tr>
 <?php
 while($row = fetch_array($rs)){
 ?>
-    <tr class="bgcolor1" onMouseOver="fSetBg(this)" onMouseOut="fReBg(this)"> 
+    <tr class="trcontent"> 
       <td align="center" > <input name="id[]" type="checkbox" id="id" value="<?php echo $row["id"]?>"></td>
       <td ><a href="/one/announce_show.php?id=<?php echo $row["id"]?>" target="_blank"><?php echo $row["title"]?></a></td>
       <td align="center" > <?php if ($row["elite"]==1) { echo"是";} else{ echo"<font color=red>否</font>";}?></td>
       <td align="center"><?php echo $row["sendtime"]?></td>
-      <td align="center" class="docolor"><a href="help_modify.php?id=<?php echo $row["id"]?>&b=<?php echo $b?>&page=<?php echo $page ?>">修改</a></td>
+      <td align="center" class="docolor"><a href="help.php?do=modify&id=<?php echo $row["id"]?>&b=<?php echo $b?>&page=<?php echo $page ?>">修改</a></td>
     </tr>
 <?php
 }
 ?>
   </table>
-  <table width="100%" border="0" cellpadding="5" cellspacing="0" class="border">
-    <tr> 
-      <td> <input name="chkAll" type="checkbox" id="chkAll" onClick="CheckAll(this.form)" value="checkbox">
-        <label for="chkAll" style="text-decoration: underline;cursor: hand;">全选</label> 
+  <div class="border"> <input name="chkAll" type="checkbox" id="chkAll" onClick="CheckAll(this.form)" value="checkbox">
+        <label for="chkAll" style="cursor: pointer;">全选</label> 
         <input name="submit" type="submit" onClick="myform.action='del.php';myform.target='_self';return ConfirmDel()" value="删除选中的信息">
-        <input name="submit22" type="submit" onClick="myform.action='?action=elite&b=<?php echo $b?>'" value="【取消/首页显示】选中的信息"></td>
-    </tr>
-  </table>
+        <input name="submit22" type="submit" onClick="myform.action='?action=elite&b=<?php echo $b?>'" value="【取消/首页显示】选中的信息">
+	<input name="tablename" type="hidden"  value="zzcms_help">
+      <input name="pagename" type="hidden"  value="help_manage.php?b=<?php echo $b?>&page=<?php echo $page ?>">
+  </div>
 </form>
 <div class="border center"><?php echo showpage_admin()?></div>
 <?php

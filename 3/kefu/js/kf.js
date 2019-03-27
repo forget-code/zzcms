@@ -6,7 +6,7 @@ var s = host.indexOf('.')+1;//.出现的位置
 var host=host.substr(s); //从.所在位置 后取出顶级域名
 }
 //alert(host);
-var urlroot = 'http://'+host+"/3/kefu/images/";//在本地localhost情况下，前面不能加www
+var urlroot = 'http://www.'+host+"/3/kefu/images/";//在本地localhost情况下，前面不能加www
 //alert(urlroot);
 var tOut = -1;
 var drag = false;
@@ -156,7 +156,7 @@ function kf_getPopupRightDivHtml(kfguin,reference)
 //added by simon 2008-11-04
 function kf_openChatWindow(flag)
 {
-	window.open('http://wpa.qq.com/msgrd?v=1&uin='+kfguin+'&Menu=yes', '_blank', 'height=544, width=644,toolbar=no,scrollbars=no,menubar=no,status=no');
+	window.open('tencent://message/?uin='+kfguin+'&Menu=yes', '_blank', 'height=1, width=1,toolbar=no,scrollbars=no,menubar=no,status=no');
 	if(flag==1)
 	{
 		kf_hidekfpopup();

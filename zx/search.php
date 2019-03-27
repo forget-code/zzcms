@@ -71,14 +71,9 @@ function formbigclass(){
 		$str="";
         $sql = "select * from zzcms_zxclass where parentid=0";
         $rs=query($sql);
-		$row=num_rows($rs);
-		if (!$row){
-		$str= "请先添加类别名称。";
-		}else{
 			while($row=fetch_array($rs)){
 			$str=$str. "<a href=?b=".$row["classid"].">".$row["classname"]."</a>&nbsp;&nbsp;";
 			}
-		}
 		return $str;
 		}
 		
@@ -87,12 +82,9 @@ function formbigclass(){
 		$str="";
         $sql="select * from zzcms_zxclass where parentid='".$b."' order by xuhao asc";
         $rs=query($sql);
-		$row=num_rows($rs);
-		if ($row){
 			while($row=fetch_array($rs)){
 			$str=$str. "<a href=?s=".$row["classid"].">".$row["classname"]."</a>&nbsp;&nbsp;";
-			}
-		}	
+			}	
 		return $str;
 		}
 		}
@@ -112,12 +104,8 @@ if ($b<>0 || $s<>0 ) {
 		}else{
 		$selected="";
 		}
-if( isset($_GET["page"]) && $_GET["page"]!="") {
-    $page=$_GET['page'];
-	checkid($page);
-}else{
-    $page=1;
-}
+if( isset($_GET["page"]) && $_GET["page"]!="") {$page=$_GET['page'];}else{$page=1;}
+checkid($page);
 
 $list=strbetween($strout,"{loop}","{/loop}");
 $sql="select count(*) as total from zzcms_zx where passed<>0 ";

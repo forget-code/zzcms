@@ -70,7 +70,10 @@ img{vertical-align:bottom;vertical-align:middle;vertical-align:top;border:0}
 .zsclass{color:#666666;overflow:hidden;}
 .zsclass label{padding:5px 0 0 15px;height:50px;line-height:23px;display:block;background: url(image/bigclassbg.gif) no-repeat 0 -55px;color:}
 .zsclass label:hover{background: url(image/bigclassbg.gif) no-repeat 0 0;background-color:#fff;color:}
+
 .zsclass h2{font-size:14px;font-weight:bold}
+.zsclass h2 img{width:25px}
+.zsclass .ico_size img{width:30px}
 .zsclass h2 span{font-size:12px;font-weight:normal}
 .zsclass_zhankai{width:50%;float:left;}/*展开的样式*/
 .zsclass_zhankai h2{font-size:16px;}
@@ -279,3 +282,16 @@ background:url(image/backtotop.gif) no-repeat 0px 0px;
 .getpass_step li span{font-size:30px}
 .getpass_step .current{background:url(image/jt_right.gif) no-repeat right center;color:#FFFFFF}
 .fieldsetstyle{border:solid 1px #dddddd;padding:10px}
+
+.zslist{background-color:#FFF;padding:10px 10px 10px 0px;transition:background 0.2s; }
+.zslist .lxfs a{display:block;background:url(image/lxfs.gif) no-repeat 0 0 ;height:20px;width:80px;transition:background 0.2s;}
+.zslist .liuyan a{display:block;background:url(image/lxfs.gif) no-repeat 0 -40px ;height:20px;width:80px;transition:background 0.2s;}
+.zslist .shoucang a{display:block;background:url(image/lxfs.gif) no-repeat 0 -80px ;height:20px;width:80px;transition:background 0.2s;}
+
+.zslist:hover{background-color:#dddddd;}
+.zslist:hover .lxfs a{background:url(image/lxfs.gif) no-repeat 0 -20px}
+.zslist:hover .liuyan a{background:url(image/lxfs.gif) no-repeat 0 -60px}
+.zslist:hover .shoucang a{background:url(image/lxfs.gif) no-repeat 0 -100px}
+
+.zslist_button{MARGIN-TOP:8px}
+.zslist_button li{float:left;display: inline;text-align:left;width:90px;MARGIN:0}

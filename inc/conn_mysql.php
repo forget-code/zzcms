@@ -25,7 +25,7 @@ $conn=mysql_connect(sqlhost.':'.sqlport,sqluser,sqlpwd) or showmsg ("数据库�
 mysql_query("SET NAMES 'utf8'",$conn); //必不可少，用来设置客户端送给MySQL服务器的数据的字符集
 mysql_select_db(sqldb,$conn) or showmsg ("没有".sqldb."这个数据库,或是被管理员断开了链接,请稍后再试");
 //lockip();
-//if (isset($_SESSION["admin"])){
+//if (isset($_COOKIE["admin"])){
 //admindo();//如果管理员登录，记录管理员操作记录
 //}
 
@@ -43,11 +43,8 @@ function fetch_array($rs) {
 return mysql_fetch_array($rs);
 }
 
-function insert_id() {
+function insert_id($conn) {
 global $conn;
 return mysql_insert_id($conn);
-}
-function data_seek($rs,$num) {
-return mysql_data_seek($rs,$num);
 }
 ?>

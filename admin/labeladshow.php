@@ -1,17 +1,17 @@
 <?php
 include("admin.php");
 ?>
-<html>
+<!DOCTYPE html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-<meta http-equiv="X-UA-Compatible" content="IE=EmulateIE7" />
 <link href="style.css" rel="stylesheet" type="text/css">
 <title></title>
 <?php
+checkadminisdo("label");
 $action = isset($_REQUEST['action'])?$_REQUEST['action']:"";
 if ($action=="add") {
-checkadminisdo("label");
-
+checkadminisdo("label_add");
+$title=nostr(trim($_POST["title"]));
 checkstr($numbers,'num','调用记录数');
 checkstr($titlenum,'num','标题长度');
 checkstr($column,'num','列数');
@@ -28,8 +28,8 @@ $title==$title_old ?$msg='修改成功':$msg='添加成功';
 echo "<script>alert('".$msg."');location.href='?labelname=".$title.".txt'</script>";
 }
 if ($action=="del") {
-checkadminisdo("label");
-$f="../template/".siteskin."/label/adshow/".nostr($_POST["title"]).".txt";
+checkadminisdo("label_del");
+$f="../template/".siteskin."/label/adshow/".nostr(trim($_POST["title"])).".txt";
 	if (file_exists($f)){
 	unlink($f);
 	}else{
@@ -111,7 +111,6 @@ $title=$f[0];$bigclassid=$f[1];$smallclassid=$f[2];$numbers=$f[3];$titlenum=$f[4
       <td align="right" class="border" >调用内容：</td>
       <td class="border" >
 	  <?php
-
 $sql = "select * from zzcms_adclass where parentid<>'A' order by xuhao asc";
 $rs=query($sql);
 ?>
@@ -128,17 +127,12 @@ subcat[<?php echo $count?>] = new Array("<?php echo trim($row["classname"])?>","
        }
         ?>
 onecount=<?php echo $count ?>;
+
 function changelocation(locationid){
     document.myform.smallclassid.length = 1; 
-    var locationid=locationid;
-    var i;
-    for (i=0;i < onecount; i++)
-        {
-            if (subcat[i][1] == locationid)
-            { 
-                document.myform.smallclassid.options[document.myform.smallclassid.length] = new Option(subcat[i][0], subcat[i][2]);
-            }        
-        }
+    for (i=0;i < onecount; i++){
+	if (subcat[i][1] == locationid){ document.myform.smallclassid.options[document.myform.smallclassid.length] = new Option(subcat[i][0], subcat[i][2]);}        
+    }
     }</script> 
 	<select name="bigclassid" onChange="changelocation(document.myform.bigclassid.options[document.myform.bigclassid.selectedIndex].value)" size="1">
           <option value="" selected="selected">请选择大类别</option>
@@ -147,22 +141,21 @@ function changelocation(locationid){
     $rs=query($sql);
 	while($row = fetch_array($rs)){
 	?>
-          <option value="<?php echo trim($row["classname"])?>" <?php if ($row["classname"]==$bigclassid) { echo "selected";}?>><?php echo trim($row["classname"])?></option>
+    <option value="<?php echo $row["classname"]?>" <?php if ($row["classname"]==$bigclassid) { echo "selected";}?>><?php echo $row["classname"]?></option>
           <?php
 				}
 				?>
         </select> <select name="smallclassid">
           <option value="">不指定小类</option>
-          <?php
+<?php
 $sql="select * from zzcms_adclass where parentid='" .$bigclassid."' order by xuhao asc";
 $rs=query($sql);
 while($row = fetch_array($rs)){
-	?>
-          <option value="<?php echo $row["classname"]?>" <?php if ($row["classname"]==$smallclassid) { echo "selected";}?>><?php echo $row["classname"]?></option>
-          <?php
-			    }
-
-				?>
+?>
+<option value="<?php echo $row["classname"]?>" <?php if ($row["classname"]==$smallclassid) { echo "selected";}?>><?php echo $row["classname"]?></option>
+        <?php
+		}
+		?>
         </select>
 	  </td>
 	  </tr> 
@@ -170,7 +163,7 @@ while($row = fetch_array($rs)){
       <td align="right" class="border" >调用记录条数：</td>
       <td class="border" ><input name="numbers" type="text"  value="<?php echo $numbers?>" size="10" maxlength="255"> 
       </td>
-    </tr>  
+    </tr>
     <tr > 
       <td align="right" class="border" >标题长度：</td>
       <td class="border" > <input name="titlenum" type="text" id="titlenum" value="<?php echo $titlenum?>" size="20" maxlength="255"></td>
@@ -181,16 +174,16 @@ while($row = fetch_array($rs)){
         （分几列显示）</td>
     </tr>
     <tr> 
-      <td align="right" class="border" >解释模板（开始）：</td>
+      <td align="right" class="border" >解释（开始）：</td>
       <td class="border" ><textarea name="start" cols="70" rows="6" id="start" style="width:100%"><?php echo $start?></textarea></td>
     </tr>
     <tr> 
-      <td align="right" class="border" >解释模板（循环）：</td>
+      <td align="right" class="border" >解释（循环）：</td>
       <td class="border" ><textarea name="mids" cols="70" rows="6" id="mids" style="width:100%"><?php echo $mids ?></textarea> 
       </td>
     </tr>
     <tr> 
-      <td align="right" class="border" >解释模板（结束）：</td>
+      <td align="right" class="border" >解释（结束）：</td>
       <td class="border" ><textarea name="ends" cols="70" rows="6" id="ends" style="width:100%"><?php echo $ends ?></textarea></td>
     </tr>
     <tr> 

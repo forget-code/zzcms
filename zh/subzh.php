@@ -5,9 +5,9 @@ $str="<table width='100%' border='0' cellpadding='5' cellspacing='1' class='bgco
 $str=$str."<tr>";
 for($i=1;$i<=12;$i++){
 if ($sj==$i  || date('m')==$i){
-$str=$str."<td align='center' class='bgcolor3' onMouseOver='PSetBg(this)' onMouseOut='PReBg(this)'>";
+$str=$str."<td align='center' class='bgcolor3' >";
 }else{
-$str=$str."<td align='center' class='bgcolor1' onMouseOver='PSetBg(this)' onMouseOut='PReBg(this)'>";
+$str=$str."<td align='center' class='bgcolor1' >";
 }
 $str=$str."<a href='search.php?sj=".$i."'>".addzero($i,2)."月</a>";
 $str=$str."</td>";

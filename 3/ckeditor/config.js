@@ -21,44 +21,15 @@ CKEDITOR.editorConfig = function( config )
 	//config.filebrowserFlashUploadUrl = '/upforck.php?type=flash';
 	config.entities = false;
 	
-	config.toolbar = 'MyToolbar'; 
-	//config.toolbar = 'Full';
- 	config.toolbar_MyToolbar2 =     
-    [     
-        ['NewPage','Preview'],     
-        ['Cut','Copy','Paste','PasteText','PasteFromWord','-','Scayt'],     
-        ['Undo','Redo','-','Find','Replace','-','SelectAll','RemoveFormat'],     
-        ['Image','Flash','Table','HorizontalRule','Smiley','SpecialChar','PageBreak'],     
-        '/',     
-        ['Styles','Format'],     
-        ['Bold','Italic','Strike'],     
-        ['NumberedList','BulletedList','-','Outdent','Indent','Blockquote'],     
-        ['Link','Unlink','Anchor'],     
-        ['Maximize','-','About']     
-    ];
-	
-	
-config.toolbar_Full = [ 
-['Source','-','Save','NewPage','Preview','-','Templates'], 
-['Cut','Copy','Paste','PasteText','PasteFromWord','-','Print', 'SpellChecker', 'Scayt'], 
-['Undo','Redo','-','Find','Replace','-','SelectAll','RemoveFormat'], 
-'/', 
-['Bold','Italic','Underline','Strike','-','Subscript','Superscript'], 
-['NumberedList','BulletedList','-','Outdent','Indent','Blockquote'], 
-['JustifyLeft','JustifyCenter','JustifyRight','JustifyBlock'], 
-['Link','Unlink','Anchor'], 
-['Image','Flash','Table','HorizontalRule','Smiley','SpecialChar','PageBreak'], 
-'/', 
-['Styles','Format','Font','FontSize'], 
-['TextColor','BGColor'] 
-]; 
+
    
     //自定义的工具栏       
     config.toolbar_MyToolbar =   
-   [   
+    [   
 		['Source'], ['Image','Flash','Table','PageBreak'], 
 		//   '/',   
 		['FontSize','lineheight','TextColor','Bold','Italic','Strike','-','NumberedList','BulletedList','-','JustifyLeft','JustifyCenter','JustifyRight'] ,
-		['PasteText','RemoveFormat','Replace','Link','Unlink'],['Maximize','-','About'] 
-   ];   
+		['PasteText','RemoveFormat','Replace','Link','Unlink'],['Maximize','-','About']
+         
+    ];   
 }; 

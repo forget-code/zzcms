@@ -2,7 +2,7 @@
 function zxbigclass($b,$url=1){
 $n=1;
 $str='';
-$sql="select classid,classname from zzcms_zxclass where isshowininfo=1 and parentid=0 order by xuhao asc";
+$sql="select classid,classname from zzcms_zxclass where isshow=1 and parentid=0 order by xuhao asc";
 $rs=query($sql);
 $row=num_rows($rs);
 if ($row){
@@ -33,7 +33,7 @@ return $str;
 function zxsmallclass($b,$s){
 if ($b<>""){
 $n=1;
-$sql="select classid,classname from zzcms_zxclass where parentid=".$b." order by xuhao";
+$sql="select classid,classname from zzcms_zxclass where parentid='".$b."' order by xuhao";
 $rs=query($sql);
 $row=num_rows($rs);
 if ($row){

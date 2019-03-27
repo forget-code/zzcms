@@ -2,11 +2,9 @@
 if(!isset($_SESSION)){session_start();} 
 include("../inc/conn.php");
 ?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" lang="zh-CN">
+<!DOCTYPE html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-<meta http-equiv="X-UA-Compatible" content="IE=EmulateIE7" />
 <title></title>
 <?php
 checkyzm($_POST["yzm"]);
@@ -23,12 +21,9 @@ if (@$_SESSION['cuestip']==getip()){
 if ($contents==''||$name==''||$tel==''){
 	showmsg('请完整填写您的信息');
 }
-if(!preg_match("/^[\x7f-\xff]+$/",$name)){
-showmsg('姓名只能用中文','back');
-}
-if(!preg_match("/1[3458]{1}\d{9}$/",$tel) && !preg_match('/^400(\d{3,4}){2}$/',$tel) && !preg_match('/^400(-\d{3,4}){2}$/',$tel) && !preg_match('/^(010|02\d{1}|0[3-9]\d{2})-\d{7,9}(-\d+)?$/',$tel)){//分别是手机，400电话(加-和不加两种情况都可以)，和普通电话
-showmsg('电话号码不正确','back');
-}
+
+checkstr($name,'quanzhongwen','姓名');
+checkstr($tel,'tel','电话号码');
 	
 $rs=query("select * from zzcms_guestbook where linkmen='$name' and phone='$tel' and saver='$saver'");
 $row=num_rows($rs);

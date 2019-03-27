@@ -5,13 +5,9 @@ include("../inc/top.php");
 include("../inc/bottom.php");
 include("subbaojia.php");
 include("../label.php");
-if( isset($_GET["page"]) && $_GET["page"]!="") {
-    $page=$_GET['page'];
-	checkid($page,0);
-}else{
-    $page=1;
-}
-$b = isset($_GET['b'])?$_GET['b']:"";
+$page=isset($page)?$page:1;
+checkid($page);
+$b = isset($_GET['b'])?$_GET['b']:'';//这里的值是classzm
 $province = isset($_GET['province'])?$_GET['province']:"";
 
 $fp="../template/".$siteskin."/baojia.htm";
@@ -27,14 +23,12 @@ $page_size=pagesize_qt;
 }
 
 $bigclassname="";
-if ($b<>""){
+if ($b<>''){
 $sql="select classid,classname from zzcms_zsclass where classzm='".$b."'";
 $rs=query($sql);
 $row=fetch_array($rs);
-if ($row){
 $bigclassname=$row["classname"];
 $bigclassid=$row["classid"];
-}
 }
 
 $pagetitle=$province.$bigclassname.baojialisttitle."-".sitename;
@@ -47,7 +41,7 @@ if ($province<>""){
 $sql2=$sql2." and province ='".$province."' ";
 }
 
-if ($b<>""){
+if ($b<>''){
 $sql2=$sql2." and classid ='".$bigclassid."' ";
 }
 

@@ -45,11 +45,11 @@ class ucclient_db {
 
 		if($this->version() > '4.1') {
 			if($dbcharset) {
-				query("SET character_set_connection=".$dbcharset.", character_set_results=".$dbcharset.", character_set_client=binary", $this->link);
+				mysql_query("SET character_set_connection=".$dbcharset.", character_set_results=".$dbcharset.", character_set_client=binary", $this->link);
 			}
 
 			if($this->version() > '5.0.1') {
-				query("SET sql_mode=''", $this->link);
+				mysql_query("SET sql_mode=''", $this->link);
 			}
 		}
 
@@ -60,7 +60,7 @@ class ucclient_db {
 	}
 
 	function fetch_array($query, $result_type = MYSQL_ASSOC) {
-		return fetch_array($query, $result_type);
+		return mysql_fetch_array($query, $result_type);
 	}
 
 	function result_first($sql) {
@@ -87,7 +87,7 @@ class ucclient_db {
 	}
 
 	function query($sql, $type = '', $cachetime = FALSE) {
-		$func = $type == 'UNBUFFERED' && @function_exists('mysql_unbuffered_query') ? 'mysql_unbuffered_query' : 'query';
+		$func = $type == 'UNBUFFERED' && @function_exists('mysql_unbuffered_query') ? 'mysql_unbuffered_query' : 'mysql_query';
 		if(!($query = $func($sql, $this->link)) && $type != 'SILENT') {
 			$this->halt('MySQL Query Error', $sql);
 		}
@@ -114,7 +114,7 @@ class ucclient_db {
 	}
 
 	function num_rows($query) {
-		$query = num_rows($query);
+		$query = mysql_num_rows($query);
 		return $query;
 	}
 

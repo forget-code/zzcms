@@ -6,11 +6,10 @@ include("../inc/bottom.php");
 include("subask.php");
 include("../label.php");
 
+if (@$_REQUEST["action"]=="addpinglun"){
+
 $token = md5(uniqid(rand(), true));    
 $_SESSION['token']= $token; 
-
-if (@$_REQUEST["action"]=="addpinglun"){
-checkyzm($_POST["yzm"]);
 
 $about=$_POST["about"];
 $content=$_POST["content"];
@@ -23,20 +22,16 @@ $ip=trim($_POST["ip"]);
 query("insert into zzcms_answer (about,content,face,editor,ip,passed,sendtime)values('$about','$content','$face','$user','$ip',1,'".date('Y-m-d H:i:s')."')");
 showmsg('您的提交成功，感谢参与');
 }
-if (isset($_REQUEST["id"])){
-$zxid=trim($_REQUEST["id"]);
-checkid($zxid);
-}else{
-$zxid=0;
-}
+$id=isset($id)?$id:0;
+checkid($id,1);
 
-$sql="select * from zzcms_ask where id='$zxid'";
+$sql="select * from zzcms_ask where id='$id'";
 $rs=query($sql);
 $row=fetch_array($rs);
 if (!$row){
 showmsg('不存在相关信息！');
 }else{
-query("update zzcms_ask set hit=hit+1 where id='$zxid'");
+query("update zzcms_ask set hit=hit+1 where id='$id'");
 $bigclassid=$row["bigclassid"];
 $smallclassid=$row["smallclassid"];
 $title=$row["title"];
@@ -61,9 +56,9 @@ $station=getstation($bigclassid,$bigclassname,$smallclassid,$smallclassname,"","
 $pagetitle=$title.askshowtitle;
 $pagekeywords=askshowkeyword;
 $pagedescription=askshowdescription;
-$zxsm=" <img src='/image/ico_jinbi.gif'> 悬赏积分：".$jifen." 发布日期：".date('Y-m-d',strtotime($sendtime))."&nbsp;&nbsp;发布者：".$editor."&nbsp;&nbsp;共阅".$hit."次"; 
+$sm=" <img src='/image/ico_jinbi.gif'> 悬赏积分：".$jifen." 发布日期：".date('Y-m-d',strtotime($sendtime))."&nbsp;&nbsp;发布者：".$editor."&nbsp;&nbsp;共阅".$hit."次"; 
 
-$sql="select * from zzcms_answer where about='".$zxid."' and passed=1 order by caina desc,id desc";
+$sql="select * from zzcms_answer where about='".$id."' and passed=1 order by caina desc,id desc";
 $rs=query($sql);
 $row=num_rows($rs);
 if ($row){
@@ -76,8 +71,8 @@ if ($row){
 
     $pinglun=$pinglun . "<div>回答者：".$row["editor"]." IP：".$row["ip"]." 回答时间：".$row["sendtime"]."</div><hr/>";
     $pinglun=$pinglun . "<div style='padding:10px 0px'>".stripfxg($row["content"],true)."</div>";
-	if (@$_COOKIE["UserName"]==$editor && $typeid==0){
-	$pinglun=$pinglun . "<div><form action='/ask/caina.php' method='post'><input type='hidden' name='answerid'  value='".$row["id"]."'/><input type='hidden' name='token' value='".$token."'/><input type='hidden' name='askid'  value='".$zxid."'/><input type='submit' value='采纳为最佳答案'/></form></div>";
+	if (@$_COOKIE["UserName"]==$editor || isset($_COOKIE["admin"]) && $typeid==0){
+	$pinglun=$pinglun . "<div><form action='/ask/caina.php' method='post'><input type='hidden' name='answerid'  value='".$row["id"]."'/><input type='hidden' name='token' value='".$token."'/><input type='hidden' name='askid'  value='".$id."'/><input type='submit' value='采纳为最佳答案'/></form></div>";
 	}
 	$pinglun=$pinglun . "</div>";
 	}
@@ -109,10 +104,11 @@ $strout=str_replace("{#pagetitle}",$pagetitle,$strout);
 $strout=str_replace("{#pagekeywords}",$pagekeywords,$strout);
 $strout=str_replace("{#pagedescription}",$pagedescription,$strout);
 $strout=str_replace("{#station}",$station,$strout);
-$strout=str_replace("{#zxtitle}",$title,$strout);
-$strout=str_replace("{#zxsm}",$zxsm,$strout);
-$strout=str_replace("{#zxcontent}",$content,$strout);
-$strout=str_replace("{#id}",$zxid,$strout);
+$strout=str_replace("{#title}",$title,$strout);
+$strout=str_replace("{#sm}",$sm,$strout);
+$strout=str_replace("{#content}",$content,$strout);
+$strout=str_replace("{#textarea}","<textarea name='content'></textarea>",$strout);
+$strout=str_replace("{#id}",$id,$strout);
 $strout=str_replace("{#pinglun}",$pinglun,$strout);
 $strout=str_replace("{#getuserip}",getip(),$strout);
 $strout=str_replace("{#pinglunren}",@$_COOKIE["UserName"],$strout);

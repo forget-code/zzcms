@@ -1,0 +1,339 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="zh-CN">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=EmulateIE7" />
+<link href="/template/{#siteskin}/style.css" rel="stylesheet" type="text/css">
+<script type="text/javascript" src="/js/jquery.js"></script> 
+<script>
+$(function(){
+$("#getcode_wz").click(function(){
+		$("#getcode_tp").attr("src",'/one/code_math.php?' + Math.random());
+	});
+});
+</script> 
+<title>用户注册—{#sitename}</title>
+<script language="javascript">
+function checkusername(){
+if (document.userreg.username.value !="")
+	{
+		//创建正则表达式
+    	var re=/^[0-9a-zA-Z]{4,14}$/; //只输入数字和字母的正则
+    	if(document.userreg.username.value.search(re)==-1)
+    	{
+		window.document.getElementById('ts_username').innerHTML='<span class=boxuserreg><img src=/image/error.gif> 用户名只能为字母和数字，字符介于4到14个。</span>';
+		alert("用户名只能为字母和数字，字符介于4到14个。");
+		document.userreg.username.value="";
+		document.userreg.username.focus();
+		
+    	}
+	}		
+}
+
+function isNumber(String)
+{ 
+var Letters = "1234567890-";   //可以自己增加可输入值
+var i;
+var c;
+if(String.charAt(0)=='-')
+return   false;
+if( String.charAt(String.length - 1) == '-' )
+return   false;
+for( i = 0; i<String.length;i ++ )
+{ 
+c=String.charAt( i );
+if(Letters.indexOf( c )< 0)
+return  false;
+}
+return  true;
+}
+function check_email()
+{
+var email=document.userreg.email.value;
+email=email.replace(/[ ]/g,"");//去空格用 
+if (email !=""){
+//var reg = /^([a-zA-Z0-9]+[_|\_|\.]?)*[a-zA-Z0-9]+@([a-zA-Z0-9]+[_|\_|\.]?)*[a-zA-Z0-9]+\.[a-zA-Z]{2,3}$/;
+var reg = /^[-._A-Za-z0-9]+@([_A-Za-z0-9]+\.)+[A-Za-z0-9]{2,3}$/; 
+
+if(!reg.test(email))
+{
+window.document.getElementById('ts_email').innerHTML='<span class=boxuserreg><img src=/image/error.gif> 请输入有效的E_mail！</span>';
+alert('请输入有效的E_mail！');
+document.userreg.email.value=""
+document.userreg.email.focus();
+}
+}
+}
+function check_password_format()
+{ 
+	if (document.userreg.password.value !="")
+	{
+		//创建正则表达式
+    	var re=/^[0-9a-zA-Z]{4,14}$/; //只输入数字和字母的正则
+    	if(document.userreg.password.value.search(re)==-1)
+    	{
+		window.document.getElementById('ts_password').innerHTML='<span class=boxuserreg><img src=/image/error.gif> 密码只能为字母和数字，字符介于4到14个。</span>';
+		alert("密码只能为字母和数字，字符介于4到14个。");
+		document.userreg.password.value="";
+		document.userreg.password.focus();
+		//return false;
+    	}else{
+		window.document.getElementById('ts_password').innerHTML='<img src=/image/dui2.gif>';
+		}
+	}	
+}
+function check_password2_format(){
+if (document.userreg.password.value !="" && document.userreg.PwdConfirm.value !=""){
+	if (document.userreg.password.value!=document.userreg.PwdConfirm.value)
+	{
+	
+	window.document.getElementById('ts_password2').innerHTML='<span class=boxuserreg><img src=/image/error.gif> 两次密码输入不一致，请重新输入。</span>';
+	alert ("两次密码输入不一致，请重新输入。");
+	//document.form1.pass.value='';
+	document.userreg.PwdConfirm.value='';
+	document.userreg.PwdConfirm.focus();
+	}else{
+	
+	window.document.getElementById('ts_password2').innerHTML='<img src=/image/dui2.gif>';
+	}
+	}
+}
+function checkkind(){ 
+	if (document.userreg.kind.value !=""){
+	
+	window.document.getElementById('ts_kind').innerHTML='<img src=/image/dui2.gif>';
+		
+   	}else{
+	
+	window.document.getElementById('ts_kind').innerHTML='<img src=/image/error.gif>';
+	}
+}
+function check_somane(){
+if (document.userreg.somane.value !=""){
+	 //创建正则表达式
+    var re=/^[\u4e00-\u9fa5]{2,10}$/; //只输入汉字的正则
+    if(document.userreg.somane.value.search(re)==-1)
+    {
+	
+	window.document.getElementById('ts_somane').innerHTML='<span class=boxuserreg><img src=/image/error.gif> 联系人只能为汉字，字符介于2到10个。</span>';
+	alert("联系人只能为汉字，字符介于2到10个。");
+	document.userreg.somane.value="";
+	document.userreg.somane.focus();
+    }else{
+	
+	window.document.getElementById('ts_somane').innerHTML='<img src=/image/dui2.gif>';
+	}
+}
+}
+
+function check_phone()
+{
+if (document.userreg.phone.value !=""){
+if(! isNumber(document.userreg.phone.value) || document.userreg.phone.value.length<11)   { 
+
+window.document.getElementById('ts_phone').innerHTML='<span class=boxuserreg><img src=/image/error.gif> 您的电话号码不正确！注意查看位数是否正确</span>';
+alert("您的电话号码不正确！注意查看位数是否正确");
+document.userreg.phone.value="";
+document.userreg.phone.focus();
+}
+}
+}
+
+
+function Checkall()
+{
+ if (document.userreg.username.value=="")
+	{
+	document.getElementById("loading").style.display="none";
+	document.getElementById("tjxx").style.display="";	
+	alert("请输入用户名！");
+	document.userreg.username.focus();
+	return false;
+	}
+	if (document.userreg.password.value=="")
+	{
+	document.getElementById("loading").style.display="none";
+	document.getElementById("tjxx").style.display="";
+	alert("请输入密码！");
+	document.userreg.password.focus();
+	return false;
+	}
+	if (document.userreg.PwdConfirm.value=="")
+	{
+	document.getElementById("loading").style.display="none";
+	document.getElementById("tjxx").style.display="";
+	alert("请输入确认密码！");
+	document.userreg.PwdConfirm.focus();	
+	return false;
+	}
+	//if (document.userreg.Comane.value=="")
+	//{
+	//document.getElementById("loading").style.display="none";
+	//document.getElementById("tjxx").style.display="";	
+	//alert("请填写公司名称！");
+	//document.userreg.Comane.focus();	
+	//return false;
+	//}
+	if (document.userreg.somane.value=="")
+	{
+	document.getElementById("loading").style.display="none";
+	document.getElementById("tjxx").style.display="";	
+	alert("请输入联系人真实姓名！");
+	document.userreg.somane.focus();	
+	return false;
+	}					
+	if (document.userreg.phone.value=="")
+	{
+	document.getElementById("loading").style.display="none";
+	document.getElementById("tjxx").style.display="";	
+	alert("请输入联系电话！");
+	document.userreg.phone.focus();	
+	return false;
+	}	
+	if (document.userreg.email.value=="")
+	{
+	document.getElementById("loading").style.display="none";
+	document.getElementById("tjxx").style.display="";
+	alert("请输入E-mail！");
+	document.userreg.email.focus();	
+	return false;
+	}
+	if (document.userreg.yzm.value=="")
+	{
+	document.getElementById("loading").style.display="none";
+	document.getElementById("tjxx").style.display="";
+	alert("请输入验证码！");
+	document.userreg.yzm.focus();	
+	return false;
+	}
+	
+	 if (document.userreg.allow.checked==false)
+	{
+    document.getElementById("loading").style.display="none";
+	document.getElementById("tjxx").style.display="";
+	alert("同意服务条款才能注册！");
+	return false;
+    }			
+return true;
+}
+function showloading()
+{
+document.getElementById("loading").style.display="";
+document.getElementById("tjxx").style.display="none";
+}
+ function dian(){
+ if(userreg.yzm.value=""){
+ document.getElementsByTagName("span")[0].style.display="none";
+  }else{
+  document.getElementsByTagName("span")[0].style.display="block";
+}
+}
+function hiddenTR() {
+document.getElementById("TRcomane").style.display="none";
+document.getElementById("TRkind").style.display="none";
+} 
+function showTR(obj1,obj2) {
+document.getElementById("TRcomane").style.display="";
+document.getElementById("TRkind").style.display="";
+}  	
+</script>
+
+<script language="javascript">  
+$(document).ready(function(){  
+	$("#username").blur(function() { //jquery 中blur,change()函数  
+	$("#ts_username").load(encodeURI("/reg/userregcheck.php?action=checkusername&id="+$("#username").val()));
+	//jqueryajax中load()函数 加encodeURI，否则IE下无法识别中文参数 
+	}); 
+	$("#comane").blur(function() { //jquery 中change()函数  
+	$("#ts_comane").load(encodeURI("/reg/userregcheck.php?action=checkcomane&id="+$("#comane").val()));
+	});
+	$("#phone").blur(function() { //jquery 中change()函数  
+	$("#ts_phone").load(encodeURI("/reg/userregcheck.php?action=checkphone&id="+$("#phone").val()));
+	}); 
+	$("#email").blur(function() { //jquery 中change()函数  
+	$("#ts_email").load(encodeURI("/reg/userregcheck.php?action=checkemail&id="+$("#email").val()));
+	});   
+});  
+</script> 
+</head>
+<body>
+<div class="main">
+{#sitetop}
+<div class="bordercccccc" > 
+    <div class="titlebig"> 
+      <span><a href="/user/login.php">已有帐号，现在登陆</a></span>
+	  用户注册
+	  </div>
+       <form name="userreg" action="/reg/userregpost.php" method="post" onSubmit="return Checkall()">
+          
+      <table width="100%" border="0" cellpadding="8" cellspacing="0" >
+        <tr> 
+          <td width="200" align="right" class="bigword">用户名</td>
+          <td> 
+		  <input name="username" id="username"class="biaodan2" onchange="checkusername();" tabindex="1"  size="30" maxlength="14" />          
+		  <span id="ts_username"></span></td>
+        </tr>
+        <tr> 
+          <td align="right" class="bigword">密码</td>
+          <td > 
+            <INPUT name="password" type="password" class="biaodan2"  tabindex="2"  onchange="check_password_format();" size="30" maxLength="12" >			
+			<span id="ts_password"></span></td>
+		</tr>
+        <tr> 
+          <td align="right" class="bigword">确认密码</td>
+          <td > 
+            <INPUT name="PwdConfirm" type="password" class="biaodan2" tabindex="3"  onchange="check_password2_format()" size="30" maxLength="12" >				    <span id="ts_password2"></span></td>
+		</tr>
+       
+        <tr id="TRcomane" style="display:"> 
+          <td align="right" class="bigword">公司名称</td>
+          <td > 
+            <input name="comane" id="comane" class="biaodan2"  tabindex="4"   size="30" maxlength="100" />			    
+			<span id="ts_comane"></span></td>
+		</tr>
+       
+      
+        <tr> 
+          <td align="right" class="bigword">联系人</td>
+          <td> 
+            <input name="somane" class="biaodan2" onblur="check_somane()"  tabindex="6" size="30" maxlength="20"/>			
+			<span id="ts_somane"></span></td>
+		</tr>
+        <tr> 
+          <td align="right" class="bigword">联系电话</td>
+          <td> 
+            <input name="phone" id="phone" class="biaodan2" onchange="check_phone();" tabindex="7"  size="30" maxlength="20" />			
+			<span id="ts_phone"></span></td>
+		</tr>
+        <tr> 
+          <td align="right" class="bigword">E-mail</td>
+          <td> 
+            <input name="email" id="email" class="biaodan2" onchange="check_email();" tabindex="8"  size="30"   maxlength="50" />			
+			<span id="ts_email"></span></td>
+		</tr>
+        <tr> 
+          <td align="right" class="bigword">验证问题</td>
+          <td><input name="yzm" type="text" class="biaodan2" id="yzm" tabindex="10" value="" size="10" maxlength="50" style="width:60px"/>
+            <img src="/one/code_math.php" align="absmiddle" id="getcode_tp"/><a href="###" id="getcode_wz">看不清？换一张？</a></td>
+        </tr>
+        <tr style="display:" id="tjxx"> 
+          <td align="right">&nbsp;</td>
+          <td><a href="/one/agreement.php" target="_blank"></a>          <input name="allow" type="checkbox" value="checkbox" checked="checked" />我接受
+          <a href="/one/agreement.php" target="_blank">{#sitename}服务条款</a></td>
+        </tr>
+        <tr style="display:" id="tjxx">
+          <td align="right">&nbsp;</td>
+          <td><input class="bigbutton2" name="Submit" type="submit" id="Submit3" onclick="return showloading()"  value="提交" tabindex="22" /></td>
+        </tr>
+      </table> 	   
+    </form>
+        <table width="100%" border="0" cellpadding="0" cellspacing="0" id="loading" style="display:none">
+          <tr>            
+          <td height="60" align="center" bgcolor="#396eb5"><font color="#FFFFFF">正提交您的注册信息，请稍候……</font></td>
+          </tr>
+        </table> 
+  </div>
+  {#sitebottom}
+</div>
+</body>
+</html>

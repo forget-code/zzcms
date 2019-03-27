@@ -2,7 +2,7 @@
 function ask_class(){
 $n=1;
 $str='';
-$sql="select classid,classname from zzcms_askclass where isshowininfo=1 and parentid=0 order by xuhao asc";
+$sql="select classid,classname from zzcms_askclass where isshow=1 and parentid=0 order by xuhao asc";
 $rs=query($sql);
 $row=num_rows($rs);
 if ($row){
@@ -35,7 +35,7 @@ return $str;
 function bigclass($b,$url=1){
 $n=1;
 $str='';
-$sql="select classid,classname from zzcms_askclass where isshowininfo=1 and parentid=0 order by xuhao asc";
+$sql="select classid,classname from zzcms_askclass where isshow=1 and parentid=0 order by xuhao asc";
 $rs=query($sql);
 $row=num_rows($rs);
 if ($row){
@@ -66,7 +66,7 @@ return $str;
 function smallclass($b,$s){
 if ($b<>""){
 $n=1;
-$sql="select classid,classname from zzcms_askclass where parentid=".$b." order by xuhao";
+$sql="select classid,classname from zzcms_askclass where parentid='".$b."' order by xuhao";
 $rs=query($sql);
 $row=num_rows($rs);
 if ($row){

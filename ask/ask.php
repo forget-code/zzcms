@@ -1,5 +1,4 @@
 <?php
-session_start();//为向AJAX/zx.php中传b,s值
 include("../inc/conn.php");
 include("../inc/fy.php");
 include("../inc/top.php");
@@ -17,48 +16,38 @@ $page_size=isset($_COOKIE["page_size_ask"])?$_COOKIE["page_size_ask"]:pagesize_q
 
 $b=isset($_GET["b"])?$_GET["b"]:0;
 checkid($b,1);
-$_SESSION['ask_b']=$b;
+
 $s=isset($_GET["s"])?$_GET["s"]:0;
 checkid($s,1);
-$_SESSION['ask_s']=$s;
 
 $bigclassname="";
 $classtitle="";
 $classkeyword="";
-$classdiscription="";
+$classdescription="";
 $smallclassname="";
 if ($b<>0){
 $sql="select * from zzcms_askclass where classid='".$b."'";
 $rs=query($sql);
 $row=fetch_array($rs);
-if ($row){
-
 $bigclassname=$row["classname"];
 $classtitle=$row["title"];
 $classkeyword=$row["keyword"];
-$classdiscription=$row["discription"];
-}
+$classdescription=$row["description"];
 }
 
 if ($s<>0){
 $sql="select * from zzcms_askclass where classid='".$s."'";
 $rs=query($sql);
 $row=fetch_array($rs);
-if ($row){
 $smallclassname=$row["classname"];
-}
 }
 
 $pagetitle=$classtitle.asklisttitle;
 $pagekeyword=$classkeyword.asklistkeyword;
-$pagedescription=$classdiscription.asklistdescription;
+$pagedescription=$classdescription.asklistdescription;
 
-if( isset($_GET["page"]) && $_GET["page"]!="") {
-    $page=$_GET['page'];
-	checkid($page);
-}else{
-    $page=1;
-}
+if( isset($_GET["page"]) && $_GET["page"]!="") {$page=$_GET['page'];}else{$page=1;}
+checkid($page);
 
 if ($b==0) {
 $askclass=bigclass($b,2);

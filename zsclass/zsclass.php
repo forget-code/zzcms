@@ -30,7 +30,7 @@ $sql="select * from zzcms_zsclass where classzm='".$b."'";
 $rs=query($sql);
 $row=fetch_array($rs);
 if ($row){
-$descriptions=$row["discription"];
+$descriptions=$row["description"];
 $keywords=$row["keyword"];
 $titles=$row["title"];
 $bigclassname=$row["classname"];
@@ -161,7 +161,7 @@ $strout=str_replace("{#bigclass}",$bigclass,$strout);
 $strout=str_replace("{#bigclassname}",$bigclassname,$strout);
 $strout=str_replace("{#more}",$more,$strout);
 $zssmallclass_num=strbetween($strout,"{#zssmallclass:","}");
-$strout=str_replace("{#zssmallclass:".$zssmallclass_num."}",showzssmallclass($b,"",$zssmallclass_num,$zssmallclass_num),$strout);
+$strout=str_replace("{#zssmallclass:".$zssmallclass_num."}",showzssmallclass($b,"",$zssmallclass_num),$strout);
 $strout=str_replace("{#adlist}",$adlist,$strout);
 $strout=str_replace("{#sitebottom}",sitebottom(),$strout);
 $strout=str_replace("{#sitetop}",sitetop(),$strout);

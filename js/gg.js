@@ -6,22 +6,30 @@ function ConfirmDel(){
      return false;	 
 }
 
-function fSetBg(obj){
-	obj.style.backgroundColor = '#F1F6FC';
+function anyCheck(form){//form没有启用
+	var checks = document.getElementsByName("id[]");
+	n = 0;
+	for(i=0;i<checks.length;i++){
+		if(checks[i].checked)
+		n++;
+	}
+	if (n<1){
+	alert("至少要选中 1 条信息");
+	return false;
+	}
+  return true; 	
 }
-function fReBg(obj){
-	obj.style.backgroundColor = '';
-}
+
 function CheckAll(form){
-  for (var i=0;i<form.elements.length;i++)//elements
-    {
+  for (var i=0;i<form.elements.length;i++){
     var e = form.elements[i];
     if (e.Name != "chkAll")
        e.checked = form.chkAll.checked;
     }
 }
+
   
-function uncheckall()   {   
+function uncheckall()   { //切换大类时，清除小类的选中 
 var code_Values = document.all['smallclassid[]'];   
 if(code_Values.length){   
 	for(var i=0;i<code_Values.length;i++) {   
@@ -39,30 +47,7 @@ function showfilter2(obj2) {
         obj2.style.display="block";
     }   
 }
-function  pass(myform){   
-      myform.action="?action=pass";   
-      //myform.target="_blank";     //指向什么帧名，你自己定，我这是新开一页   
-      //myform.submit();   
-      } 
-function  del(myform){   
-	if(confirm("确定要删除选中的信息吗？"))
-    myform.action="?action=del";  
-	else		
-	return false;     
-      }  
-function  dele(myform,channel){ 
-	if(confirm("确定要删除选中的信息吗？"))
-    myform.action="del.php?channel="+channel 
-	else		
-	return false;     
-      } 
 
-function  deluser(myform){ 
-	if(confirm("确定要删除选中的信息吗？"))
-    myform.action="userdel.php";  
-	else		
-	return false;     
-      }
 function MM_jumpMenu(targ,selObj,restore){ //v3.0
   eval(targ+".location='"+selObj.options[selObj.selectedIndex].value+"'");
   if (restore) selObj.selectedIndex=0;

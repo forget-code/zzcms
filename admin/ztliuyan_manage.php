@@ -2,23 +2,19 @@
 include("admin.php");
 include("../inc/fy.php");
 ?>
-<html>
+<!DOCTYPE html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <title></title>
 <link href="style.css" rel="stylesheet" type="text/css">
-<script language="JavaScript" src="/js/gg.js"></script>
+<script language="JavaScript" src="../js/gg.js"></script>
 </head>
 <body>
 <?php
 checkadminisdo("guestbook");
 $action=isset($_REQUEST["action"])?$_REQUEST["action"]:'';
-if( isset($_REQUEST["page"]) && $_REQUEST["page"]!="") {
-    $page=$_REQUEST['page'];
-	checkid($page);
-}else{
-    $page=1;
-}
+if (!isset($page)){$page=1;}
+checkid($page);
 $shenhe=isset($_REQUEST["shenhe"])?$_REQUEST["shenhe"]:'';
 $keyword=isset($_REQUEST["keyword"])?$_REQUEST["keyword"]:'';
 
@@ -42,12 +38,9 @@ echo "<script>alert('操作失败！至少要选中一条信息。');history.bac
 echo "<script>location.href='?keyword=".$keyword."&page=".$page."'</script>";	
 }
 ?>
-<div class="admintitle">留言本</div>
+<div class="admintitle">展厅留言本</div>
 <form name="form1" method="post" action="?">
-<div class="border">
- 接收人： 
-   <input name="keyword" type="text" id="keyword" value="<?php echo $keyword?>"> <input type="submit" name="Submit" value="查找">
-</div>
+<div class="border2"> 接收人： <input name="keyword" type="text" id="keyword" value="<?php echo $keyword?>"> <input type="submit" name="Submit" value="查找"></div>
   </form>
    <?php
 $page_size=pagesize_ht;  //每页多少条数据
@@ -73,32 +66,22 @@ if(!$totlenum){
 echo "暂无信息";
 }else{
 ?>
-<form name="myform" method="post" action="">
-  <table width="100%" border="0" cellpadding="3" cellspacing="1">
-    <tr> 
-      <td height="32" class="border"><label for="chkAll"></label> 
-        <input name="submit2" type="submit"  onClick="myform.action='?action=pass';myform.target='_self'" value="【取消/审核】选中的信息">
-        <input name="submit3" type="submit" onClick="myform.action='ztly_sendmail.php';myform.target='_blank' "  value="给接收者发邮件提醒">
-        <input name="submit4" type="submit" onClick="myform.action='del.php';myform.target='_self';return ConfirmDel()" value="删除选中的信息"> 
-        <input name="pagename" type="hidden"  value="ztliuyan_manage.php?shenhe=<?php echo $shenhe?>&page=<?php echo $page ?>"> 
-        <input name="tablename" type="hidden"  value="zzcms_guestbook"> </td>
-    </tr>
-  </table>
+<form name="myform" method="post" action="" onSubmit="return anyCheck(this.form)">
   <table width="100%" border="0" cellpadding="5" cellspacing="1">
-    <tr> 
-      <td width="5%" align="center" class="border"> <label for="chkAll" style="text-decoration: underline;cursor: hand;">全选</label></td>
-      <td width="10%" class="border">内容</td>
-      <td width="10%" class="border">姓名</td>
-      <td width="10%" class="border">电话</td>
-      <td width="10%" class="border">E-mail</td>
-      <td width="10%" class="border">收件人</td>
-      <td width="10%" class="border">留言时间</td>
-      <td width="5%" align="center" class="border">信息状态</td>
+    <tr  class="trtitle"> 
+      <td width="5%" align="center"> <label for="chkAll" style="cursor: pointer;">全选</label></td>
+      <td width="10%">内容</td>
+      <td width="10%">姓名</td>
+      <td width="10%">电话</td>
+      <td width="10%">E-mail</td>
+      <td width="10%">收件人</td>
+      <td width="10%">留言时间</td>
+      <td width="5%" align="center">信息状态</td>
     </tr>
 <?php
 while($row = fetch_array($rs)){
 ?>
-    <tr class="bgcolor1" onMouseOver="fSetBg(this)" onMouseOut="fReBg(this)"> 
+    <tr class="trcontent"> 
       <td align="center"> 
         <input name="id[]" type="checkbox" id="id" value="<?php echo $row["id"]?>">      </td>
       <td title="<?php echo $row["content"]?>"><?php echo cutstr($row["content"],30)?></td>
@@ -116,15 +99,15 @@ while($row = fetch_array($rs)){
 }
 ?>
   </table>
-  <table width="100%" border="0" cellpadding="3" cellspacing="1">
-    <tr>
-      <td height="32" class="border"><input name="chkAll" type="checkbox" id="chkAll" onClick="CheckAll(this.form)" value="checkbox" />
-          <label for="chkAll" style="text-decoration: underline;cursor: hand;">全选</label>
-          <input name="submit22" type="submit"  onClick="myform.action='?action=pass';myform.target='_self'" value="【取消/审核】选中的信息">
-          <input name="submit32" type="submit" onClick="myform.action='ztly_sendmail.php';myform.target='_blank' "  value="给接收者发邮件提醒">
-          <input name="submit42" type="submit" onClick="myform.action='del.php';myform.target='_self';return ConfirmDel()" value="删除选中的信息"></td>
-    </tr>
-  </table>
+
+      <div class="border"><input name="chkAll" type="checkbox" id="chkAll" onClick="CheckAll(this.form)" value="checkbox" />
+          <label for="chkAll" style="cursor: pointer;">全选</label>
+          <input  type="submit"  onClick="myform.action='?action=pass';myform.target='_self'" value="【取消/审核】选中的信息">
+          <input  type="submit" onClick="myform.action='del.php';myform.target='_self';return ConfirmDel()" value="删除选中的信息">
+          <input  type="submit" onClick="myform.action='ztliuyan_sendmail.php';myform.target='_blank' "  value="给接收者发邮件提醒">
+          <input name="pagename" type="hidden"  value="ztliuyan_manage.php?shenhe=<?php echo $shenhe?>&page=<?php echo $page ?>">
+          <input name="tablename" type="hidden"  value="zzcms_guestbook"></div>
+
 </form>
 <div class="border center"><?php echo showpage_admin()?></div>
 <?php

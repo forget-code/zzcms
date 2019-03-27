@@ -37,8 +37,6 @@ subcat[<?php echo $count?>] = new Array("<?php echo trim($row["classname"])?>","
 onecount=<?php echo $count ?>;
 function changelocation(locationid){
     document.myform.s.length = 1; 
-   // var locationid=locationid;
-    var i;
     for (i=0;i < onecount; i++){
             if (subcat[i][1] == locationid){ 
                 document.myform.s.options[document.myform.s.length] = new Option(subcat[i][0], subcat[i][2]);
@@ -53,7 +51,7 @@ function changelocation(locationid){
     $rs=query($sql);
 	while($row = fetch_array($rs)){
 	?>
-        <option value="<?php echo trim($row["classid"])?>" <?php if ($row["classid"]==@$_COOKIE['companyb']){ echo 'selected';}?>><?php echo trim($row["classname"])?></option>
+    <option value="<?php echo $row["classid"]?>" <?php if ($row["classid"]==@$_COOKIE['companyb']){ echo 'selected';}?>><?php echo $row["classname"]?></option>
         <?php
 				}
 				?>

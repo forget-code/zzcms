@@ -6,7 +6,7 @@ echo "<div style='padding:30px;'>安装向导已运行安装过，如需重安�
 <div class="body"> 
     <div class="licence"> 
       <div style='text-align:center;font-size:14px;font-weight:bold'>授权协议</div>
-      版权所有(c)2006-2013，郑州市创美时信息技术有限公司保留所有权利。 
+      版权所有(c)2006-2018，郑州市创美时信息技术有限公司保留所有权利。 
       <p>感谢您选择 zzcms网站管理系统。</p>
       
     <p>郑州市创美时信息技术有限公司为zzcms产品的开发商，依法独立拥有zzcms产品著作权。公司网址为：<a href="http://www.zzcms.net">http://www.zzcms.net</a>。</p>
@@ -46,9 +46,9 @@ echo "<div style='padding:30px;'>安装向导已运行安装过，如需重安�
     </div>
     <form action="index.php" method="post" id="myform">
       <input type="hidden" name="step" value="2"/>
-      <input type="submit" value="我同意" id="read" class="btn"/>
+      <input type="submit" value="我同意" id="read" />
       &nbsp;&nbsp; 
-      <input type="button" value="不同意" class="btn" onclick="if(confirm('您确定要退出安装向导吗？')) window.close();"/>
+      <input type="button" value="不同意"  onclick="if(confirm('您确定要退出安装向导吗？')) window.close();"/>
     </form>
   </div>
 <?php

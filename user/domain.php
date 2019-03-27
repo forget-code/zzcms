@@ -2,28 +2,17 @@
 include("../inc/conn.php");
 include("check.php");
 ?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" lang="zh-CN">
+<!DOCTYPE html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-<meta http-equiv="X-UA-Compatible" content="IE=EmulateIE7" />
 <link href="style/<?php echo siteskin_usercenter?>/style.css" rel="stylesheet" type="text/css">
 <?php
 $go=0;
-if (isset($_REQUEST['action'])){
-$action=$_REQUEST['action'];
-}else{
-$action="";
-}
-
-if (isset($_REQUEST['id'])){
-$id=$_REQUEST['id'];
-}else{
-$id=1;
-}
+$action=isset($_REQUEST['action'])?$action=$_REQUEST['action']:'';
+$id=isset($_REQUEST['id'])?$_REQUEST['id']:1;
 checkid($id);
 
-if ($action=="savedata" ){
+if ($action=="save" ){
 	$saveas=trim($_REQUEST["saveas"]);
 	$domain=trim(str_replace('http://','',$_POST["domain"]));
 	if ($saveas=="add"){
@@ -59,7 +48,7 @@ if ($action=="savedata" ){
 	markit();
 	showmsg('非法操作！警告：你的操作已被记录！小心封你的用户及IP！');
 	}
-	query("update zzcms_userdomain set domain='$domain' where id=". $_POST['id']." ");
+	query("update zzcms_userdomain set domain='$domain' where id='". $id."'");
 	$go=1;
 	}
 }
@@ -94,18 +83,18 @@ if ($action=="add") {
 <?php
 }
 if ($action=="modify") {
-$sql="select * from zzcms_userdomain where id=".$_REQUEST["id"]."";
+$sql="select * from zzcms_userdomain where id='".$id."'";
 $rs=query($sql);
 $row=fetch_array($rs);
 ?>
 <div class="admintitle">修改域名</div>  
-<form action="?action=savedata&saveas=modify" method="POST" name="myform" id="myform">
+<form action="?action=save&saveas=modify" method="POST" name="myform" id="myform">
   <table width="100%" border="0" cellpadding="5" cellspacing="1">
     <tr> 
       <td width="10%" align="right" class="border">域名：</td>
       <td class="border"><input name="domain"  value="<?php echo $row["domain"]?>" type="text" />
-        <input type="submit" name="Submit2" class="buttons" value="提交" />
-        <input name="id" type="hidden" id="id2" value="<?php echo $row["id"]?>" /></td>
+        <input type="submit" class="buttons" value="提交" />
+        <input name="id" type="hidden" value="<?php echo $row["id"]?>" /></td>
     </tr>
 </table>
   </form>

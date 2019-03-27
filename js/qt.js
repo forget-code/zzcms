@@ -104,12 +104,6 @@ var re=/^[0-9]*$/;
 	return false;
   	}
 }	
-function PSetBg(obj){
-	obj.style.backgroundColor = '#FFFFFF';
-}
-function PReBg(obj){	
-	obj.style.backgroundColor = '';
-}
 
 function CheckAll(form){
   for (var i=0;i<form.elements.length;i++)//elements

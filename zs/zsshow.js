@@ -45,22 +45,7 @@ function CheckForms(){
 	return false;
 	}
 	
-	//email非强制输入，可以为空
-	if (document.ly.email2.value=="no"){	
-	document.ly.email.style.border = '1px solid #FF0000';
-	return false;
-	}
-	
-	if (document.ly.yzm.value==""){
-	document.ly.yzm.style.border = '1px solid #FF0000';
-	window.document.getElementById('ts_yzm').innerHTML='<span class=boxuserreg><span class=error></span>请输入验证码</span>';
-	document.ly.yzm.focus();	
-	return false;
-	}
-	if (document.ly.yzm2.value=="no"){	
-	document.ly.yzm.style.border = '1px solid #FF0000';
-	return false;
-	}
+
 	document.getElementById("tj").disabled=true; 
 	document.getElementById("tj").value ="正在提交中，请稍候...";
 	document.getElementById("tj").style.backgroundColor = '#666666';

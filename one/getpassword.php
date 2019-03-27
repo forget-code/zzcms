@@ -62,7 +62,7 @@ $strout=str_replace("{step4}".$step4."{/step4}","",$strout) ;
 $strout=str_replace("{#getpass_method}",$getpass_method,$strout) ;
 $strout=str_replace("{#username}",$_SESSION['username'],$strout) ;
 
-}elseif($action=="step2"){
+}elseif($action=="step2" && @$_POST['yzm_mobile']==@$_SESSION['yzm_mobile']){
 
 $strout=str_replace("{step3}","",$strout) ;
 $strout=str_replace("{/step3}","",$strout) ;	
@@ -71,7 +71,7 @@ $strout=str_replace("{step2}".$step2."{/step2}","",$strout) ;
 $strout=str_replace("{step4}".$step4."{/step4}","",$strout) ;
 
 }elseif($action=="step3" && @$_SESSION['username']!=''){
-	
+
 $passwordtrue = isset($_POST['password'])?$_POST['password']:"";
 $password=md5(trim($passwordtrue));
 query("update zzcms_user set password='$password',passwordtrue='$passwordtrue' where username='".@$_SESSION['username']."'");

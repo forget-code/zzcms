@@ -26,9 +26,7 @@ if ($b<>0){
 $sql="select classname from zzcms_wangkanclass where classid='".$b."' ";
 $rs=query($sql);
 $row=fetch_array($rs);
-if ($row){
 $bigclassname=$row["classname"];
-}
 }
 
 $pagetitle=sitename;
@@ -38,10 +36,6 @@ $pagedescription=sitename;
 function formbigclass($b){
 $sql = "select classid,classname from zzcms_wangkanclass  ";
 $rs=query($sql);
-$row=num_rows($rs);
-if (!$row){
-$str= "请先添加类别名称。";
-}else{
 $str="<option value='0'>不限类别</option>";
 	while($row=fetch_array($rs)){
 		if ($row["bigclassid"]==$b){
@@ -50,7 +44,6 @@ $str="<option value='0'>不限类别</option>";
 		$str=$str."<option value='".$row["classid"]."'>".$row["classname"]."</option>";
 		}
 	}
-}
 return $str;
 }
 
@@ -60,16 +53,11 @@ if ($keyword<>"") {
 $sql2=$sql2." and title like '%".$keyword."%' ";
 }	
 
-if ($b<>""){
+if ($b<>0){
 $sql2=$sql2." and bigclassid ='".$b."' ";
 }
-
-if( isset($_GET["page"]) && $_GET["page"]!="") {
-    $page=$_GET['page'];
-	checkid($page);
-}else{
-    $page=1;
-}
+if( isset($_GET["page"]) && $_GET["page"]!="") {$page=$_GET['page'];}else{$page=1;}
+checkid($page);
 $list=strbetween($strout,"{loop}","{/loop}");
 
 $rs =query($sql.$sql2); 

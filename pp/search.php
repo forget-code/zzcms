@@ -62,10 +62,8 @@ if ($b<>""){
 $sql="select classname,classid from zzcms_zsclass where classzm='".$b."'";
 $rs=query($sql);
 $row=fetch_array($rs);
-if ($row){
 $bigclassname=$row["classname"];
 $bigclassid=$row["classid"];
-}
 }
 
 $smallclassname='';
@@ -73,24 +71,17 @@ if ($s<>"") {
 $sql="select classname,classid from zzcms_zsclass where classzm='".$s."'";
 $rs=query($sql);
 $row=fetch_array($rs);
-if ($row){
-	$smallclassname=$row["classname"];
-	$smallclassid=$row["classid"];
-	}
+$smallclassname=$row["classname"];
+$smallclassid=$row["classid"];
 }
 
 function formbigclass(){
 		$str="";
         $sql = "select * from zzcms_zsclass where parentid=0";
         $rs=query($sql);
-		$row=num_rows($rs);
-		if (!$row){
-		$str= "请先添加类别名称。";
-		}else{
 			while($row=fetch_array($rs)){
 			$str=$str. "<a href=?b=".$row["classzm"].">".$row["classname"]."</a>&nbsp;&nbsp;";
 			}
-		}
 		return $str;
 		}
 		
@@ -99,12 +90,9 @@ function formbigclass(){
 		$str="";
         $sql="select * from zzcms_zsclass where parentid='" .$b. "' order by xuhao asc";
         $rs=query($sql);
-		$row=num_rows($rs);
-		if ($row){
 			while($row=fetch_array($rs)){
 			$str=$str. "<a href=?s=".$row["classzm"].">".$row["classname"]."</a>&nbsp;&nbsp;";
 			}
-		}	
 		return $str;
 		}
 		}
@@ -133,13 +121,8 @@ $pagedescription=pplistdescription;
 
 $station=getstation($b,$bigclassname,$s,$smallclassname,"","","pp");
 
-if( isset($_GET["page"]) && $_GET["page"]!="") {
-    $page=$_GET['page'];
-	checkid($page,0);
-}else{
-    $page=1;
-}
-
+$page=isset($page)?$page:1;
+checkid($page);
 $list=strbetween($strout,"{loop}","{/loop}");
 $sql="select count(*) as total from zzcms_pp where passed<>0 ";	
 $sql2='';

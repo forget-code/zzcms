@@ -1,16 +1,17 @@
 <?php
 include("admin.php");
 ?>
-<html>
+<!DOCTYPE html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <link href="style.css" rel="stylesheet" type="text/css">
 <title></title>
 <?php
+checkadminisdo("label");
 $action = isset($_REQUEST['action'])?$_REQUEST['action']:"";
 $classname = isset($_REQUEST['classname'])?$_REQUEST['classname']:"";
 if ($action=="add") {
-checkadminisdo("label");
+checkadminisdo("label_add");
 $title=nostr(trim($_POST["title"]));
 checkstr($numbers,'num','调用记录数');
 checkstr($startnumber,'num','从第几条开始数');
@@ -29,8 +30,8 @@ echo "<script>alert('".$msg."');location.href='?classname=".$classname."&labelna
 }
 
 if ($action=="del") {
-checkadminisdo("label");//可查看不可修改
-$f="../template/".siteskin."/label/".$classname."/".nostr($_POST["title"]).".txt";
+checkadminisdo("label_del");
+$f="../template/".siteskin."/label/".$classname."/".nostr(trim($_POST["title"])).".txt";
 	if (file_exists($f)){
 	unlink($f);
 	}else{
@@ -123,16 +124,16 @@ $title=$f[0];$startnumber=$f[1];$numbers=$f[2];$column=$f[3];$start=$f[4];$mids=
         （分几列显示）</td>
     </tr>
     <tr> 
-      <td align="right" class="border" >解释模板（开始）：</td>
+      <td align="right" class="border" >解释（开始）：</td>
       <td class="border" ><textarea name="start" cols="100" rows="6" id="start" style="width:100%"><?php echo $start?></textarea></td>
     </tr>
     <tr> 
-      <td align="right" class="border" >解释模板（循环）：</td>
+      <td align="right" class="border" >解释（循环）：</td>
       <td class="border" ><textarea name="mids" cols="100" rows="6" id="mids" style="width:100%"><?php echo $mids?></textarea> 
       </td>
     </tr>
     <tr> 
-      <td align="right" class="border" >解释模板（结束）：</td>
+      <td align="right" class="border" >解释（结束）：</td>
       <td class="border" ><textarea name="ends" cols="100" rows="6" id="ends" style="width:100%"><?php echo $ends?></textarea></td>
     </tr>
     <tr> 

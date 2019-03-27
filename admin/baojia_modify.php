@@ -1,12 +1,12 @@
 <?php
 include ("admin.php");
 ?>
-<html>
+<!DOCTYPE html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <title></title>
 <?php
-checkadminisdo("baojia");
+//checkadminisdo("baojia_modify");
 $page = isset($_GET['page'])?$_GET['page']:1;
 checkid($page);
 $id = isset($_GET['id'])?$_GET['id']:0;
@@ -46,7 +46,7 @@ if (document.myform.cp.value==""){
 </head>
 <body>
 <div class="admintitle"> 修改报价信息</div>
-<form action="baojia_save.php" method="post" name="myform" id="myform" onSubmit="return CheckForm();">
+<form action="?do=save" method="post" name="myform" id="myform" onSubmit="return CheckForm();">
   <table width="100%" border="0" cellpadding="3" cellspacing="0">
     <tr> 
       <td align="right" class="border">产品 <font color="#FF0000">*</font></td>
@@ -93,9 +93,7 @@ new PCAS('province', 'city', 'xiancheng', '<?php echo $row['province']?>', '<?ph
     </tr>
     <tr> 
       <td width="130" align="right" class="border">价格：</td>
-      <td class="border"><input name="price" type="text" id="price" value="<?php echo $row["price"]?>" size="10" maxlength="45">
-        <input name="dlid" type="hidden" id="dlid" value="<?php echo $row["id"]?>">
-        <input name="page" type="hidden" id="page" value="<?php echo $page?>">      </td>
+      <td class="border"><input name="price" type="text" id="price" value="<?php echo $row["price"]?>" size="10" maxlength="45"></td>
     </tr>
     <tr>
       <td align="right" class="border">单位：</td>
@@ -132,9 +130,38 @@ new PCAS('province', 'city', 'xiancheng', '<?php echo $row['province']?>', '<?ph
       <td align="right" class="border">&nbsp;</td>
       <td class="border"> 
         <input name="Submit" type="submit" class="buttons" value="修 改">
-        <input name="action" type="hidden" id="action3" value="modify"></td>
+        <input name="action" type="hidden"  value="modify">
+        <input name="id" type="hidden" id="id" value="<?php echo $row["id"]?>">
+        <input name="page" type="hidden" id="page" value="<?php echo $page?>"></td>
     </tr>
   </table>
 </form>
+<?php 
+$do=isset($_GET['do'])?$_GET['do']:'';
+if ($do=="save"){
+$page = isset($_POST['page'])?$_POST['page']:1;
+checkid($page);
+$id = isset($_POST['id'])?$_POST['id']:0;
+checkid($id,1);
+checkid($classid,1);
+$passed = isset($_POST['passed'])?$_POST['passed']:0;
+
+if ($_POST["action"]=="add"){
+	if ($cp<>'' && $truename<>'' && $tel<>''){
+	$addok=query("Insert into zzcms_baojia(classid,cp,province,city,xiancheng,price,danwei,companyname,truename,tel,address,email,sendtime) 		values('$classid','$cp','$province','$city','$xiancheng','$price','$danwei','$companyname','$truename','$tel','$address','$email','".date('Y-m-d H:i:s')."')") ; 
+	}
+}elseif ($_POST["action"]=="modify"){
+checkadminisdo("baojia_modify");
+$oldprovince=trim($_POST["oldprovince"]);
+if ($province=='请选择省份'){
+$province=$oldprovince;
+}
+$addok=query("update zzcms_baojia set classid='$classid',cp='$cp',province='$province',city='$city',xiancheng='$xiancheng',price='$price',danwei='$danwei',companyname='$companyname',truename='$truename',tel='$tel',address='$address',email='$email',sendtime='".date('Y-m-d H:i:s')."',passed='$passed' where id='$id'");
+}
+if ($addok){
+echo "<script>location.href='baojia_manage.php?page=".$page."'</script>";
+}
+}		
+?>
 </body>
 </html>

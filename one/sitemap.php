@@ -13,11 +13,11 @@ function bigclass($channel){
 $str="";
 $n=1;
 switch ($channel){
-	case "zh":$sql="select bigclassname,bigclassid from zzcms_zhclass  order by xuhao";
+	case "zh":$sql="select classname,classid from zzcms_zhclass  order by xuhao";
 	break;
-	case "zx":$sql="select classid,classname from zzcms_zxclass where isshowininfo=1 and parentid=0 order by xuhao asc";
+	case "zx":$sql="select classid,classname from zzcms_zxclass where isshow=1 and parentid=0 order by xuhao asc";
 	break;
-	case "special":$sql="select classid,classname from zzcms_specialclass where isshowininfo=1 and parentid=0 order by xuhao asc";
+	case "special":$sql="select classid,classname from zzcms_specialclass where isshow=1 and parentid=0 order by xuhao asc";
 	break;
 	case "job":$sql="select classname,classid from zzcms_jobclass where parentid=0 order by xuhao";
 	break;
@@ -39,7 +39,7 @@ $str="暂无分类";
 	break;
 	case "pp":$str=$str."<a href='".getpageurl2("pp",$row["classzm"],"")."'>".$row["classname"]."</a>";
 	break;
-	case "zh":$str=$str."<a href='".getpageurl2("zh",$row["bigclassid"],"")."'>".$row["bigclassname"]."</a>";
+	case "zh":$str=$str."<a href='".getpageurl2("zh",$row["classid"],"")."'>".$row["classname"]."</a>";
 	break;
 	case "zx":$str=$str."<a href='".getpageurlzx("zx",$row["classid"])."'>".$row["classname"]."</a>";
 	break;

@@ -1,55 +1,55 @@
 <?php
-if(!isset($_SESSION)){session_start();} 
-set_time_limit(1800); 
+ob_start();//打开缓冲区，可以setcookie
 include("../inc/conn.php");
 include("../inc/mail_class.php");
-ob_end_clean();//终止缓冲。这样就不用等到有4096bytes的缓冲之后才被发送出去了。
-echo str_pad(" ",256);//IE需要接受到256个字节之后才开始显示。
-
 ?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" lang="zh-CN">
+<!DOCTYPE html>
 <head>
 <meta http-equiv='Content-Type' content='text/html; charset=utf-8' />
-<meta http-equiv="X-UA-Compatible" content="IE=EmulateIE7" />
-<link href="/template/<?php echo siteskin?>/style.css" rel="stylesheet" type="text/css">
-<title></title>
-<script src="/js/msgbox.js" type="text/javascript" language="JavaScript"></script>
+<link href="../template/<?php echo siteskin?>/style.css" rel="stylesheet" type="text/css">
+<title>发邮件</title>
+<script src="../3/artDialog/artDialog.js?skin=default"></script> 
+<script src="../3/artDialog/plugins/iframeTools.js"></script>
+<script>
+function OpenAndDataFunc() {
+    var dialog = art.dialog.open('../user/login2.php?fromurl=<?php echo "http://".$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI']?>', {
+	title: "用户登录",lock: true, width: 400,height: 200}, false);
+}
+</script>
 </head>
 <body>
 <?php
 $founderr=0;
 $ErrMsg="";
-if (isset($_REQUEST['action'])){
-$action=$_REQUEST['action'];
-}else{
-$action="";
-}
-
+$action=isset($_REQUEST['action'])?$_REQUEST['action']:"";
 if (!isset($_COOKIE["UserName"]) || $_COOKIE["UserName"]==""){
-?>
-<script>
-MsgBox('用户登录','../user/login2.php?fromurl=<?php echo "http://".$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI']?>',500,196,1);
-</script>
-<?php
+echo "<script>OpenAndDataFunc()</script>";
 exit;
 }
-$username="";
-if (isset($_COOKIE["UserName"])){
-$username=$_COOKIE["UserName"];
-}
 
-if (!empty($_POST["sql"])){//从模板中获取SQL内容,为发送对像
-$_SESSION['sql']=stripfxg($_POST["sql"]);
+$username=isset($_COOKIE["UserName"])?$_COOKIE["UserName"]:"";
+$n=isset($_GET['n'])?$_GET['n']:0;
+$id="";
+$i=0;
+if(isset($_POST['id'])){
+    for($i=0; $i<count($_POST['id']);$i++){
+    $id=$id.($_POST['id'][$i].',');	
+	}
+}else{
+	$founderr=1;
+	$ErrMsg="<li>操作失败！请先选中要下载的信息</li>";
 }
-$sql=$_SESSION['sql'];
-session_write_close();
+$id=substr($id,0,strlen($id)-1);//去除最后面的","
+
+if ($n==0){
+setcookie("dlid",$id,time()+3600*24,"/");
+}
 ?>
 <div class="main">
 <?php
 if (check_user_power("dls_print")=="no"){
 $founderr=1;
-$ErrMsg=$ErrMsg."<li>您所在的用户组没有权限！<br><input  type=button value=升级成VIP会员 onclick=\"location.href='/one/vipuser.php'\"/></li>";
+$ErrMsg=$ErrMsg."<li>您所在的用户组没有权限！<br><a href='../one/vipuser.php'>升级为VIP会员</a></li>";
 }
 
 $size=5;//每轮群发个数
@@ -64,24 +64,24 @@ showmsg('未设邮件内容，请先设邮件内容','/user/index.php?gotopage=m
 $row_n=fetch_array($rs_n);
 }
 $subject=$row_n['content'];
-$mailbody=$row_n['content'];
+$mailbody=stripfxg($row_n['content'],true);
 $smtp  =   new smtp(smtpserver,25,true,sender,smtppwd,sender);//25:smtp服务器的端口一般是25
-if (!empty($_GET['n'])){
-$n=$_GET['n'];
+
+if (strpos(@$_COOKIE['dlid'],",")>0){
+$sql="select email from zzcms_dl where passed=1 and id in (". @$_COOKIE['dlid'] .") order by id asc limit $n,$size";
 }else{
-$n=0;
+$sql="select email from zzcms_dl where passed=1  and id='".@$_COOKIE['dlid']."'";
 }
-$sql2=$sql." order by id asc limit $n,$size";
-	$rs=query($sql2); 
+
+	$rs=query($sql); 
 	$row=num_rows($rs); 
-	//echo $sql2;
 	if ($row){
 		while ($row=fetch_array($rs)){
 		$to=$row['email']; //收件人
 		$send=$smtp->sendmail($to,sender,$subject,$mailbody,"HTML");//邮件的类型可选值是 TXT 或 HTML 
 		if($send){echo "<li>".$n."发送到".$to."成功</li>";}else{echo "<li>".$n."发送到".$to."失败</li>";}
 		flush();  //不在缓冲中的或者说是被释放出来的数据发送到浏览器    
-		sleep($sleeps);
+		//sleep($sleeps);
 		$n=$n+1;
 
 		}
@@ -90,4 +90,8 @@ $sql2=$sql." order by id asc limit $n,$size";
 	}else{
 	echo '完成';
 	}
-?>
+?>	
+</div>
+
+</body>
+</html>

@@ -40,9 +40,9 @@ function showconfig(){
       <td align="right" class="border"><?php echo channelzs?>列表页</td>
       <td class="border"> title<br> <input name="zslisttitle" type="text" id="zslisttitle2" value="<?php echo zslisttitle?>" size="50" maxlength="255"> 
         <br>
-        keywords<br> <input name="zslistkeyword" type="text" id="zslistkeyword2" value="<?php echo zslistkeyword?>" size="50" maxlength="255"> 
+        keywords<br> <input name="zslistkeyword" type="text"  value="<?php echo zslistkeyword?>" size="50" maxlength="255"> 
         <br>
-        description<br> <input name="zslistdescription" type="text" id="zslistdescription2" value="<?php echo zslistdescription?>" size="50" maxlength="255"></td>
+        description<br> <input name="zslistdescription" type="text" value="<?php echo zslistdescription?>" size="50" maxlength="255"></td>
     </tr>
     <tr> 
       <td align="right" class="border"><?php echo channelzs?>信息页</td>

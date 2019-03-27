@@ -1,8 +1,7 @@
 <?php 
 include("../inc/conn.php");
 ?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" lang="zh-CN">
+<!DOCTYPE html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <title></title>
@@ -152,7 +151,7 @@ if ($id==''){
 	$founderr=1;
 	$msg= "请输入电话";
 }else{
-	if(!preg_match("/1[3458]{1}\d{9}$/",$id) && !preg_match('/^400(\d{3,4}){2}$/',$id) && !preg_match('/^400(-\d{3,4}){2}$/',$id) && !preg_match('/^(010|02\d{1}|0[3-9]\d{2})-\d{7,9}(-\d+)?$/',$id)){//分别是手机，400电话(加-和不加两种情况都可以)，和普通电话
+	if(!preg_match("/1[34578]{1}\d{9}$/",$id) && !preg_match('/^400(\d{3,4}){2}$/',$id) && !preg_match('/^400(-\d{3,4}){2}$/',$id) && !preg_match('/^(010|02\d{1}|0[3-9]\d{2})-\d{7,9}(-\d+)?$/',$id)){//分别是手机，400电话(加-和不加两种情况都可以)，和普通电话
 	$founderr=1;
 	$msg= "电话号码不正确";
 	}

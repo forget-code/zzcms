@@ -2,7 +2,7 @@
 //set_time_limit(1800) ;
 include("admin.php");
 ?>
-<html>
+<!DOCTYPE html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <title></title>
@@ -10,22 +10,12 @@ include("admin.php");
 </head>
 <body>
 <?php
-if (isset($_GET["action"])){
-$action=trim($_GET["action"]);
-}else{
-$action="";
-}
-if (isset($_GET["mlname"])){
-$mlname=trim($_GET["mlname"]);
-}else{
-$mlname="";
-}
+$action=isset($_GET["action"])?$_GET["action"]:'';
+$mlname=isset($_GET["mlname"])?$_GET["mlname"]:'';
 ?>
 <div class="admintitle">删除无用的上传文件</div>
-<table width="100%" border="0" cellpadding="5" cellspacing="0" class="border">
-  <tr> 
-    <td>
-		<div class="boxlink"> 
+<div class="border">
+<div class="boxlink"> 
        <?php
 $fp = opendir("../uploadfiles");
 while(($file = readdir($fp))!=false){
@@ -41,11 +31,9 @@ while(($file = readdir($fp))!=false){
 closedir($fp);	 
   ?>
   </div>
-	</td>
-  </tr>
-  <tr>
-    <td style="font-size:14px;line-height:25px"> 
-      <?php
+</div>
+<div class="border" style="font-size:14px;line-height:25px"> 
+<?php
 if ($action=="del" ){
 checkadminisdo("uploadfiles");
 $ml='../uploadfiles/'.$mlname;
@@ -218,6 +206,6 @@ closedir($fp);
 	}
 }
   ?>
-    </td>
-  </tr>
-</table>
+</div>
+</body>
+</html>

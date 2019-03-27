@@ -14,11 +14,7 @@ $page_size=$_GET["page_size"];
 checkid($page_size);
 setcookie("page_size_baojia",$page_size,time()+3600*24*360);
 }else{
-	if (isset($_COOKIE["page_size_baojia"])){
-	$page_size=$_COOKIE["page_size_baojia"];
-	}else{
-	$page_size=pagesize_qt;
-	}
+$page_size=isset($_COOKIE["page_size_baojia"])?$_COOKIE["page_size_baojia"]:pagesize_qt;
 }
 
 if (isset($_GET['keyword'])){
@@ -39,7 +35,6 @@ $keyword=isset($_COOKIE['keyword'])?$_COOKIE['keyword']:'';
 
 if (isset($_GET['b'])){
 $bNew=$_GET['b'];
-checkid($b,1);
 setcookie("b",$bNew,time()+3600*24);
 setcookie("s","xxx",1);
 echo "<script>location.href='search.php'</script>";
@@ -134,24 +129,15 @@ $pagetitle=$province.$bigclassname.baojialisttitle."-".sitename;
 $pagekeyword=$province.$bigclassname.baojialisttitle."-".sitename;
 $pagedescription=$province.$bigclassname.baojialistdescription."-".sitename;
 
-if( isset($_GET["page"]) && $_GET["page"]!="") {
-    $page=$_GET['page'];
-	checkid($page);
-}else{
-    $page=1;
-}
+if( isset($_GET["page"]) && $_GET["page"]!="") {$page=$_GET['page'];}else{$page=1;}
+checkid($page);
 function formbigclass(){
 		$str="";
         $sql = "select classzm,classname from zzcms_zsclass where parentid=0";
         $rs=query($sql);
-		$row=num_rows($rs);
-		if (!$row){
-		$str= "请先添加类别名称。";
-		}else{
 			while($row=fetch_array($rs)){
 			$str=$str. "<a href=?b=".$row["classzm"].">".$row["classname"]."</a>&nbsp;&nbsp;";
 			}
-		}
 		return $str;
 		}
 	function formprovince(){

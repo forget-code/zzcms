@@ -54,10 +54,10 @@ $send=$smtp->sendmail($to,sender,$subject,$body,"HTML");//邮件的类型可选�
 echo"<div class=box style='font-size:14px;margin:50px 0'><ul style=background-color:#FFFFFF;padding:10px>";
 if($send){
 echo"<li><b>注册成功！</b></li>";
-echo"<li>帐号需要激活后才能使用，激活邮件已发送到".$email."请登陆到您的邮箱查收 </li>";
-echo"<li style=padding:20px><input type=button class=button_big value=点击登陆您的邮箱  onclick=\"window.open('".$emailsite."')\"/></li>";
+echo"<li>帐号需要激活后才能使用，激活邮件已发送到".$email."请登录到您的邮箱查收 </li>";
+echo"<li style=padding:20px><input type=button class=button_big value=点击登录您的邮箱  onclick=\"window.open('".$emailsite."')\"/></li>";
 }else{
-echo"<li>邮件发送失败，请稍候直接登陆网站！</li>";
+echo"<li>邮件发送失败，请稍候直接登录网站！</li>";
 }
 echo"</ul></div>";
 ?>

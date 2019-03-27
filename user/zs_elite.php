@@ -10,12 +10,13 @@ $f_array=explode("|||",$fcontent) ;
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=EmulateIE7" />
-<link href="style.css" rel="stylesheet" type="text/css">
+<link href="style/<?php echo siteskin_usercenter?>/style.css" rel="stylesheet" type="text/css">
 <title></title>
 <script language="javascript" src="/js/timer.js"></script>
 <script language = "JavaScript">
 function CheckForm(){
 <?php echo $f_array[0]?>  
+}
 </script> 
 </head>
 <body>
@@ -123,6 +124,7 @@ echo  $f_array[10];
 exit;
 }
 ?>
+<div class="content">
 <div class="admintitle"><?php echo $f_array[11]?></div>
 <form action="?" method="post" name="myform" id="myform" onSubmit="return CheckForm();">
         <table width="100%" border="0" cellpadding="3" cellspacing="1">
@@ -132,14 +134,14 @@ exit;
           </tr>
           <tr> 
             <td align="right" class="border" ><?php echo $f_array[13]?></td>
-            <td class="border" > <input name="eliteendtime" type="text" id="eliteendtime" value="<?php echo $row["eliteendtime"]?>" size="30" maxlength="45" onFocus="JTC.setday(this)">
+            <td class="border" > <input name="eliteendtime" type="text" id="eliteendtime"  class="biaodan" value="<?php echo $row["eliteendtime"]?>" size="30" maxlength="45" onFocus="JTC.setday(this)">
               <input name="oldeliteendtime" type="hidden"  value="<?php echo $row["eliteendtime"]?>" size="30" maxlength="45" />
               <?php echo jf_set_elite.$f_array[14]?></td>
           </tr>
           
           <tr> 
             <td align="right" class="border" ><?php echo $f_array[15]?></td>
-            <td class="border" > <input name="tag" type="text" id="tag" value="<?php echo $row["tag"] ?>" size="10" maxlength="4">
+            <td class="border" > <input name="tag" type="text" id="tag" class="biaodan" value="<?php echo $row["tag"] ?>" size="10" maxlength="4">
               <?php echo $f_array[16]?></td>
           </tr>
           <tr> 
@@ -155,7 +157,9 @@ exit;
 	  </form>
 <?php
 }
+unset ($f_array);
 ?>	  
+</div>
 </div>
 </div>
 </div>

@@ -1,6 +1,6 @@
 <?php
 error_reporting(0);
-define('zzcmsroot', str_replace("\\", '/', substr(dirname(__FILE__), 0, -3)));
+define('zzcmsroot', str_replace("\\", '/', substr(dirname(__FILE__), 0, -3)));//-3截除当前目录inc
 ini_set("date.timezone","Asia/Chongqing");//设时区。php.ini里date.timezone选项，默认情况下是关闭的
 include(zzcmsroot."/inc/config.php");
 include(zzcmsroot."/inc/wjt.php");
@@ -26,6 +26,6 @@ mysql_query("SET NAMES 'utf8'",$conn); //必不可少，用来设置客户端送
 mysql_select_db(sqldb,$conn) or showmsg ("没有".sqldb."这个数据库,或是被管理员断开了链接,请稍后再试");
 //lockip();
 //if (isset($_SESSION["admin"])){
-//admindo();//如果管理员登陆，记录管理员操作记录
+//admindo();//如果管理员登录，记录管理员操作记录
 //}
 ?>

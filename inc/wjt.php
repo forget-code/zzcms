@@ -50,4 +50,10 @@ define('joblistdescription','招聘') ;//joblistdescription
 define('jobshowtitle','招聘') ;//jobshowtitle
 define('jobshowkeyword','招聘') ;//jobshowkeyword
 define('jobshowdescription','招聘') ;//jobshowdescription
+define('wangkanlisttitle','wangkanlisttitle') ;//wangkanlisttitle
+define('wangkanlistkeyword','wangkanlistkeyword') ;//wangkanlistkeyword
+define('wangkanlistdescription','wangkanlistdescription') ;//wangkanlistdescription
+define('wangkanshowtitle','wangkanshowtitle') ;//wangkanshowtitle
+define('wangkanshowkeyword','wangkanshowkeyword') ;//wangkanshowkeyword
+define('wangkanshowdescription','wangkanshowdescription') ;//wangkanshowdescription
 ?>

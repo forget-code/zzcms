@@ -60,12 +60,12 @@ if ($style==1){//为1时大类下显示小类
 		$nn=1;
 		if ($rown){
 			while ($rown=mysql_fetch_array($rsn)){
-			$str=$str. "<a href=".getpageurl2('zs',$row["classzm"],$rown["classzm"]).">".cutstr($rown["classname"],$long_s)."</a>&nbsp;&nbsp;\n";
+			$str=$str. "<a href=".getpageurl2('zs',$row["classzm"],$rown["classzm"]).">".cutstr($rown["classname"],$long_s)."</a>&nbsp;&nbsp;";
 			if ($nn % $column_s==0){ $str=$str.  '<br/>';}
 			$nn=$nn+1;
 			}
 		}else{
-		$str=$str."下无子类";
+		$str=$str.'';//左边不显示小类，且不显示任何提示内容
 		}
 	$str=$str. "</div>";
 	}
@@ -73,7 +73,6 @@ if ($style==1){//为1时大类下显示小类
 	
 $str=$str. "</div>\n";
 
-if ($num_s!=0){//当小类数不为0时显示小类
 if ($style==1){
 //$minheight=$tdheight*$n-20+35;//使有足够的高度,20为padding值
 //$minheight=$minheight.'px';
@@ -88,12 +87,12 @@ $rsn=mysql_query("select * from zzcms_zsclass where parentid='".$row["classzm"].
 $rown=mysql_num_rows($rsn);
 	if ($rown){
 		while ($rown=mysql_fetch_array($rsn)){
-		$str=$str. "<div class='zsclass_s_li' style='width:".$liwidth."%'>\n";
-		$str=$str. "<div class='zsclass_s_name'>\n";
-		$str=$str. "<a href=".getpageurl2('zs',$row["classzm"],$rown["classzm"]).">".cutstr($rown["classname"],$long_s)."</a>\n";
-		$str=$str. "</div>\n";
+		$str=$str. "<div class='zsclass_s_li' style='width:".$liwidth."%'>";
+		$str=$str. "<div class='zsclass_s_name'>";
+		$str=$str. "<a href=".getpageurl2('zs',$row["classzm"],$rown["classzm"]).">".cutstr($rown["classname"],$long_s)."</a>";
+		$str=$str. "</div>";
 			if ($num_p<>0){
-			$str=$str. "<div class='zsclass_cp'>\n";
+			$str=$str. "<div class='zsclass_cp'>";
 			$nnn=1;
 			if(zsclass_isradio=='No'){
 			$sqlcp="select id,proname from zzcms_main where bigclasszm='".$row["classzm"]."' and smallclasszm like '%".$rown["classzm"]."%' order by sendtime desc limit 0,$num_p";
@@ -104,7 +103,7 @@ $rown=mysql_num_rows($rsn);
 			$rowcp=mysql_num_rows($rscp);
 			if ($rowcp){
 				while ($rowcp=mysql_fetch_array($rscp)){
-				$str=$str. "<a href='".getpageurl("zs",$rowcp['id'])."' target='_blank'>".cutstr($rowcp['proname'],$long_p)."</a>\n";
+				$str=$str. "<a href='".getpageurl("zs",$rowcp['id'])."' target='_blank'>".cutstr($rowcp['proname'],$long_p)."</a>";
 				if ($nnn % $column_p==0){$str=$str.'<br/>' ;}else {$str=$str.'&nbsp;|&nbsp; ';}
 				$nnn=$nnn+1;
 				}
@@ -121,7 +120,7 @@ $rown=mysql_num_rows($rsn);
 	$str=$str. '下无子类';
 	}
 $str=$str. "</div>\n";
-}
+
 $str=$str. "</td>\n";
 if ($n % $column_b==0){ $str=$str.  '</tr>';}
 $n=$n+1;		 

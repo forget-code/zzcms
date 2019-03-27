@@ -11,7 +11,7 @@ $f_array=explode("|||",$fcontent) ;
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta http-equiv="X-UA-Compatible" content="IE=EmulateIE7" />
 <title><?php echo $f_array[0] ?></title>
-<link href="style.css" rel="stylesheet" type="text/css" />
+<link href="style/<?php echo siteskin_usercenter?>/style.css" rel="stylesheet" type="text/css">
 <script>
 function  checkmobile(){ 
 <?php echo $f_array[1] ?>
@@ -94,6 +94,7 @@ include("left.php");
 ?>
 </div>
 <div class="right">
+<div class="content">
 <div class="admintitle"><?php echo $f_array[0] ?></div>
 <?php 
 if (check_usergr_power("zt")=="no" && $usersf=='个人'){
@@ -104,10 +105,10 @@ exit;
 <form name="myform" method="post" action="?action=modify"> 
         <table width="100%" border="0" cellpadding="3" cellspacing="1">
           <tr> 
-            <td width="15%" class="border"><?php echo $f_array[6] ?></td>
-            <td width="85%" height="210" valign="top" class="border">
-			<div id="Layer2" style="position:absolute; width:684px; height:200px; z-index:1; overflow: scroll;"> 
-                <table width="95%" border="0" cellspacing="1" cellpadding="5">
+            <td width="20%" align="right" class="border"><?php echo $f_array[6] ?></td>
+            <td width="80%" height="280" valign="top" class="border">
+			<div id="Layer2" style="position:absolute; width:780px; height:270px; z-index:1; overflow: scroll;"> 
+                <table width="98%" border="0" cellspacing="1" cellpadding="5">
                   <tr> 
                     <?php 
 $dir = opendir("../flash");
@@ -140,9 +141,9 @@ closedir($dir)
           </tr>
           <?php if(check_user_power('set_zt')=='yes'){?>
           <tr> 
-            <td class="border2"><?php echo $f_array[7] ?> 
+            <td align="right" class="border2"><?php echo $f_array[7] ?> 
               <input name="oldimg" type="hidden" id="oldimg" value="<?php echo $row["bannerbg"]?>" /> 
-              <input name="img" type="hidden" id="img" value="<?php echo trim($row["bannerbg"])?>" size="50" maxlength="255">            </td>
+              <input name="img" type="hidden" id="img" value="<?php echo trim($row["bannerbg"])?>" size="50" maxlength="255"></td>
             <td class="border2"> <script type="text/javascript">
 function showtxt(){
 var sd =window.showModalDialog('/uploadimg_form.php?noshuiyin=1','','dialogWidth=400px;dialogHeight=300px');
@@ -155,7 +156,7 @@ document.getElementById("img").value=sd;//从子页面得到值写入母页面
 document.getElementById("showimg").innerHTML="<img src='../"+sd+"' width=120>";
 }
 }
-</script> <table width="120" height="120" border="0" cellpadding="5" cellspacing="1" bgcolor="#999999">
+</script> <table width="120" height="120" border="0" cellpadding="5" cellspacing="1" bgcolor="#cccccc">
                 <tr> 
                   <td align="center" bgcolor="#FFFFFF" id="showimg" onclick='showtxt()'> 
                     <?php
@@ -167,14 +168,14 @@ document.getElementById("showimg").innerHTML="<img src='../"+sd+"' width=120>";
 				  ?>                  </td>
                 </tr>
               </table>
-              <input name='nobannerbg[]' type='checkbox' value='1' />
-              <?php echo $f_array[10] ?> </td>
+              <input name='nobannerbg[]' type='checkbox' id="nobannerbg" value='1' />
+              <label for="nobannerbg"><?php echo $f_array[10] ?></label> </td>
           </tr>
           <?php 
 		  }else{
 		  ?>
           <tr> 
-            <td class="border2"><?php echo $f_array[11] ?></td>
+            <td align="right" class="border2"><?php echo $f_array[11] ?></td>
             <td class="border2"><?php echo $f_array[12] ?></td>
           </tr>
 		    <?php 
@@ -182,26 +183,28 @@ document.getElementById("showimg").innerHTML="<img src='../"+sd+"' width=120>";
 		  ?>
          
 		   <tr> 
-            <td class="border2"><?php echo $f_array[13] ?></td>
-            <td class="border2"><input name="bannerheight" type="text" id="bannerheight" value="<?php echo $row["bannerheight"]?>" size="10" maxlength="3" onblur="checkbannerheight()" />
+            <td align="right" class="border2"><?php echo $f_array[13] ?></td>
+            <td class="border2"><input name="bannerheight" type="text" id="bannerheight" class="biaodan"  value="<?php echo $row["bannerheight"]?>" size="10" maxlength="3" onblur="checkbannerheight()" />
               px</td>
           </tr>
-            <td class="border"><?php echo $f_array[14] ?></td>
-            <td class="border"> <?php echo $f_array[15] ?>
+            <td align="right" class="border"><?php echo $f_array[14] ?></td>
+            <td class="border"> 
               <select name="comanestyle" id="comanestyle">
+			  <option value="left"><?php echo $f_array[15] ?></option>
                 <option value="left" <?php if ($row["comanestyle"]=="left" ){ echo"selected";}?>><?php echo $f_array[16] ?></option>
                 <option value="center" <?php if($row["comanestyle"]=="center" ){ echo"selected";}?>><?php echo $f_array[17] ?></option>
                 <option value="right" <?php if($row["comanestyle"]=="right" ){ echo"selected";}?>><?php echo $f_array[18] ?></option>
 				<option value="no" <?php if($row["comanestyle"]=="no" ){ echo"selected";}?>><?php echo $f_array[19] ?></option>
               </select>
-              <?php echo $f_array[20] ?>
+             
               <select name="comanecolor" id="comanecolor">
+			  <option value="#FFFFFF"><?php echo $f_array[20] ?></option>
                 <option value="#FFFFFF" <?php if($row["comanecolor"]=="#FFFFFF" ){ echo"selected";}?>><?php echo $f_array[21] ?></option>
                 <option value="#000000" <?php if($row["comanecolor"]=="#000000" ){ echo"selected";}?>><?php echo $f_array[22] ?></option>
               </select> </td>
           </tr>
           <tr> 
-            <td class="border2"><?php echo $f_array[23] ?></td>
+            <td align="right" class="border2"><?php echo $f_array[23] ?></td>
             <td class="border2"> 
 			<input name="daohang[]" type="checkbox" id="daohang" value="网站首页" <?php  if(strpos($row["daohang"],"网站首页")!==false ){ echo"checked";}?> />
               <?php echo $f_array[24] ?> 
@@ -223,12 +226,12 @@ document.getElementById("showimg").innerHTML="<img src='../"+sd+"' width=120>";
                <?php echo $f_array[31] ?>  </td>
           </tr>
           <tr>
-            <td class="border2"> <?php echo $f_array[32] ?> </td>
-            <td class="border2"><input name="tongji" type="text" id="tongji" value="<?php echo $row["tongji"]?>" size="90" maxlength="200" />            </td>
+            <td align="right" class="border2"> <?php echo $f_array[32] ?> </td>
+            <td class="border2"><input name="tongji" type="text" id="tongji" class="biaodan" value="<?php echo $row["tongji"]?>" size="90" maxlength="200" />            </td>
           </tr>
           <tr>
-            <td class="border2"> <?php echo $f_array[33] ?> </td>
-            <td class="border2"><input name="baidu_map" type="text" id="baidu_map" value="<?php echo $row["baidu_map"]?>" size="50" maxlength="200" />
+            <td align="right" class="border2"> <?php echo $f_array[33] ?> </td>
+            <td class="border2"><input name="baidu_map" type="text" id="baidu_map" class="biaodan"  value="<?php echo $row["baidu_map"]?>" size="50" maxlength="200" />
               <a href="http://api.map.baidu.com/mapCard/" target="_blank" style="color:red"> <?php echo $f_array[34] ?> </a></td>
           </tr>
         
@@ -240,16 +243,16 @@ document.getElementById("showimg").innerHTML="<img src='../"+sd+"' width=120>";
             <td colspan="2" class="admintitle"> <?php echo $f_array[36] ?> </td>
           </tr>
           <tr> 
-            <td class="border"> <?php echo $f_array[37] ?> </td>
+            <td align="right" class="border"> <?php echo $f_array[37] ?> </td>
             <td class="border"> 
               <?php 
 	if(check_user_power('set_mobile')=='yes'){
 			?>
-              <input name="mobile" type="text" id="mobile" value="<?php echo $row["mobile"]?>" size="30" maxlength="11" onblur="checkmobile()"> 
+              <input name="mobile" type="text" id="mobile" class="biaodan" value="<?php echo $row["mobile"]?>" size="30" maxlength="11" onblur="checkmobile()"> 
               <?php 	
 	  }else{
 	  ?>
-              <input name="mobile" type="text" id="mobile" value=" <?php echo $f_array[38] ?> " size="30" disabled> 
+              <input name="mobile" type="text" id="mobile" class="biaodan"  value=" <?php echo $f_array[38] ?> " size="30" disabled> 
               <?php 
 	 }
 	?>            </td>
@@ -263,8 +266,10 @@ document.getElementById("showimg").innerHTML="<img src='../"+sd+"' width=120>";
 </div>
 </div>
 </div>
+</div>
 </body>
 </html>
 <?php 
 }
+unset ($f_array);
 ?>

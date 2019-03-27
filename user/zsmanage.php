@@ -11,8 +11,8 @@ $f_array=explode("\n",$fcontent) ;
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=EmulateIE7" />
-<title></title>
-<link href="style.css" rel="stylesheet" type="text/css">
+<title><?php echo channelzs.$f_array[1]?></title>
+<link href="style/<?php echo siteskin_usercenter?>/style.css" rel="stylesheet" type="text/css">
 <?php
 if (check_usergr_power("zs")=="no" && $usersf=='个人'){
 echo $f_array[0];
@@ -46,6 +46,7 @@ $bigclass=$_REQUEST["bigclass"];
 $bigclass="";
 }
 ?>
+<div class="content">
 <div class="admintitle">
 <span>
  <form name="form1" method="post" action="?">
@@ -121,7 +122,7 @@ echo $f_array[8];
 }else{
 ?>
 <form name="myform" method="post" action="del.php">
-<table width="100%" border="0" cellpadding="5" cellspacing="1">
+<table width="100%" border="0" cellpadding="5" cellspacing="1" class="bgcolor">
     <tr> 
      <?php echo $f_array[9]?>
     </tr>
@@ -129,8 +130,8 @@ echo $f_array[8];
 while($row = mysql_fetch_array($rs)){
 ?>
     <tr class="bgcolor1" onMouseOver="fSetBg(this)" onMouseOut="fReBg(this)"> 
-      <td width="107"><a href="<?php echo getpageurl("zs",$row["id"])?>" target="_blank"><?php echo $row["proname"]?></a> </td>
-      <td width="108" align="center">
+      <td><a href="<?php echo getpageurl("zs",$row["id"])?>" target="_blank"><?php echo $row["proname"]?></a> </td>
+      <td align="center">
 	  <?php
 	$sqln="select classname from zzcms_zsclass where classzm='".$row["bigclasszm"]."' ";
 	$rsn = mysql_query($sqln); 
@@ -151,22 +152,20 @@ while($row = mysql_fetch_array($rs)){
 	echo "<br/>".$rown["classname"];
 	}
 	  ?>	  </td>
-      <td width="93" align="center"><a href="<?php echo $row["img"] ?>" target='_blank'><img src="<?php echo $row["img"] ?>" width="60" height="60" border="0"></a></td>
-      <td width="86" align="center" title='<?php echo $row["city"]?>'> 
+      <td align="center"><a href="<?php echo $row["img"] ?>" target='_blank'><img src="<?php echo $row["img"] ?>" width="60" height="60" border="0"></a></td>
+      <td align="center" title='<?php echo $row["city"]?>'> 
 	  <?php echo $row["province"].$row["city"]?>        </td>
-      <td width="97" align="center"><?php echo $row["sendtime"]?></td>
-      <td width="50" align="center"><?php echo $row["refresh"]?></td>
-      <td width="57" align="center"> 
+      <td align="center"><?php echo $row["sendtime"]?></td>
+      <td align="center"><?php echo $row["refresh"]?></td>
+      <td align="center"> 
 	  <?php 
 	if ($row["passed"]==1 ){ echo  $f_array[10];}else{ echo  $f_array[11];}
 	if ($row["elite"]<>0) { echo str_replace("{#eliteendtime}",$row["eliteendtime"],str_replace("{#elitestarttime}",$row["elitestarttime"],str_replace("{#tag}",$row["tag"],$f_array[12])));}
 	  ?> </td>
-            <td width="92" align="center" class="docolor"> 
+            <td align="center" class="docolor"> 
               <a href="zsmodify.php?id=<?php echo $row["id"]?>&page=<?php echo $page?>"><?php echo $f_array[13]?></a> 
-              | <a href="zspx.php" target="_self"><?php echo $f_array[14]?></a>| <a href="zs_elite.php?id=<?php echo $row["id"]?>&page=<?php echo $page?>"><?php echo $f_array[15]?></a>
-			 
-			  </td>
-            <td width="42" align="center" class="docolor"><input name="id[]" type="checkbox" id="id" value="<?php echo $row["id"]?>" /></td>
+              | <a href="zspx.php" target="_self"><?php echo $f_array[14]?></a>| <a href="zs_elite.php?id=<?php echo $row["id"]?>&page=<?php echo $page?>"><?php echo $f_array[15]?></a>		    </td>
+            <td align="center" class="docolor"><input name="id[]" type="checkbox" id="id" value="<?php echo $row["id"]?>" /></td>
     </tr>
 <?php
 }
@@ -180,11 +179,12 @@ while($row = mysql_fetch_array($rs)){
           <input name="submit"  type="submit" class="buttons"  value="<?php echo $f_array[17]?>" onclick="return ConfirmDel()" />
           <input name="pagename" type="hidden" id="pagename" value="zsmanage.php?page=<?php echo $page ?>" />
           <input name="tablename" type="hidden" id="tablename" value="zzcms_main" />
-          </div>
+        </div>
 </form>
 <?php
 }
 ?>
+</div>
 </div>
 </div>
 </div>

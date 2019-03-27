@@ -11,7 +11,7 @@ $f_array=explode("|||",$fcontent) ;
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=EmulateIE7" />
-<title></title>
+<title><?php echo str_replace("{#channeldl}",channeldl,$f_array[1])?></title>
 <script type="text/javascript" src="/js/jquery.js"></script>
 <script>
 $(function(){
@@ -47,7 +47,7 @@ eval("submenu" + sid + ".style.display=\"none\";");
    }
 }
 </SCRIPT>
-<link href="style.css" rel="stylesheet" type="text/css">
+<link href="style/<?php echo siteskin_usercenter?>/style.css" rel="stylesheet" type="text/css">
 </head>
 <body>
 <div class="main">
@@ -61,6 +61,7 @@ include("left.php");
 ?>
 </div>
 <div class="right">
+<div class="content">
 <div class="admintitle"><?php echo str_replace("{#channeldl}",channeldl,$f_array[1])?></div>
 <?php
 $tablename="zzcms_dl";//checkaddinfo中用
@@ -69,14 +70,14 @@ include("checkaddinfo.php");
 <form action="dlsave.php" method="post" name="myform" id="myform" onSubmit="return CheckForm();">      
   <table width="100%" border="0" cellpadding="3" cellspacing="1">
     <tr> 
-      <td align="right" class="border"><?php echo $f_array[2]?><font color="#FF0000">*</font></td>
-      <td class="border"> <input name="cp" type="text" id="cp" size="45" maxlength="45"> 
-      </td>
+      <td width="18%" align="right" class="border"><?php echo $f_array[2]?></td>
+      <td width="82%" class="border"> <input name="cp" type="text" id="cp" class="biaodan" size="60" maxlength="60">
+	  <?php echo $f_array[20]?>      </td>
     </tr>
     <tr> 
-      <td align="right" class="border2"><?php echo $f_array[3]?> <font color="#FF0000">*</font></td>
+      <td align="right" class="border2"><?php echo $f_array[3]?></td>
       <td class="border2">
-	   <select name="classid">
+	   <select name="classid" class="biaodan">
           <option value="" selected><?php echo $f_array[4]?> </option>
           <?php
 		$sql="select * from zzcms_zsclass where parentid='A'";
@@ -90,7 +91,7 @@ include("checkaddinfo.php");
         </select> </td>
     </tr>
     <tr> 
-      <td width="130" align="right" class="border"><?php echo $f_array[5]?> <font color="#FF0000">*</font></td>
+      <td align="right" class="border"><?php echo $f_array[5]?></td>
             <td class="border"><table border="0" cellpadding="3" cellspacing="0">
               <tr>
                 <td><script language="JavaScript" type="text/javascript">
@@ -127,9 +128,9 @@ destList.options[i] = null;
 } 
             </script>
                    
-<select name="province" id="province"></select>
-<select name="city" id="city"></select>
-<select name="xiancheng" id="xiancheng" onchange="addSrcToDestList()"></select>
+<select name="province" id="province" class="biaodan"></select>
+<select name="city" id="city" class="biaodan"></select>
+<select name="xiancheng" id="xiancheng" class="biaodan" onchange="addSrcToDestList()"></select>
 <script src="/js/area.js"></script>
 <script type="text/javascript">
 new PCAS('province', 'city', 'xiancheng', '<?php echo @$_SESSION['province']?>', '<?php echo @$_SESSION["city"]?>', '<?php echo @$_SESSION["xiancheng"]?>');
@@ -137,7 +138,7 @@ new PCAS('province', 'city', 'xiancheng', '<?php echo @$_SESSION['province']?>',
                   
                 </td>
                 <td align="center" valign="top"><?php echo $f_array[6]?><br/>
-                  <select name="destList" size="5" multiple="multiple" style='width:100px;font-size:13px'>
+                  <select name="destList" size="4" multiple="multiple" style='width:100px;height:60px' class="biaodan">
                     <?php 
 			  if (isset($_SESSION['xiancheng'])){
 			  		if (strpos($_SESSION["xiancheng"],",")==0) {?>
@@ -159,8 +160,8 @@ new PCAS('province', 'city', 'xiancheng', '<?php echo @$_SESSION['province']?>',
             </table></td>
     </tr>
     <tr> 
-      <td width="130" align="right" class="border2"><?php echo $f_array[8]?> <font color="#FF0000">*</font></td>
-      <td class="border2"> <textarea name="content" cols="45" rows="6" id="content"><?php echo @$_SESSION["content"]?></textarea>
+      <td align="right" class="border2"><?php echo $f_array[8]?></td>
+      <td class="border2"> <textarea name="content" cols="60" rows="4" id="content" class="biaodan" style="height:auto"><?php echo @$_SESSION["content"]?></textarea>
       </td>
     </tr>
 	<?php
@@ -169,7 +170,7 @@ new PCAS('province', 'city', 'xiancheng', '<?php echo @$_SESSION['province']?>',
 	$row= mysql_fetch_array($rs);
 	?>
     <tr> 
-      <td align="right" class="border"><?php echo $f_array[9]?> </td>
+      <td align="right" class="border"><?php echo $f_array[9]?></td>
       <td class="border"><input name="dlsf" id="dlsf_company" type="radio" value="<?php echo $f_array[10]?>" onclick="showsubmenu(1)">
          <label for="dlsf_company"><?php echo $f_array[10]?></label>
         <input name="dlsf" type="radio" id="dlsf_person" onclick="hidesubmenu(1)" value="<?php echo $f_array[11]?>" checked>
@@ -177,29 +178,29 @@ new PCAS('province', 'city', 'xiancheng', '<?php echo @$_SESSION['province']?>',
     </tr>
     <tr style="display:none" id='submenu1'>
       <td align="right" class="border"><?php echo $f_array[12]?></td>
-      <td class="border"><input name="company" type="text" id="yzm2" value="<?php echo $row["comane"]?>" size="45" maxlength="255" /></td>
+      <td class="border"><input name="company" type="text" class="biaodan" value="<?php echo $row["comane"]?>" size="45" maxlength="255" /></td>
     </tr>
     <tr> 
-      <td align="right" class="border2"><?php echo $f_array[13]?> <font color="#FF0000">*</font></td>
+      <td align="right" class="border2"><?php echo $f_array[13]?></td>
       <td class="border2">
-<input name="truename" type="text" id="truename" value="<?php echo $row["somane"]?>" size="45" maxlength="255" /></td>
+<input name="truename" type="text" id="truename" class="biaodan" value="<?php echo $row["somane"]?>" size="45" maxlength="255" /></td>
     </tr>
     <tr> 
-      <td align="right" class="border"><?php echo $f_array[14]?> <font color="#FF0000">*</font></td>
-      <td class="border"><input name="tel" type="text" id="tel" value="<?php echo $row["phone"]?>" size="45" maxlength="255" /></td>
+      <td align="right" class="border"><?php echo $f_array[14]?></td>
+      <td class="border"><input name="tel" type="text" id="tel" class="biaodan" value="<?php echo $row["phone"]?>" size="45" maxlength="255" /></td>
     </tr>
     <tr> 
       <td align="right" class="border2"><?php echo $f_array[15]?></td>
       <td class="border2">
-<input name="address" type="text" id="address" value="<?php echo $row["address"]?>" size="45" maxlength="255" /></td>
+<input name="address" type="text" id="address" class="biaodan" value="<?php echo $row["address"]?>" size="45" maxlength="255" /></td>
     </tr>
     <tr> 
       <td align="right" class="border"><?php echo $f_array[16]?></td>
-      <td class="border"><input name="email" type="text" id="email" value="<?php echo $row["email"]?>" size="45" maxlength="255" /></td>
+      <td class="border"><input name="email" type="text" id="email" class="biaodan" value="<?php echo $row["email"]?>" size="45" maxlength="255" /></td>
     </tr>
     <tr> 
-      <td align="right" class="border2"><?php echo $f_array[17]?><font color="#FF0000">*</font></td>      
-            <td class="border2"><input name="yzm" type="text" class="biaodan2" id="yzm" tabindex="10" value="" size="10" maxlength="50" style="width:60px"/>
+      <td align="right" class="border2"><?php echo $f_array[17]?></td>      
+            <td class="border2"><input name="yzm" type="text" class="biaodan" id="yzm" tabindex="10" value="" size="10" maxlength="50" style="width:60px"/>
               <img src="/one/code_math.php" align="absmiddle" id="getcode_math" title="<?php echo $f_array[18]?>" /></td>
     </tr>
     <tr> 
@@ -213,7 +214,9 @@ new PCAS('province', 'city', 'xiancheng', '<?php echo @$_SESSION['province']?>',
 </div>
 </div>
 </div>
+</div>
 <?php
+unset ($f_array);
 mysql_close($conn);
 session_write_close();
 ?>

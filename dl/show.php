@@ -128,8 +128,8 @@ break;
 case "No";
 	if (!isset($_COOKIE["UserName"]) || $_COOKIE["UserName"]=="") {
 	$str=$str."<div class='boxin'>";	
-	$str=$str."联系方式登陆后才能查看！<br>";
-	$str=$str."如果您是本站会员请 <a href='javascript:' onClick=\"MsgBox('用户登陆','/user/login2.php?fromurl=http://".$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI']."',360,196,1)\"><strong>登陆</strong></a>；";//不要设太宽，有手机用户
+	$str=$str."联系方式登录后才能查看！<br>";
+	$str=$str."如果您是本站会员请 <a href='javascript:' onClick=\"MsgBox('用户登录','/user/login2.php?fromurl=http://".$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI']."',360,196,1)\"><strong>登录</strong></a>；";//不要设太宽，有手机用户
 	$str=$str."如果不是可以 <a href=/reg/userreg.php target=_parent><strong>免费注册</strong></a> 成为本站会员。";
 	$str=$str."</div>";
 	}else{

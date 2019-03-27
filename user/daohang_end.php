@@ -8,7 +8,7 @@ include("check.php");
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=EmulateIE7" />
 <title></title>
-<link href="style.css" rel="stylesheet" type="text/css">
+<link href="style/<?php echo siteskin_usercenter?>/style.css" rel="stylesheet" type="text/css">
 </head>
 <body>
 <div class="main">
@@ -22,11 +22,8 @@ include("left.php");
 ?>
 </div>
 <div class="right">
-<table width="100%" border="0" cellpadding="5" cellspacing="0">
-  <tr> 
-    <td class="border"> <table width="100%" height="60" border="0" cellpadding="10" cellspacing="0" bgcolor="#FFFFFF">
-        <tr> 
-          <td class="px14"> 
+<div class="content">
+          <div class="box"> 
             <?php echo "<b>".$username."</b>"?>
             恭喜您成为本站用户！<br>
             从现在起，您便拥有一个永不落幕的网上展厅！<br>
@@ -42,12 +39,8 @@ include("left.php");
 	}
 mysql_close($conn); 
 ?>
-			
-          </td>
-        </tr>
-      </table></td>
-  </tr>
-</table>
+</div>
+</div>      
 </div>
 </div>
 </div>

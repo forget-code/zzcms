@@ -54,7 +54,7 @@ function changelocation(locationid)
         }
     }</script>
       <select name="b"  id="b" onchange="changelocation(document.myform.b.options[document.myform.b.selectedIndex].value)" style="width:180px" class="biaodan">
-        <option value="" selected="selected">请选择职位大类</option>
+        <option value="" selected="selected">请选择大类</option>
         <?php
 	$sql = "select * from zzcms_zsclass where  parentid='A' order by xuhao asc";
     $rs=mysql_query($sql);
@@ -68,7 +68,7 @@ function changelocation(locationid)
   </tr>
   <tr>
     <td><select name="s" style="width:180px" class="biaodan">
-      <option value="">请选择职位小类</option>
+      <option value="">请选择小类</option>
       <?php
 $sql="select * from zzcms_zsclass  order by xuhao asc";
 $rs=mysql_query($sql);

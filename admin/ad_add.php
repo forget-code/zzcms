@@ -11,7 +11,7 @@ include("admin.php");
 if (isset($_SESSION["link"])){
 $slink=$_SESSION["link"];
 }else{
-$slink="";
+$slink="javascript:void(0)";
 }
 if (isset($_SESSION["imgwidth"])){
 $simgwidth=$_SESSION["imgwidth"];
@@ -78,8 +78,7 @@ subcat[<?php echo $count?>] = new Array("<?php echo trim($row["classname"])?>","
         ?>
 onecount=<?php echo $count ?>;
 
-function changelocation(locationid)
-    {
+function changelocation(locationid){
     document.myform.smallclassid.length = 1; 
     var locationid=locationid;
     var i;

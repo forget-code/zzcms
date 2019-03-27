@@ -19,11 +19,13 @@ checkadminisdo("dl");
 $id="";
 if(!empty($_POST['id'])){
     for($i=0; $i<count($_POST['id']);$i++){
-    $id=$id.($_POST['id'][$i].',');
-    }
+    $ids=$_POST['id'][$i];
+	$ids=explode("|",$ids);
+	//$id=$ids[0];
+	$id=$id.($ids[0].',');
+	}
 	$id=substr($id,0,strlen($id)-1);//去除最后面的","
-}
-if ($id==""){
+}else{
 echo "<script lanage='javascript'>alert('操作失败！至少要选中一条信息。');window.opener=null;window.open('','_self');window.close()</script>";
 exit;
 }
@@ -49,7 +51,7 @@ $row=mysql_num_rows($rs);
 		}elseif ($sex==0) {
 			$sex="女士";
 		}
-		$msg = $somane .$sex."您好：有人在".sitename."上给您留言想要"channeldl.$row["cp"]."请登陆网站查看详情,网址：".siteurl."你在本站注册的用户名是：".$row["saver"];		$msg = iconv("UTF-8","GBK",$msg);
+		$msg = $somane .$sex."您好：有人在".sitename."上给您留言想要".channeldl.$row["cp"]."请登录网站查看详情,网址：".siteurl."你在本站注册的用户名是：".$row["saver"];		$msg = iconv("UTF-8","GBK",$msg);
 		//=============== 发 信 ================
 		$result = sendSMS($smsusername,$smsuserpass,$fbr_mobile,$msg,$apikey);
 		echo $result."<br>";	

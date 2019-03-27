@@ -19,8 +19,7 @@ function mysub(){
 	esave.style.visibility="visible";
 }
 function checkform(){
-if (document.form1.flvurl.value=="")
-  {
+if (document.form1.flvurl.value==""){
     alert("此处不能为空！");
 	document.form1.flvurl.focus();
 	return false;

@@ -11,7 +11,7 @@ $f_array=explode("|||",$fcontent) ;
 <title></title>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=EmulateIE7" />
-<link href="style.css" rel="stylesheet" type="text/css">
+<link href="style/<?php echo siteskin_usercenter?>/style.css" rel="stylesheet" type="text/css">
 <script language = "JavaScript">
 function CheckForm(){
 <?php echo $f_array[0]?>    
@@ -30,6 +30,7 @@ include("left.php");
 ?>
 </div>
 <div class="right">
+<div class="content">
 <div class="admintitle"><?php echo $f_array[1]?> </div>
 <?php
 if (isset($_GET["id"])){
@@ -72,7 +73,7 @@ document.getElementById("showimg").innerHTML="<img src='../"+sd+"' width=120>";
 }
 }
 </script>
-              <table width="120" height="120" border="0" cellpadding="5" cellspacing="1" bgcolor="#999999">
+              <table width="120" height="120" border="0" cellpadding="5" cellspacing="1" bgcolor="#cccccc">
                 <tr> 
                   <td align="center" bgcolor="#FFFFFF" id="showimg" onclick='showtxt()'> 
                     <?php
@@ -90,7 +91,7 @@ document.getElementById("showimg").innerHTML="<img src='../"+sd+"' width=120>";
     <tr> 
       <td align="right" class="border2"><?php echo $f_array[4]?></td>
       <td height="30" class="border2">
-<input name="title" type="text" id="title" value="<?php echo $row["title"]?>"> </td>
+<input name="title" type="text" id="title" value="<?php echo $row["title"]?>" class="biaodan"> </td>
     </tr>
     <tr> 
       <td class="border">&nbsp;</td>
@@ -99,11 +100,13 @@ document.getElementById("showimg").innerHTML="<img src='../"+sd+"' width=120>";
   </table>
 	
   </form>
- </div>
+</div>
+</div>
 </div>
 </div>
 <?php
 mysql_close($conn);
+unset ($f_array);
 ?> 
 </body>
 </html>

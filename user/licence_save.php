@@ -11,7 +11,7 @@ $f_array=explode("|||",$fcontent) ;
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=EmulateIE7" />
 <title></title>
-<link href="style.css" rel="stylesheet" type="text/css">
+<link href="style/<?php echo siteskin_usercenter?>/style.css" rel="stylesheet" type="text/css">
 <?php
 if( isset($_GET["page"]) && $_GET["page"]!="") {$page=$_GET['page'];}else{$page=1;}
 $title=trim($_POST["title"]);	
@@ -54,8 +54,8 @@ include("left.php");
 ?>
 </div>
 <div class="right">
-<br><br>
-<table width="400" border="0" align="center" cellpadding="0" cellspacing="0">
+<div class="content">
+<table width="400" border="0" align="center" cellpadding="5" cellspacing="0">
   <tr>
     <td class="tstitle"><?php
 	if ($_REQUEST["action"]=="add") {
@@ -65,23 +65,24 @@ include("left.php");
 	  }else{
 	  echo $f_array[3];
 	  }
-     ?>
-    </td>
+     ?>    </td>
   </tr>
   <tr>
-    <td><table width="100%" border="0" cellspacing="0" cellpadding="3">
+    <td align="center" class="border3"><table width="100%" border="0" cellspacing="0" cellpadding="3">
       <tr bgcolor="#FFFFFF">
         <td width="25%" align="right" bgcolor="#FFFFFF"><strong><?php echo $f_array[4]?></strong></td>
         <td width="75%"><?php echo $title?></td>
       </tr>
-    </table></td>
-  </tr>
-  <tr>
-    <td align="center"  class="border"><a href="licence_add.php"><?php echo $f_array[5]?></a> | <a href="licence.php?page=<?php echo $page?>"><?php echo $f_array[6]?></a></td>
+    </table>      <a href="licence_add.php"><?php echo $f_array[5]?></a> | <a href="licence.php?page=<?php echo $page?>"><?php echo $f_array[6]?></a></td>
   </tr>
 </table>
 </div>
 </div>
 </div>
+</div>
 </body>
 </html>
+<?php
+mysql_close($conn);
+unset ($f_array);
+?>

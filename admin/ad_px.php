@@ -8,11 +8,8 @@ include ("admin.php");
 <link href="style.css" rel="stylesheet" type="text/css">
 <script language="JavaScript" src="/js/gg.js"></script>
 </head>
-
 <body>
 <?php
-
-checkadminisdo("adv");
 if (isset($_REQUEST["b"])){
 $b=$_REQUEST["b"];
 }else{
@@ -26,6 +23,7 @@ $s="";
 }
 
 if (@$_REQUEST["action"]=="px"){
+checkadminisdo("adv");
 if ($s==''){
 echo "<script>alert('请先选择广告小类别，只能在某一个小类别下排序');history.back()</script>";
 exit;
@@ -45,11 +43,7 @@ mysql_query("update zzcms_ad set xuhao=$xuhao where id=".$row['id']."");
 }
 }
 ?>
-<table width="100%" border="0" cellpadding="0" cellspacing="0">
-  <tr> 
-    <td class="admintitle">广告排序</td>
-  </tr>
-</table>
+<div class="admintitle">广告排序</div>
 <table width="100%" border="0" cellpadding="5" cellspacing="0">
   <tr> 
     <td class="border"><table width="100%" border="0" cellpadding="5" cellspacing="0" bgcolor="#FFFFFF">

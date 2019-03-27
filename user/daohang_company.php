@@ -11,7 +11,7 @@ $f_array=explode("|||",$fcontent) ;
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=EmulateIE7" />
 <title></title>
-<link href="style.css" rel="stylesheet" type="text/css">
+<link href="style/<?php echo siteskin_usercenter?>/style.css" rel="stylesheet" type="text/css">
 <?php
 //本页用于初次注册本站的公司用户来完善公司信息（公司简介及公司形象图片信息）
 	if (isset($_REQUEST['action'])){
@@ -62,48 +62,28 @@ include("left.php");
 ?>
 </div>
 <div class="right">
+<div class="content">
 <div class="admintitle"><?php echo $f_array[4]?></div>
 <?php
 $sql="select * from zzcms_user where username='" .$username. "'";
 $rs=mysql_query($sql);
 $row=mysql_fetch_array($rs);
+
+if ($row['logins']==0) {
+echo "<div class='box'> 您好！<b>".$username."</b>".$f_array[5]."</div>";
+}else{
+echo "<div class='box'>".$f_array[6]."</div>";
+}
 ?>
-<table width="100%" border="0" cellpadding="5" cellspacing="1">
-  <tr> 
-    <td class="border"> 
-	<?php
-	if ($row['logins']==0) {
-	?>
-	<table width="100%" height="60" border="0" cellpadding="10" cellspacing="0" bgcolor="#FFFFFF">
-        <tr> 
-          <td class="px14"> 
-            <?php
-echo "您好！<b>".$username."</b>".$f_array[5]?>
-           </td>
-        </tr>
-      </table>
-	  <?php
-	  }else{
-	  ?>
-      <table width="100%" height="60" border="0" cellpadding="10" cellspacing="0" bgcolor="#FFFFCC">
-        <tr> 
-          <td class="px14"><?php echo $f_array[6]?></td>
-        </tr>
-      </table>
-	  <?php
-	  }
-	  ?>
-	  </td>
-  </tr>
-</table>
+
 <FORM name="myform" action="?action=modify" method="post" onSubmit="return CheckForm();">
         <table width="100%" border="0" cellpadding="3" cellspacing="1">
           <tr> 
             <td align="right" class="border2"> <?php echo $f_array[7]?></td>
                   <td class="border2">
-<select name="province" id="province"></select>
-<select name="city" id="city"></select>
-<select name="xiancheng" id="xiancheng"></select>
+<select name="province" id="province" class="biaodan"></select>
+<select name="city" id="city" class="biaodan"></select>
+<select name="xiancheng" id="xiancheng" class="biaodan"></select>
 <script src="/js/area.js"></script>
 <script type="text/javascript">
 new PCAS('province', 'city', 'xiancheng', '<?php echo $row['province']?>', '<?php echo $row["city"]?>', '<?php echo $row["xiancheng"]?>');
@@ -113,13 +93,13 @@ new PCAS('province', 'city', 'xiancheng', '<?php echo $row['province']?>', '<?ph
           <tr > 
             <td align="right" class="border"><?php echo $f_array[8]?></td>
             <td class="border"> 
-              <input name="address" id="address" tabindex="4" value="<?php echo $row['address']?>" size="30" maxlength="50"> 
+              <input name="address" id="address" tabindex="4" class="biaodan" value="<?php echo $row['address']?>" size="30" maxlength="50"> 
             </td>
           </tr>
           <tr > 
             <td align="right" class="border2"><?php echo $f_array[9]?></td>
             <td class="border2"> 
-              <input name="homepage" id="homepage" value="<?php if ($row["homepage"]<>'') { echo  $row["homepage"] ;}else{ echo siteurl.getpageurl('zt',$row['id']);}?>" tabindex="5" size="30" maxlength="100"></td>
+              <input name="homepage" id="homepage" class="biaodan" value="<?php if ($row["homepage"]<>'') { echo  $row["homepage"] ;}else{ echo siteurl.getpageurl('zt',$row['id']);}?>" tabindex="5" size="30" maxlength="100"></td>
           </tr>
           <tr> 
             <td align="right" class="border"><?php echo $f_array[10]?></td>
@@ -152,7 +132,7 @@ function changelocation(locationid){
             }        
         }
     }</script>
-      <select name="b" size="1" id="b" onchange="changelocation(document.myform.b.options[document.myform.b.selectedIndex].value)">
+      <select name="b" size="1" id="b" class="biaodan" onchange="changelocation(document.myform.b.options[document.myform.b.selectedIndex].value)">
         <option value="" selected="selected"><?php echo $f_array[11]?></option>
         <?php
 	$sqln = "select * from zzcms_userclass where  parentid='0' order by xuhao asc";
@@ -164,7 +144,7 @@ function changelocation(locationid){
 				}
 				?>
       </select>
-	  <select name="s">
+	  <select name="s" class="biaodan">
       <option value="0"><?php echo $f_array[12]?></option>
       <?php	  
 $sqln="select * from zzcms_userclass where parentid='" .$row["bigclassid"]."' order by xuhao asc";
@@ -183,7 +163,7 @@ while($rown = mysql_fetch_array($rsn)){
 		   <?php echo $f_array[13]?><input name="oldcontent" type="hidden" id="oldcontent" value="<?php echo $row["content"]?>">
 		   </td>
             <td width="83%" class="border2"> 
-              <textarea name="content" id="content"><?php echo $row["content"]?></textarea> 
+              <textarea name="content" id="content" class="biaodan" style="height:auto"><?php echo $row["content"]?></textarea> 
 			   <script type="text/javascript" src="/3/ckeditor/ckeditor.js"></script>
 			  <script type="text/javascript">CKEDITOR.replace('content');</script> 
             </td>
@@ -205,7 +185,7 @@ document.getElementById("showimg").innerHTML="<img src='"+sd+"' width=120>";
 }
 }
 </script>
-	  <table width="120" height="120" border="0" cellpadding="5" cellspacing="1" bgcolor="#999999">
+	  <table width="120" height="120" border="0" cellpadding="5" cellspacing="1" bgcolor="#cccccc">
           <tr align="center" bgcolor="#FFFFFF"> 
             <td id="showimg" onClick="showtxt()"> <input name="Submit2" type="button"  value="<?php echo $f_array[15]?>" /></td>
           </tr>
@@ -223,12 +203,12 @@ document.getElementById("showimg").innerHTML="<img src='"+sd+"' width=120>";
           </tr>
           <tr > 
             <td align="right" class="border"><?php echo $f_array[19]?></td>
-            <td class="border"> <input name="qq" id="qq" value="<?php echo $row['qq']?>" tabindex="11" size="30" maxLength="50"></td>
+            <td class="border"> <input name="qq" id="qq" class="biaodan" value="<?php echo $row['qq']?>" tabindex="11" size="30" maxLength="50"></td>
           </tr>
           <tr > 
             <td align="right" class="border2"><?php echo $f_array[20]?></td>
             <td class="border2"> 
-              <input name="mobile" id="mobile" value="<?php echo $row['mobile']?>" tabindex="12" size="30" maxLength="50"></td>
+              <input name="mobile" id="mobile" class="biaodan" value="<?php echo $row['mobile']?>" tabindex="12" size="30" maxLength="50"></td>
           </tr>
           <tr> 
             <td class="border">&nbsp;</td>
@@ -240,9 +220,11 @@ document.getElementById("showimg").innerHTML="<img src='"+sd+"' width=120>";
 </div>
 </div>
 </div>
+</div>
 </body>
 </html>
 <?php
 }
 mysql_close($conn);
+unset ($f_array);
 ?>

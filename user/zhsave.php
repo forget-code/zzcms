@@ -11,7 +11,7 @@ $f_array=explode("|||",$fcontent) ;
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=EmulateIE7" />
 <title></title>
-<link href="style.css" rel="stylesheet" type="text/css">
+<link href="style/<?php echo siteskin_usercenter?>/style.css" rel="stylesheet" type="text/css">
 <?php
 if (check_usergr_power("zh")=="no" && $usersf=='个人'){
 echo $f_array[0];
@@ -55,8 +55,8 @@ include("left.php");
 ?>
 </div>
 <div class="right">
-<br><br>
-<table width="400" border="0" align="center" cellpadding="0" cellspacing="0">
+<div class="content">
+<table width="400" border="0" align="center" cellpadding="5" cellspacing="0">
   <tr> 
     <td class="tstitle"> <?php
 	if ($_REQUEST["action"]=="add") {
@@ -65,32 +65,29 @@ include("left.php");
 	  echo $f_array[2];
 	  }
 	  echo $f_array[3];
-     ?>
-      </td>
+     ?>      </td>
   </tr>
   <tr> 
-          <td><table width="100%" border="0" cellspacing="0" cellpadding="5">
-              <tr bgcolor="#FFFFFF"> 
-                <td width="25%" align="right" bgcolor="#FFFFFF"><?php echo $f_array[4]?> </td>
-                <td width="75%"><?php echo $title?></td>
-              </tr>
-              <tr bgcolor="#FFFFFF"> 
-                <td align="right" bgcolor="#FFFFFF"><?php echo $f_array[5]?></td>
-                <td><?php echo  $address?></td>
-              </tr>
-              <tr bgcolor="#FFFFFF"> 
-                <td align="right" bgcolor="#FFFFFF"><?php echo $f_array[6]?></td>
-                <td><?php echo $timestart?>-<?php echo $timeend?></td>
-              </tr>
-            </table></td>
-  </tr>
-  <tr> 
-    <td><table width="100%" border="0" cellpadding="5" cellspacing="1">
+    <td class="border3"><table width="100%" border="0" cellspacing="0" cellpadding="5">
+      <tr bgcolor="#FFFFFF">
+        <td width="25%" align="right" bgcolor="#FFFFFF"><?php echo $f_array[4]?> </td>
+        <td width="75%"><?php echo $title?></td>
+      </tr>
+      <tr bgcolor="#FFFFFF">
+        <td align="right" bgcolor="#FFFFFF"><?php echo $f_array[5]?></td>
+        <td><?php echo  $address?></td>
+      </tr>
+      <tr bgcolor="#FFFFFF">
+        <td align="right" bgcolor="#FFFFFF"><?php echo $f_array[6]?></td>
+        <td><?php echo $timestart?>-<?php echo $timeend?></td>
+      </tr>
+    </table>
+    <table width="100%" border="0" cellpadding="5" cellspacing="1" class="bgcolor">
         <tr> 
-          <td width="120" align="center" class="border"><a href="zhadd.php"><?php echo $f_array[7]?></a></td>
-                <td width="120" align="center" class="border"><a href="zhmodify.php?id=<?php echo $id?>"><?php echo $f_array[8]?></a></td>
-                <td width="120" align="center" class="border"><a href="zhmanage.php?page=<?php echo $page?>"><?php echo $f_array[9]?></a></td>
-                <td width="120" align="center" class="border"><a href="<?php echo getpageurl("zh",$id)?>" target="_blank"><?php echo $f_array[10]?></a></td>
+          <td width="120" align="center" class="bgcolor1"><a href="zhadd.php"><?php echo $f_array[7]?></a></td>
+                <td width="120" align="center" class="bgcolor1"><a href="zhmodify.php?id=<?php echo $id?>"><?php echo $f_array[8]?></a></td>
+                <td width="120" align="center" class="bgcolor1"><a href="zhmanage.php?page=<?php echo $page?>"><?php echo $f_array[9]?></a></td>
+                <td width="120" align="center" class="bgcolor1"><a href="<?php echo getpageurl("zh",$id)?>" target="_blank"><?php echo $f_array[10]?></a></td>
         </tr>
       </table></td>
   </tr>
@@ -98,6 +95,7 @@ include("left.php");
 <?php
 mysql_close($conn);
 ?>
+</div>
 </div>
 </div>
 </div>

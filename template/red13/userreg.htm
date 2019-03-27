@@ -217,7 +217,14 @@ $(document).ready(function(){
 	$("#email").blur(function() { //jquery 中change()函数  
 	$("#ts_email").load(encodeURI("/reg/userregcheck.php?action=checkemail&id="+$("#email").val()));
 	});   
-});  
+}); 
+
+function showItem(obj){
+	if(obj.checked == true)
+		document.getElementById("reg_button").style.display="block";
+	else
+		document.getElementById("reg_button").style.display="none";
+}  
 </script> 
 </head>
 <body>
@@ -225,7 +232,7 @@ $(document).ready(function(){
 {#sitetop}
 <div class="bordercccccc"> 
     <div class="titlebig"> 
-      <span><a href="/user/login.php">已有帐号，现在登陆</a></span>
+      <span><a href="/user/login.php">已有帐号，现在登录</a></span>
 	  用户注册
 	  </div>
        <form name="userreg" action="/reg/userregpost.php" method="post" onSubmit="return Checkall()">
@@ -298,7 +305,7 @@ $(document).ready(function(){
         </tr>
         <tr> 
           <td height="40" align="right"></td>
-          <td> <input name="allow" id="allow" type="checkbox" value="checkbox" checked="checked" onclick="check_tk()"/>
+          <td> <input name="allow" id="allow" type="checkbox" value="checkbox" checked="checked" onclick="check_tk();showItem(this)"/>
 		  <input name="tk2" id="tk2" style="display:none" />
           <label for="allow">我接受</label> <a href="/one/agreement.php" target="_blank">{#sitename}服务条款(点击阅读)</a>
 		  <span id="ts_tk"></span>
@@ -306,7 +313,7 @@ $(document).ready(function(){
         </tr>
         <tr>
           <td height="35" align="right">&nbsp;</td>
-          <td><input name="Submit" type="submit" id="Submit3" class="button_big" value="提交" tabindex="22" /></td>
+          <td><input name="Submit" type="submit" class="button_big" value="提交" tabindex="22" id="reg_button" style="display:block"/></td>
         </tr>
       </table> 	   
     </form>

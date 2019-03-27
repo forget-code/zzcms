@@ -11,7 +11,7 @@ $f_array=explode("\n",$fcontent) ;
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=EmulateIE7" />
 <title></title>
-<link href="style.css" rel="stylesheet" type="text/css">
+<link href="style/<?php echo siteskin_usercenter?>/style.css" rel="stylesheet" type="text/css">
 <script language="JavaScript" src="/js/gg.js"></script>
 </head>
 <body>
@@ -26,6 +26,7 @@ include("left.php");
 ?>
 </div>
 <div class="right">
+<div class="content">
 <div class="admintitle">
 <span><form name="form1" method="post" action="?"><?php echo $f_array[0]?><input name="keyword" type="text" id="keyword"> <input type="submit" name="Submit" value="<?php echo $f_array[1]?>"></form></span><?php echo $f_array[2]?></div>
 <?php
@@ -60,7 +61,7 @@ echo $f_array[3];
 }else{
 ?>
 <form name="myform" method="post" action="del.php">
-        <table width="100%" border="0" cellpadding="5" cellspacing="1">
+        <table width="100%" border="0" cellpadding="5" cellspacing="1" class="bgcolor">
           <tr> 
            <?php echo $f_array[4]?>
           </tr>
@@ -68,15 +69,15 @@ echo $f_array[3];
 while($row = mysql_fetch_array($rs)){
 ?>
           <tr class="bgcolor1" onMouseOver="fSetBg(this)" onMouseOut="fReBg(this)"> 
-            <td width="282"><a href="<?php echo getpageurl("zh",$row["id"])?>" target="_blank"><?php echo $row["title"]?></a></td>
-            <td width="153" align="center"><?php echo $row["sendtime"]?></td>
-            <td width="222" align="center"> 
+            <td><a href="<?php echo getpageurl("zh",$row["id"])?>" target="_blank"><?php echo $row["title"]?></a></td>
+            <td align="center"><?php echo $row["sendtime"]?></td>
+            <td align="center"> 
               <?php 
 	if ($row["passed"]==1 ){ echo $f_array[5];}else{ echo $f_array[6];}
 	  ?>            </td>
-            <td width="64" align="center" > 
+            <td align="center" > 
               <a href="zhmodify.php?id=<?php echo $row["id"]?>&page=<?php echo $page?>"><?php echo $f_array[7]?></a></td>
-            <td width="65" align="center" ><input name="id[]" type="checkbox" id="id" value="<?php echo $row["id"]?>" /></td>
+            <td align="center" ><input name="id[]" type="checkbox" id="id" value="<?php echo $row["id"]?>" /></td>
           </tr>
           <?php
 }
@@ -94,7 +95,9 @@ while($row = mysql_fetch_array($rs)){
 <?php
 }
 mysql_close($conn);
+unset ($f_array);
 ?>
+</div>
 </div>
 </div>
 </div>

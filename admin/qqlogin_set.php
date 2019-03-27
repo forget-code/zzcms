@@ -27,7 +27,7 @@ if (document.myform.appid.value==""){
 </script>
 </head>
 <body>
-<div class="admintitle">QQ登陆设置</div>
+<div class="admintitle">QQ登录设置</div>
 <?php
 if (isset($_POST["action"])){
 $action=$_POST["action"];

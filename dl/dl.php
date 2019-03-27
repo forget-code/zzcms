@@ -63,10 +63,10 @@ $dl_sendmail_url="form1.action='/dl/dl_sendmail.php'";
 $dl_sendsms_url="form1.action='/dl/dl_sendsms.php'";
 $buttontype="submit";
 }else{
-$dl_download_url="MsgBox('用户登陆','/user/login2.php?fromurl=http://".$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI']."',460,196,1)";
-$dl_print_url="MsgBox('用户登陆','/user/login2.php?fromurl=http://".$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI']."',460,196,1)";
-$dl_sendmail_url="MsgBox('用户登陆','/user/login2.php?fromurl=http://".$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI']."',460,196,1)";
-$dl_sendsms_url="MsgBox('用户登陆','/user/login2.php?fromurl=http://".$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI']."',460,196,1)";
+$dl_download_url="MsgBox('用户登录','/user/login2.php?fromurl=http://".$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI']."',460,196,1)";
+$dl_print_url="MsgBox('用户登录','/user/login2.php?fromurl=http://".$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI']."',460,196,1)";
+$dl_sendmail_url="MsgBox('用户登录','/user/login2.php?fromurl=http://".$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI']."',460,196,1)";
+$dl_sendsms_url="MsgBox('用户登录','/user/login2.php?fromurl=http://".$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI']."',460,196,1)";
 $buttontype="button";
 }
 $strout=str_replace("{#dl_download_url}",$dl_download_url,$strout) ;
@@ -182,14 +182,14 @@ if (strpos($strout,"{@")!==false || strpos($strout,"{#")!==false) $strout=showla
 echo  $strout;
 if (html_update_time!=0 ){
 	if ($b<>''){
-	$fpath=zzcmsroot."html/".$siteskin."/dl/".$b."/".$page.".html";
+		$fpath=zzcmsroot."html/".$siteskin."/dl/".$b."/".$page.".html";
 		if (!file_exists(zzcmsroot."html/".$siteskin."/dl/".$b)) {
 		mkdir(zzcmsroot."html/".$siteskin."/dl/".$b,0777, true);
 		}
 	}else{
 		$fpath=zzcmsroot."html/".$siteskin."/dl/".$page.".html";
 	}
-	$fp=fopen($fpath,"w+");//fopen()的其它开关请参看相关函数
+	$fp=@fopen($fpath,"w+");//fopen()的其它开关请参看相关函数
 	fputs($fp,stripfxg($strout));//写入文件
 	fclose($fp);
 }

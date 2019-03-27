@@ -4,7 +4,7 @@ $fcontent=file_get_contents($fpath);
 $f_array_top=explode("\n",$fcontent) ;
 ?>
 <div class="menu">
-  <div class="system_logo"><img src="image/manage_userCenter.gif" /></div>
+  <div class="system_logo"></div>
   <div id="tabs"> 
     <ul>
 	 <?php 
@@ -33,7 +33,7 @@ $f_array_top=explode("\n",$fcontent) ;
 	</div>
 </div>
 <div style="clear:both"></div>
-<div class="userbar"> <span style="float:right"> [ <a href="/<?php echo getpageurl3("index")?>" target="_top"><img src="/image/home.gif" border="0"> 
+<div class="userbar"> <span style="float:right"> [ <a href="/<?php echo getpageurl3("index")?>" target="_top"> 
   <?php echo $f_array_top[8]?></a> 
   <?php
 	if (check_usergr_power('zt')=='yes' || $usersf=='公司'){

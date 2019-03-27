@@ -14,7 +14,7 @@ $content=substr(trim($_POST["content"]),0,200);
 $face=@$_POST["face"];
 $user=trim($_POST["user"]);
 if ($user==''){
-$user='未登陆用户';
+$user='未登录用户';
 }
 $ip=trim($_POST["ip"]);
 mysql_query("insert into zzcms_pinglun (about,content,face,username,ip,sendtime)values('$about','$content','$face','$user','$ip','".date('Y-m-d H:i:s')."')");
@@ -68,7 +68,7 @@ $station=getstation($bigclassid,$bigclassname,$smallclassid,$smallclassname,"","
 $pagetitle=$title.zxshowtitle;
 $pagekeywords=$keywords.zxshowkeyword;
 $pagedescription=$description.zxshowdescription;
-$zxsm="来源：".$laiyuan." 发布日期：".$sendtime." 发布者：".$editor." 共阅".$hit."次　字体：<a href='javascript:fontZoom(16)'>大</a> <a href='javascript:fontZoom(14)'>中</a> <a href='javascript:fontZoom(12)'>小</a>"; 
+$zxsm="来源：".$laiyuan."&nbsp;&nbsp;发布日期：".date('Y-m-d',strtotime($sendtime))."&nbsp;&nbsp;发布者：".$editor."&nbsp;&nbsp;共阅".$hit."次"; 
 
 function Payjf(){
 global $content,$zxid,$jifen,$editor;
@@ -149,7 +149,7 @@ return $str;
 
 $msg="<b>[".$groupname."]才能查看</b><br/>";
 $msg1="需要办理[".$groupname."] 请联系本站客服";
-$msg2="如果您是[".$groupname."]请 <a href='javascript:' onClick=\"MsgBox('用户登陆','../user/login2.php?fromurl=http://".$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI']."',460,196,1)\"><strong>登陆</strong></a>；";
+$msg2="如果您是[".$groupname."]请 <a href='javascript:' onClick=\"MsgBox('用户登录','../user/login2.php?fromurl=http://".$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI']."',460,196,1)\"><strong>登录</strong></a>；";
 $msg2=$msg2."尚未注册的[".$groupname."]请先 <a href='/reg/userreg.php' target='_parent'><strong>注册</strong></a> 成为本站会员。然后联系客服为您办理为[".$groupname."]。方可查看本页内容。";  
 
 if ($groupid==0){

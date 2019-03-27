@@ -70,7 +70,7 @@ function showconfig(){
       <td class="border"><input name="UC_KEY" type="text" id="zxshowtitle2" value="<?php echo UC_KEY?>" size="50" maxlength="255"></td>
     </tr>
     <tr> 
-      <td align="right" class="border"> UCenter 的 URL 地址, 在调用头像时依赖此常量(必填，否则不能同步登陆)</td>
+      <td align="right" class="border"> UCenter 的 URL 地址, 在调用头像时依赖此常量(必填，否则不能同步登录)</td>
       <td class="border"><input name="UC_API" type="text" id="companylisttitle2" value="<?php echo UC_API?>" size="50" maxlength="255"></td>
     </tr>
     <tr> 

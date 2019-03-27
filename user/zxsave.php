@@ -12,7 +12,7 @@ $f_array=explode("|||",$fcontent) ;
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=EmulateIE7" />
 <title></title>
-<link href="style.css" rel="stylesheet" type="text/css">
+<link href="style/<?php echo siteskin_usercenter?>/style.css" rel="stylesheet" type="text/css">
 <?php
 if (isset($_POST["page"])){//返回列表页用
 $page=$_POST["page"];
@@ -92,32 +92,29 @@ include("left.php");
 ?>
 </div>
 <div class="right">
-<br><br>
-<table width="400" border="0" align="center" cellpadding="0" cellspacing="0">
+<div class="content">
+<table width="400" border="0" align="center" cellpadding="5" cellspacing="0">
   <tr> 
     <td class="tstitle"> 
 	<?php
 	if ($isok) {echo $f_array[1];}else{echo $f_array[2];}
-     ?>
-      </td>
+     ?>      </td>
   </tr>
   <tr> 
-    <td><table width="100%" border="0" cellspacing="0" cellpadding="3">
-              <tr bgcolor="#FFFFFF"> 
-                <td width="25%" align="right" bgcolor="#FFFFFF"><strong><?php echo $f_array[3]?></strong></td>
-                <td width="75%"><?php echo $title?></td>
-              </tr>
-            </table></td>
-  </tr>
-  <tr> 
-    <td><table width="100%" border="0" cellpadding="5" cellspacing="1">
+    <td class="border3"><table width="100%" border="0" cellspacing="0" cellpadding="3">
+      <tr bgcolor="#FFFFFF">
+        <td width="25%" align="right" bgcolor="#FFFFFF"><strong><?php echo $f_array[3]?></strong></td>
+        <td width="75%"><?php echo $title?></td>
+      </tr>
+    </table>
+      <table width="100%" border="0" cellpadding="5" cellspacing="1" class="bgcolor">
         <tr> 
-          <td width="120" align="center" class="border"><a href="zxadd.php"><?php echo $f_array[4]?></a></td>
+          <td width="120" align="center" class="bgcolor1"><a href="zxadd.php"><?php echo $f_array[4]?></a></td>
 		 
-                <td width="120" align="center" class="border"><a href="zxmodify.php?id=<?php echo $id?>"><?php echo $f_array[5]?></a></td>
+                <td width="120" align="center" class="bgcolor1"><a href="zxmodify.php?id=<?php echo $id?>"><?php echo $f_array[5]?></a></td>
 				
-                <td width="120" align="center" class="border"><a href="zxmanage.php?bigclassid=<?php echo $bigclassid?>&page=<?php echo $page?>"><?php echo $f_array[6]?></a></td>
-                <td width="120" align="center" class="border"><a href="<?php echo getpageurl("zx",$id)?>" target="_blank"><?php echo $f_array[7]?></a></td>
+                <td width="120" align="center" class="bgcolor1"><a href="zxmanage.php?bigclassid=<?php echo $bigclassid?>&page=<?php echo $page?>"><?php echo $f_array[6]?></a></td>
+                <td width="120" align="center" class="bgcolor1"><a href="<?php echo getpageurl("zx",$id)?>" target="_blank"><?php echo $f_array[7]?></a></td>
         </tr>
       </table></td>
   </tr>
@@ -126,6 +123,7 @@ include("left.php");
 mysql_close($conn);
 session_write_close();
 ?>
+</div>
 </div>
 </div>
 </div>

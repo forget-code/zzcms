@@ -50,7 +50,7 @@ $skin=explode("|",$row["skin"]);
 $skin=@$skin[1];//列表页是第二个参数
 }
 }
-if ($skin==''){
+if (!isset($skin)){
 $skin='zx_list.htm';
 }
 
@@ -125,7 +125,7 @@ $listimg="";
 if ($row["link"]<>""){
 $link=$row["link"];
 }else{
-$link=getpageurl("zx",$row["id"]);
+$link=getpageurl("zx",$row["id"]);	
 }
 if ($row["img"]<>"") {
 	$shuxing="<font color='#FF6600'>(图)</font>";
@@ -134,11 +134,12 @@ if ($row["img"]<>"") {
 }	
 
 $list2 = $list2. str_replace("{#link}",$link,$list) ;
+$list2 =str_replace("{#id}",$row["id"],$list2) ;
 $list2 =str_replace("{#title}",cutstr($row["title"],30),$list2) ;
 $list2 =str_replace("{#imgbig}",$row["img"],$list2) ;
 $list2 =str_replace("{#img}",getsmallimg($row["img"]),$list2) ;
 $list2 =str_replace("{#content}",$row["content"],$list2) ;
-$list2 =str_replace("{#sendtime}",date("y-m-d",strtotime($row["sendtime"])),$list2) ;
+$list2 =str_replace("{#sendtime}",date("Y-m-d",strtotime($row["sendtime"])),$list2) ;
 $list2 =str_replace("{#listimg}" ,$listimg,$list2) ;
 $list2 =str_replace("{#shuxing}" ,$shuxing,$list2) ;
 $i=$i+1;
@@ -154,7 +155,7 @@ $strout=str_replace("{#pagedescription}",$pagedescription,$strout);
 $strout=str_replace("{#station}",getstation($b,$bigclassname,$s,$smallclassname,"","","zx"),$strout) ;
 $strout=str_replace("{#showselectpage}",showselectpage("zx",$page_size,$b,"",$page),$strout);
 $strout=str_replace("{#bigclass}",zxbigclass($b,2),$strout);
-$strout=str_replace("{#smallclass}",zxsmallclass(10,$b,$s),$strout);
+$strout=str_replace("{#smallclass}",zxsmallclass($b,$s),$strout);
 $strout=str_replace("{#sitebottom}",sitebottom(),$strout);
 $strout=str_replace("{#sitetop}",sitetop(),$strout);
 $strout=showlabel($strout);

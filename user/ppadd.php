@@ -43,7 +43,7 @@ function doClick_E(o){
 	 }
 </script>
 </head>
-<link href="style.css" rel="stylesheet" type="text/css">
+<link href="style/<?php echo siteskin_usercenter?>/style.css" rel="stylesheet" type="text/css">
 <body>
 <div class="main">
 <?php
@@ -56,6 +56,7 @@ include("left.php");
 ?>
 </div>
 <div class="right">
+<div class="content">
 <div class="admintitle"><?php echo $f_array[1]?></div>
 <?php
 $tablename="zzcms_main";
@@ -64,15 +65,15 @@ include("checkaddinfo.php");
 <form  action="ppsave.php" method="post" name="myform" id="myform" onSubmit="return CheckForm();">
         <table width="100%" border="0" cellpadding="3" cellspacing="1">
           <tr> 
-            <td width="20%" align="right" class="border2" ><?php echo $f_array[2]?><font color="#FF0000">*</font></td>
-            <td class="border2" > <input name="name" type="text" id="name" onclick="javascript:if (this.value=='<?php echo $f_array[3]?>') {this.value=''};this.style.backgroundColor='';" onblur="javascript:if (this.value=='<?php echo $f_array[3]?>') {this.value=''};this.style.backgroundColor='';" size="60" maxlength="45" /></td>
+            <td width="20%" align="right" class="border2" ><?php echo $f_array[2]?></td>
+            <td class="border2" > <input name="name" type="text" id="name" class="biaodan" onclick="javascript:if (this.value=='<?php echo $f_array[3]?>') {this.value=''};this.style.backgroundColor='';" onblur="javascript:if (this.value=='<?php echo $f_array[3]?>') {this.value=''};this.style.backgroundColor='';" size="60" maxlength="45" /></td>
           </tr>
           <tr> 
-            <td align="right" valign="top" class="border"><?php echo $f_array[4]?><font color="#FF0000"> 
-              *</font></td>
-            <td valign="middle" class="border" > <table width="100%" border="0" cellpadding="5" cellspacing="1">
+            <td align="right" valign="top" class="border"><?php echo $f_array[4]?></td>
+            <td valign="middle" class="border" > 
+			<table width="100%" border="0" cellpadding="0" cellspacing="1">
                 <tr> 
-                  <td> <fieldset>
+                  <td> <fieldset class="fieldsetstyle">
                     <legend><?php echo $f_array[5]?></legend>
                     <?php
         $sql = "select * from zzcms_zsclass where parentid='A' order by xuhao asc";
@@ -104,7 +105,7 @@ echo "<div id='E_con$n' style='display:block;'>";
 }else{
 echo "<div id='E_con$n' style='display:none;'>";
 }
-echo "<fieldset><legend>".$f_array[6]."</legend>";
+echo "<fieldset class='fieldsetstyle'><legend>".$f_array[6]."</legend>";
 
 $sqln="select * from zzcms_zsclass where parentid='$row[classzm]' order by xuhao asc";
 $rsn = mysql_query($sqln,$conn); 
@@ -126,8 +127,8 @@ echo "</div>";
           </tr>
 		  
           <tr> 
-            <td align="right" class="border" ><?php echo $f_array[7]?> <font color="#FF0000">*</font></td>
-            <td class="border" > <textarea name="sm" cols="100%" rows="10" id="sm" onclick="javascript:if (this.value=='<?php echo $f_array[3]?>') {this.value=''};this.style.backgroundColor='';" onblur="javascript:if (this.value=='<?php echo $f_array[3]?>') {this.value=''};this.style.backgroundColor='';"></textarea></td>
+            <td align="right" class="border" ><?php echo $f_array[7]?></td>
+            <td class="border" > <textarea name="sm" cols="100%" rows="10" id="sm" class="biaodan" style="height:auto" onclick="javascript:if (this.value=='<?php echo $f_array[3]?>') {this.value=''};this.style.backgroundColor='';" onblur="javascript:if (this.value=='<?php echo $f_array[3]?>') {this.value=''};this.style.backgroundColor='';"></textarea></td>
           </tr>
           <tr> 
             <td align="right" class="border" ><?php echo str_replace("{#maximgsize}",maximgsize,$f_array[8])?><br /> 
@@ -145,7 +146,8 @@ document.getElementById("showimg"+num).innerHTML="<img src='"+sd+"' width=120>";
 }
 
 </script> <input name="img1" type="hidden" id="img1" value="/image/nopic.gif"/></td>
-            <td class="border" > <table height="120" border="0" cellpadding="5" cellspacing="5">
+            <td class="border" >
+			 <table height="120" border="0" cellpadding="0" cellspacing="1" bgcolor="#CCCCCC">
                 <tr align="center" bgcolor="#FFFFFF"> 
                   <td width="120" id="showimg1" onClick="showtxt(1)"> <input name="Submit2" type="button"  value="<?php echo $f_array[9]?>" /></td>
                 </tr>
@@ -161,8 +163,10 @@ document.getElementById("showimg"+num).innerHTML="<img src='"+sd+"' width=120>";
 </form>
 <?php
 session_write_close();
+unset ($f_array);
 ?>
-</div>	  
+</div>
+</div>
 </div>
 </div>
 </body>

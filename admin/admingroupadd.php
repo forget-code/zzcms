@@ -87,6 +87,13 @@ function CheckAll(form){
           <label for="special">专题类别管理</label></td>
     </tr>
     <tr>
+      <td align="right" class="border" >网刊</td>
+      <td class="border" ><input name="config[]" type="checkbox" id="wangkan" value="wangkan">
+          <label for="wangkan">网刊管理 </label>
+          <input name="config[]" id="special" type="checkbox" value="wangkan">
+          <label for="wangkan">网刊类别管理</label></td>
+    </tr>
+    <tr>
       <td align="right" class="border" >广告</td>
       <td class="border" ><input name="config[]" id="adv" type="checkbox" value="adv">
         <label for="adv">广告管理 </label>

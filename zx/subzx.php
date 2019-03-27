@@ -30,29 +30,24 @@ $str="暂无分类";
 return $str;
 }
 
-function zxsmallclass($column,$b,$s){
+function zxsmallclass($b,$s){
 if ($b<>""){
 $n=1;
 $sql="select classid,classname from zzcms_zxclass where parentid=".$b." order by xuhao";
 $rs=mysql_query($sql);
 $row=mysql_num_rows($rs);
 if ($row){
-
-$str="<table width=100% border=0 cellspacing=1 cellpadding=0 class='bgcolor3'><tr>";
+$str="";
 while($row=mysql_fetch_array($rs)){
-$str=$str."<td height=23 align='center' class='infos'>";
+$str=$str."<li>";
 if ($row["classid"]==$s){
-$str=$str. " <a href='".getpageurl2("zx",$b,$row["classid"])."'><b>".$row["classname"]."</b></a>";
+$str=$str. " <a href='".getpageurl2("zx",$b,$row["classid"])."' class='current'>".$row["classname"]."</a>";
 }else{
 $str=$str. " <a href='".getpageurl2("zx",$b,$row["classid"])."'>".$row["classname"]."</a>";
 }
-$str=$str."</td>";
-	if ($n % $column==0){
-	$str=$str. "</tr>";
-	}
+$str=$str."</li>";	
 $n=$n+1;
 }
-$str=$str."</table>";
 return $str;
 }
 }

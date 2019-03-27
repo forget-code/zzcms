@@ -9,40 +9,32 @@ include ("admin.php");
 <script type="text/javascript" src="/3/ckeditor/ckeditor.js"></script>
 <script language="javascript" src="/js/timer.js"></script>
 <script language = "JavaScript">
-function CheckForm()
-{
-if (document.myform.bigclassid.value=="")
-  {
+function CheckForm(){
+if (document.myform.bigclassid.value==""){
     alert("请选择展会类型！");
 	document.myform.bigclassid.focus();
 	return false;
   }	 	  
-if (document.myform.title.value=="")
-  {
+if (document.myform.title.value==""){
     alert("展会名称不能为空！");
 	document.myform.title.focus();
 	return false;
   }
-  if (document.myform.timestart.value=="")
-  {
+  if (document.myform.timestart.value==""){
     alert("展会开始时间不能为空！");
 	document.myform.timestart.focus();
 	return false;
   }
-  if (document.myform.timeend.value=="")
-  {
+  if (document.myform.timeend.value=="") {
     alert("展会截止时间不能为空！");
 	document.myform.timeend.focus();
 	return false;
-  }
-  return true;  
+  } 
 }    
-	</script>
+</script>
 </head>
-
 <body>
 <?php
-
 checkadminisdo("zh");
 $id=$_REQUEST["id"];
 if ($id<>""){
@@ -51,11 +43,7 @@ checkid($id);
 $id=0;
 }
 ?>
-<table width="100%" border="0" align="center" cellpadding="0" cellspacing="0">
-  <tr> 
-    <td class="admintitle">修改展会信息</td>
-  </tr>
-</table>
+<div class="admintitle">修改展会信息</div>
 <?php
 $sql="select * from zzcms_zh where id='$id'";
 $rs=mysql_query($sql);

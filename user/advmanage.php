@@ -11,8 +11,8 @@ $f_array=explode("\n",$fcontent) ;
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=EmulateIE7" />
-<title></title>
-<link href="style.css" rel="stylesheet" type="text/css">
+<title><?php echo $f_array[2]?></title>
+<link href="style/<?php echo siteskin_usercenter?>/style.css" rel="stylesheet" type="text/css">
 <script language="JavaScript" src="/js/gg.js"></script>
 </head>
 <body>
@@ -27,6 +27,7 @@ include("left.php");
 ?>
 </div>
 <div class="right">
+<div class="content">
 <div class="admintitle">
 <span>
 <form name="form1" method="post" action="?">
@@ -69,7 +70,7 @@ echo $f_array[3];
 }else{
 ?>
 <form name="myform" method="post" action="del.php">
-        <table width="100%" border="0" cellpadding="5" cellspacing="1">
+        <table width="100%" border="0" cellpadding="5" cellspacing="1" class="bgcolor">
           <tr> 
 		  <?php echo $f_array[4]?>
           </tr>
@@ -77,13 +78,13 @@ echo $f_array[3];
 while($row = mysql_fetch_array($rs)){
 ?>
           <tr class="bgcolor1" onMouseOver="fSetBg(this)" onMouseOut="fReBg(this)"> 
-            <td width="110"><?php echo $row["classname"]?></td>
-            <td width="55"><?php echo $row["title"]?> </td>
-            <td width="55"><?php echo $row["img"]?></td>
-            <td width="55" align="center"> 
+            <td><?php echo $row["classname"]?></td>
+            <td><?php echo $row["title"]?> </td>
+            <td><?php echo $row["img"]?></td>
+            <td align="center"> 
 			
               <a href="advmodify.php?id=<?php echo $row["id"]?>&page=<?php echo $page?>&bigclassid=<?php echo $bigclassid?>"><?php echo $f_array[5]?></a></td>
-            <td width="55" align="center"><input name="id[]" type="checkbox" id="id" value="<?php echo $row["id"]?>" /></td>
+            <td align="center"><input name="id[]" type="checkbox" id="id" value="<?php echo $row["id"]?>" /></td>
           </tr>
           <?php
 }
@@ -102,7 +103,9 @@ while($row = mysql_fetch_array($rs)){
 <?php
 }
 mysql_close($conn);
+unset ($f_array);
 ?>
+</div>
 </div>
 </div>
 </div>

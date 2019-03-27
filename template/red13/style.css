@@ -74,7 +74,7 @@ img{vertical-align:bottom;vertical-align:middle;vertical-align:top;border:0}
 .zsclass_b2{height:35px;line-height:35px;}/*展开的大类样式*/
 .zsclass_b2 a{color:#FF6600;}
 .zsclass_b2 h2{float:left;font-size:14px;font-weight:bold}
-.zsclass_s{display:none;position:absolute; z-index:-1;left:238px;padding:8px 16px;margin-top:-90px;border:solid 2px #e4393c;background-color:#fff;width:558px;min-height:200px;filter: alpha(opacity=100);}/*z-index 仅能在定位元素上奏效*/
+.zsclass_s{display:none;position:absolute; z-index:-1;left:238px;padding:8px 16px;margin-top:-90px;border:solid 2px #e4393c;background-color:#fff;width:618px;min-height:200px;filter: alpha(opacity=100);}/*z-index 仅能在定位元素上奏效*/
 .zsclass_s a{color:}
 .zsclass_s_li{float:left;line-height:18px;margin-bottom:5px;padding-bottom:5px;}
 .zsclass_s_name{}
@@ -272,3 +272,4 @@ background:url(image/backtotop.gif) no-repeat 0px 0px;
 .getpass_step li{float:left;margin-right:30px;padding:0px 30px 0px 10px}
 .getpass_step li span{font-size:30px}
 .getpass_step .current{background:url(image/jt_right.gif) no-repeat right center;color:#FFFFFF}
+.fieldsetstyle{border:solid 1px #dddddd;padding:10px}

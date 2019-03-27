@@ -109,8 +109,7 @@ function showconfig(){
         <input name="ztlistkeyword" type="text" id="ztlistkeyword" value="<?php echo ztlistkeyword?>" size="50" maxlength="255">
         <br>
         description<br>
-        <input name="ztlistdescription" type="text" id="ztlistdescription" value="<?php echo ztlistdescription?>" size="50" maxlength="255">
-      </td>
+        <input name="ztlistdescription" type="text" id="ztlistdescription" value="<?php echo ztlistdescription?>" size="50" maxlength="255">      </td>
     </tr>
     <tr>
       <td align="right" class="border">专题信息页</td>
@@ -121,8 +120,7 @@ function showconfig(){
         <input name="ztshowkeyword" type="text" id="ztshowkeyword" value="<?php echo ztshowkeyword?>" size="50" maxlength="255">
         <br>
         description<br>
-        <input name="ztshowdescription" type="text" id="ztshowdescription" value="<?php echo ztshowdescription?>" size="50" maxlength="255">
-      </td>
+        <input name="ztshowdescription" type="text" id="ztshowdescription" value="<?php echo ztshowdescription?>" size="50" maxlength="255">      </td>
     </tr>
     <tr> 
       <td align="right" class="border">企业列表页</td>
@@ -183,6 +181,29 @@ function showconfig(){
         <br>
         description<br>
         <input name="jobshowdescription" type="text"  value="<?php echo jobshowdescription?>" size="50" maxlength="255">      </td>
+    </tr>
+    <tr>
+      <td align="right" class="border">网刊列表页</td>
+      <td class="border"> title<br>
+          <input name="wangkanlisttitle" type="text" value="<?php echo wangkanlisttitle?>" size="50" maxlength="255">
+          <br>
+        keywords<br>
+        <input name="wangkanlistkeyword" type="text"  value="<?php echo wangkanlistkeyword?>" size="50" maxlength="255">
+        <br>
+        description<br>
+        <input name="wangkanlistdescription" type="text"  value="<?php echo wangkanlistdescription?>" size="50" maxlength="255"></td>
+    </tr>
+    <tr>
+      <td align="right" class="border">网刊信息页</td>
+      <td class="border"> title<br>
+          <input name="wangkanshowtitle" type="text"  value="<?php echo wangkanshowtitle?>" size="50" maxlength="255">
+          <br>
+        keywords<br>
+        <input name="wangkanshowkeyword" type="text"  value="<?php echo wangkanshowkeyword?>" size="50" maxlength="255">
+        <br>
+        description<br>
+        <input name="wangkanshowdescription" type="text"  value="<?php echo wangkanshowdescription?>" size="50" maxlength="255">
+      </td>
     </tr>
     <tr> 
       <td align="right" class="border">&nbsp;</td>
@@ -254,6 +275,13 @@ function SaveConfig(){
 	$fcontent=$fcontent. "define('jobshowtitle','". trim($_POST['jobshowtitle'])."') ;//jobshowtitle\n";
 	$fcontent=$fcontent. "define('jobshowkeyword','". trim($_POST['jobshowkeyword'])."') ;//jobshowkeyword\n";
 	$fcontent=$fcontent. "define('jobshowdescription','". trim($_POST['jobshowdescription'])."') ;//jobshowdescription\n";
+	
+	$fcontent=$fcontent. "define('wangkanlisttitle','". trim($_POST['wangkanlisttitle'])."') ;//wangkanlisttitle\n";
+	$fcontent=$fcontent. "define('wangkanlistkeyword','". trim($_POST['wangkanlistkeyword'])."') ;//wangkanlistkeyword\n";
+	$fcontent=$fcontent. "define('wangkanlistdescription','". trim($_POST['wangkanlistdescription'])."') ;//wangkanlistdescription\n";
+	$fcontent=$fcontent. "define('wangkanshowtitle','". trim($_POST['wangkanshowtitle'])."') ;//wangkanshowtitle\n";
+	$fcontent=$fcontent. "define('wangkanshowkeyword','". trim($_POST['wangkanshowkeyword'])."') ;//wangkanshowkeyword\n";
+	$fcontent=$fcontent. "define('wangkanshowdescription','". trim($_POST['wangkanshowdescription'])."') ;//wangkanshowdescription\n";
 	$fcontent=$fcontent. "?" . ">";
 	fputs($fp,$fcontent);//把替换后的内容写入文件
 	fclose($fp);

@@ -1,6 +1,4 @@
-// JavaScript Document
-function announce(id) 
-{ 
+function announce(id){ 
 window.open("/one/announce_show.php?id="+id,"","height=340,width=770,left=300,top=100,resizable=yes,scrollbars=yes,status=no,toolbar=no,menubar=no,location=no");
 }
 function setbgcolor(obj){
@@ -53,53 +51,51 @@ function showfilter2(obj2) {
     }   
 }
 function doClick(o,items,currentstyle){
-	 o.className=currentstyle;
-	 var j,id,e;
-	 var item_num = document.getElementById(items).getElementsByTagName("li").length;//获得LI的个数
-	 //alert(item_num);
-	 for(var i=1;i<=item_num;i++){
-	   id =items+i;
-	   j = document.getElementById(id);
-	   e = document.getElementById(items+"_con"+i);
-	   if(id != o.id){
-	   	 j.className="";
-	   	 e.style.display = "none";
-	   }else{
+	o.className=currentstyle;
+	var j,id,e;
+	var item_num = document.getElementById(items).getElementsByTagName("li").length;//获得LI的个数
+	//alert(item_num);
+	if (item_num==0){
+		var item_num = document.getElementById(items).getElementsByTagName("td").length;//获得td的个数
+		}
+	for(var i=1;i<=item_num;i++){
+	id =items+i;
+	j = document.getElementById(id);
+	e = document.getElementById(items+"_con"+i);
+		if(id != o.id){
+		j.className="";
+		e.style.display = "none";
+		}else{
 		e.style.display = "block";
-	   }
+		}
 	 }
-	 }
+}
 function CheckUserForm(){
-		if(document.UserLogin.username.value=="")
-		{
-			alert("请输入用户名！");
-			document.UserLogin.username.focus();
-			return false;
-		}
-		if(document.UserLogin.password.value == "")
-		{
-			alert("请输入密码！");
-			document.UserLogin.password.focus();
-			return false;
-		}
-		/*if(document.UserLogin.codestr.value == "")
-		{
-			alert("请输验证码！");
-			document.UserLogin.codestr.focus();
-			return false;
-		}*/
+	if(document.UserLogin.username.value==""){
+	alert("请输入用户名！");
+	document.UserLogin.username.focus();
+	return false;
 	}
+	if(document.UserLogin.password.value == ""){
+	alert("请输入密码！");
+	document.UserLogin.password.focus();
+	return false;
+	}
+	/*if(document.UserLogin.codestr.value == ""){
+		alert("请输验证码！");
+		document.UserLogin.codestr.focus();
+		return false;
+	}*/
+}
 function checkpage(){
 //创建正则表达式
 var re=/^[0-9]*$/;		
-	if(document.formpage.page.value=="")
-	{
+	if(document.formpage.page.value==""){
 		alert("请输入页码！");
 		document.formpage.page.focus();
 		return false;
 	}
-	if(document.formpage.page.value.search(re)==-1)  
-	{
+	if(document.formpage.page.value.search(re)==-1)  {
     alert("请输入有效页码！");
 	document.formpage.page.value="";
 	document.formpage.page.focus();
@@ -109,8 +105,7 @@ var re=/^[0-9]*$/;
 function PSetBg(obj){
 	obj.style.backgroundColor = '#FFFFFF';
 }
-function PReBg(obj){
-	
+function PReBg(obj){	
 	obj.style.backgroundColor = '';
 }
 function adSetBg(obj){
@@ -119,8 +114,21 @@ obj.className='zsclass_td_style2';
 function adReBg(obj){
 obj.className='zsclass_td_style1';	
 }
-function CheckAll(form)
-  {
+
+function zslistSetBg(obj,obj1,obj2,obj3){
+obj.className='zslist_style2';
+document.getElementById(obj1).className='lxfs_style2';
+document.getElementById(obj2).className='liuyan_style2';
+document.getElementById(obj3).className='shoucang_style2';
+}
+function zslistReBg(obj,obj1,obj2,obj3){
+obj.className='zslist_style1';	
+document.getElementById(obj1).className='lxfs_style1';
+document.getElementById(obj2).className='liuyan_style1';
+document.getElementById(obj3).className='shoucang_style1';
+}
+
+function CheckAll(form){
   for (var i=0;i<form.elements.length;i++)//elements
     {
     var e = form.elements[i];
@@ -128,7 +136,6 @@ function CheckAll(form)
        e.checked = form.chkAll.checked;
     }
   }
- 
 function resizeimg(maxWidth,maxHeight,objImg){
 var img = new Image();
 img.src = objImg.src;
@@ -180,10 +187,8 @@ function IsPC() {
         }
     }
 }
-
 //var width = window.screen.width; 页面宽度
 //document.cookie="screen="+width;
-
 // 加入收藏 兼容360和IE6 
 function shoucang(sURL,sTitle) { 
 try { window.external.addFavorite(sURL, sTitle); } 

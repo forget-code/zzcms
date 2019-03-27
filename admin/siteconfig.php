@@ -1,6 +1,6 @@
 <?php
 error_reporting(0); //加新参数后配置文件中，不用加同名空参数了
-define ("checkadminlogin",1);//当关网站时，如果是管理员登陆时使链接正常打开。
+define ("checkadminlogin",1);//当关网站时，如果是管理员登录时使链接正常打开。
 include("admin.php");
 ?>
 <html>
@@ -106,7 +106,7 @@ return false;
       | <a href="#stopwords">限制字符</a> |  <a href="#wjtset">文 件 头</a> | <a href="#sendmail">邮件设置</a> 
       | <a href="#sendSms">手机短信</a>  <br> <a href="#qiangad">广告设置</a> | <a href="#userjf">积分功能</a> | <a href="#UpFile">上传文件</a> 
       | <a href="#addimage">添加水印</a> | <a href="#alipay_set">支付接口</a> 
-      | <a href="#qqlogin_set">QQ登陆</a> | <a href="#bbs_set">整合Discuz!论坛</a></td>
+      | <a href="#qqlogin_set">QQ登录</a> | <a href="#bbs_set">整合Discuz!论坛</a></td>
   </tr>
 </table>
 <?php
@@ -285,6 +285,8 @@ document.getElementById("showimg").innerHTML="<img src='"+sd+"' width=200>";
 <label for="dl">发<?php echo channeldl?></label>
         <input name="usergr_power[]" type="checkbox" id="zh" value="zh" <?php if(str_is_inarr(usergr_power,'zh')=='yes') { echo"checked";}?>>
         <label for="zh"> 发展会</label>
+		 <input name="usergr_power[]" type="checkbox" id="wangkan" value="wangkan" <?php if(str_is_inarr(usergr_power,'wangkan')=='yes') { echo"checked";}?>>
+        <label for="wangkan"> 发网刊</label>
         <input name="usergr_power[]" type="checkbox"  id="zx" value="zx" <?php if(str_is_inarr(usergr_power,'zx')=='yes') { echo"checked";}?>>
 <label for="zx"> 发资讯</label>
 <input name="usergr_power[]" type="checkbox" id="pp" value="pp" <?php if(str_is_inarr(usergr_power,'pp')=='yes') { echo"checked";}?>>
@@ -308,7 +310,7 @@ document.getElementById("showimg").innerHTML="<img src='"+sd+"' width=200>";
       <td class="border"><input type="radio" name="opensite" value="Yes" <?php if ( opensite=="Yes" ){ echo  "checked";}?>>
         开
         <input type="radio" name="opensite" value="No" <?php if ( opensite=="No" ){ echo  "checked";}?>>
-        关（站点关闭之后,后台管理员仍然可以登陆）</td>
+        关（站点关闭之后,后台管理员仍然可以登录）</td>
     </tr>
     <tr>
       <td align="right" class="border">关闭网站原因</td>
@@ -357,6 +359,22 @@ while(($file = readdir($dir))!=false){
   if ($file!="." && $file!=".." && $file!='test.txt' && strpos($file,".zip")==false && strpos($file,".rar")==false ) { //不读取. ..
 	?>
           <option value="<?php echo $file?>" <?php if (siteskin_mobile==$file){ echo  "selected";}?>><?php echo $file?></option>
+          <?php
+}
+}
+closedir($dir);
+?>
+      </select></td>
+    </tr>
+    <tr>
+      <td align="right" class="border">用户中心样式</td>
+      <td class="border"><select name="siteskin_usercenter" id="siteskin_usercenter">
+          <?php
+$dir = opendir("../user/style");
+while(($file = readdir($dir))!=false){
+  if ($file!="." && $file!=".." && $file!='test.txt' && strpos($file,".zip")==false && strpos($file,".rar")==false ) { //不读取. ..
+	?>
+          <option value="<?php echo $file?>" <?php if (siteskin_usercenter==$file){ echo  "selected";}?>><?php echo $file?></option>
           <?php
 }
 }
@@ -558,7 +576,7 @@ closedir($dir);
         积分（填数字）</td>
     </tr>
     <tr> 
-      <td align="right" class="border">登陆网站<strong>获取</strong></td>
+      <td align="right" class="border">登录网站<strong>获取</strong></td>
       <td class="border"> <input name="jf_login" type="text" id="jf_login" value="<?php echo jf_login?>" size="10" maxlength="10">
         积分（填数字）</td>
     </tr>
@@ -697,14 +715,14 @@ document.getElementById("syimg").innerHTML="<img src='"+sd+"' width=200>";
       <td class="border"><input name="cmdSave42" type="submit" class="buttons" id="cmdSave42" value="保存设置" >      </td>
     </tr>
     <tr> 
-      <td colspan="2" class="admintitle2"><a name="qqlogin_set" id="qqlogin_set"></a>QQ登陆设置</td>
+      <td colspan="2" class="admintitle2"><a name="qqlogin_set" id="qqlogin_set"></a>QQ登录设置</td>
     </tr>
     <tr> 
       <td colspan="2" class="border2">第一步：<a href="http://connect.opensns.qq.com/apply" target="_blank">审请接入</a>
           ；第二步：<a href="qqlogin_set.php">填写接入信息</a></td>
     </tr>
     <tr> 
-      <td align="right" class="border">QQ登陆</td>
+      <td align="right" class="border">QQ登录</td>
       <td class="border"> <input type="radio" name="qqlogin" id="qqloginY" value="Yes" <?php if ( qqlogin=="Yes" ){ echo  "checked";}?>>
         <label for='qqloginY'>开</label> 
         <input type="radio" name="qqlogin" id="qqloginN" value="No" <?php if ( qqlogin=="No" ){ echo  "checked";}?>>
@@ -753,7 +771,7 @@ $usergr_power=substr($usergr_power,0,strlen($usergr_power)-1);//去除最后面�
 	$fcontent=$fcontent. "define('sqluser','".trim($_POST['sqluser'])."');//用户名\r\n";
 	$fcontent=$fcontent. "define('sqlpwd','".html_entity_decode(trim($_POST['sqlpwd']))."');//密码\r\n";//html_entity_decode针对&被转变成&amp;
 	$fcontent=$fcontent. "define('sqlhost','".trim($_POST['sqlhost'])."');//连接服务器,本机填(local)，外地填IP地址\r\n";
-	$fcontent=$fcontent. "define('zzcmsver','Powered By <a target=_blank style=font-weight:bold href=http://www.zzcms.net><font color=#FF6600 face=Arial>ZZ</font><font color=#025BAD face=Arial>CMS7.1</font></a>');//版本\r\n";
+	$fcontent=$fcontent. "define('zzcmsver','Powered By <a target=_blank style=font-weight:bold href=http://www.zzcms.net><font color=#FF6600 face=Arial>ZZ</font><font color=#025BAD face=Arial>CMS7.2</font></a>');//版本\r\n";
 	$fcontent=$fcontent. "define('sitename','". trim($_POST['sitename'])."') ;//网站名称\r\n";
 	$fcontent=$fcontent. "define('siteurl','". trim($_POST['siteurl'])."') ;//网站地址\r\n";
 	$fcontent=$fcontent. "define('logourl','". trim($_POST['logourl'])."') ;//Logo地址\r\n";
@@ -797,6 +815,7 @@ $usergr_power=substr($usergr_power,0,strlen($usergr_power)-1);//去除最后面�
 	$fcontent=$fcontent. "define('zsliststyle','". trim($_POST['zsliststyle'])."') ;//招商列表页默认显示格式\r\n";
 	$fcontent=$fcontent. "define('siteskin','". trim($_POST['siteskin'])."') ;//网站电脑端模板\r\n";	
 	$fcontent=$fcontent. "define('siteskin_mobile','". trim($_POST['siteskin_mobile'])."') ;//网站手机端模板\r\n";	
+	$fcontent=$fcontent. "define('siteskin_usercenter','". trim($_POST['siteskin_usercenter'])."') ;//用户中心样式\r\n";
 	$fcontent=$fcontent. "define('checksqlin','". trim($_POST['checksqlin'])."') ;//是否开启防SQL注入功能\r\n";	
 	$fcontent=$fcontent. "define('cache_update_time','". trim($_POST['cache_update_time'])."') ;//缓存更新周期\r\n";
 	$fcontent=$fcontent. "define('html_update_time','". trim($_POST['html_update_time'])."') ;//静态页更新周期\r\n";	
@@ -813,7 +832,7 @@ $usergr_power=substr($usergr_power,0,strlen($usergr_power)-1);//去除最后面�
 	$fcontent=$fcontent. "define('jifen','". trim($_POST['jifen'])."') ;//是否启用积分功能\r\n";
 	$fcontent=$fcontent. "define('jifen_bilu','". trim($_POST['jifen_bilu'])."') ;//1元等于多少积分\r\n";
 	$fcontent=$fcontent. "define('jf_reg','". trim($_POST['jf_reg'])."') ;//注册时获取积分值\r\n";
-	$fcontent=$fcontent. "define('jf_login','". trim($_POST['jf_login'])."') ;//登陆时获取积分值\r\n";
+	$fcontent=$fcontent. "define('jf_login','". trim($_POST['jf_login'])."') ;//登录时获取积分值\r\n";
 	$fcontent=$fcontent. "define('jf_addreginfo','". trim($_POST['jf_addreginfo']) ."') ;      //完善注册信息获取积分值\r\n";
 	$fcontent=$fcontent. "define('jf_lookmessage','". trim($_POST['jf_lookmessage']) ."') ;  //查看代理留言时扣除的积分值\r\n";
 	$fcontent=$fcontent. "define('jf_look_dl','". trim($_POST['jf_look_dl'])."') ;  //查看代理商信息库时扣除的积分值\r\n";
@@ -829,7 +848,7 @@ $usergr_power=substr($usergr_power,0,strlen($usergr_power)-1);//去除最后面�
 	$fcontent=$fcontent. "define('alipay_seller_email','". trim($_POST['alipay_seller_email'])."') ;//签约支付宝账号或卖家支付宝帐户\r\n";	
 	$fcontent=$fcontent. "define('tenpay_bargainor_id','". trim($_POST['tenpay_bargainor_id'])."') ;//财富通商户号\r\n";	
 	$fcontent=$fcontent. "define('tenpay_key','". trim($_POST['tenpay_key'])."') ;//密钥\r\n";
-	$fcontent=$fcontent. "define('qqlogin','". trim($_POST['qqlogin'])."') ;//是否开启QQ登陆功能\r\n";	
+	$fcontent=$fcontent. "define('qqlogin','". trim($_POST['qqlogin'])."') ;//是否开启QQ登录功能\r\n";	
 	$fcontent=$fcontent. "define('bbs_set','". trim($_POST['bbs_set'])."') ;//是否开启同步论坛功能\r\n";	
 	$fcontent=$fcontent. "?" . ">";
 	fputs($fp,$fcontent);//把替换后的内容写入文件

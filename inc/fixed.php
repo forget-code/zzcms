@@ -78,7 +78,7 @@ $n=count(explode("{#showcookiezs:",$str));
 	//echo $cs;
 	if ($cs<>''){
 	$css=explode(",",$cs); 
-	$str=str_replace("{#showcookiezs:".$cs."}",showcookieszs($css[0],$css[1],$css[2]),$str);
+	$str=str_replace("{#showcookiezs:".$cs."}",showcookieszs($css[0],$css[1],$css[2],$css[3]),$str);
 	}
 	}
 }

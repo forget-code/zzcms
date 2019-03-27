@@ -55,7 +55,7 @@ $msg = iconv("UTF-8","GBK",$msg);
 	$mailbody=$strout_mail;
 	$isok=$smtp->sendmail($to,sender,$subject,$mailbody,"HTML");//邮件的类型可选值是 TXT 或 HTML 
 	if($isok){
-	echo "验证码已发送，请查收！<a href='http://mail.".substr($email,strpos($email,"@")+1)."' target='_blank'><b>登陆邮箱</b></a>";
+	echo "验证码已发送，请查收！<a href='http://mail.".substr($email,strpos($email,"@")+1)."' target='_blank'><b>登录邮箱</b></a>";
 	}else{
 	echo "验证码发送失败，请联系客服进行查找，客服QQ：".kfqq." 电话：".kftel."";
 	//echo "发送失败原因：".$this->smtp->logs;

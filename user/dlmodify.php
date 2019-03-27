@@ -10,7 +10,7 @@ $f_array=explode("|||",$fcontent) ;
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=EmulateIE7" />
-<link href="style.css" rel="stylesheet" type="text/css">
+<link href="style/<?php echo siteskin_usercenter?>/style.css" rel="stylesheet" type="text/css">
 <title></title>
 <script type="text/javascript" src="/js/jquery.js"></script>
 <script>
@@ -82,18 +82,18 @@ showmsg('非法操作！警告：你的操作已被记录！小心封你的用�
 exit;
 }
 ?>
+<div class="content">
 <div class="admintitle"><?php echo str_replace("{#channeldl}",channeldl,$f_array[1])?></div>
 <form action="dlsave.php" method="post" name="myform" id="myform" onSubmit="return CheckForm();">
         <table width="100%" border="0" cellpadding="3" cellspacing="1">
           <tr> 
-            <td align="right" class="border" ><?php echo $f_array[2]?><font color="#FF0000"> *</font></td>
-            <td class="border" > <input name="cp" type="text" id="cp" value="<?php echo $row["cp"]?>" size="60" maxlength="45" onBlur="CheckNum()"> 
-              <br>
-              (只能写产品名称，不要写联系方式等其它内容，否则信息会直接被删除)</td>
+            <td width="18%" align="right" class="border" ><?php echo $f_array[2]?></td>
+            <td width="82%" class="border" > <input name="cp" type="text" id="cp" class="biaodan" value="<?php echo $row["cp"]?>" size="60" maxlength="45" onBlur="CheckNum()">
+			<?php echo $f_array[20]?></td>
           </tr>
           <tr> 
-            <td width="18%" align="right" valign="top" class="border2" ><?php echo $f_array[3]?> <font color="#FF0000">*</font></td>
-            <td width="82%" class="border2" ><select name="classid">
+            <td align="right" valign="top" class="border2" ><?php echo $f_array[3]?></td>
+            <td class="border2" ><select name="classid" class="biaodan">
                 <option value="" selected="selected"><?php echo $f_array[4]?></option>
                 <?php
 		$sqln="select * from zzcms_zsclass where parentid='A'";
@@ -110,7 +110,7 @@ exit;
               </select></td>
           </tr>
           <tr> 
-            <td align="right" class="border" ><?php echo $f_array[5]?><font color="#FF0000"> *</font></td>
+            <td align="right" class="border" ><?php echo $f_array[5]?></td>
             <td class="border" ><table border="0" cellpadding="3" cellspacing="0">
               <tr>
                 <td><script language="JavaScript" type="text/javascript">
@@ -147,9 +147,9 @@ destList.options[i] = null;
 } 
               </script>
                   
-<select name="province" id="province"></select>
-<select name="city" id="city"></select>
-<select name="xiancheng" id="xiancheng" onchange="addSrcToDestList()"></select>
+<select name="province" id="province" class="biaodan"></select>
+<select name="city" id="city" class="biaodan"></select>
+<select name="xiancheng" id="xiancheng" class="biaodan" onchange="addSrcToDestList()"></select>
 <script src="/js/area.js"></script>
 <script type="text/javascript">
 new PCAS('province', 'city', 'xiancheng', '<?php echo $row['province']?>', '<?php echo $row["city"]?>', '<?php echo $row["xiancheng"]?>');
@@ -157,7 +157,7 @@ new PCAS('province', 'city', 'xiancheng', '<?php echo $row['province']?>', '<?ph
                 </td>
                
                 <td align="center" valign="top"><?php echo $f_array[6]?><br/>
-                  <select style='width:100px;font-size:13px' size="4" name="destList" multiple="multiple">
+                  <select style='width:100px;height:60px' size="4" name="destList" multiple="multiple" class="biaodan">
                       <?php 
 		if ($row["xiancheng"]!="") {
 			  if (strpos($row["city"],",")==0) {?>
@@ -178,8 +178,8 @@ new PCAS('province', 'city', 'xiancheng', '<?php echo $row['province']?>', '<?ph
             </table></td>
           </tr>
           <tr> 
-            <td align="right" class="border" ><?php echo $f_array[8]?><font color="#FF0000">*</font></td>
-            <td class="border" > <textarea name="content" cols="60" rows="4" id="content"><?php echo $row["content"] ?></textarea></td>
+            <td align="right" class="border" ><?php echo $f_array[8]?></td>
+            <td class="border" > <textarea name="content" class="biaodan" style="height:auto" cols="60" rows="4" id="content"><?php echo $row["content"] ?></textarea></td>
           </tr>
           <tr> 
             <td align="right" class="border"><?php echo $f_array[9]?></td>
@@ -190,27 +190,27 @@ new PCAS('province', 'city', 'xiancheng', '<?php echo $row['province']?>', '<?ph
           </tr>
           <tr <?php if ($row["company"]==$f_array[11]) {echo " style='display:none'";}?> id='submenu1'> 
             <td align="right" class="border"><?php echo $f_array[12]?></td>
-            <td class="border"><input name="company" type="text" id="company" value="<?php echo $row["companyname"]?>" size="45" maxlength="255" /></td>
+            <td class="border"><input name="company" type="text" id="company" class="biaodan" value="<?php echo $row["companyname"]?>" size="45" maxlength="255" /></td>
           </tr>
           <tr> 
-            <td align="right" class="border2"><?php echo $f_array[13]?>  <font color="#FF0000">*</font></td>
-            <td class="border2"> <input name="truename" type="text" id="truename" value="<?php echo $row["dlsname"]?>" size="45" maxlength="255" /></td>
+            <td align="right" class="border2"><?php echo $f_array[13]?></td>
+            <td class="border2"> <input name="truename" type="text" id="truename" class="biaodan" value="<?php echo $row["dlsname"]?>" size="45" maxlength="255" /></td>
           </tr>
           <tr> 
-            <td align="right" class="border"><?php echo $f_array[14]?> <font color="#FF0000">*</font></td>
-            <td class="border"><input name="tel" type="text" id="tel" value="<?php echo $row["tel"]?>" size="45" maxlength="255" /></td>
+            <td align="right" class="border"><?php echo $f_array[14]?></td>
+            <td class="border"><input name="tel" type="text" id="tel" class="biaodan" value="<?php echo $row["tel"]?>" size="45" maxlength="255" /></td>
           </tr>
           <tr> 
             <td align="right" class="border2"><?php echo $f_array[15]?></td>
-            <td class="border2"> <input name="address" type="text" id="address" value="<?php echo $row["address"]?>" size="45" maxlength="255" /></td>
+            <td class="border2"> <input name="address" type="text" id="address" class="biaodan" value="<?php echo $row["address"]?>" size="45" maxlength="255" /></td>
           </tr>
           <tr> 
             <td align="right" class="border"><?php echo $f_array[16]?></td>
-            <td class="border"><input name="email" type="text" id="email" value="<?php echo $row["email"]?>" size="45" maxlength="255" /></td>
+            <td class="border"><input name="email" type="text" id="email" class="biaodan" value="<?php echo $row["email"]?>" size="45" maxlength="255" /></td>
           </tr>
           <tr> 
-            <td align="right" class="border2"><?php echo $f_array[17]?><font color="#FF0000">*</font></td>
-            <td class="border2"><input name="yzm" type="text" id="yzm" value="" size="10" maxlength="50" style="width:60px"/>
+            <td align="right" class="border2"><?php echo $f_array[17]?></td>
+            <td class="border2"><input name="yzm" type="text" id="yzm" class="biaodan" value="" size="10" maxlength="50" style="width:60px"/>
             <img src="/one/code_math.php" align="absmiddle" id="getcode_math" title="<?php echo $f_array[18]?>" /></td>
           </tr>
           <tr> 
@@ -226,8 +226,10 @@ new PCAS('province', 'city', 'xiancheng', '<?php echo $row['province']?>', '<?ph
 		</form>
 </div>
 </div>
+</div>
 <?php
 mysql_close($conn);
+unset ($f_array);
 ?>
 </div>
 </body>

@@ -11,7 +11,7 @@ $f_array=explode("\n",$fcontent) ;
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=EmulateIE7" />
 <title><?php echo $f_array[0]?></title>
-<link href="style.css" rel="stylesheet" type="text/css">
+<link href="style/<?php echo siteskin_usercenter?>/style.css" rel="stylesheet" type="text/css">
 </head>
 <body>
 <?php
@@ -137,8 +137,9 @@ include("left.php");
 ?>
 </div>
 <div class="right">
+<div class="content">
 <div class="admintitle"><?php echo $f_array[12] ?></div>
-<div class="border2" style="padding:8px;margin:1px"><?php echo str_replace("{#showadvdate}",showadvdate,$f_array[13])?></div>
+<div class="border2"><?php echo str_replace("{#showadvdate}",showadvdate,$f_array[13])?></div>
 <div class="admintitle"><?php echo $f_array[14] ?></div>	  
 <?php
 $n=1;
@@ -148,7 +149,7 @@ if (!$row){
 echo $f_array[15];
 }else{
 ?> 
-<table width="100%" border="0" cellpadding="5" cellspacing="1">
+<table width="100%" border="0" cellpadding="5" cellspacing="1" class="bgcolor">
   <tr> 
 		<?php while($row=mysql_fetch_array($rs)){ ?>      
     <td width="25%" height="50"   class="border" ><?php echo "A".$n?> 
@@ -191,7 +192,7 @@ $n=$n+1;
 <?php
 }
 ?>
-
+</div>
 </div>
 </div>
 </div>

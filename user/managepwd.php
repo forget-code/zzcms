@@ -10,7 +10,7 @@ $f_array=explode("|||",$fcontent) ;
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=EmulateIE7" />
-<link href="style.css" rel="stylesheet" type="text/css">
+<link href="style/<?php echo siteskin_usercenter?>/style.css" rel="stylesheet" type="text/css">
 <?php
 include "../inc/mail_class.php";
 include '../3/ucenter_api/config.inc.php';//集成ucenter
@@ -86,29 +86,30 @@ include("left.php");
 ?>
 </div>
 <div class="right">
+<div class="content">
 <div class="admintitle"><?php echo $f_array[0]?></div>
 <form name="form1" action="?" method="post" onsubmit="return CheckForm()">
 <table width="100%" border="0" cellpadding="5" cellspacing="1">
     <tr>             
-            <td width="382" align="right" class="border"><?php echo $f_array[7]?></td>  
-      <td width="612" class="border"><?php echo $username ?></td>
+            <td width="15%" align="right" class="border"><?php echo $f_array[7]?></td>  
+      <td width="85%" class="border"><?php echo $username ?></td>
             </tr>
             <tr>   
-            <td width="382" align="right" class="border2"><?php echo $f_array[8]?></td>      
+            <td align="right" class="border2"><?php echo $f_array[8]?></td>      
       <td class="border2"> 
-        <INPUT  type="password" maxLength="16" size="30" name="oldpassword"> 
+        <INPUT  type="password" maxLength="16" size="30" name="oldpassword" class="biaodan"> 
               </td>
             </tr>
             <tr> 
-            <td width="382" align="right" class="border"><?php echo $f_array[9]?></td>     
+            <td align="right" class="border"><?php echo $f_array[9]?></td>     
       <td class="border"> 
-        <INPUT  type="password" maxLength="16" size="30" name="password"> 
+        <INPUT  type="password" maxLength="16" size="30" name="password" class="biaodan"> 
               </td>
             </tr>
             <tr>      
-            <td width="382" align="right" class="border2"><?php echo $f_array[10]?></td>     
+            <td align="right" class="border2"><?php echo $f_array[10]?></td>     
       <td class="border2">
-<INPUT name=pwdconfirm   type=password id="pwdconfirm" size="30" maxLength="16">
+<INPUT name=pwdconfirm   type=password id="pwdconfirm" size="30" maxLength="16" class="biaodan">
                 <input name="action" type="hidden" id="action" value="modify"> 
               </td>
             </tr>
@@ -123,9 +124,11 @@ include("left.php");
 </div>
 </div>
 </div>
+</div>
 <?php
 }
 mysql_close($conn);
+unset ($f_array);
 ?>
 </body>
 </html>

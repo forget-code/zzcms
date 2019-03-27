@@ -2,12 +2,11 @@
 include("inc/config.php");
 $config=array();
 $config['type']=array("flash","img"); //上传允许type值
-$config['img']=array("jpg","bmp","gif","png"); //img允许后缀
-$config['img']=array("jpg","bmp","gif","png"); //img允许后缀
+$config['img']=array("jpg","jpeg","bmp","gif","png"); //img允许后缀
 $config['sw']=120; //小图片宽度
 $config['flash_size']=200; //上传flash大小上限 单位：KB
 $config['img_size']=maximgsize; //上传img大小上限 单位：KB
-$config['message']="上传成功"; //上传成功后显示的消息，若为空则不显示
+$config['message']=""; //上传成功后显示的消息，若为空则不显示
 $config['name']=date("YmdHis").rand(100,999); //上传后的文件命名规则 这里以unix时间戳来命名
 $config['flash_dir']="/toupiao/uploadFile"; //上传flash文件地址 采用绝对地址 方便upload.php文件放在站内的任何位置 后面不加"/"
 $config['img_dir']='uploadfiles/'.date("Y-m"); //上传img文件地址 采用绝对地址 采用绝对地址 方便upload.php文件放在站内的任何位置 后
@@ -33,7 +32,7 @@ if(is_uploaded_file($_FILES['upload']['tmp_name']))
 {
    //判断上传文件是否允许
    $filearr=pathinfo($_FILES['upload']['name']);
-   $filetype=$filearr["extension"];
+   $filetype=strtolower($filearr["extension"]);//后缀统一转换成小写
    if(!in_array($filetype,$config[$type]))
     mkhtml($fn,"","错误的文件类型！");
    //判断文件大小是否符合要求

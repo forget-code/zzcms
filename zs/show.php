@@ -93,7 +93,11 @@ $rs=mysql_query($sql);
 $row=mysql_fetch_array($rs);
 $startdate=$row["startdate"];
 $comane=$row["comane"];
+$gsjj=$row["content"];
 $kind=$row["bigclassid"];
+$province_company=$row["province"];
+$city_company=$row["city"];
+$xiancheng_company=$row["xiancheng"];
 $somane=$row["somane"];
 $userid=$row["id"];
 $sex=$row["sex"];
@@ -187,10 +191,11 @@ $somane=$rown="";
 $phone=$rown="";
 $email=$rown="";
 if (isset($_COOKIE["UserName"])) {
-if (trim($_COOKIE["UserName"])!=$editor){//产品发布人登陆时不显示自己的联系方式在表单
-$rsn=mysql_query("select * from zzcms_user where username='".trim($_COOKIE["UserName"])."'");
+if (trim($_COOKIE["UserName"])!=$editor){//产品发布人登录时不显示自己的联系方式在表单
+$rsn=mysql_query("select comane,somane,phone,email from zzcms_user where username='".trim($_COOKIE["UserName"])."'");
 $rown=mysql_fetch_array($rsn);
 $companyname=$rown["comane"];
+
 $somane=$rown["somane"];
 $phone=$rown["phone"];
 $email=$rown["email"];
@@ -228,6 +233,7 @@ $strout=str_replace("{#proname}",str_replace(',','',$cpmc),$strout);
 $strout=str_replace("{#cpid}",$cpid,$strout);
 $strout=str_replace("{#prouse}",nl2br($prouse),$strout);
 $strout=str_replace("{#comane}",$comane,$strout);
+$strout=str_replace("{#gsjj}",$gsjj,$strout);
 $strout=str_replace("{#sendtime}",$sendtime,$strout);
 $strout=str_replace("{#hit}",$hit,$strout);
 $strout=str_replace("{#liuyannum}",liuyannum($cpid),$strout);
@@ -240,6 +246,9 @@ $strout=str_replace("{#pricels}","",$strout);
 }
 $strout=str_replace("{#cuest_city}",$cuest_city,$strout);
 $strout=str_replace("{#gg}",$gg,$strout);
+$strout=str_replace("{#province_company}",$province_company,$strout);
+$strout=str_replace("{#city_company}",$city_company,$strout);
+$strout=str_replace("{#xiancheng_company}",$xiancheng_company,$strout);
 $strout=str_replace("{#province}",$province,$strout);
 $strout=str_replace("{#city}",$city,$strout);
 $strout=str_replace("{#xiancheng}",$xiancheng,$strout);

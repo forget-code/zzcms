@@ -10,34 +10,28 @@
 <script src="/js/msgbox.js" type="text/javascript" language="JavaScript"></script>
 <script>
 //控制字体大小
-function fontZoom(size)
-{
-document.getElementById('fontzoom').style.fontSize=size+'px'
+function fontZoom(size){
+document.getElementById('fontzoom').style.fontSize=size+'px';
+document.getElementById('fontzoom').style.lineHeight=size*2+'px';
 }
-function printcontent()
-{       
+function printcontent(){       
 document.body.innerHTML=document.getElementById('BoxInfoTitle').innerHTML+'<br/>'+document.getElementById('fontzoom').innerHTML;
 window.print();
 }
 
-function checkform()
-{
-  if (document.form2.content.value=="")
-  {
+function checkform(){
+  if (document.form2.content.value==""){
     alert("内容不能为空！");
     //document.form2.content.focus();
     return false;
   }
   
-   if (document.form2.yzm.value=="")
-  {
+   if (document.form2.yzm.value==""){
     alert("请输入正确答案！");
 	document.form2.yzm.focus();
 	return false;
   }
-  
 }
-
 </script>
 </head>
 <body>
@@ -53,7 +47,7 @@ function checkform()
       <div class="box"> 
         <div id="BoxInfoTitle">{#zxtitle}</div>
         <div id="BoxInfoTitleNext"> 
-          {#zxsm}
+          {#zxsm}&nbsp;&nbsp;字体：<a href='javascript:fontZoom(22)'>大</a> <a href='javascript:fontZoom(14)'>中</a> <a href='javascript:fontZoom(12)'>小</a>
         </div>
         <div id="fontzoom">
           {#zxcontent}
@@ -99,9 +93,7 @@ function checkform()
 <div class="content1"> {@zxshow.showzxhot} </div> 
 
 <div class="titles">最新资讯</div>
-<div class="content1"> {@zxshow.showzxnew} </div> 
-
-<script language="JavaScript" type="text/javascript" src="imgadv.php?classname=channelright&xh=1"></script>   
+<div class="content1"> {@zxshow.showzxnew} </div>  
 </div>
 </div>
 {#sitebottom}

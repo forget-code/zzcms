@@ -11,7 +11,7 @@ $f_array=explode("|||",$fcontent) ;
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=EmulateIE7" />
 <title><?php echo $f_array[0]?></title>
-<link href="style.css" rel="stylesheet" type="text/css">
+<link href="style/<?php echo siteskin_usercenter?>/style.css" rel="stylesheet" type="text/css">
 <script>
 function CheckForm(){
 <?php echo $f_array[1]?>
@@ -131,36 +131,37 @@ include("left.php");
 ?>
 </div>
 <div class="right">
+<div class="content">
 <div class="admintitle"><?php echo $f_array[0]?></div>
 <FORM name="myform" action="?action=modify" method="post" onSubmit="return CheckForm()">              
           <table width=100% border=0 cellpadding=3 cellspacing=1>
             <tr> 
-              <td width="15%" align="right" class="border2"><?php echo $f_array[5]?></td>
+              <td width="15%" align="right" class="border2"><?php echo $f_array[5]?>：</td>
               <td width="85%" class="border2"><?php echo $row["username"]?></td>
             </tr>
             <tr> 
-              <td align="right" class="border"><?php echo $f_array[6]?></td>
-              <td class="border"> <INPUT name="somane" value="<?php echo $row["somane"]?>" size="30" maxLength="50"></td>
+              <td align="right" class="border"><?php echo $f_array[6]?>：</td>
+              <td class="border"> <input name="somane" class="biaodan" value="<?php echo $row["somane"]?>" size="30" maxLength="50"></td>
             </tr>
             <tr > 
-              <td align="right" class="border2"><?php echo $f_array[7]?></td>
-              <td class="border2"> <INPUT type="radio" value="1" name="sex" <?php if ($row["sex"]==1) { echo "CHECKED";}?>>
+              <td align="right" class="border2"><?php echo $f_array[7]?>：</td>
+              <td class="border2"> <input type="radio" value="1" name="sex" <?php if ($row["sex"]==1) { echo "CHECKED";}?>>
                 <?php echo $f_array[8]?>
 <INPUT type="radio" value="0" name="sex" <?php if ($row["sex"]==0) { echo "CHECKED";}?>>
                <?php echo $f_array[9]?></td>
             </tr>
             <tr> 
-              <td align="right" class="border"><?php echo $f_array[10]?></td>
-              <td class="border"> <INPUT name="email" value="<?php echo $row["email"]?>" size="30" maxLength="50"> 
+              <td align="right" class="border"><?php echo $f_array[10]?>：</td>
+              <td class="border"> <input name="email"  class="biaodan" value="<?php echo $row["email"]?>" size="30" maxLength="50"> 
               </td>
             </tr>
             <tr > 
-              <td align="right" class="border2"><?php echo $f_array[11]?></td>
-              <td class="border2"> <INPUT name="qq" id="qq" value="<?php echo $row["qq"]?>" size="30" maxLength="50">
+              <td align="right" class="border2"><?php echo $f_array[11]?>：</td>
+              <td class="border2"> <input name="qq" id="qq"  class="biaodan" value="<?php echo $row["qq"]?>" size="30" maxLength="50">
                 <input name="oldqq" type="hidden" id="oldqq" value="<?php echo $row["qq"]?>"></td>
             </tr>
             <tr> 
-              <td align="right" class="border"><?php echo $f_array[12]?></td>
+              <td align="right" class="border"><?php echo $f_array[12]?>：</td>
               <td class="border">
                 <?php if ($row["qqid"]<>"") { ?>
                 <input name="qqid[]" type="checkbox" id="qqid" value="1" checked>
@@ -172,9 +173,9 @@ include("left.php");
               </td>
             </tr>
             <tr > 
-              <td align="right" class="border2"><?php echo $f_array[15]?></td>
+              <td align="right" class="border2"><?php echo $f_array[15]?>：</td>
               <td class="border2"> 
-                <INPUT name="mobile" id="mobile" value="<?php echo $row["mobile"]?>" size="30" maxLength="50"></td>
+                <input name="mobile" id="mobile"  class="biaodan" value="<?php echo $row["mobile"]?>" size="30" maxLength="50"></td>
             </tr>
             <tr > 
               <td align="right" class="border">&nbsp;</td>
@@ -188,11 +189,11 @@ include("left.php");
  <div class="admintitle"><?php echo $f_array[17]?></div>
         <table width="100%" border="0" cellpadding="3" cellspacing="1">
           <tr> 
-            <td width="15%" align="right" class="border2"><?php echo $f_array[18]?></td>
+            <td width="15%" align="right" class="border2"><?php echo $f_array[18]?>：</td>
             <td width="85%" class="border2"><?php echo $row["comane"]?></td>
           </tr>
           <tr> 
-            <td align="right" class="border"><?php echo $f_array[19]?></td>
+            <td align="right" class="border"><?php echo $f_array[19]?>：</td>
             <td class="border"><?php
 $sqln = "select * from zzcms_userclass where parentid<>'0' order by xuhao asc";
 $rsn=mysql_query($sqln);
@@ -221,7 +222,7 @@ function changelocation(locationid){
             }        
         }
     }</script>
-              <select name="b" size="1" id="b" onchange="changelocation(document.myform.b.options[document.myform.b.selectedIndex].value)">
+              <select name="b" size="1" id="b"  class="biaodan" onchange="changelocation(document.myform.b.options[document.myform.b.selectedIndex].value)">
                 <option value="" selected="selected"><?php echo $f_array[20]?></option>
                 <?php
 	$sqln = "select * from zzcms_userclass where  parentid='0' order by xuhao asc";
@@ -233,7 +234,7 @@ function changelocation(locationid){
 				}
 				?>
               </select>
-              <select name="s">
+              <select name="s"  class="biaodan">
                 <option value="0"><?php echo $f_array[21]?></option>
                 <?php
 $sqln="select * from zzcms_userclass  where parentid='" .$row["bigclassid"]."' order by xuhao asc";
@@ -254,10 +255,10 @@ while($rown = mysql_fetch_array($rsn)){
               </select></td>
           </tr>
           <tr class="border" > 
-            <td align="right" class="border2"><?php echo $f_array[23]?></td>
-            <td class="border2"><select name="province" id="province"></select>
-<select name="city" id="city"></select>
-<select name="xiancheng" id="xiancheng"></select>
+            <td align="right" class="border2"><?php echo $f_array[23]?>：</td>
+            <td class="border2"><select name="province" id="province"  class="biaodan"></select>
+<select name="city" id="city"  class="biaodan"></select>
+<select name="xiancheng" id="xiancheng"  class="biaodan"></select>
 <script src="/js/area.js"></script>
 <script type="text/javascript">
 new PCAS('province', 'city', 'xiancheng', '<?php echo $row['province']?>', '<?php echo $row["city"]?>', '<?php echo $row["xiancheng"]?>');
@@ -266,24 +267,24 @@ new PCAS('province', 'city', 'xiancheng', '<?php echo $row['province']?>', '<?ph
   </td>
           </tr>
           <tr> 
-            <td align="right" class="border"><?php echo $f_array[24]?></td>
-            <td class="border"> <input name="address" id="address" value="<?php echo $row["address"]?>" size="30" maxlength="50"> 
+            <td align="right" class="border"><?php echo $f_array[24]?>：</td>
+            <td class="border"> <input name="address" id="address" class="biaodan" value="<?php echo $row["address"]?>" size="30" maxlength="50"> 
             </td>
           </tr>
           <tr > 
-            <td align="right" class="border2"><?php echo $f_array[25]?></td>
-            <td class="border2"> <INPUT name="homepage" id="homepage" value="<?php echo $row["homepage"]?>" size="30" maxLength="100"></td>
+            <td align="right" class="border2"><?php echo $f_array[25]?>：</td>
+            <td class="border2"> <input name="homepage" id="homepage"  class="biaodan" value="<?php echo $row["homepage"]?>" size="30" maxLength="100"></td>
           </tr>
           <tr > 
-            <td align="right" class="border"><?php echo $f_array[26]?></td>
-            <td class="border"> <INPUT name="phone" value="<?php echo $row["phone"]?>" size="30" maxLength="50"></td>
+            <td align="right" class="border"><?php echo $f_array[26]?>：</td>
+            <td class="border"> <input name="phone"  class="biaodan" value="<?php echo $row["phone"]?>" size="30" maxLength="50"></td>
           </tr>
           <tr > 
-            <td align="right" class="border2"><?php echo $f_array[27]?></td>
-            <td class="border2"> <INPUT name="fox" value="<?php echo $row["fox"]?>" size="30" maxLength="50"></td>
+            <td align="right" class="border2"><?php echo $f_array[27]?>：</td>
+            <td class="border2"> <input name="fox"  class="biaodan" value="<?php echo $row["fox"]?>" size="30" maxLength="50"></td>
           </tr>
           <tr> 
-            <td align="right" class="border2"><?php echo $f_array[28]?></td>
+            <td align="right" class="border2"><?php echo $f_array[28]?>：</td>
             <td class="border2"> 
 			<textarea name="content" id="content"><?php echo $row["content"] ?></textarea> 
              <script type="text/javascript" src="/3/ckeditor/ckeditor.js"></script>
@@ -291,10 +292,10 @@ new PCAS('province', 'city', 'xiancheng', '<?php echo $row['province']?>', '<?ph
             </td>
           </tr>
           <tr> 
-            <td height="50" align="right" class="border"> <?php echo $f_array[29]?><br> <font color="#666666"> 
+            <td height="50" align="right" class="border"> <?php echo $f_array[29]?>：<br> 
               <input name="img" type="hidden" id="img" value="<?php echo $row["img"]?>">
               <input name="oldimg" type="hidden" id="oldimg" value="<?php echo $row["img"]?>">
-              </font></td>
+             </td>
             <td height="50" class="border"> <script type="text/javascript">
 function openimg(){
 var sd =window.showModalDialog('/uploadimg_form.php','','dialogWidth=400px;dialogHeight=300px');
@@ -323,7 +324,7 @@ document.getElementById("showimg").innerHTML="<img src='"+sd+"' width=200>";
           </tr>
       
           <tr> 
-            <td align="right" class="border2" ><?php echo $f_array[32]?><font color="#666666"> 
+            <td align="right" class="border2" ><?php echo $f_array[32]?>： 
               <script src="/js/swfobject.js" type="text/javascript"></script>
               <script>
 function openflv(){
@@ -349,7 +350,7 @@ document.getElementById("flv").value=sd;//从子页面得到值写入母页面
 		</script>
               <input name="flv" type="hidden" id="flv" value="<?php echo $row["flv"]?>" />
               <input name="oldflv" type="hidden" id="oldflv" value="<?php echo $row["flv"]?>">
-              </font></td>
+              </td>
             <td class="border2" > 
 			    <?php 
 if (check_user_power("uploadflv")=="yes"){
@@ -408,9 +409,11 @@ if (check_user_power("uploadflv")=="yes"){
  </div>
 </div>
 </div> 
+</div>
 <?php
 }
 mysql_close($conn);
+unset ($f_array);
 ?>
 </body>
 </html>

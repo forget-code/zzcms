@@ -18,7 +18,7 @@ if ($username<>''){
 	$rs=mysql_query($sql);
 	$row=mysql_num_rows($rs);
 	if ($row){
-	echo "此帐号已被激活过！点击<a href='".siteurl."/user/login.php?username=".$username."'>登陆网站</a>";
+	echo "此帐号已被激活过！点击<a href='".siteurl."/user/login.php?username=".$username."'>登录网站</a>";
 	}else{
 	$sql="select * from zzcms_usernoreg where username='".$username."'";
 	$rs=mysql_query($sql);
@@ -70,7 +70,7 @@ $uid = uc_user_register($username, $passwordtrue,$email);
 	}
 }	
 //end 
-echo "<script>alert('激活成功，请登陆！');location.href='/user/login.php?username=".$username."'</script>";
+echo "<script>alert('激活成功，请登录！');location.href='/user/login.php?username=".$username."'</script>";
 }else{
 echo "激活失败！原因：链接中的验证码不正确！";
 }

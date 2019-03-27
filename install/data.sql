@@ -517,7 +517,7 @@ CREATE TABLE `zzcms_zh` (
   `timestart` datetime default NULL,
   `timeend` datetime default NULL,
   `content` longtext,
-  `editor` varchar(50) default '0',
+  `editor` varchar(50) default NULL,
   `sendtime` datetime default NULL,
   `hit` int(11) default '0',
   `passed` tinyint(4) default '0',
@@ -527,6 +527,29 @@ CREATE TABLE `zzcms_zh` (
 
 DROP TABLE IF EXISTS `zzcms_zhclass`;
 CREATE TABLE `zzcms_zhclass` (
+  `bigclassid` int(11) NOT NULL auto_increment,
+  `bigclassname` varchar(50) default NULL,
+  `xuhao` int(11) default '0',
+  PRIMARY KEY  (`bigclassid`)
+) ENGINE=MyISAM AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
+
+DROP TABLE IF EXISTS `zzcms_wangkan`;
+CREATE TABLE `zzcms_wangkan` (
+  `id` int(11) NOT NULL auto_increment,
+  `bigclassid` int(11) default NULL,
+  `title` varchar(255) default NULL,
+  `content` longtext,
+  `img` varchar(255) default NULL,
+  `editor` varchar(50) default NULL,
+  `sendtime` datetime default NULL,
+  `hit` int(11) default '0',
+  `passed` tinyint(4) default '0',
+  `elite` tinyint(4) default '0',
+  PRIMARY KEY  (`id`)
+) ENGINE=MyISAM AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
+
+DROP TABLE IF EXISTS `zzcms_wangkanclass`;
+CREATE TABLE `zzcms_wangkanclass` (
   `bigclassid` int(11) NOT NULL auto_increment,
   `bigclassname` varchar(50) default NULL,
   `xuhao` int(11) default '0',

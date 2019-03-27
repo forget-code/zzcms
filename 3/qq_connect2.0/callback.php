@@ -8,8 +8,7 @@ $qc->qq_callback();//必须得输出，否则出错
  <input type='hidden' name='qqid' value='<?php echo $qc->get_openid();?>' />
 </form>
 <SCRIPT>
-function gotopage()
-{
+function gotopage(){
 document.gotopage.submit();
 }
 </SCRIPT>

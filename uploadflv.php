@@ -4,7 +4,7 @@ set_time_limit(1800) ;
 include("inc/config.php");
 if (!isset($_COOKIE["UserName"]) && !isset($_SESSION["admin"])){
 session_write_close();
-echo "<script>alert('登陆后才能上传');window.close();</script>";
+echo "<script>alert('登录后才能上传');window.close();</script>";
 }
 //上传图片的类--------------------------------------------------------------
 class upload{

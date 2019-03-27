@@ -24,7 +24,7 @@ $action="";
 if (!isset($_COOKIE["UserName"]) || $_COOKIE["UserName"]==""){
 ?>
 <script>
-MsgBox('用户登陆','../user/login2.php?fromurl=<?php echo "http://".$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI']?>',500,196,1);
+MsgBox('用户登录','../user/login2.php?fromurl=<?php echo "http://".$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI']?>',500,196,1);
 </script>
 <?php
 exit;

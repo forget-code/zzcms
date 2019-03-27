@@ -8,45 +8,38 @@ include ("admin.php");
 <script type="text/javascript" src="/3/ckeditor/ckeditor.js"></script>
 <script language="javascript" src="/js/timer.js"></script>
 <script language = "JavaScript">
-function CheckForm()
-{
+function CheckForm(){
 if (document.myform.bigclassid.value=="")
   {
     alert("请选择展会类型！");
 	document.myform.bigclassid.focus();
 	return false;
   }	 	  
-if (document.myform.title.value=="")
-  {
+if (document.myform.title.value==""){
     alert("展会名称不能为空！");
 	document.myform.title.focus();
 	return false;
   }
-  if (document.myform.address.value=="")
-  {
+  if (document.myform.address.value==""){
     alert("展会地址不能为空！");
 	document.myform.address.focus();
 	return false;
   }
-  if (document.myform.TimeStart.value=="")
-  {
+  if (document.myform.TimeStart.value==""){
     alert("展会开始时间不能为空！");
 	document.myform.TimeStart.focus();
 	return false;
   }
-  if (document.myform.TimeEnd.value=="")
-  {
+  if (document.myform.TimeEnd.value==""){
     alert("展会截止时间不能为空！");
 	document.myform.TimeEnd.focus();
 	return false;
-  }
- 
+  } 
 }    
-	</script>
+</script>
 </head>
 <body>
 <?php
-
 checkadminisdo("zh");
 if (isset($_SESSION["zhclassid"])){
 $szhclassid=$_SESSION["zhclassid"];
@@ -54,18 +47,12 @@ $szhclassid=$_SESSION["zhclassid"];
 $szhclassid="";
 }
 ?>
-<table width="100%" border="0" align="center" cellpadding="0" cellspacing="0">
-  <tr> 
-    <td class="admintitle">发布展会信息</td>
-  </tr>
-</table>
-<form action="zh_save.php?action=add" method="post" name="myform" target="_self" id="myform" onSubmit="return CheckForm();">
-        
+<div class="admintitle">发布展会信息</div>
+<form action="zh_save.php?action=add" method="post" name="myform" target="_self" id="myform" onSubmit="return CheckForm();">        
   <table width="100%" border="0" cellpadding="5" cellspacing="0">
     <tr> 
       <td align="right" class="border">所属类别：</td>
-      <td class="border"> 
-	   
+      <td class="border">   
         <?php
 		$sql = "select * from zzcms_zhclass order by xuhao asc";
 	    $rs=mysql_query($sql);

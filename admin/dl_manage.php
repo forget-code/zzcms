@@ -209,7 +209,7 @@ while($row = mysql_fetch_array($rs)){
       <td><?php echo $row["province"].$row["city"]?></td>
       <td><?php echo $row["dlsname"]?></td>
       <td><?php echo $row["tel"]?></td>
-      <td><?php if ($row["editor"]<>''){ echo  $row["editor"];}else{ echo '未登陆用户';}?></td>
+      <td><?php if ($row["editor"]<>''){ echo  $row["editor"];}else{ echo '未登录用户';}?></td>
       <td align="center">
         <?php if ($row["saver"]<>"") { echo"<a href='usermanage.php?keyword=".$row["saver"]."' target='_blank'>".$row["saver"]."</a>";}else{ echo"无";}?>      </td>
       <td><?php echo $row["sendtime"]?></td>

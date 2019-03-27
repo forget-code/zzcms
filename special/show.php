@@ -14,7 +14,7 @@ $content=substr(trim($_POST["content"]),0,200);
 $face=@$_POST["face"];
 $user=trim($_POST["user"]);
 if ($user==''){
-$user='未登陆用户';
+$user='未登录用户';
 }
 $ip=trim($_POST["ip"]);
 mysql_query("insert into zzcms_pinglun (about,content,face,username,ip,sendtime)values('$about','$content','$face','$user','$ip','".date('Y-m-d H:i:s')."')");
@@ -143,8 +143,8 @@ $zxcontent=showcontent();
 }else{
 	if (!isset($_COOKIE["UserName"]) || $_COOKIE["UserName"]=="") {
 	$zxcontent="<div class='box'>";	
-	$zxcontent=$zxcontent."登陆后才能查看！<br>";
-	$zxcontent=$zxcontent."如果您是本站会员请 <a href='javascript:' onClick=\"MsgBox('用户登陆','../user/login2.php?fromurl=http://".$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI']."',460,196,1)\"><strong>登陆</strong></a>；";
+	$zxcontent=$zxcontent."登录后才能查看！<br>";
+	$zxcontent=$zxcontent."如果您是本站会员请 <a href='javascript:' onClick=\"MsgBox('用户登录','../user/login2.php?fromurl=http://".$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI']."',460,196,1)\"><strong>登录</strong></a>；";
 	$zxcontent=$zxcontent."如果不是可以 <a href='/reg/userreg.php' target='_parent'><strong>免费注册</strong></a> 成为本站会员。";
 	$zxcontent=$zxcontent."</div>";
 	}else{ 

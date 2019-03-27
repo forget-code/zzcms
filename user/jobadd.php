@@ -17,15 +17,14 @@ echo $f_array[0];
 exit;
 }
 ?>
-<title></title>
+<title><?php echo $f_array[2]?></title>
 <script language = "JavaScript">
 function CheckForm(){
 <?php echo $f_array[1]?>
 }	
 function doClick_E(o){
-	 var id;
-	 var e;
-	id=0
+	 var id,e;
+	id=0;
 	 for(var i=1;i<=document.myform.bigclassid.length;i++){
 	   id ="E"+i;
 	   e = document.getElementById("E_con"+i);
@@ -44,7 +43,7 @@ function addSrcToDestList() {
 }	 
 </script>
 </head>
-<link href="style.css" rel="stylesheet" type="text/css">
+<link href="style/<?php echo siteskin_usercenter?>/style.css" rel="stylesheet" type="text/css">
 <body>
 <div class="main">
 <?php
@@ -57,6 +56,7 @@ include("left.php");
 ?>
 </div>
 <div class="right">
+<div class="content">
 <div class="admintitle"><?php echo $f_array[2]?></div>
 <?php
 $tablename="zzcms_main";
@@ -65,11 +65,11 @@ include("checkaddinfo.php");
 <form  action="jobsave.php" method="post" name="myform" id="myform" onSubmit="return CheckForm();">
         <table width="100%" border="0" cellpadding="3" cellspacing="1">
           <tr> 
-            <td width="20%" align="right" valign="top" class="border"><?php echo $f_array[3]?><font color="#FF0000"> 
-              *</font></td>
-            <td valign="middle" class="border" > <table width="100%" border="0" cellpadding="5" cellspacing="1">
+            <td width="20%" align="right" valign="top" class="border"><?php echo $f_array[3]?></td>
+            <td valign="middle" class="border" > 
+			<table width="100%" border="0" cellpadding="0" cellspacing="0">
                 <tr> 
-                  <td> <fieldset>
+                  <td> <fieldset class="fieldsetstyle">
                     <legend><?php echo $f_array[4]?></legend>
                     <?php
         $sql = "select * from zzcms_jobclass where parentid='0' order by xuhao asc";
@@ -101,7 +101,7 @@ echo "<div id='E_con$n' style='display:block;'>";
 }else{
 echo "<div id='E_con$n' style='display:none;'>";
 }
-echo "<fieldset><legend>".$f_array[5]."</legend>";
+echo "<fieldset class='fieldsetstyle'><legend>".$f_array[5]."</legend>";
 
 $sqln="select * from zzcms_jobclass where parentid='$row[classid]' order by xuhao asc";
 $rsn = mysql_query($sqln,$conn); 
@@ -122,20 +122,20 @@ echo "</div>";
               </table></td>
           </tr>
           <tr>
-            <td align="right" class="border" ><?php echo $f_array[6]?><font color="#FF0000">*</font></td>
-            <td class="border" ><input name="jobname" type="text" id="jobname" size="50" maxlength="255" /></td>
+            <td align="right" class="border" ><?php echo $f_array[6]?></td>
+            <td class="border" ><input name="jobname" type="text" id="jobname" class="biaodan" size="50" maxlength="255" /></td>
           </tr>
 		
           <tr> 
-            <td align="right" class="border" > <?php echo $f_array[7]?><font color="#FF0000">*</font></td>
-            <td class="border" > <textarea name="sm" cols="80%" rows="10"></textarea></td>
+            <td align="right" class="border" > <?php echo $f_array[7]?></td>
+            <td class="border" > <textarea name="sm" cols="80%" rows="10" class="biaodan" style="height:auto"></textarea></td>
           </tr>
           <tr> 
-            <td align="right" class="border2"><?php echo $f_array[8]?> <font color="#FF0000">*</font></td>
+            <td align="right" class="border2"><?php echo $f_array[8]?></td>
             <td class="border2">       
-<select name="province" id="province"></select>
-<select name="city" id="city"></select>
-<select name="xiancheng" id="xiancheng"></select>
+<select name="province" id="province" class="biaodan"></select>
+<select name="city" id="city" class="biaodan"></select>
+<select name="xiancheng" id="xiancheng" class="biaodan"></select>
 <script src="/js/area.js"></script>
 <script type="text/javascript">
 new PCAS('province', 'city', 'xiancheng', '<?php echo @$_SESSION['province']?>', '<?php echo @$_SESSION['city']?>', '<?php echo @$_SESSION['xiancheng']?>');
@@ -152,7 +152,9 @@ new PCAS('province', 'city', 'xiancheng', '<?php echo @$_SESSION['province']?>',
 </form>
 <?php
 session_write_close();
+unset ($f_array);
 ?>
+</div>	
 </div>	  
 </div>
 </div>

@@ -11,8 +11,8 @@ $f_array=explode("|||",$fcontent) ;
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=EmulateIE7" />
-<title></title>
-<link href="style.css" rel="stylesheet" type="text/css">
+<title><?php echo $f_array[1]?></title>
+<link href="style/<?php echo siteskin_usercenter?>/style.css" rel="stylesheet" type="text/css">
 <script language = "JavaScript">
 function CheckForm(){
 <?php echo $f_array[0]?>
@@ -62,6 +62,7 @@ include("left.php");
 ?>
 </div>
 <div class="right">
+<div class="content">
 <div class="admintitle"><?php echo $f_array[1]?></div>
 <?php
 $tablename="zzcms_zx";
@@ -76,8 +77,8 @@ $s=$_REQUEST["s"];
 <form action="zxsave.php" method="post" name="myform" id="myform" onSubmit="return CheckForm();">
         <table width="100%" border="0" cellpadding="3" cellspacing="1">
           <tr> 
-            <td align="right" class="border2"><?php echo $f_array[2]?> <font color="#FF0000">*</font></td>
-            <td width="678" class="border2"> 
+            <td width="18%" align="right" class="border2"><?php echo $f_array[2]?></td>
+            <td width="82%" class="border2"> 
               <?php
 
 $sql = "select * from zzcms_zxclass where parentid<>0 order by xuhao asc";
@@ -108,7 +109,7 @@ function changelocation(locationid){
                 document.myform.smallclassid.options[document.myform.smallclassid.length] = new Option(subcat[i][0], subcat[i][2]);
             }        
         }
-    }</script> <select name="bigclassid" onchange="changelocation(document.myform.bigclassid.options[document.myform.bigclassid.selectedIndex].value)" size="1">
+    }</script> <select name="bigclassid" class="biaodan" onchange="changelocation(document.myform.bigclassid.options[document.myform.bigclassid.selectedIndex].value)" size="1">
                 <option value="" selected="selected"><?php echo $f_array[3]?> </option>
                 <?php
 	$sql = "select * from zzcms_zxclass where isshowforuser=1 and parentid=0 order by xuhao asc";
@@ -130,7 +131,7 @@ function changelocation(locationid){
 	}	
 		?>		
               </select> 
-			  <select name="smallclassid">
+			  <select name="smallclassid"  class="biaodan">
                 <option value="0"><?php echo $f_array[4]?></option>
                 <?php
 if ($b!=''){//从index.php获取的大类值优先
@@ -151,12 +152,10 @@ $rs=mysql_query($sql);
 	}
 	}
 	?>					  
-              </select>
-		  
-			  </td>
+              </select></td>
           </tr>
           <tr> 
-            <td width="139" align="right" class="border"><?php echo $f_array[5]?> <font color="#FF0000">*</font></td>
+            <td align="right" class="border"><?php echo $f_array[5]?></td>
 			
             <td class="border">
 			<script type="text/javascript" src="/js/jquery.js"></script>  
@@ -167,42 +166,42 @@ $(document).ready(function(){
   });  
 });  
 </script>  
-			 <input name="title" type="text" id="title" size="50" maxlength="255"> 
-              <input type="checkbox" name="checkbox" value="checkbox" onclick="showlink()">
-              <?php echo $f_array[6]?> 
+			 <input name="title" type="text" id="title" size="50" maxlength="255"  class="biaodan"> 
+              <input type="checkbox" name="wailian" id="wailian" value="checkbox" onclick="showlink()">
+               <label for="wailian"><?php echo $f_array[6]?></label> 
 			  <span id="quote"></span>              </td>
           </tr>
           <tr id="link" style="display:none"> 
-            <td align="right" class="border" ><?php echo $f_array[7]?> <font color="#FF0000">*</font></td>
-            <td class="border" ><input name="link" type="text" id="laiyuan3" size="50" maxlength="255" />            </td>
+            <td align="right" class="border" ><?php echo $f_array[7]?></td>
+            <td class="border" ><input name="link" type="text" id="laiyuan3" size="50" maxlength="255"  class="biaodan"/>            </td>
           </tr>
           <tr id="trlaiyuan"> 
             <td align="right" class="border2" ><?php echo $f_array[8]?></td>
-            <td class="border2" > <input name="laiyuan" type="text" id="laiyuan" value="<?php echo sitename?>" size="50" maxlength="50" /></td>
+            <td class="border2" > <input name="laiyuan" type="text" id="laiyuan" value="<?php echo sitename?>" size="50" maxlength="50" class="biaodan" /></td>
           </tr>
           <tr id="trcontent"> 
-            <td align="right" class="border2" ><?php echo $f_array[9]?> <font color="#FF0000">*</font></td>
+            <td align="right" class="border2" ><?php echo $f_array[9]?></td>
             <td class="border2" > <textarea name="content" id="content"></textarea> 
              <script type="text/javascript" src="/3/ckeditor/ckeditor.js"></script>
 			  <script type="text/javascript">CKEDITOR.replace('content');</script>            </td>
           </tr>
           <tr id="trseo">
-            <td colspan="2" align="center" class="border2" ><strong><?php echo $f_array[10]?></strong></td>
+            <td colspan="2" class="admintitle" ><strong><?php echo $f_array[10]?></strong></td>
           </tr>
           <tr id="trkeywords">
             <td align="right" class="border" ><?php echo $f_array[11]?></td>
-            <td class="border" ><input name="keywords" type="text" id="keywords" size="50" maxlength="50" /></td>
+            <td class="border" ><input name="keywords" type="text" id="keywords" size="50" maxlength="50"  class="biaodan"/></td>
           </tr>
           <tr id="trdescription">
             <td align="right" class="border2" ><?php echo $f_array[12]?></td>
-            <td class="border2" ><input name="description" type="text" id="description" size="50" maxlength="50" /></td>
+            <td class="border2" ><input name="description" type="text" id="description" size="50" maxlength="50"  class="biaodan"/></td>
           </tr>
           <tr id="trquanxian">
-            <td colspan="2" align="center" class="border2" ><strong><?php echo $f_array[13]?></strong></td>
+            <td colspan="2" class="admintitle" ><strong><?php echo $f_array[13]?></strong></td>
           </tr>
           <tr id="trquanxian2">
             <td align="right" class="border" >&nbsp;</td>
-            <td class="border" ><select name="groupid">
+            <td class="border" ><select name="groupid"  class="biaodan">
                 <option value="0"><?php echo $f_array[14]?></option>
                 <?php
 		  $rs=mysql_query("Select * from zzcms_usergroup ");
@@ -214,7 +213,7 @@ $(document).ready(function(){
 		  }
 	 ?>
               </select>
-                <select name="jifen" id="jifen">
+                <select name="jifen" id="jifen"  class="biaodan">
                   <?php echo $f_array[15]?>
                 </select>
             </td>
@@ -230,8 +229,10 @@ $(document).ready(function(){
 </div>
 </div>
 </div>
+</div>
 </body>
 </html>
 <?php
 session_write_close();
+unset ($f_array);
 ?>

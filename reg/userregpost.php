@@ -88,8 +88,8 @@ if($send){
 <li><form name="form1" method="post" action="/reg/sendmailagain.php">帐号需要激活后才能使用，激活邮件已发送到
 <input type=text name="newemail" value="<?php echo $email?>">
 <input type=hidden name=username value="<?php echo $username?>">
-<input type=submit name=submit value="重发"> 请登陆到您的邮箱查收 。</form></li>
-<li style="padding:10px 0"><input type="button" class="button_big" value="点击登陆您的邮箱"  onclick="window.open('<?php echo $emailsite?>')"/></li>
+<input type=submit name=submit value="重发"> 请登录到您的邮箱查收 。</form></li>
+<li style="padding:10px 0"><input type="button" class="button_big" value="点击登录您的邮箱"  onclick="window.open('<?php echo $emailsite?>')"/></li>
 </ul>
 </div>
 <?php
@@ -100,7 +100,7 @@ echo "验证邮件发送失败。";
 }else{ //if(checkistrueemail=="Yes" )
 mysql_query("INSERT INTO zzcms_user (username,password,passwordtrue,usersf,comane,content,somane,sex,phone,email,img,totleRMB,regdate,lastlogintime)VALUES('$username','".md5($password)."','$password','$usersf','$comane','&nbsp;','$somane','1','$phone','$email','/image/nopic.gif','".jf_reg."','".date('Y-m-d H:i:s')."','".date('Y-m-d H:i:s')."')");
 mysql_query("INSERT INTO zzcms_usersetting (username,skin,skin_mobile,swf,daohang)VALUES('$username','tongyong','1','6.swf','$daohang')");
-setcookie("UserName",$username,time()+3600*24*365,"/");//直接登陆
+setcookie("UserName",$username,time()+3600*24*365,"/");//直接登录
 setcookie("PassWord",md5($password),time()+3600*24*365,"/");
 session_write_close();
 //集成ucenter

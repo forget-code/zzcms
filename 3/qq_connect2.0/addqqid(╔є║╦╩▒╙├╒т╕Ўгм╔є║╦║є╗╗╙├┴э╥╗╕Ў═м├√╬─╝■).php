@@ -27,9 +27,10 @@ WriteErrMsg($errmsg);
 	if (!$row){
 	$username=date("YmdHis").rand(100,999);
 	$password=md5(123456);
+	$passwordtrue='123456';
 	$daohang="网站首页, 招商信息, 公司简介, 资质证书, 联系方式, 在线留言";
-	mysql_query("insert into zzcms_user (username,password,qqid,usersf,img,totleRMB,regdate,lastlogintime) value 
-	('$username','$password','$qqid','公司','/image/nopic.gif','".jf_reg."','".date('Y-m-d H:i:s')."','".date('Y-m-d H:i:s')."')");
+	mysql_query("insert into zzcms_user (username,password,passwordtrue,qqid,usersf,img,totleRMB,regdate,lastlogintime) value 
+	('$username','$password','$passwordtrue','$qqid','公司','/image/nopic.gif','".jf_reg."','".date('Y-m-d H:i:s')."','".date('Y-m-d H:i:s')."')");
 	mysql_query("insert into zzcms_usersetting (username,skin,swf,daohang)VALUES('$username','1','6.swf','$daohang')");		
 	}
 	

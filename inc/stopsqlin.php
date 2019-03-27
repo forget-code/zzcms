@@ -49,8 +49,11 @@ function nostr($str){
 function stopsqlin($str){
 if(!is_array($str)) {//有数组数据会传过来比如代理留言中的省份$_POST['province'][$i]
 	$str=strtolower($str);//否则过过滤不全
+	
 	$sql_injdata = "";
-	if (stopwords<>"") {$sql_injdata= $sql_injdata."|".stopwords;}
+	$sql_injdata= $sql_injdata."|".stopwords;
+	$sql_injdata=CutFenGeXian($sql_injdata);
+	
     $sql_inj = explode("|",$sql_injdata);
 	for ($i=0; $i< count($sql_inj);$i++){
 		if (@strpos($str,$sql_inj[$i])!==false) {showmsg ("参数中含有非法字符 [".$sql_inj[$i]."] 系统不与处理");}

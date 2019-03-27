@@ -27,7 +27,7 @@ include("../../inc/stopsqlin.php");
 	<head>
 	<title>支付宝即时到账交易接口接口</title>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-	<LINK href="../../user/style.css" type=text/css rel=stylesheet>
+	<LINK href="../../user/style/<?php echo siteskin_usercenter?>/style.css" type=text/css rel=stylesheet>
     <style type="text/css">
 <!--
 .STYLE1 {color: #FF0000}
@@ -35,11 +35,12 @@ include("../../inc/stopsqlin.php");
     </style>
     </head>
 <body>
+<div class="content">
 <div class="admintitle">支付宝在线冲值</div>
 <form name="alipayment" action="alipayapi.php" method="post" target="_self">
   <table width="100%" border="0" cellspacing="1" cellpadding="5">
     <tr> 
-      <td width="22%" align="right" class="border">收款方</td>
+      <td width="22%" align="right" class="border">收款方：</td>
       <td width="78%" class="border"><?php echo  sitename ?>
           <input name="WIDseller_email" value="<?php echo alipay_seller_email ?>" type="hidden" size="30" />
           <input name="WIDout_trade_no" value="<?php echo $mch_vno?>" type="hidden" size="30" />
@@ -48,8 +49,8 @@ include("../../inc/stopsqlin.php");
           <input name="WIDshow_url" value="<?php echo siteurl?>" type="hidden" size="30" />      </td>
     </tr>
     <tr> 
-      <td align="right" class="border2">充值金额</td>
-      <td class="border2"><input name="WIDtotal_fee" type="text" id="WIDtotal_fee" onKeyUp="if(isNaN(value))execCommand('undo')" size="18" maxlength="50" onafterpaste="if(isNaN(value))execCommand('undo')">
+      <td align="right" class="border2">充值金额：</td>
+      <td class="border2"><input name="WIDtotal_fee" type="text" id="WIDtotal_fee" class="biaodan" onKeyUp="if(isNaN(value))execCommand('undo')" size="18" maxlength="50" onafterpaste="if(isNaN(value))execCommand('undo')">
         （格式：500.01）</td>
     </tr>
     <tr> 
@@ -60,6 +61,7 @@ include("../../inc/stopsqlin.php");
       <td class="border"><input type="submit" name="Submit" value="下一步" /></td>
     </tr>
   </table>			
-</form>  
+</form> 
+</div> 
 </body>
 </html>

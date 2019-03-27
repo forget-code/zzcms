@@ -12,7 +12,7 @@ $f_array=explode("|||",$fcontent) ;
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=EmulateIE7" />
 <title></title>
-<link href="style.css" rel="stylesheet" type="text/css">
+<link href="style/<?php echo siteskin_usercenter?>/style.css" rel="stylesheet" type="text/css">
 <?php
 if (check_usergr_power("special")=="no" && $usersf=='个人'){
 echo $f_array[0];
@@ -96,8 +96,8 @@ include("left.php");
 ?>
 </div>
 <div class="right">
-<br><br>
-<table width="400" border="0" align="center" cellpadding="0" cellspacing="0">
+<div class="content">
+<table width="400" border="0" align="center" cellpadding="5" cellspacing="0">
   <tr> 
     <td class="tstitle"> 
 	 <?php
@@ -108,27 +108,21 @@ include("left.php");
 	  }else{
 	  echo $f_array[4];
 	  }
-     ?>
-
-      </td>
+     ?>      </td>
   </tr>
   <tr> 
-    <td><table width="100%" border="0" cellspacing="0" cellpadding="3">
-              <tr bgcolor="#FFFFFF"> 
-                <td width="25%" align="right" bgcolor="#FFFFFF"><strong><?php echo $f_array[5]?></strong></td>
-                <td width="75%"><?php echo $title?></td>
-              </tr>
-            </table></td>
-  </tr>
-  <tr> 
-    <td><table width="100%" border="0" cellpadding="5" cellspacing="1">
+    <td class="border3"><table width="100%" border="0" cellspacing="0" cellpadding="3">
+      <tr bgcolor="#FFFFFF">
+        <td width="25%" align="right" bgcolor="#FFFFFF"><strong><?php echo $f_array[5]?></strong></td>
+        <td width="75%"><?php echo $title?></td>
+      </tr>
+    </table>
+      <table width="100%" border="0" cellpadding="5" cellspacing="1" class="bgcolor">
         <tr> 
-          <td width="120" align="center" class="border"><a href="specialadd.php"><?php echo $f_array[6]?></a></td>
-		 
-                <td width="120" align="center" class="border"><a href="specialmodify.php?id=<?php echo $id?>"><?php echo $f_array[7]?></a></td>
-				
-                <td width="120" align="center" class="border"><a href="specialmanage.php?bigclassid=<?php echo $bigclassid?>&page=<?php echo $page?>"><?php echo $f_array[8]?></a></td>
-                <td width="120" align="center" class="border"><a href="<?php echo getpageurl("special",$id)?>" target="_blank"><?php echo $f_array[9]?></a></td>
+          <td width="120" align="center" class="bgcolor1"><a href="specialadd.php"><?php echo $f_array[6]?></a></td>
+                <td width="120" align="center" class="bgcolor1"><a href="specialmodify.php?id=<?php echo $id?>"><?php echo $f_array[7]?></a></td>
+                <td width="120" align="center" class="bgcolor1"><a href="specialmanage.php?bigclassid=<?php echo $bigclassid?>&page=<?php echo $page?>"><?php echo $f_array[8]?></a></td>
+                <td width="120" align="center" class="bgcolor1"><a href="<?php echo getpageurl("special",$id)?>" target="_blank"><?php echo $f_array[9]?></a></td>
         </tr>
       </table></td>
   </tr>
@@ -136,7 +130,9 @@ include("left.php");
 <?php
 mysql_close($conn);
 session_write_close();
+unset ($f_array);
 ?>
+</div>
 </div>
 </div>
 </div>

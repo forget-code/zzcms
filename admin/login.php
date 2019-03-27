@@ -1,6 +1,6 @@
 <?php
 include("../inc/config.php");
-define ("checkadminlogin","1");//当关网站时，如果是管理员登陆时使链接正常打开
+define ("checkadminlogin","1");//当关网站时，如果是管理员登录时使链接正常打开
 ?>
 <html>
 <head>
@@ -45,7 +45,7 @@ $("#getcode_math").click(function(){
           </tr>
           <tr> 
             <td height="25">&nbsp;</td>
-            <td height="25"><input type="submit" name="Submit" id="chk_math" value="登 陆"></td>
+            <td height="25"><input type="submit" name="Submit" id="chk_math" value="登 录"></td>
           </tr>
           <tr align="right"> 
             <td height="25" colspan="2"><?php echo zzcmsver ?> </td>

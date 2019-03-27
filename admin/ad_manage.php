@@ -98,7 +98,7 @@ $sql="select * from zzcms_adclass where parentid='".$b."' order by xuhao";
 $rs = mysql_query($sql); 
 $row = mysql_num_rows($rs);
 if (!$row){
-echo '暂无分类';
+echo '';
 }else{
 echo "小类：";
 while($row = mysql_fetch_array($rs)){

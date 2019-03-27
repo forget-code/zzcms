@@ -75,13 +75,13 @@ if ($rowleft){
 			if (whtml=="Yes"){
 			$siteleft=$siteleft."<a href='/sell/zs-".$id."-".$rowleft["bigclasszm"].".htm' style='color:red'>".$bigclassnames."</a>";
 			}else{
-			$siteleft=$siteleft."<a href='/sell/zs.php?id=".$id."&bigclass=".$rowleft["bigclasszm"]."' style='color:red'>".$bigclassnames."</a>";
+			$siteleft=$siteleft."<a href='/zt/zs.php?id=".$id."&bigclass=".$rowleft["bigclasszm"]."' style='color:red'>".$bigclassnames."</a>";
 			}
 		}else{
 			if (whtml=="Yes"){
 			$siteleft=$siteleft."<a href='/sell/zs-".$id."-".$rowleft["bigclasszm"].".htm'>".$bigclassnames."</a>";
 			}else{	
-			$siteleft=$siteleft."<a href='/sell/zs.php?id=".$id."&bigclass=".$rowleft["bigclasszm"]."'>".$bigclassnames ."</a>";
+			$siteleft=$siteleft."<a href='/zt/zs.php?id=".$id."&bigclass=".$rowleft["bigclasszm"]."'>".$bigclassnames ."</a>";
 			}
 		}
 		$siteleft=$siteleft."&nbsp;(<span style='color:#ff6600'>".$numb."</span>)";
@@ -109,13 +109,13 @@ if ($rowleft){
 					if (whtml=="Yes"){
 					$siteleft=$siteleft."<a href='/sell/zs-".$id."-".$rowleft["bigclasszm"]."-".$rown["smallclasszm"].".htm' style='color:red'>".$smallclassnames."</a>";
 					}else{
-					$siteleft=$siteleft."<a href='/sell/zs.php?id=".$id."&bigclass=".$rowleft["bigclasszm"]."&smallclass=".$rown["smallclasszm"]."' style='color:red'>".$smallclassnames."</a>";
+					$siteleft=$siteleft."<a href='/zt/zs.php?id=".$id."&bigclass=".$rowleft["bigclasszm"]."&smallclass=".$rown["smallclasszm"]."' style='color:red'>".$smallclassnames."</a>";
 					}
 				}else{
 					if (whtml=="Yes"){
 					$siteleft=$siteleft.  "<a href='/sell/zs-".$id."-".$rowleft["bigclasszm"]."-".$rown["smallclasszm"].".htm'>".$smallclassnames."</a>";
 					}else{	
-					$siteleft=$siteleft. "<a href='/sell/zs.php?id=".$id."&bigclass=".$rowleft["bigclasszm"]."&smallclass=".$rown["smallclasszm"]."'>".$smallclassnames ."</a>";
+					$siteleft=$siteleft. "<a href='/zt/zs.php?id=".$id."&bigclass=".$rowleft["bigclasszm"]."&smallclass=".$rown["smallclasszm"]."'>".$smallclassnames ."</a>";
 					}
 				}
 				$siteleft=$siteleft."&nbsp;(<span style='color:#ff6600'>".$nums."</span>)";

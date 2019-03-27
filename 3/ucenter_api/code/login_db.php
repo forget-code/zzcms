@@ -29,7 +29,7 @@ if(empty($_POST['submit'])) {
 			echo '您需要需要激活该帐号，才能进入本应用程序<br><a href="'.$_SERVER['PHP_SELF'].'?example=register&action=activation&auth='.$auth.'">继续</a>';
 			exit;
 		}
-		//用户登陆成功，设置 Cookie，加密直接用 uc_authcode 函数，用户使用自己的函数
+		//用户登录成功，设置 Cookie，加密直接用 uc_authcode 函数，用户使用自己的函数
 		setcookie('Example_auth', uc_authcode($uid."\t".$username, 'ENCODE'));
 		//生成同步登录的代码
 		$ucsynlogin = uc_user_synlogin($uid);

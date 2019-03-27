@@ -11,7 +11,7 @@ $f_array=explode("|||",$fcontent) ;
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=EmulateIE7" />
 <title></title>
-<link href="style.css" rel="stylesheet" type="text/css">
+<link href="style/<?php echo siteskin_usercenter?>/style.css" rel="stylesheet" type="text/css">
 <script language="javascript" src="/js/timer.js"></script>
 <script type="text/javascript" src="/3/ckeditor/ckeditor.js"></script>
 <script language = "JavaScript">
@@ -32,6 +32,7 @@ include("left.php");
 ?>
 </div>
 <div class="right">
+<div class="content">
 <div class="admintitle"><?php echo $f_array[1]?> </div>
 <?php
 if (isset($_GET["page"])){
@@ -53,12 +54,11 @@ markit();
 showmsg('非法操作！警告：你的操作已被记录！小心封你的用户及IP！');
 }
 ?>
-<form action="zhsave.php" method="post" name="myform" id="myform" onSubmit="return CheckForm();">
-              
+<form action="zhsave.php" method="post" name="myform" id="myform" onSubmit="return CheckForm();">    
         <table width="100%" border="0" cellpadding="3" cellspacing="1">
           <tr> 
-            <td align="right" class="border2"><?php echo $f_array[2]?> <font color="#FF0000">*</font></td>
-            <td width="726" class="border2"> <select name="bigclassid" id="bigclassid">
+            <td width="15%" align="right" class="border2"><?php echo $f_array[2]?> </td>
+            <td width="85%" class="border2"> <select name="bigclassid" id="bigclassid" class="biaodan">
                 <option value="" selected="selected"><?php echo $f_array[3]?></option>
                 <?php
 		  
@@ -70,27 +70,27 @@ showmsg('非法操作！警告：你的操作已被记录！小心封你的用�
                 <?php
 		  }
 		  ?>
-              </select> </td>
+              </select></td>
           </tr>
           <tr> 
-            <td width="91" align="right" class="border"><?php echo $f_array[4]?> <font color="#FF0000">*</font></td>
-            <td class="border"> <input name="title" type="text" id="title" size="50" maxlength="255" value="<?php echo $rowzh["title"]?>" /> 
+            <td align="right" class="border"><?php echo $f_array[4]?></td>
+            <td class="border"> <input name="title" type="text" id="title" class="biaodan" size="50" maxlength="255" value="<?php echo $rowzh["title"]?>" /> 
             </td>
           </tr>
           <tr> 
             <td align="right" class="border2" ><?php echo $f_array[5]?></td>
-            <td class="border2" > <input name="address" type="text" id="address" size="50" maxlength="255" value="<?php echo $rowzh["address"]?>"/></td>
+            <td class="border2" > <input name="address" type="text" id="address" class="biaodan" size="50" maxlength="255" value="<?php echo $rowzh["address"]?>"/></td>
           </tr>
           <tr> 
             <td align="right" class="border" ><?php echo $f_array[6]?></td>
-            <td class="border" > <input name="timestart" type="text" id="timestart" value="<?php echo $rowzh["timestart"]?>" onfocus="JTC.setday(this)" />
+            <td class="border" > <input name="timestart" type="text" id="timestart" class="biaodan" value="<?php echo date("Y-m-d",strtotime($rowzh['timestart']))?>" onfocus="JTC.setday(this)" />
               -
-              <input name="timeend" type="text" id="timeend" value="<?php echo $rowzh["timeend"]?>" onfocus="JTC.setday(this)" /> 
+              <input name="timeend" type="text" id="timeend"  class="biaodan" value="<?php echo date("Y-m-d",strtotime($rowzh['timeend']))?>" onfocus="JTC.setday(this)" /> 
             </td>
           </tr>
           <tr> 
             <td align="right" class="border2" ><?php echo $f_array[7]?></td>
-            <td class="border2" > <textarea    name="content" id="content"><?php echo $rowzh["content"]?></textarea> 
+            <td class="border2" > <textarea    name="content" id="content" class="biaodan" style="height:auto"><?php echo $rowzh["content"]?></textarea> 
               <script type="text/javascript">
 				CKEDITOR.replace('content');	
 			</script>
@@ -109,8 +109,10 @@ showmsg('非法操作！警告：你的操作已被记录！小心封你的用�
 </div>
 </div>
 </div>
+</div>
 <?php
-mysql_close($conn)
+mysql_close($conn);
+unset ($f_array);
 ?>
 </body>
 </html>

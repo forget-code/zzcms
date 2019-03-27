@@ -1,5 +1,5 @@
-zsitem|||0|||8|||1|||<div>|||<div class='titlezs'> 
-<span>{#zssmallclass}</span>
+﻿zsitem|||0|||8|||1|||<div>|||<div class='titlezs'> 
+<span>{#zssmallclass:15}</span>
 <h3><a href=zs.php?b={#classid}>{#classname}</a></h3>
 </div> 
 

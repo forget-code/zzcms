@@ -20,7 +20,7 @@ echo showmsg("不存在相关信息！");
 mysql_query("update zzcms_zh set hit=hit+1 where id='$zhid'");
 $title=$row["title"];
 $bigclassid=$row["bigclassid"];
-$sendtime=$row['sendtime'];
+$sendtime=date("Y-m-d",strtotime($row['sendtime']));
 $editor=$row["editor"];
 $hit=$row["hit"];
 $id=$row["id"];

@@ -1,30 +1,34 @@
 <?php
+$fpath="../inc/text/fy.txt";
+$fcontent=file_get_contents($fpath);
+$f_array_fy=explode("\n",$fcontent) ;
+
 function showpage($b='no'){
-global $page,$totlepage,$totlenum,$page_size,$bigclassid;
-$str="页次：<strong><font color=#CC0033>".$page."</font>/".$totlepage."　</strong> ";
-$str=$str." <strong>".$page_size."</strong>条/页　共<strong>".$totlenum."</strong>条";		 
+global $page,$totlepage,$totlenum,$page_size,$bigclassid,$f_array_fy;
+$str=$f_array_fy[0]."<strong><font color=#CC0033>".$page."</font>/".$totlepage."　</strong> ";
+$str=$str." <strong>".$page_size."</strong>".$f_array_fy[1]."&nbsp;".$f_array_fy[2]."<strong>".$totlenum."</strong>".$f_array_fy[3];		 
   
 if ($page!=1){
 	if ($b=="yes"){
-	$str=$str."<a href=?page=1&bigclassid=".$bigclassid.">【首页】</a> ";
-	$str=$str."<a href=?page=".($page-1)."&bigclassid=".$bigclassid.">【上一页】</a> ";
+	$str=$str."<a href=?page=1&bigclassid=".$bigclassid.">".$f_array_fy[4]."</a> ";
+	$str=$str."<a href=?page=".($page-1)."&bigclassid=".$bigclassid.">".$f_array_fy[5]."</a> ";
 	}else{
-	$str=$str."<a href=?page=1>【首页】</a> ";
-	$str=$str."<a href=?page=".($page-1).">【上一页】</a> ";
+	$str=$str."<a href=?page=1>".$f_array_fy[4]."</a> ";
+	$str=$str."<a href=?page=".($page-1).">".$f_array_fy[5]."</a> ";
 	}
 }else{
-$str=$str."【首页】【上一页】";
+$str=$str.$f_array_fy[4].$f_array_fy[5];
 }
 if ($page!=$totlepage){
 	if ($b=="yes"){
-	$str=$str."<a href=?page=".($page+1)."&bigclassid=".$bigclassid.">【下一页】</a> ";
-	$str=$str."<a href=?page=".$totlepage."&bigclassid=".$bigclassid.">【尾页】</a>";
+	$str=$str."<a href=?page=".($page+1)."&bigclassid=".$bigclassid.">".$f_array_fy[6]."</a> ";
+	$str=$str."<a href=?page=".$totlepage."&bigclassid=".$bigclassid.">".$f_array_fy[7]."</a>";
 	}else{	
-	$str=$str."<a href=?page=".($page+1).">【下一页】</a> ";
-	$str=$str."<a href=?page=".$totlepage.">【尾页】</a>";
+	$str=$str."<a href=?page=".($page+1).">".$f_array_fy[6]."</a> ";
+	$str=$str."<a href=?page=".$totlepage.">".$f_array_fy[7]."</a>";
 	}
 }else{
-$str=$str."【下一页】【尾页】";
+$str=$str.$f_array_fy[6].$f_array_fy[7];
 }
 return $str;
 }
@@ -35,7 +39,7 @@ global $page,$totlepage,$totlenum,$page_size,$keyword,$yiju,$szm;
 //这个用在搜索页中，在搜索页中上面的大多数参数都写在cookies中了
 $cs="&keyword=".$keyword."&yiju=".$yiju."&szm=".$szm;
 $str="";
-$str=$str."<a><nobr>共".$totlenum."</nobr>条</a>";
+$str=$str."<a><nobr>共".$totlenum."</nobr></a>";
 		if ($page<>1) {
 			$str=$str . "<a href='?page=1".$cs."' title='转到第一页'><nobr>&lt;&lt;</nobr></a>";
 			$str=$str . "<a href='?page=".($page-1).$cs."' title='转到上一页' >&lt;</a>";
@@ -66,7 +70,7 @@ $str=$str."<a><nobr>共".$totlenum."</nobr>条</a>";
 function showpage2($channel){
 global $b,$s,$page,$totlepage,$totlenum,$page_size;
 $str="<form name='formpage' action='/".$channel."/".$channel.".php' method='get' target='_self' onsubmit='return checkpage();'>";
-$str=$str."<a><nobr>共".$totlenum."条</nobr></a>";
+$str=$str."<a><nobr>共".$totlenum."</nobr></a>";
 		if ($page<>1){
 			if (whtml=="Yes") {
 				if ($s<>"") {

@@ -11,7 +11,7 @@ $f_array=explode("|||",$fcontent) ;
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta http-equiv="X-UA-Compatible" content="IE=EmulateIE7" />
 <title><?php echo $f_array[0]?></title>
-<link href="style.css" rel="stylesheet" type="text/css" />
+<link href="style/<?php echo siteskin_usercenter?>/style.css" rel="stylesheet" type="text/css">
 <?php
 if (check_usergr_power("zt")=="no" && $usersf=='个人'){
 echo $f_array[1];
@@ -43,9 +43,10 @@ include("left.php");
 ?>
 </div>
 <div class="right">
+<div class="content">
 <div class="admintitle"><?php echo $f_array[0]?></div>
 <form name="myform" method="post" action="?action=modify"> 
-<table width="95%" border="0" cellpadding="5" cellspacing="0">
+<table width="100%" border="0" cellpadding="5" cellspacing="1" class="bgcolor">
                   <tr>        
                     <?php 
 $rs=mysql_query("select skin_mobile from zzcms_usersetting where username='".$username."'");
@@ -56,9 +57,9 @@ while(($file = readdir($dir))!=false){
   if ($file!="." && $file!=".." && strpos($file,".zip")==false && strpos($file,".rar")==false ) { //不读取. ..
     //$f = explode('.', $file);//用$f[0]可只取文件名不取后缀。 
 ?>
-                    <td><table width="120" border="0" cellpadding="5" cellspacing="1">
+                    <td align="center" bgcolor="#FFFFFF"><table width="120" border="0" cellpadding="5" cellspacing="1">
                         <tr> 
-                          <td align="center" <?php if($row["skin_mobile"]==$file){ echo "bgcolor='#025BAD'";}else{echo "bgcolor='#FFF'"; }?>>
+                          <td align="center" <?php if($row["skin_mobile"]==$file){ echo "bgcolor='#FF0000'";}else{echo "bgcolor='#FFFFFF'"; }?>>
 						  <img src='../skin/mobile/<?php echo $file?>/image/mb.gif' width="120"  border='0'/></td>
                         </tr>
                         <tr> 
@@ -67,7 +68,7 @@ while(($file = readdir($dir))!=false){
 <input name="Submit" type="submit" class="buttons" value="<?php echo $f_array[3]?>" />
 </td>
                         </tr>
-                      </table></td>
+                    </table></td>
                     <?php 
 				  $i=$i+1;
 				  if($i % 5==0 ){
@@ -75,10 +76,12 @@ while(($file = readdir($dir))!=false){
 				  }
 				}
 				}	
-closedir($dir)
+closedir($dir);
+unset ($f_array);
 				?>
-           </table>  
+        </table>  
 </form>
+</div>
 </div>
 </div>
 </div>

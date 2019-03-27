@@ -89,7 +89,7 @@ if (whendlsave=="Yes"){
 	$to = $fbr_email; //收件人
 	$subject = "有人在".sitename."上给您留言想要".channeldl.$cp;
 	$body= "<table width='100%'><tr><td style='font-size:14px;line-height:25px'>".$somane.$sex. "：<br>&nbsp;&nbsp;&nbsp;&nbsp;您好！<br>有人在".sitename."上给您留言，想要".channeldl.$cp."；以下是部分信息：<hr>";
-	$body=$body . "留&nbsp;言&nbsp;人：".$dlsname."<br>".channeldl."产品：".$cp."<br>代理区域：".$city."<br>留言时间：".date('Y-m-d H:i:s')."<br><a href='".siteurl."/user/login.php' target='_blank'><b>登陆网站查看详情</b></a>";
+	$body=$body . "留&nbsp;言&nbsp;人：".$dlsname."<br>".channeldl."产品：".$cp."<br>代理区域：".$city."<br>留言时间：".date('Y-m-d H:i:s')."<br><a href='".siteurl."/user/login.php' target='_blank'><b>登录网站查看详情</b></a>";
 	$body=$body . "</td></tr></table>";
 	
 	$fp="../template/".siteskin."/email.htm";
@@ -106,7 +106,7 @@ if (whendlsave=="Yes"){
 	
 	//发手机短信网站编码为GB2312不能在此页中发
 	if (sendsms=="Yes"){
-	$msg='有人在'.sitename.'留言要'.channeldl.'您发布的产品，请登陆网站查看详情，网址：'.siteurl;
+	$msg='有人在'.sitename.'留言要'.channeldl.'您发布的产品，请登录网站查看详情，网址：'.siteurl;
 	$msg = iconv("UTF-8","GBK",$msg);
 	$result = sendSMS(smsusername,smsuserpass,$dstmobile,$msg,apikey_mobile_msg);
 	//echo $result."<br>";

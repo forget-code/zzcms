@@ -12,7 +12,7 @@ $f_array=explode("\n",$fcontent) ;
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=EmulateIE7" />
 <title></title>
-<link href="style.css" rel="stylesheet" type="text/css">
+<link href="style/<?php echo siteskin_usercenter?>/style.css" rel="stylesheet" type="text/css">
 <script language="JavaScript" src="/js/gg.js"></script>
 </head>
 <body>
@@ -27,6 +27,7 @@ include("left.php");
 ?>
 </div>
 <div class="right">
+<div class="content">
 <div class="admintitle"><?php echo $f_array[0]?></div>
 <?php
 if( isset($_GET["page"]) && $_GET["page"]!="") {
@@ -58,7 +59,7 @@ echo $f_array[1];
 }else{
 ?>
 <form name="myform" method="post" action="del.php">
-  <table width="100%" border="0" cellpadding="5" cellspacing="1">
+  <table width="100%" border="0" cellpadding="5" cellspacing="1"  class="bgcolor">
     <tr> 
      <?php echo $f_array[2]?>
     </tr>
@@ -68,7 +69,7 @@ while($row = mysql_fetch_array($rs)){
     <tr class="bgcolor1" onMouseOver="fSetBg(this)" onMouseOut="fReBg(this)"> 
       <td><a href="ztliuyan_show.php?id=<?php echo $row["id"]?>" target="_blank"><?php echo cutstr($row["content"],10)?></a></td>
       <td><?php echo $row["sendtime"]?></td>
-      <td><?php if ($row["looked"]==0){ echo $f_array[3];} else {echo $f_array[4];}?></td>
+      <td align="center"><?php if ($row["looked"]==0){ echo $f_array[3];} else {echo $f_array[4];}?></td>
       <td align="center"><a href="ztliuyan_show.php?id=<?php echo $row["id"]?>" target="_blank"><?php echo $f_array[5]?></a></td>
       <td align="center"><input name="id[]" type="checkbox" id="id" value="<?php echo $row["id"]?>" /></td>
     </tr>
@@ -89,7 +90,9 @@ while($row = mysql_fetch_array($rs)){
 <?php
 }
 mysql_close($conn);
+unset ($f_array);
 ?>
+</div>
 </div>
 </div>
 </div>

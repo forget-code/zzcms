@@ -11,8 +11,8 @@ $f_array=explode("\n",$fcontent) ;
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=EmulateIE7" />
-<title></title>
-<link href="style.css" rel="stylesheet" type="text/css">
+<title><?php echo $f_array[1]?></title>
+<link href="style/<?php echo siteskin_usercenter?>/style.css" rel="stylesheet" type="text/css">
 <?php
 if (check_usergr_power("special")=="no" && $usersf=='个人'){
 echo $f_array[0];
@@ -33,6 +33,7 @@ include("left.php");
 ?>
 </div>
 <div class="right">
+<div class="content">
 <div class="admintitle">
 <span><form name="form1" method="post" action="?">
 <?php echo $f_array[2]?><input name="keyword" type="text" id="keyword"> <input type="submit" name="Submit" value="<?php echo $f_array[3]?>"></form>
@@ -82,7 +83,7 @@ echo $f_array[4];
 }else{
 ?>
 <form name="myform" method="post" action="del.php">
-        <table width="100%" border="0" cellpadding="5" cellspacing="1">
+        <table width="100%" border="0" cellpadding="5" cellspacing="1" class="bgcolor">
           <tr> 
             <?php echo $f_array[5]?>
           </tr>
@@ -90,20 +91,20 @@ echo $f_array[4];
 while($row = mysql_fetch_array($rs)){
 ?>
           <tr class="bgcolor1" onMouseOver="fSetBg(this)" onMouseOut="fReBg(this)"> 
-            <td width="222"><a href="<?php echo getpageurl("special",$row["id"])?>" target="_blank"><?php echo $row["title"]?></a>            </td>
-            <td width="116" align="center"> 
+            <td><a href="<?php echo getpageurl("special",$row["id"])?>" target="_blank"><?php echo $row["title"]?></a>            </td>
+            <td align="center"> 
 			<a href="?bigclassid=<?php echo $row["bigclassid"]?>"><?php echo $row["bigclassname"]?></a> 
               - <?php echo $row["smallclassname"]?>            </td>
-            <td width="135" align="center"><?php echo $row["sendtime"]?></td>
-            <td width="87" align="center"> 
+            <td align="center"><?php echo $row["sendtime"]?></td>
+            <td align="center"> 
               <?php 
 	if ($row["passed"]==1 ){ echo $f_array[6];}else{ echo $f_array[7];}
 	  ?>            </td>
-            <td width="94" align="center"><?php echo $row["hit"]?></td>
-            <td width="55" align="center"> 
+            <td align="center"><?php echo $row["hit"]?></td>
+            <td align="center"> 
 			
               <a href="specialmodify.php?id=<?php echo $row["id"]?>&page=<?php echo $page?>&bigclassid=<?php echo $bigclassid?>"><?php echo $f_array[8]?></a></td>
-            <td width="55" align="center"><input name="id[]" type="checkbox" id="id" value="<?php echo $row["id"]?>" /></td>
+            <td align="center"><input name="id[]" type="checkbox" id="id" value="<?php echo $row["id"]?>" /></td>
           </tr>
           <?php
 }
@@ -122,7 +123,9 @@ while($row = mysql_fetch_array($rs)){
 <?php
 }
 mysql_close($conn);
+unset ($f_array);
 ?>
+</div>
 </div>
 </div>
 </div>

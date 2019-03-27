@@ -11,7 +11,7 @@ $f_array=explode("\n",$fcontent) ;
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=EmulateIE7" />
-<link href="style.css" rel="stylesheet" type="text/css">
+<link href="style/<?php echo siteskin_usercenter?>/style.css" rel="stylesheet" type="text/css">
 <script language="JavaScript" src="/js/gg.js"></script>
 <script language="JavaScript" type="text/JavaScript">
 <!--
@@ -21,6 +21,7 @@ function MM_jumpMenu(targ,selObj,restore){ //v3.0
 }
 //-->
 </script>
+<title><?php echo channeldl.$f_array[0]?></title>
 </head>
 <body>
 <div class="main">
@@ -41,7 +42,7 @@ $lxr=trim($_POST["lxr"]);
 $lxr="";
 }
 ?>
-
+<div class="content">
 <div class="admintitle">
 <span>
 <form name="form1" method="post" action="?">
@@ -82,20 +83,20 @@ echo  $f_array[3];
 }else{
 ?>
 <form action="" method="post" name="myform" id="myform">
-  <table width="100%" border="0" cellpadding="5" cellspacing="1">
+  <table width="100%" border="0" cellpadding="5" cellspacing="1" class="bgcolor">
     <tr> 
-     <?php echo $f_array[4]?>
-    </tr>
+     <?php echo $f_array[4]?>    </tr>
           <?php
 while($row = mysql_fetch_array($rs)){
 ?>
     <tr class="bgcolor1" onMouseOver="fSetBg(this)" onMouseOut="fReBg(this)"> 
-      <td width="153"><?php echo $row["dlsname"]?><?php if($row["looked"]==0) { echo  $f_array[5];}?> </td>
-      <td width="149"><?php echo $row["province"].$row["city"]?></td>
-      <td width="141"><?php echo $row["cp"]?></td>
-      <td width="140"><?php echo $row["sendtime"]?></td>
-      <td width="113" align="center"><a href="dls_show.php?id=<?php echo $row["id"]?>" target="_blank"><?php echo $f_array[6]?></a></td>
-      <td width="69" align="center"><input name="id[]" type="checkbox" id="id[]" value="<?php echo $row["id"]?>" /></td>
+      <td><?php echo $row["dlsname"]?></td>
+      <td><?php echo $row["province"].$row["city"]?></td>
+      <td><?php echo $row["cp"]?></td>
+      <td><?php echo $row["sendtime"]?></td>
+      <td align="center"><?php if($row["looked"]==0) { echo  $f_array[5];}else{echo  $f_array[15];}?></td>
+      <td align="center"><a href="dls_show.php?id=<?php echo $row["id"]?>" target="_blank"><?php echo $f_array[6]?></a></td>
+      <td align="center"><input name="id[]" type="checkbox" id="id[]" value="<?php echo $row["id"]?>" /></td>
     </tr>
     <?php
 }
@@ -110,7 +111,7 @@ while($row = mysql_fetch_array($rs)){
         </select> <select name="page_size" id="page_size" onChange="MM_jumpMenu('self',this,0)">
           <option value="?page_size=10" <?php if ($page_size==10) { echo "selected";}?>>10<?php echo $f_array[10]?></option>
           <option value="?page_size=20" <?php if ($page_size==20) { echo "selected";}?>>20<?php echo $f_array[10]?></option>
-          <option value="?page_size=50" <?php if ($page_size==30) { echo "selected";}?>>50<?php echo $f_array[10]?></option>
+          <option value="?page_size=50" <?php if ($page_size==50) { echo "selected";}?>>50<?php echo $f_array[10]?></option>
           <option value="?page_size=100" <?php if ($page_size==100) { echo "selected";}?>>100<?php echo $f_array[10]?></option>
           <option value="?page_size=200" <?php if ($page_size==200) { echo "selected";}?>>200<?php echo $f_array[10]?></option>
         </select>
@@ -125,8 +126,10 @@ while($row = mysql_fetch_array($rs)){
   </form>
 <?php
 }
-mysql_close($conn)
+mysql_close($conn);
+unset ($f_array);
 ?>
+</div>
 </div>
 </div>
 </div>

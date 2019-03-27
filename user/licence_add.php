@@ -11,7 +11,7 @@ $f_array=explode("|||",$fcontent) ;
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=EmulateIE7" />
 <title></title>
-<link href="style.css" rel="stylesheet" type="text/css">
+<link href="style/<?php echo siteskin_usercenter?>/style.css" rel="stylesheet" type="text/css">
 <script language = "JavaScript">
 function CheckForm(){
 <?php echo $f_array[0]?>  
@@ -30,6 +30,7 @@ include("left.php");
 ?>
 </div>
 <div class="right">
+<div class="content">
 <div class="admintitle"><?php echo $f_array[1]?> </div>
 <?php
 $tablename="zzcms_licence";
@@ -43,8 +44,7 @@ include("checkaddinfo.php");
             <td width="83%" height="30" class="border"> 
             
 <script type="text/javascript">
-function showtxt()
-{
+function showtxt(){
 var sd =window.showModalDialog('/uploadimg_form.php','','dialogWidth=400px;dialogHeight=300px');
 //for chrome 
 if(sd ==undefined) {  
@@ -56,7 +56,7 @@ document.getElementById("showimg").innerHTML="<img src='"+sd+"' width=120>";
 }
 }
 </script>
-	  <table width="120" height="120" border="0" cellpadding="5" cellspacing="1" bgcolor="#999999">
+	  <table width="120" height="120" border="0" cellpadding="5" cellspacing="1" bgcolor="#cccccc">
           <tr align="center" bgcolor="#FFFFFF"> 
             <td id="showimg" onClick="showtxt()"> <input name="Submit2" type="button"  value="<?php echo $f_array[3]?> " /></td>
           </tr>
@@ -67,7 +67,7 @@ document.getElementById("showimg").innerHTML="<img src='"+sd+"' width=120>";
     <tr> 
       <td align="right" class="border2"><?php echo $f_array[4]?> </td>
       <td height="30" class="border2">
-<input name="title" type="text" id="title"> </td>
+<input name="title" type="text" id="title" class="biaodan"> </td>
     </tr>
     <tr> 
       <td class="border">&nbsp;</td>
@@ -76,11 +76,13 @@ document.getElementById("showimg").innerHTML="<img src='"+sd+"' width=120>";
   </table>
 	
   </form>
-  </div>
-  </div>
-  </div> 
-  <?php
+</div>
+</div>
+</div> 
+</div>
+<?php
 mysql_close($conn);
+unset ($f_array);
 ?> 
 </body>
 </html>

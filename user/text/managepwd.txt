@@ -35,7 +35,7 @@ if (document.form1.password.value !="" && document.form1.pwdconfirm.value !=""){
 	}
 |||
 <li>你输入的旧密码不对，没有权限修改！</li>|||修改密码成功—|||
-<table width='100%'><tr><td style='font-size:14px;line-height:25px'>{#username}：<br>&nbsp;&nbsp;&nbsp;&nbsp;您好！<br>您的密码修改成功<br>用户名：{#username} 新密码为：{#password} &nbsp;&nbsp;<br>如非本人操作请及时登陆网站修改你的密码。<a href='{#siteurl}/user/login.php'>现在登陆>>></a></td></tr></table>|||
-{#username}：您好！您的密码修改成功<br>用户名：{#username} 新密码为：{#password}<br>如非本人操作请及时登陆网站修改你的密码。|||
+<table width='100%'><tr><td style='font-size:14px;line-height:25px'>{#username}：<br>&nbsp;&nbsp;&nbsp;&nbsp;您好！<br>您的密码修改成功<br>用户名：{#username} 新密码为：{#password} &nbsp;&nbsp;<br>如非本人操作请及时登录网站修改你的密码。<a href='{#siteurl}/user/login.php'>现在登录>>></a></td></tr></table>|||
+{#username}：您好！您的密码修改成功<br>用户名：{#username} 新密码为：{#password}<br>如非本人操作请及时登录网站修改你的密码。|||
 <SCRIPT language=JavaScript>alert('成功修改密码！');history.go(-1)</SCRIPT>|||
 用户名：|||旧密码：|||新密码：|||确认新密码：|||保存修改结果

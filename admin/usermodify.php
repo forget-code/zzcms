@@ -186,7 +186,7 @@ WriteErrMsg($errmsg);
         <input name="oldqq" type="hidden" id="oldqq" value="<?php echo $row["qq"]?>"></td>
     </tr>
     <tr> 
-      <td align="right" class="border">QQ绑定登陆网站：</td>
+      <td align="right" class="border">QQ绑定登录网站：</td>
       <td class="border"> 
         <?php 
 	  if ($row["qqid"]<>""){
@@ -195,7 +195,7 @@ WriteErrMsg($errmsg);
         (已绑定。点击可取消绑定) 
         <?php
 		}else{
-		echo "未绑定QQ登陆";
+		echo "未绑定QQ登录";
 		}
 		?>
       </td>

@@ -10,7 +10,7 @@ $f_array=explode("|||",$fcontent) ;
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=EmulateIE7" />
-<link href="style.css" rel="stylesheet" type="text/css">
+<link href="style/<?php echo siteskin_usercenter?>/style.css" rel="stylesheet" type="text/css">
 <?php
 if (@$_REQUEST["action"]=="modify") { //这里action的值并没有通过常用的表单传。整个过程也没有用表单。
 
@@ -32,6 +32,7 @@ include("left.php");
 ?>
 </div>
 <div class="right">
+<div class="content">
 <div class="admintitle"><?php echo $f_array[1]?></div>   
       <div id="Layer1" class="border" style="position:relative; width:100%; height:600px; z-index:1; overflow: scroll;"> 
                 
@@ -59,12 +60,14 @@ while(($file = readdir($dir))!=false){
 				  }
 				}
 				}	
-closedir($dir)
+closedir($dir);
+unset ($f_array);
 				?>
                 </table>
               </div>
    
-    </div>
+</div>
+</div>
 </div>
 </div>
 </body>

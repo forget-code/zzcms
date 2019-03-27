@@ -9,7 +9,7 @@ body { margin:0px; background:#337ABB url("image/manage_top_bg.gif"); font-size:
 div { margin:0px; padding:0px; }
 #tabs {
   width:100%;
-  line-height:normal;
+  line-height:14px;
   }
 #tabs ul {
   margin:0;

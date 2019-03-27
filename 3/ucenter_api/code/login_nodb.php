@@ -23,7 +23,7 @@ if(empty($_POST['submit'])) {
 
 	setcookie('Example_auth', '', -86400);
 	if($uid > 0) {
-		//用户登陆成功，设置 Cookie，加密直接用 uc_authcode 函数，用户使用自己的函数
+		//用户登录成功，设置 Cookie，加密直接用 uc_authcode 函数，用户使用自己的函数
 		setcookie('Example_auth', uc_authcode($uid."\t".$username, 'ENCODE'));
 		//生成同步登录的代码
 		$ucsynlogin = uc_user_synlogin($uid);

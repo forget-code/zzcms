@@ -90,7 +90,7 @@ echo "<script>location.href='?keyword=".$keyword."&page=".$page."'</script>";
       </td>
     </tr>
     <tr>
-      <td class="border">排序方式：<a href="?px=lastlogintime">按登陆时间</a> | <a href="?px=logins">按登陆次数</a> 
+      <td class="border">排序方式：<a href="?px=lastlogintime">按登录时间</a> | <a href="?px=logins">按登录次数</a> 
         | <a href="?usersf=vip">VIP用户</a> | <a href="?usersf=lockuser">锁定的用户</a> 
         | <a href="?usersf=elite">置顶的用户</a> | <a href="?usersf=person">个人用户</a> </td>
     </tr>
@@ -173,9 +173,9 @@ echo "暂无信息";
       <td width="10%" class="border">公司名称</td>
       <td width="5%" align="center" class="border">企业类型</td>
       <td width="5%" align="center" class="border">用户组ID</td>
-      <td width="5%" align="center" class="border">登陆次数</td>
-      <td width="10%" align="center" class="border">最后登陆IP</td>
-      <td width="5%" align="center" class="border" title="最后登陆时间">最后登陆</td>
+      <td width="5%" align="center" class="border">登录次数</td>
+      <td width="10%" align="center" class="border">最后登录IP</td>
+      <td width="5%" align="center" class="border" title="最后登录时间">最后登录</td>
       <td width="5%" align="center" class="border">注册时间</td>
       <td width="5%" align="center" class="border"> 状态</td>
       <td width="10%" align="center" class="border"> 操作</td>

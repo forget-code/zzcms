@@ -9,29 +9,65 @@ include("admin.php");
 <script language="JavaScript" src="/js/gg.js"></script>
 <script language="JavaScript" src="/js/jquery.js"></script>
 <script language="JavaScript" type="text/JavaScript">
-function ConfirmDelBig()
-{
+function ConfirmDelBig(){
    if(confirm("确定要删除此大类吗？删除此大类同时将删除所包含的小类，并且不能恢复！"))
      return true;
    else
      return false;	 
 }
-function ConfirmDelSmall()
-{
+function ConfirmDelSmall(){
    if(confirm("确定要删除此小类吗？一旦删除将不能恢复！"))
      return true;
    else
      return false;	 
 }
-function CheckForm()
-{  
-if (document.form1.classname.value=="")
-  {
+function CheckForm(){  
+if (document.form1.classname.value==""){
     alert("名称不能为空！");
 	document.form1.classname.focus();
 	return false;
   }
 }
+
+//动态增加表单元素大类。
+function AddElement_big(){   
+//得到需要被添加的html元素。
+var TemO=document.getElementById("add");   
+//var newInput = document.createElement("<input type='text' size='50' maxlength='50' name='classname[]' value='大类别名称'>"); 
+	if($.browser.msie) {
+	var newInput = document.createElement("<input type='text' size='50' maxlength='50' name='classname[]' value='大类别名称'>");
+	}else{
+	var newInput = document.createElement("input");
+	newInput.type = "text";
+	newInput.name = "classname[]";
+	newInput.size = "50";
+	newInput.maxlength = "50";
+	newInput.value = "大类别名称";
+	}
+TemO.appendChild(newInput); 
+var newline= document.createElement("hr"); 
+TemO.appendChild(newline);   
+}   
+
+//动态增加表单元素小类。
+function AddElement_small(){   
+//得到需要被添加的html元素。
+var TemO=document.getElementById("add");   
+//var newInput = document.createElement("<input type='text' size='50' maxlength='50' name='classname[]' value='小类别名称'>");
+if($.browser.msie) {
+	var newInput = document.createElement("<input type='text' size='50' maxlength='50' name='classname[]' value='小类别名称'>");
+	}else{
+	var newInput = document.createElement("input");
+	newInput.type = "text";
+	newInput.name = "classname[]";
+	newInput.size = "50";
+	newInput.maxlength = "50";
+	newInput.value = "小类别名称";
+	}
+TemO.appendChild(newInput);     
+var newline= document.createElement("hr"); 
+TemO.appendChild(newline);   
+}   
 </script>
 </head>
 <body>
@@ -119,19 +155,10 @@ if ($smallclassid<>"") {
 //mysql_close($conn);      
 echo "<script>location.href='?#B".$_REQUEST["bigclassid"]."'</script>";
 }
-?>
-<table width="100%" border="0" cellpadding="0" cellspacing="0">
-  <tr> 
-    <td class="admintitle">广告类别设置</td>
-  </tr>
-</table>
-<table width="100%" border="0" cellspacing="0" cellpadding="5">
-  <tr>
-    <td align="center" class="border">
-      <input name="submit3" type="submit" class="buttons" onClick="javascript:location.href='?dowhat=addbigclass'" value="添加大类">
-   </td>
-  </tr>
-</table>
+?> 
+<div class="admintitle">广告类别设置</div>
+<div class="border center"><input name="submit3" type="submit" class="buttons" onClick="javascript:location.href='?dowhat=addbigclass'" value="添加大类"></div>
+
 <?php
 $sql="Select * From zzcms_adclass where parentid='A' order by xuhao";
 $rs=mysql_query($sql);
@@ -185,6 +212,16 @@ echo "暂无分类信息";
   </table>
 </form>
 <?php
+	$sqln="select * from zzcms_adclass where parentid='' order by xuhao";
+	$rsn=mysql_query($sqln);
+	$rown=mysql_num_rows($rsn);
+	if ($rown){
+	echo"出现以下无大类的子类，请删除<br>"; 
+	while ($rown=mysql_fetch_array($rsn)){ 
+    echo $rown["classname"]."<a href='?action=delsmall&smallclassid=".$rown["classid"]."'>删除</a><br>";
+    $n=$n+1;
+	}
+	}
 }
 //mysql_close($conn);	  
 }
@@ -221,36 +258,11 @@ if ($FoundErr==1){
 WriteErrMsg($ErrMsg);
 }else{
 ?>
-<table width="100%" border="0" cellpadding="0" cellspacing="0">
-  <tr> 
-    <td class="admintitle">添加大类</td>
-  </tr>
-</table>
+<div class="admintitle">添加大类</div>
 <form name="form1" method="post" action="?dowhat=addbigclass" onSubmit="return CheckForm();">
   <table width="100%" border="0" cellpadding="5" cellspacing="0">
     <tr> 
       <td width="100%" class="border">
-	  	  <script language="javascript">   
-//动态增加表单元素。
-function AddElement(){   
-//得到需要被添加的html元素。
-var TemO=document.getElementById("add");   
-//var newInput = document.createElement("<input type='text' size='50' maxlength='50' name='classname[]' value='大类别名称'>"); 
-	if($.browser.msie) {
-	var newInput = document.createElement("<input type='text' size='50' maxlength='50' name='classname[]' value='大类别名称'>");
-	}else{
-	var newInput = document.createElement("input");
-	newInput.type = "text";
-	newInput.name = "classname[]";
-	newInput.size = "50";
-	newInput.maxlength = "50";
-	newInput.value = "大类别名称";
-	}
-TemO.appendChild(newInput); 
-var newline= document.createElement("hr"); 
-TemO.appendChild(newline);   
-}   
-</script>
 <div id="add">
 	  <input name="classname[]" type="text" id="classname[]" size="50" maxlength="50"  value='大类别名称' >
 	  <label for='isshowininfo'></label>
@@ -297,11 +309,7 @@ WriteErrMsg($ErrMsg);
 }else{
 ?>
 
-<table width="100%" border="0" cellpadding="0" cellspacing="0">
-  <tr> 
-    <td class="admintitle">添加小类</td>
-  </tr>
-</table>
+<div class="admintitle">添加小类</div>
 <form name="form" method="post" action="?dowhat=addsmallclass" onSubmit="return CheckForm();">
   <table width="100%" border="0" align="center" cellpadding="5" cellspacing="0">
     <tr> 
@@ -332,27 +340,6 @@ WriteErrMsg($ErrMsg);
     <tr class="tdbg"> 
       <td height="10" align="right" class="border">&nbsp;</td>
       <td class="border">
-	  <script language="javascript">   
-//动态增加表单元素。
-function AddElement(){   
-//得到需要被添加的html元素。
-var TemO=document.getElementById("add");   
-//var newInput = document.createElement("<input type='text' size='50' maxlength='50' name='classname[]' value='小类别名称'>");
-if($.browser.msie) {
-	var newInput = document.createElement("<input type='text' size='50' maxlength='50' name='classname[]' value='小类别名称'>");
-	}else{
-	var newInput = document.createElement("input");
-	newInput.type = "text";
-	newInput.name = "classname[]";
-	newInput.size = "50";
-	newInput.maxlength = "50";
-	newInput.value = "小类别名称";
-	}
-TemO.appendChild(newInput);     
-var newline= document.createElement("hr"); 
-TemO.appendChild(newline);   
-}   
-</script>
 <div id="add">
 	   <input name="classname[]" type="text" size="50" maxlength="50" value="小类别名称" style="margin:4px 0">
 <hr/>
@@ -429,12 +416,7 @@ $sql="Select * from zzcms_adclass where classid=" .$classid."";
 $rs=mysql_query($sql);
 $row=mysql_fetch_array($rs);
 ?>
-
-<table width="100%" border="0" cellpadding="0" cellspacing="0">
-  <tr> 
-    <td class="admintitle">修改大类</td>
-  </tr>
-</table>
+<div class="admintitle">修改大类</div>
 <form name="form1" method="post" action="?dowhat=modifybigclass" onSubmit="return CheckForm();">
   <table width="100%" border="0" cellpadding="5" cellspacing="0">
     <tr> 
@@ -520,11 +502,7 @@ $sql="Select * from zzcms_adclass where classid=".$classid."";
 $rs=mysql_query($sql);
 $row=mysql_fetch_array($rs);
 ?>
-<table width="100%" border="0" cellpadding="0" cellspacing="0">
-  <tr> 
-    <td class="admintitle">修改小类</td>
-  </tr>
-</table>
+<div class="admintitle">修改小类</div>
 <form name="form1" method="post" action="?dowhat=modifysmallclass" onSubmit="return CheckForm();">
   <table width="100%" border="0" cellpadding="5" cellspacing="0">
     <tr> 

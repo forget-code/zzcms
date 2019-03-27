@@ -4,7 +4,7 @@ set_time_limit(1800) ;
 include("inc/config.php");
 if (!isset($_COOKIE["UserName"]) && !isset($_SESSION["admin"])){
 session_write_close();
-echo "<script>alert('登陆后才能上传');window.close();</script>";
+echo "<script>alert('登录后才能上传');window.close();</script>";
 }
 //上传图片的类--------------------------------------------------------------
 class upload{
@@ -204,7 +204,7 @@ $filename[$i]['error']=$_FILES['g_fu_image']['error'][$i];
 $filename[$i]['size']=$_FILES['g_fu_image']['size'][$i];
 }
 for ($i = 0; $i < count($filename); $i++){  
-$filetype=strtolower(strrchr($filename[$i]['name'],"."));//图片的类型
+$filetype=strtolower(strrchr($filename[$i]['name'],"."));//图片的类型,统一转为小写
 $up = new upload();
 $up->fileName = $filename[$i];
 $up->fdir='uploadfiles/'.date("Y-m").'/';   //上传的路径

@@ -4,10 +4,10 @@
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=EmulateIE7" />
 <title></title>
-<link href="style.css" rel="stylesheet" type="text/css">
 </head>
 <body>
 <?php  
+define('zzcmsroot', str_replace("\\", '/', substr(dirname(__FILE__), 0, -4)));//-4截除当前目录ajax
 include("../inc/function.php");
 $id=$_GET['id']; 
 $classzm=pinyin($id);

@@ -20,8 +20,8 @@ if (document.myform.tag.value==""){
 <script>alert('你所在的用户组没有此权限');history.back()'</script>|||
 <script>alert('非法操作！警告：你的操作已被记录！小心封你的用户及IP！');history.back()'</script>|||
 投标|||
-产品名称|||
-到期时间|||
+产品名称：|||
+到期时间：|||
 积分/天|||
-关键词（tag）|||
+关键词（tag）：|||
 (多个关键词以“,”隔开)|||提交

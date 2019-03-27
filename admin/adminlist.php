@@ -33,9 +33,9 @@ $rs = mysql_query($sql);
     <td width="5%" align="center" class="border">ID</td>
     <td width="10%" align="center" class="border">用户名</td>
     <td width="10%" class="border">所属用户组</td>
-    <td width="5%" align="center" class="border">登陆次数</td>
-    <td width="10%" align="center" class="border">上次登陆IP</td>
-    <td width="10%" align="center" class="border">上次登陆时间</td>
+    <td width="5%" align="center" class="border">登录次数</td>
+    <td width="10%" align="center" class="border">上次登录IP</td>
+    <td width="10%" align="center" class="border">上次登录时间</td>
     <td width="10%" align="center" class="border">操 作</td>
   </tr>
  <?php

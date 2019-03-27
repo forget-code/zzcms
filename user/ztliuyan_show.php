@@ -11,7 +11,7 @@ $f_array=explode("\n",$fcontent) ;
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=EmulateIE7" />
 <title><?php echo $f_array[0]?></title>
-<link href="style.css" rel="stylesheet" type="text/css">
+<link href="style/<?php echo siteskin_usercenter?>/style.css" rel="stylesheet" type="text/css">
 <?php
 $id=trim($_REQUEST["id"]);
 if ($id<>""){
@@ -58,7 +58,8 @@ echo $f_array[5];
 exit;
 }
 ?>
-<div class="admintitle"><img src="/image/ico1.gif" width="12" height="12"> <?php echo $f_array[6]?></div> 
+<div class="content">
+<div class="admintitle"><?php echo $f_array[6]?></div> 
     <table width="100%" border="0" cellpadding="5" cellspacing="1" class="bgcolor">
           <tr>
             <td width="22%" align="right" class="bgcolor1"><?php echo $f_array[7]?></td>
@@ -72,10 +73,9 @@ exit;
             <td align="right" class="bgcolor1"><?php echo $f_array[9]?></td>
             <td bgcolor="#FFFFFF"><?php echo $row["sendtime"]?></td>
           </tr>
-        </table>
-        <div class="admintitle"><img src="/image/ico1.gif" width="12" height="12"> 
-          <?php echo $f_array[10]?></div>
-		  <div class="bgcolor" style="padding:1px">
+</table><br>
+        <div class="admintitle"><?php echo $f_array[10]?></div>
+		  
  <?php
          switch  (check_user_power("look_dls_liuyan")){
 			case "yes" ;
@@ -131,6 +131,7 @@ exit;
 		}
 }
 ?>
+
 </div>
 </body>
 </html>

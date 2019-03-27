@@ -9,7 +9,7 @@ function DLS(id) {
 window.open("dls_show.php?id="+id,"","height=420,width=470,left=300,top=100,resizable=yes,scrollbars=yes,status=no,toolbar=no,menubar=no,location=no");
 }
 function fSetBg(obj){
-	obj.style.backgroundColor = '#FFFFFF';
+	obj.style.backgroundColor = '#F1F6FC';
 }
 function fReBg(obj){
 	obj.style.backgroundColor = '';

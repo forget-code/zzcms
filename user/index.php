@@ -10,7 +10,7 @@ $f_array=explode("\n",$fcontent) ;
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=EmulateIE7" />
-<link href="style.css" rel="stylesheet" type="text/css">
+<link href="style/<?php echo siteskin_usercenter?>/style.css" rel="stylesheet" type="text/css">
 <title><?php echo $f_array[0]?></title>
 <?php
 //接收通过此页跳转页的代码
@@ -70,16 +70,18 @@ $sql="select * from zzcms_message where sendto='' or  sendto='".@$username."'  o
 $rs=mysql_query($sql);
 $row=mysql_num_rows($rs);
 if($row){
-$str="<div class='admintitle'>".$f_array[1]."</div>";
+$str="<div class='content'><div class='admintitle'>".$f_array[1]."</div>";
 while ($row=mysql_fetch_array($rs)){
-$str=$str."<div class='border' style='margin:1px;padding:8px'>";
+$str=$str."<div class='box'>";
 $str=$str."<div style='font-weight:bold' title='".$f_array[2]."'>".$row["sendtime"]."</div>";
 $str=$str.$row["content"];
 $str=$str."</div>";
 }
+$str=$str."</div>";
 echo $str;
 }
 ?>
+<div class="content">
 <div class="admintitle"><?php echo $f_array[3]?></div>
 <table width="100%" border="0" cellpadding="3" cellspacing="1">
   <tr> 
@@ -149,6 +151,7 @@ if($row){
 <?php
 }
 ?>
+</div>
 </div>
 </div>
 </div>

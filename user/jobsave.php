@@ -9,7 +9,7 @@ include("check.php");
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=EmulateIE7" />
 <title></title>
-<link href="style.css" rel="stylesheet" type="text/css">
+<link href="style/<?php echo siteskin_usercenter?>/style.css" rel="stylesheet" type="text/css">
 <?php
 if (check_usergr_power("job")=="no" && $usersf=='个人'){
 showmsg('个人用户没有此权限');
@@ -101,39 +101,38 @@ include("left.php");
 ?>
 </div>
 <div class="right">
-<br><br>
-<table width="400" border="0" align="center" cellpadding="0" cellspacing="0">
+<div class="content">
+<table width="400" border="0" align="center" cellpadding="5" cellspacing="0">
   <tr> 
     <td class="tstitle"> <?php
 	if ($isok) {
       echo "发布成功 ";
 	  }else{
 	  echo"发布失败";}
-     ?>
-      </td>
+     ?>      </td>
   </tr>
   <tr> 
-    <td><table width="100%" border="0" cellspacing="0" cellpadding="3">
-        <tr bgcolor="#FFFFFF"> 
-          <td width="25%" align="right" bgcolor="#FFFFFF"><strong>名称：</strong></td>
-          <td width="75%"><?php echo $cp_name?></td>
-        </tr>
-      </table></td>
-  </tr>
-  <tr> 
-    <td><table width="100%" border="0" cellpadding="5" cellspacing="1">
+    <td  class="border3"><table width="100%" border="0" cellspacing="0" cellpadding="3">
+      <tr bgcolor="#FFFFFF">
+        <td width="25%" align="right" bgcolor="#FFFFFF"><strong>名称：</strong></td>
+        <td width="75%"><?php echo $cp_name?></td>
+      </tr>
+    </table>
+      <table width="100%" border="0" cellpadding="5" cellspacing="1"  class="bgcolor">
         <tr> 
-          <td width="120" align="center" class="border"><a href="jobadd.php">继续添加</a></td>
-                <td width="120" align="center" class="border"><a href="jobmodify.php?id=<?php echo $cpid?>">修改</a></td>
-                <td width="120" align="center" class="border"><a href="jobmanage.php?page=<?php echo $page?>">返回</a></td>
-                <td width="120" align="center" class="border"><a href="<?php echo getpageurl("job",$cpid)?>" target="_blank">预览</a></td>
+          <td width="120" align="center" class="bgcolor1"><a href="jobadd.php">继续添加</a></td>
+                <td width="120" align="center" class="bgcolor1"><a href="jobmodify.php?id=<?php echo $cpid?>">修改</a></td>
+                <td width="120" align="center" class="bgcolor1"><a href="jobmanage.php?page=<?php echo $page?>">返回</a></td>
+                <td width="120" align="center" class="bgcolor1"><a href="<?php echo getpageurl("job",$cpid)?>" target="_blank">预览</a></td>
         </tr>
       </table></td>
   </tr>
 </table>
 <?php
 session_write_close();
+unset ($f_array);
 ?>
+</div>
 </div>
 </div>
 </div>

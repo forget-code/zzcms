@@ -8,8 +8,7 @@ include("admin.php");
 <link href="style.css" rel="stylesheet" type="text/css">
 <script language="javascript" src="/js/timer.js"></script>
 <script>
-function isNumber(String)
-{ 
+function isNumber(String){ 
 var Letters = "1234567890-";   //可以自己增加可输入值
 var i;
 var c;
@@ -44,13 +43,9 @@ return   true;
 </script>
 </head>
 <body>
-<table width="100%" border="0" cellpadding="0" cellspacing="0">
-  <tr> 
-    <td class="admintitle">修改广告</td>
-  </tr>
-</table>
+<div class="admintitle">修改广告</div>
 <?php
-checkadminisdo("adv");
+//checkadminisdo("adv");
 if (isset($_GET["page"])){
 $page=$_GET["page"];
 }else{

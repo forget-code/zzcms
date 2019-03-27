@@ -1,7 +1,8 @@
 <?php
 include("../inc/conn.php");
-include("../inc/top_index.php");
+include("../inc/top.php");
 include("../inc/bottom.php");
+include("../zs/subzs.php");
 include("../label.php");
 
 if (isset($_GET["province"])){

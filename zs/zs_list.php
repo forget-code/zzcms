@@ -332,8 +332,8 @@ $list2='';
 	}
 	$list2 =str_replace("{#i}",$i,$list2) ;
 	$list2 =str_replace("{#url}" ,getpageurl("zs",$row["id"]),$list2) ;
-	$list2 =str_replace("{#proname}" ,$row["proname"],$list2) ;
-	$list2 =str_replace("{#proname_small}",cutstr($row["proname"],9),$list2) ;
+	$proname_num=strbetween($list2,"{#proname:","}");
+	$list2 =str_replace("{#proname:".$proname_num."}",cutstr($row["proname"],$proname_num),$list2) ;
 	$list2 =str_replace("{#img}" ,getsmallimg($row["img"]),$list2) ;
 	$list2 =str_replace("{#imgbig}" ,$row["img"],$list2) ;
 	$list2 =str_replace("{#comane}" ,$row["comane"],$list2) ;

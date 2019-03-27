@@ -46,6 +46,7 @@ img { float:none; vertical-align:middle; }
 		<a href="zx_manage.php" target="frmright">资讯信息管理</a> 
          <a href="pinglun_manage.php" target="frmright">资讯评论管理</a> 
          <a href="tagmanage.php?tabletag=zzcms_tagzx" target="frmright">资讯关键词管理 </a> 
+		 <a href="wangkan_manage.php" target="frmright">网刊管理</a> 
 		 <a href="special_manage.php" target="frmright">专题信息管理</a> 
 		<a href="ztliuyan_manage.php" target="frmright">展厅留言管理</a>
 		<a href="usermessage.php" target="frmright">用户返馈管理</a> 
@@ -58,7 +59,8 @@ img { float:none; vertical-align:middle; }
       <div id="left2" style="display:none"> 
 	  <a href="zsclassmanage.php" target="frmright"><?php echo channelzs?>/<?php echo channeldl?>类别管理</a> 
 	  <a href="classmanage.php?tablename=zzcms_zsclass_shuxing" target="frmright"><?php echo channelzs?>信息属性管理</a> 
-	  <a href="zxclassmanage.php" target="frmright">资讯类别管理</a> 
+	  <a href="zxclassmanage.php" target="frmright">资讯类别管理</a>
+	  <a href="classmanage.php?tablename=zzcms_wangkanclass" target="frmright">网刊类别管理</a>  
 	   <a href="specialclassmanage.php" target="frmright">专题类别管理</a> 
 	  <a href="jobclassmanage.php" target="frmright">招聘类别管理</a>
       <a href="classmanage.php?tablename=zzcms_zhclass" target="frmright">展会类别管理</a> 
@@ -141,6 +143,8 @@ img { float:none; vertical-align:middle; }
 			<a href="labelclass.php?classname=jobclass" target="frmright">招聘类别标签</a>			
 			<a href="labelzxshow.php" target="frmright">资讯内容标签</a>
 			<a href="labelclass.php?classname=zxclass" target="frmright">资讯类别标签</a>
+			<a href="labelwangkanshow.php" target="frmright">网刊内容标签</a>
+			<a href="labelclass.php?classname=wangkanclass" target="frmright">网刊类别标签</a>
 			<a href="labelztshow.php" target="frmright">专题内容标签</a>
 			<a href="labelclass.php?classname=specialclass" target="frmright">专题类别标签</a>
 			<a href="labelzhshow.php" target="frmright">展会内容标签</a>

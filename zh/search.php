@@ -59,20 +59,18 @@ $bigclassname=$row["bigclassname"];
 $bigclassname="";
 }
 
-$pagetitle=sitename."|展会信息";
-$pagekeyword=sitename."|展会信息";
-$pagedescription=sitename."|展会信息";
+$pagetitle=sitename.zhlisttitle;
+$pagekeyword=sitename.zhlistkeyword;
+$pagedescription=sitename.zhlistdescription;
 
-function formbigclass($b)
-{
+function formbigclass($b){
 $sql = "select * from zzcms_zhclass  ";
 $rs=mysql_query($sql);
 $row=mysql_num_rows($rs);
 if (!$row){
 $str= "请先添加类别名称。";
 }else{
-$str="<select name='b' id='b' class='biaodan'>";
-$str=$str."<option value=''>不限类别</option>";
+$str="<option value=''>不限类别</option>";
 	while($row=mysql_fetch_array($rs)){
 		if ($row["bigclassid"]==$b){
 		$str=$str."<option value='".$row["bigclassid"]."' selected>".$row["bigclassname"]."</option>";
@@ -80,15 +78,13 @@ $str=$str."<option value=''>不限类别</option>";
 		$str=$str."<option value='".$row["bigclassid"]."'>".$row["bigclassname"]."</option>";
 		}
 	}
-$str=$str." </select> ";
 }
 return $str;
 }
 
-	function formprovince($province){
+function formprovince($province){
 	global $citys;
-		$str="<select name='province' id='province' class='biaodan'>";
-		$str=$str."<option value='' selected>不限</option>";
+		$str="<option value='' selected>不限</option>";
 		$city=explode("#",$citys);
 		$c=count($city);//循环之前取值
 	for ($i=0;$i<$c;$i++){ 
@@ -99,7 +95,6 @@ return $str;
 			$str=$str."<option value='".$location_p[0]."'>".$location_p[0]."</option>";
 			}
 	}
-	$str=$str."</select>";
 	return $str;
 	}
 //时间

@@ -17,7 +17,7 @@ echo $f_array[0];//不返回到上一页，防止由user/index.php?goto='zsadd.p
 exit;
 }
 ?>
-<title></title>
+<title><?php echo str_replace("{#channelzs}",channelzs,$f_array[4])?></title>
 <script language = "JavaScript" src="/js/gg.js"></script>
 <script language = "JavaScript">
 function CheckForm(){
@@ -85,8 +85,8 @@ function  CheckNum(){
 <?php echo $f_array[3]?>
 }
 </script>
+<link href="style/<?php echo siteskin_usercenter?>/style.css" rel="stylesheet" type="text/css">
 </head>
-<link href="style.css" rel="stylesheet" type="text/css">
 <body>
 <div class="main">
 <?php
@@ -99,7 +99,6 @@ include("left.php");
 ?>
 </div>
 <div class="right">
-<div class="admintitle"><?php echo str_replace("{#channelzs}",channelzs,$f_array[4])?></div>
 <?php
 $tablename="zzcms_main";
 include("checkaddinfo.php");
@@ -118,21 +117,22 @@ $(document).ready(function(){
   });  
 });   
 </script> 
+<div class="content">
+<div class="admintitle"><?php echo str_replace("{#channelzs}",channelzs,$f_array[4])?></div>
 <form  action="zssave.php" method="post" name="myform" id="myform" onSubmit="return CheckForm();">
         <table width="100%" border="0" cellpadding="3" cellspacing="1">
           <tr> 
-            <td width="20%" align="right" class="border2" > <?php echo $f_array[5]?> <font color="#FF0000">*</font></td>
-            <td class="border2" > <input name="name" type="text" id="name" onclick="javascript:if (this.value=='<?php echo $f_array[6]?>') {this.value=''};this.style.backgroundColor='';" onblur="javascript:if (this.value=='<?php echo $f_array[6]?>') {this.value=''};this.style.backgroundColor='';" size="60" maxlength="45" /><span id="quote"></span> 
+            <td width="20%" align="right" class="border2" > <?php echo $f_array[5]?></td>
+            <td class="border2" > <input name="name" type="text" id="name" class="biaodan" onclick="javascript:if (this.value=='<?php echo $f_array[6]?>') {this.value=''};this.style.backgroundColor='';" onblur="javascript:if (this.value=='<?php echo $f_array[6]?>') {this.value=''};this.style.backgroundColor='';" size="60" maxlength="45" /><span id="quote"></span> 
              <span id="span_szm">  <input name="szm" type="hidden"  /></span>
-              <br />
               <?php echo $f_array[7]?></td>
           </tr>
           <tr> 
-            <td align="right" valign="top" class="border"><?php echo $f_array[8]?><font color="#FF0000"> 
-              *</font></td>
-            <td valign="middle" class="border" > <table width="100%" border="0" cellpadding="5" cellspacing="1">
+            <td align="right" valign="top" class="border"><?php echo $f_array[8]?></td>
+            <td valign="middle" class="border" > 
+			<table width="100%" border="0" cellpadding="0" cellspacing="1">
                 <tr> 
-                  <td> <fieldset>
+                  <td> <fieldset class="fieldsetstyle">
                     <legend><?php echo $f_array[9]?></legend>
                     <?php
         $sql = "select * from zzcms_zsclass where parentid='A' order by xuhao asc";
@@ -163,7 +163,7 @@ echo "<div id='E_con$n' style='display:block;'>";
 }else{
 echo "<div id='E_con$n' style='display:none;'>";
 }
-echo "<fieldset><legend>".$f_array[10]."</legend>";
+echo "<fieldset class='fieldsetstyle'><legend>".$f_array[10]."</legend>";
 
 $sqln="select * from zzcms_zsclass where parentid='$row[classzm]' order by xuhao asc";
 $rsn = mysql_query($sqln,$conn); 
@@ -205,26 +205,26 @@ echo "</div>";
 		  }
 		  ?>
           <tr>
-            <td align="right" class="border2" ><?php echo $f_array[12]?><font color="#FF0000"> *</font></td>
-            <td class="border2" ><textarea name="gnzz" cols="60" rows="4" id="gnzz" onclick="javascript:if (this.value=='此处不能为空') {this.value=''};this.style.backgroundColor='';" onblur="javascript:if (this.value=='此处不能为空') {this.value=''};this.style.backgroundColor='';"></textarea></td>
+            <td align="right" class="border2" ><?php echo $f_array[12]?></td>
+            <td class="border2" ><textarea name="gnzz" cols="60" rows="4" id="gnzz" class="biaodan" style="height:auto" onclick="javascript:if (this.value=='此处不能为空') {this.value=''};this.style.backgroundColor='';" onblur="javascript:if (this.value=='此处不能为空') {this.value=''};this.style.backgroundColor='';"></textarea></td>
           </tr>
           <tr> 
             <td align="right" class="border" ><?php echo $f_array[13]?></td>
-            <td class="border" > <input name="gg" type="text" id="gg"  size="60" maxlength="45" />            </td>
+            <td class="border" > <input name="gg" type="text" id="gg"  class="biaodan" size="60" maxlength="45" />            </td>
           </tr>
           <tr> 
             <td align="right" class="border2" ><?php echo $f_array[14]?></td>
-            <td class="border2" > <input name="lsj" type="text" id="lsj"  size="60" maxlength="45" /></td>
+            <td class="border2" > <input name="lsj" type="text" id="lsj"  class="biaodan" size="60" maxlength="45" /></td>
           </tr>
           <tr> 
-            <td align="right" class="border" ><?php echo $f_array[15]?> <font color="#FF0000">*</font></td>
+            <td align="right" class="border" ><?php echo $f_array[15]?></td>
             <td class="border" > 
-			<textarea name="sm" id="sm"></textarea> 
+			<textarea name="sm" id="sm" class="biaodan"></textarea> 
              <script type="text/javascript" src="/3/ckeditor/ckeditor.js"></script>
 			  <script type="text/javascript">CKEDITOR.replace('sm');</script>			</td>
           </tr>
           <tr> 
-            <td align="right" class="border2"><?php echo channelzs.$f_array[16]?><font color="#FF0000">*</font></td>
+            <td align="right" class="border2"><?php echo channelzs.$f_array[16]?></td>
             <td class="border2"> <table border="0" cellpadding="3" cellspacing="0">
                 <tr> 
                   <td><script language="JavaScript" type="text/javascript">
@@ -260,9 +260,9 @@ destList.options[i] = null;
 }
 } 
 </script>                   
-<select name="province" id="province"></select>
-<select name="city" id="city"></select>
-<select name="xiancheng" id="xiancheng" onchange="addSrcToDestList()"></select>
+<select name="province" id="province" class="biaodan"></select>
+<select name="city" id="city" class="biaodan"></select>
+<select name="xiancheng" id="xiancheng" class="biaodan" onchange="addSrcToDestList()"></select>
 <script src="/js/area.js"></script>
 <script type="text/javascript">
 new PCAS('province', 'city', 'xiancheng', '<?php echo @$_SESSION['province']?>', '<?php echo @$_SESSION["city"]?>', '<?php echo @$_SESSION["xiancheng"]?>');
@@ -270,7 +270,7 @@ new PCAS('province', 'city', 'xiancheng', '<?php echo @$_SESSION['province']?>',
 
                   <td width="100" align="center" valign="top"><?php echo $f_array[17]?>
                     
-                    <select name="destList" size="5" multiple="multiple" style='width:100px;font-size:13px'>
+                    <select name="destList" size="5" multiple="multiple" style="width:100px;height:100px" class="biaodan">
               <?php 
 			  if (isset($_SESSION['xiancheng'])){
 			  		if (strpos($_SESSION["xiancheng"],",")==0) {?>
@@ -331,9 +331,9 @@ document.getElementById("flv").value=sd;//从子页面得到值写入母页面
 </script> <input name="img1" type="hidden" id="img1" value="/image/nopic.gif"/> 
               <input name="img2" type="hidden" id="img2" value="/image/nopic.gif"/> 
               <input name="img3" type="hidden" id="img3" value="/image/nopic.gif"/>            </td>
-            <td class="border" > <table height="120" border="0" cellpadding="5" cellspacing="5">
+            <td class="border" > <table height="120" border="0" cellpadding="1" cellspacing="1" bgcolor="#cccccc">
                 <tr align="center" bgcolor="#FFFFFF"> 
-                  <td width="120" id="showimg1" onClick="showtxt(1)"> <input name="Submit2" type="button"  value="<?php echo $f_array[21]?>" /></td>
+                  <td width="120" id="showimg1" onClick="showtxt(1)" class="box"> <input name="Submit2" type="button"  value="<?php echo $f_array[21]?>" /></td>
                       <?php
 		 if (check_user_power("uploadmoreimg")=="no"){
 ?>
@@ -361,7 +361,7 @@ document.getElementById("flv").value=sd;//从子页面得到值写入母页面
 			    <?php
 if (check_user_power("uploadflv")=="yes"){
 ?>
-			<table width="120" height="120" border="0" cellpadding="5" cellspacing="1" bgcolor="#999999">
+			<table width="120" height="120" border="0" cellpadding="5" cellspacing="1" bgcolor="#cccccc">
                 <tr align="center" bgcolor="#FFFFFF"> 
                   <td id="container" onClick="openflv()"> <input name="Submit24" type="button"  value="<?php echo $f_array[26]?>" />                  </td>
                 </tr>
@@ -369,7 +369,7 @@ if (check_user_power("uploadflv")=="yes"){
 			    <?php
 		   }else{
 		  ?>
-		  <table width="120" height="120" border="0" cellpadding="5" cellspacing="1" bgcolor="#999999">
+		  <table width="120" height="120" border="0" cellpadding="5" cellspacing="1" bgcolor="#ccc">
                 <tr align="center" bgcolor="#FFFFFF"> 
                   <td id="container" onClick="javascript:window.location.href='vip_add.php'"> <p><img src="../image/jx.gif" width="48" height="48" /><br />
                       <?php echo $f_array[22]?></p>
@@ -383,33 +383,33 @@ if (check_user_power("uploadflv")=="yes"){
           </tr>
         
           <tr> 
-            <td align="right" class="border2" ><?php echo $f_array[27]?></td>
-            <td class="border2" > <textarea name="zc" cols="60" rows="4" id="zc" onfocus="this.select()"><?php if (isset($_SESSION["zc"]))echo $_SESSION["zc"];?></textarea> 
+            <td align="right" valign="top" class="border2" ><?php echo $f_array[27]?></td>
+            <td class="border2" > <textarea name="zc" class="biaodan"  style="height:60px" cols="60" rows="4" id="zc" onfocus="this.select()"><?php if (isset($_SESSION["zc"]))echo $_SESSION["zc"];?></textarea> 
               <div> <?php echo $f_array[28]?> </div></td>
           </tr>
           <tr> 
-            <td align="right" class="border" ><?php echo str_replace("{#channeldl}",channeldl,$f_array[29])?></td>
-            <td class="border" > <textarea name="yq" cols="60" rows="4" id="yq" onfocus="this.select()"><?php if (isset($_SESSION["yq"]))echo $_SESSION["yq"];?></textarea> 
+            <td align="right" valign="top" class="border" ><?php echo str_replace("{#channeldl}",channeldl,$f_array[29])?></td>
+            <td class="border" > <textarea name="yq" class="biaodan" style="height:60px" cols="60" rows="4" id="yq" onfocus="this.select()"><?php if (isset($_SESSION["yq"]))echo $_SESSION["yq"];?></textarea> 
               <div><?php echo $f_array[30]?> </div></td>
           </tr>
-          <tr align="center"> 
-            <td colspan="2" class="border2" ><strong><?php echo $f_array[31]?></strong></td>
+          <tr> 
+            <td colspan="2" class="admintitle" ><strong><?php echo $f_array[31]?></strong></td>
           </tr>
 		  	    <?php
 if (check_user_power("seo")=="yes"){
 ?>
           <tr> 
             <td align="right" class="border" ><?php echo $f_array[32]?></td>
-            <td class="border" ><input name="title" type="text" id="title" onclick="javascript:if (this.value=='<?php echo $f_array[6]?>') {this.value=''};this.style.backgroundColor='';" onblur="javascript:if (this.value=='<?php echo $f_array[6]?>') {this.value=''};this.style.backgroundColor='';" size="60" maxlength="255" /></td>
+            <td class="border" ><input name="title" type="text" id="title" class="biaodan" onclick="javascript:if (this.value=='<?php echo $f_array[6]?>') {this.value=''};this.style.backgroundColor='';" onblur="javascript:if (this.value=='<?php echo $f_array[6]?>') {this.value=''};this.style.backgroundColor='';" size="60" maxlength="255" /></td>
           </tr>
           <tr> 
             <td align="right" class="border2" ><?php echo $f_array[33]?></td>
-            <td class="border2" > <input name="keyword" type="text" id="keyword" onclick="javascript:if (this.value=='<?php echo $f_array[6]?>') {this.value=''};this.style.backgroundColor='';" onblur="javascript:if (this.value=='<?php echo $f_array[6]?>') {this.value=''};this.style.backgroundColor='';" size="60" maxlength="255" />
+            <td class="border2" > <input name="keyword" type="text" id="keyword" class="biaodan" onclick="javascript:if (this.value=='<?php echo $f_array[6]?>') {this.value=''};this.style.backgroundColor='';" onblur="javascript:if (this.value=='<?php echo $f_array[6]?>') {this.value=''};this.style.backgroundColor='';" size="60" maxlength="255" />
               <?php echo $f_array[34]?></td>
           </tr>
           <tr> 
             <td align="right" class="border" ><?php echo $f_array[35]?></td>
-            <td class="border" ><input name="discription" type="text" id="discription" onblur="javascript:if (this.value=='<?php echo $f_array[6]?>') {this.value=''};this.style.backgroundColor='';" onclick="javascript:if (this.value=='<?php echo $f_array[6]?>') {this.value=''};this.style.backgroundColor='';" value="" size="60" maxlength="255" />
+            <td class="border" ><input name="discription" type="text" id="discription" class="biaodan" onblur="javascript:if (this.value=='<?php echo $f_array[6]?>') {this.value=''};this.style.backgroundColor='';" onclick="javascript:if (this.value=='<?php echo $f_array[6]?>') {this.value=''};this.style.backgroundColor='';" value="" size="60" maxlength="255" />
               <?php echo $f_array[36]?></td>
           </tr>
 		  <?php 
@@ -433,7 +433,7 @@ if (check_user_power("seo")=="yes"){
 		  }
 		  ?>	
           <tr>
-            <td colspan="2" align="center" class="border2" ><strong><?php echo $f_array[38]?></strong></td>
+            <td colspan="2" class="admintitle" ><strong><?php echo $f_array[38]?></strong></td>
           </tr>
 		     <?php
 if (check_user_power("zsshow_template")=="yes"){
@@ -467,12 +467,15 @@ if (check_user_power("zsshow_template")=="yes"){
           </tr>
         </table>
 </form>
+</div>
+
 </div>	  
 </div>
 </div>
 <?php
 mysql_close($conn);
 session_write_close();
+unset ($f_array);
 ?>
 </body>
 </html>

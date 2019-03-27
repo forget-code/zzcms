@@ -253,8 +253,7 @@ if( isset($_GET["page"]) && $_GET["page"]!="")
     $page=1;
 }
 
-		function formbigclass()
-		{
+		function formbigclass(){
 		$str="";
         $sql = "select * from zzcms_zsclass where parentid='A'";
         $rs=mysql_query($sql);
@@ -269,8 +268,7 @@ if( isset($_GET["page"]) && $_GET["page"]!="")
 		return $str;
 		}
 		
-		function formsmallclass($b)
-		{
+		function formsmallclass($b){
 		$str="";
         $sql="select * from zzcms_zsclass where parentid='" .$b. "' order by xuhao asc";
         $rs=mysql_query($sql);
@@ -462,8 +460,8 @@ $list2='';
 	}
 	$list2 =str_replace("{#i}" ,$i,$list2) ;
 	$list2 =str_replace("{#url}" ,getpageurl("zs",$row["id"]),$list2) ;
-	$list2 =str_replace("{#proname}" ,$row["proname"],$list2) ;
-	$list2 =str_replace("{#proname_small}",cutstr($row["proname"],10),$list2) ;
+	$proname_num=strbetween($list2,"{#proname:","}");//两种情况，window,list
+	$list2 =str_replace("{#proname:".$proname_num."}",cutstr($row["proname"],$proname_num),$list2) ;
 	$list2 =str_replace("{#img}" ,getsmallimg($row["img"]),$list2) ;
 	$list2 =str_replace("{#imgbig}" ,$row["img"],$list2) ;
 	$list2 =str_replace("{#comane}" ,$row["comane"],$list2) ;

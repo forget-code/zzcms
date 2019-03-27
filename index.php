@@ -2,11 +2,12 @@
 require("inc/conn.php");
 $domain=$_SERVER['HTTP_HOST']; //取得用户所访问的域名全称
 $domain2=substr($domain,0,strpos($domain,'.'));
-$domainz=str_replace('.net','',str_replace('.com','',str_replace('.com.cn','',str_replace(".cn",'',$domain))));//针对www.为空的情况，判断$domain2<>$domainz
-if ($domain<>str_replace("http://","",siteurl) && sdomain<>'No' && $domain2<>'demo' && $domain2<>'kehu' && $domain2<>'www' && $domain<>'localhost:8080' && $domain<>'localhost' && $domain2<>$domainz && is_numeric($domain2)==false){//针对输入IP的情况is_numeric($domain2)
+$domain_zhu=get_zhuyuming($domain);//针对www.为空的情况，判断$domain2<>$domainzhu
+if ($domain<>str_replace("http://","",siteurl) && sdomain<>'No' && $domain2<>'www' && $domain<>'localhost:8080' && $domain<>'localhost' && $domain2<>$domainzhu && check_isip($domain)==false){//针对输入IP的情况is_numeric($domain2)
 header("Location: default.htm",TRUE,301);//show.php及其它页面中以二级域名值为$editor
 exit;
 }
+
 include("inc/top_index.php");
 include("inc/bottom.php");
 include("label.php");

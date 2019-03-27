@@ -57,7 +57,7 @@ $smtp=new smtp(smtpserver,25,true,sender,smtppwd,sender);//25:smtp服务器的�
 $to = $fbr_email; //收件人
 $subject = "有人在".sitename."上给您留言";
 $body="<table width='100%'><tr><td style='font-size:14px;line-height:25px'>".$somane.$sex. "：<br>&nbsp;&nbsp;&nbsp;&nbsp;您好！<br>有人在".sitename."上给您留言，以下是部分信息：<hr>";
-$body=$body . "留&nbsp;言&nbsp;人：".$row["linkmen"]."<br>留言标题：".$row["title"]."<br>留言时间：".$row["sendtime"]."<br><a href='".siteurl."/user/login.php' target='_blank'><b>登陆网站查看详情</b></a><br><br><br><br><a href='".siteurl."' target='_blank'><img src='".logourl."' border='0'></a>";
+$body=$body . "留&nbsp;言&nbsp;人：".$row["linkmen"]."<br>留言标题：".$row["title"]."<br>留言时间：".$row["sendtime"]."<br><a href='".siteurl."/user/login.php' target='_blank'><b>登录网站查看详情</b></a><br><br><br><br><a href='".siteurl."' target='_blank'><img src='".logourl."' border='0'></a>";
 $body=$body . "</td></tr></table>";
 
 $fp="../template/".siteskin."/email.htm";

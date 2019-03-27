@@ -249,10 +249,10 @@ $dl_sendmail_url="form1.action='/dl/dl_sendmail.php'";
 $dl_sendsms_url="form1.action='/dl/dl_sendsms.php'";
 $buttontype="submit";
 }else{
-$dl_download_url="MsgBox('用户登陆','/user/login2.php?fromurl=http://".$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI']."',460,196,1)";
-$dl_print_url="MsgBox('用户登陆','/user/login2.php?fromurl=http://".$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI']."',460,196,1)";
-$dl_sendmail_url="MsgBox('用户登陆','/user/login2.php?fromurl=http://".$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI']."',460,196,1)";
-$dl_sendsms_url="MsgBox('用户登陆','/user/login2.php?fromurl=http://".$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI']."',460,196,1)";
+$dl_download_url="MsgBox('用户登录','/user/login2.php?fromurl=http://".$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI']."',460,196,1)";
+$dl_print_url="MsgBox('用户登录','/user/login2.php?fromurl=http://".$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI']."',460,196,1)";
+$dl_sendmail_url="MsgBox('用户登录','/user/login2.php?fromurl=http://".$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI']."',460,196,1)";
+$dl_sendsms_url="MsgBox('用户登录','/user/login2.php?fromurl=http://".$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI']."',460,196,1)";
 $buttontype="button";
 }
 $strout=str_replace("{#dl_download_url}",$dl_download_url,$strout) ;

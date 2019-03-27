@@ -18,7 +18,7 @@ require_once ("./tenpay_config.php");
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
 <HTML><HEAD><TITLE>财富通在线冲值</TITLE>
 <META http-equiv=Content-Type content="text/html; charset=utf-8">
-<LINK href="../../user/style.css" type=text/css rel=stylesheet>
+<LINK href="../../user/style/<?php echo siteskin_usercenter?>/style.css" type=text/css rel=stylesheet>
     <style type="text/css">
 <!--
 .STYLE1 {color: #FF0000}
@@ -26,10 +26,9 @@ require_once ("./tenpay_config.php");
     </style>
 </HEAD>
 <BODY>
-
+<div class="content">
 <div class="admintitle">财富通在线冲值</div>
-<form action='tenpay.php' method='post' name='directFrm'>
-        
+<form action='tenpay.php' method='post' name='directFrm'>    
   <table width="100%" border="0" cellspacing="1" cellpadding="5">
     <tr> 
       <td width="22%" align="right" class="border">收款方</td>
@@ -41,7 +40,7 @@ require_once ("./tenpay_config.php");
     </tr>
     <tr> 
       <td align="right" class="border2">充值金额</td>
-      <td class="border2"><input type="text" name="order_price" maxlength="50" size="18" onKeyUp="if(isNaN(value))execCommand('undo')" onafterpaste="if(isNaN(value))execCommand('undo')">
+      <td class="border2"><input type="text" name="order_price" maxlength="50" size="18"  class="biaodan" onKeyUp="if(isNaN(value))execCommand('undo')" onafterpaste="if(isNaN(value))execCommand('undo')">
         
         <input type="hidden" name="bank_type_value" value="0"><!--默认支付银行0为财富通-->
        （格式：500.01）</td>
@@ -58,5 +57,6 @@ require_once ("./tenpay_config.php");
     </tr>
   </table>
 </form>
+</div>
 </body>
 </html>

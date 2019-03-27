@@ -11,7 +11,7 @@ $f_array=explode("|||",$fcontent) ;
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=EmulateIE7" />
 <title><?php echo $f_array[0]?></title>
-<link href="style.css" rel="stylesheet" type="text/css">
+<link href="style/<?php echo siteskin_usercenter?>/style.css" rel="stylesheet" type="text/css">
 <script language = "JavaScript">
 function CheckForm(){
 <?php echo $f_array[1]?>
@@ -114,6 +114,7 @@ include("left.php");
 ?>
 </div>
 <div class="right">
+<div class="content">
 <div class="admintitle"><?php echo $f_array[0]?></div>
 <?php
 $rs=mysql_query("select * from zzcms_textadv where username='".$_COOKIE["UserName"]."'");
@@ -124,21 +125,19 @@ $row=mysql_fetch_array($rs);
 <form name="myform" method="post" action="?action=modify" onSubmit="return CheckForm();"> 
         <table width="100%" border="0" cellpadding="3" cellspacing="1">
           <tr> 
-            <td width="27%" align="right" class="border"><?php echo $f_array[5]?></td>
-            <td width="73%" class="border"> <input name="adv" type="text" id="adv" value="<?php echo $row["adv"]?>" size="40" maxlength="15"> 
+            <td width="20%" align="right" class="border"><?php echo $f_array[5]?></td>
+            <td width="80%" class="border"> <input name="adv" type="text" id="adv" class="biaodan" value="<?php echo $row["adv"]?>" size="40" maxlength="15"> 
               <?php
 		$rsn=mysql_query("select id,comane from zzcms_user where username='".$_COOKIE["UserName"]."'");
         $rown=mysql_fetch_array($rsn);
 			?>
               <input name="advlink" type="hidden" id="advlink4" value="<?php echo getpageurl("zt",$rown["id"])?>"> 
-              <input name="company" type="hidden" id="company" value="<?php echo $rown["comane"]?>"> 
-            </td>
+              <input name="company" type="hidden" id="company" value="<?php echo $rown["comane"]?>">            </td>
           </tr>
           <tr> 
             <td align="right" class="border"><strong><?php echo $f_array[6]?></strong> 
               <input name="oldimg" type="hidden" id="oldimg" value="<?php echo $row["img"]?>" />
-              <input name="img" type="hidden" id="img" value="<?php echo $row["img"]?>" size="50" />
-              </td>
+              <input name="img" type="hidden" id="img" value="<?php echo $row["img"]?>" size="50" />              </td>
             <td class="border"> <table width="120" height="120" border="0" cellpadding="5" cellspacing="0" class="borderforimg">
                 <tr> 
                   <td align="center" id="showimg" onclick='showtxt()'> 
@@ -159,26 +158,23 @@ $row=mysql_fetch_array($rs);
 					}else{
                      echo "<input name='Submit2' type='button'  value='".$f_array[8]."'/>";
                     }	
-				  ?>
-                  </td>
+				  ?>                  </td>
                 </tr>
               </table></td>
           </tr>
           <tr> 
             <td align="right" class="border2"><strong><?php echo $f_array[9]?></strong></td>
             <td class="border2"> 
-              <?php if ($row["adv"]<>""){ echo "<a href='".$row["advlink"]."' target='_blank'>".$row["adv"]."</a>";}?>
-            </td>
+              <?php if ($row["adv"]<>""){ echo "<a href='".$row["advlink"]."' target='_blank'>".$row["adv"]."</a>";}?>            </td>
           </tr>
           <tr> 
             <td align="right" class="border"><strong><?php echo $f_array[10]?></strong></td>
             <td class="border">
-              <?php if ($row["passed"]==1){ echo $f_array[11]; }else{ echo $f_array[12];}?>
-            </td>
+              <?php if ($row["passed"]==1){ echo $f_array[11]; }else{ echo $f_array[12];}?>            </td>
           </tr>
           <tr> 
-            <td colspan="2" align="center" class="border2"> <input name="Submit2" type="submit" class="buttons" value="<?php echo $f_array[13]?>"> 
-            </td>
+            <td class="border2">&nbsp;</td>
+            <td class="border2"><input name="Submit22" type="submit" class="buttons" value="<?php echo $f_array[13]?>" /></td>
           </tr>
         </table>
   </form>
@@ -188,22 +184,19 @@ $row=mysql_fetch_array($rs);
     <form name="myform" method="post" action="?action=add" onSubmit="return CheckForm();">    
         <table width="100%" border="0" cellpadding="3" cellspacing="1">
           <tr> 
-            <td width="27%" align="right" class="border"><?php echo $f_array[5]?></td>
-            <td width="73%" class="border"> <input name="adv" type="text" id="adv" size="40" maxlength="15"> 
+            <td width="20%" align="right" class="border"><?php echo $f_array[5]?></td>
+            <td width="80%" class="border"> <input name="adv" type="text" id="adv" class="biaodan" size="40" maxlength="15"> 
               <?php
-			
 			$rsn=mysql_query("select id,comane from zzcms_user where username='".$_COOKIE["UserName"]."'");
             $rown=mysql_fetch_array($rsn)
 			?>
               <input name="advlink" type="hidden" id="advlink" value="<?php echo getpageurl("zt",$rown["id"])?>"> 
-              <input name="company" type="hidden"  value="<?php echo $rown["comane"]?>"> 
-            </td>
+              <input name="company" type="hidden"  value="<?php echo $rown["comane"]?>">            </td>
           </tr>
           <tr> 
             <td align="right" class="border"><strong><?php echo $f_array[6]?></strong> 
-              <input name="img" type="hidden" id="img3" size="50" />
-              </td>
-            <td class="border"> <table width="120" height="120" border="0" cellpadding="5" cellspacing="1" bgcolor="#999999">
+              <input name="img" type="hidden" id="img3" size="50" />              </td>
+            <td class="border"> <table width="120" height="120" border="0" cellpadding="5" cellspacing="1" bgcolor="#cccccc">
                 <tr> 
                   <td align="center" bgcolor="#FFFFFF" id="showimg" onclick='showtxt()'> 
                     <input name='Submit2' type='button'  value='<?php echo $f_array[8]?>'/> </td>
@@ -213,19 +206,20 @@ $row=mysql_fetch_array($rs);
           <tr> 
             <td align="right" class="border2"><strong><?php echo $f_array[9]?></strong></td>
             <td class="border2"> 
-              <?php if ($adv<>""){ echo"<a href='".$advlink."' target='_blank'>".$adv."</a>";}?>
-            </td>
+              <?php if ($adv<>""){ echo"<a href='".$advlink."' target='_blank'>".$adv."</a>";}?>            </td>
           </tr>
           <tr> 
-            <td colspan="2" align="center" class="border"> <input name="Submit3" type="submit" class="buttons" value="<?php echo $f_array[14]?>"> 
-            </td>
+            <td class="border">&nbsp;</td>
+            <td class="border"><input name="Submit3" type="submit" class="buttons" value="<?php echo $f_array[14]?>" /></td>
           </tr>
         </table>
 </form>
 <?php
 }
 mysql_close($conn);
+unset ($f_array);
 ?>
+</div>
 </div>
 </div>
 </div>

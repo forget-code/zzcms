@@ -4,7 +4,7 @@ include("../inc/conn.php");
 $founderr=0;
 $ErrMsg="";
 if (!isset($_COOKIE["UserName"])){
-showmsg('请先登陆','/user/login.php');
+showmsg('请先登录','/user/login.php');
 }
 
 $username=$_COOKIE["UserName"];

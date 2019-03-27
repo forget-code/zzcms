@@ -11,7 +11,7 @@ $f_array=explode("|||",$fcontent) ;
 <title></title>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=EmulateIE7" />
-<link href="style.css" rel="stylesheet" type="text/css">
+<link href="style/<?php echo siteskin_usercenter?>/style.css" rel="stylesheet" type="text/css">
 <?php
 $ErrMsg="";
 $FoundErr=0;
@@ -74,6 +74,7 @@ include("left.php");
 ?>
 </div>
 <div class="right">
+<div class="content">
 <div class="admintitle"><?php echo $f_array[7]?></div>
 <FORM name="myform" action="?action=modify" method="post">
 <table width="100%" border="0" cellpadding="3" cellspacing="1">
@@ -110,8 +111,9 @@ include("left.php");
               <td align="right" class="border2">&nbsp;</td>
               <td class="border2"> <input name="Submit2"   type="submit" class="buttons" id="Submit2" value="<?php echo $f_array[18]?>"></td>
             </tr>
-          </TABLE>
+          </table>
   </form>
+</div>
 </div>
 </div>
 </div>  
@@ -120,4 +122,5 @@ include("left.php");
 <?php
 }
 mysql_close($conn);
+unset ($f_array);
 ?>

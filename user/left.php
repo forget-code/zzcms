@@ -2,6 +2,8 @@
 $fpath="text/left.txt";
 $fcontent=file_get_contents($fpath);
 $f_array_left=explode("\n",$fcontent) ;
+$current_url=$_SERVER['PHP_SELF'];
+$c_name= substr( $current_url,strrpos($current_url,'/')+1);  
 ?>
 <script type="text/javascript">
 <!--
@@ -21,73 +23,149 @@ function Confirmdeluser(){
 }	
 //-->
 </script>
-<div id="left0" style="display:block" class="left_color" ></div>
-<div id="left1" style="display:block" class="left_color2"> 
-<div class="lefttitle"><img src="image/ico/ico4.gif" border=0> <?php echo $f_array_left[0]?> </div>
-<div class="leftcontent">
+<div id="left1" style="display:block"  class="leftcontent"> 
+<div class="lefttitle"><img src="image/ico/ico4.gif"> <?php echo $f_array_left[0]?> </div>
+<div>
 <ul>
-
 <?php
-if (check_usergr_power('zs')=='yes'|| $usersf=='公司'){?>
-<li><a href="zsadd.php" target="_self"><?php echo $f_array_left[1].channelzs?></a> | <a href="zsmanage.php" target="_self"> <?php echo $f_array_left[2]?></a></li> 
-<?php 
+if (check_usergr_power('zs')=='yes'|| $usersf=='公司'){
+	if ($c_name=='zsadd.php'||$c_name=='zsmanage.php'||$c_name=='zsmodify.php'||$c_name=='zspx.php'||$c_name=='zs_elite.php'){
+	echo "<li class='current2'>";
+	}else{
+	echo "<li class='current1'>";
+	}
+echo "<a href='zsadd.php' target='_self'>".$f_array_left[1].channelzs."</a> | <a href='zsmanage.php' target='_self'>".$f_array_left[2]."</a></li> ";
 }
 if (check_usergr_power('pp')=='yes'|| $usersf=='公司'){
-?>
-<li><a href="ppadd.php" target="_self"><?php echo $f_array_left[3]?></a> | <a href="ppmanage.php" target="_self"><?php echo $f_array_left[2]?></a></li> 
-<?php 
+	if ($c_name=='ppadd.php'||$c_name=='ppmanage.php'||$c_name=='ppmodify.php'){
+	echo "<li class='current2'>";
+	}else{
+	echo "<li class='current1'>";
+	}
+echo "<a href='ppadd.php' target='_self'>".$f_array_left[3]."</a> | <a href='ppmanage.php' target='_self'>".$f_array_left[2]."</a></li> ";	
 }
+
 if (check_usergr_power('dl')=='yes'|| $usersf=='公司'){
-?>
-<li><a href="dladd.php" target="_self"> <?php echo $f_array_left[1].channeldl?></a> | <a href="dlmanage.php" target="_self"> <?php echo $f_array_left[2]?></a></li>
-<?php 
+	if ($c_name=='dladd.php'||$c_name=='dlmanage.php'||$c_name=='dlmodify.php'){
+	echo "<li class='current2'>";
+	}else{
+	echo "<li class='current1'>";
+	}
+echo "<a href='dladd.php' target='_self'>".$f_array_left[1].channeldl."</a> | <a href='dlmanage.php' target='_self'>".$f_array_left[2]."</a></li> ";
 }
+
 if (check_usergr_power('zh')=='yes'|| $usersf=='公司'){
-?>
-<li><a href="zhadd.php" target="_self"> <?php echo $f_array_left[4]?></a> | <a href="zhmanage.php" target="_self"> <?php echo $f_array_left[2]?></a></li>
-<?php 
+	if ($c_name=='zhadd.php'||$c_name=='zhmanage.php'||$c_name=='zhmodify.php'){
+	echo "<li class='current2'>";
+	}else{
+	echo "<li class='current1'>";
+	}
+echo "<a href='zhadd.php' target='_self'>".$f_array_left[4]."</a> | <a href='zhmanage.php' target='_self'>".$f_array_left[2]."</a></li> ";
 }
+
+if (check_usergr_power('wangkan')=='yes'|| $usersf=='公司'){
+	if ($c_name=='wangkanadd.php'||$c_name=='wangkanmanage.php'||$c_name=='wangkanmodify.php'){
+	echo "<li class='current2'>";
+	}else{
+	echo "<li class='current1'>";
+	}
+echo "<a href='wangkanadd.php' target='_self'>".$f_array_left[42]."</a> | <a href='wangkanmanage.php' target='_self'>".$f_array_left[2]."</a></li> ";
+}
+
 if (check_usergr_power('zx')=='yes'|| $usersf=='公司'){
-?>
-<li><a href="zxadd.php" target="_self"> <?php echo $f_array_left[5]?></a> | <a href="zxmanage.php" target="_self"> <?php echo $f_array_left[2]?></a></li>
-<?php 
+	if ($c_name=='zxadd.php'||$c_name=='zxmanage.php'||$c_name=='zxmodify.php'){
+	echo "<li class='current2'>";
+	}else{
+	echo "<li class='current1'>";
+	}
+echo "<a href='zxadd.php' target='_self'>".$f_array_left[5]."</a> | <a href='zxmanage.php' target='_self'>".$f_array_left[2]."</a></li> ";
 }
+
 if (check_usergr_power('special')=='yes'|| $usersf=='公司'){
-?>
-<li><a href="specialadd.php" target="_self"> <?php echo $f_array_left[6]?></a> | <a href="specialmanage.php" target="_self"> <?php echo $f_array_left[2]?></a></li>
-<?php 
+	if ($c_name=='specialadd.php'||$c_name=='specialmanage.php'||$c_name=='specialmodify.php'){
+	echo "<li class='current2'>";
+	}else{
+	echo "<li class='current1'>";
+	}
+echo "<a href='specialadd.php' target='_self'>".$f_array_left[6]."</a> | <a href='specialmanage.php' target='_self'>".$f_array_left[2]."</a></li> ";
 }
+
 if (check_usergr_power('job')=='yes'|| $usersf=='公司'){
-?>
-<li><a href="jobadd.php" target="_self"> <?php echo $f_array_left[7]?></a> | <a href="jobmanage.php" target="_self"> <?php echo $f_array_left[2]?></a></li>
-<?php 
+	if ($c_name=='jobadd.php'||$c_name=='jobmanage.php'||$c_name=='jobmodify.php'){
+	echo "<li class='current2'>";
+	}else{
+	echo "<li class='current1'>";
+	}
+echo "<a href='jobadd.php' target='_self'>".$f_array_left[7]."</a> | <a href='jobmanage.php' target='_self'>".$f_array_left[2]."</a></li> ";
 }
+
+$sql_left="select classid from zzcms_zxclass where classname='公司新闻' ";
+$rs_left=mysql_query($sql_left);
+$row_left=mysql_fetch_array($rs_left);
+
 if (check_usergr_power('zx')=='yes'|| $usersf=='公司'){
-?>
-<li><a href="index.php?gotopage=zxadd.php&b=1" target="_self"> <?php echo $f_array_left[8]?></a> | <a href="zxmanage.php?bigclassid=1"><?php echo $f_array_left[2]?></a></li> 
-<li><a href="advadd.php" target="_self"><?php echo $f_array_left[9]?></a> | <a href="advmanage.php"><?php echo $f_array_left[2]?></a></li>
-<?php 
+	if ($c_name=='zxadd.php'||$c_name=='zxmanage.php'||$c_name=='zxmodify.php'){
+	echo "<li class='current2'>";
+	}else{
+	echo "<li class='current1'>";
+	}
+echo "<a href='index.php?gotopage=zxadd.php&b=".$row_left['classid']."' target='_self'>".$f_array_left[8]."</a> | <a href='zxmanage.php?bigclassid=".$row_left['classid']."' target='_self'>".$f_array_left[2]."</a></li> ";
 }
+
+if ($c_name=='advadd.php'||$c_name=='advmanage.php'||$c_name=='advmodify.php'){
+	echo "<li class='current2'>";
+	}else{
+	echo "<li class='current1'>";
+	}
+echo "<a href='advadd.php' target='_self'>".$f_array_left[9]."</a> | <a href='advmanage.php' target='_self'>".$f_array_left[2]."</a></li> ";
 ?>
 </ul>
 </div>
 </div>
 
 <?php if (check_usergr_power('zs')=='yes'|| $usersf=='公司'){?>
-<div id="left2" style="display:block" class="left_color">
-<div class="lefttitle"><img src="image/ico/ico8.gif"><?php echo $f_array_left[10]?></div>
-<div class="leftcontent">
+<div id="left2" style="display:block" class="leftcontent">
+<div class="lefttitle"><img src="image/ico/ico8.gif"> <?php echo $f_array_left[10]?></div>
+<div>
 <ul>
-<li><a href="dls_message_manage.php" target="_self" ><?php echo $f_array_left[11]?></a></li>
-<li><a href="ztliuyan.php?show=all" target="_self"><?php echo $f_array_left[12]?></a></li>			
+<?php
+if ($c_name=='dls_message_manage.php'){
+	echo "<li class='current2'>";
+	}else{
+	echo "<li class='current1'>";
+	}
+echo "<a href='dls_message_manage.php' target='_self'>".$f_array_left[11]."</a> ";		  
+$sql_left="select id from zzcms_dl where saver='".@$username."' and looked=0 and del=0 and passed=1";
+$rs_left=mysql_query($sql_left);
+$row_left=mysql_num_rows($rs_left);
+if($row_left){
+echo "<span class='buttons'>".$row_left."</span>";
+}
+echo "</li>";
+
+if ($c_name=='ztliuyan.php'){
+	echo "<li class='current2'>";
+	}else{
+	echo "<li class='current1'>";
+	}
+echo "<a href='ztliuyan.php?show=all' target='_self'>".$f_array_left[12]."</a> ";
+
+$sql_left="select id from zzcms_guestbook where saver='".@$username."' and looked=0 and passed=1";
+$rs_left=mysql_query($sql_left);
+$row_left=mysql_num_rows($rs_left);
+if($row_left){
+echo "<span class='buttons'>".$row_left."</span>";
+}
+echo "</li>";
+?>			
 </ul>		
 </div>
 </div>
 <?php }?>
 
-<div id="left3" style="display:block" class="left_color"> 		
+<div id="left3" style="display:block" class="leftcontent"> 		
 <div class="lefttitle"> <img src="image/ico/ico9.gif" width="12" height="16"> <?php echo $f_array_left[13]?></div>
-<div class="leftcontent"> 
+<div> 
 <ul>
 <li><a href="adv.php" target="_self"><?php echo $f_array_left[14]?></a></li>
 <li><a href="adv2.php" target="_self"><?php echo $f_array_left[15]?></a><img src="image/ico/ico6.gif" width="23" height="12"></li>
@@ -98,9 +176,9 @@ if (check_usergr_power('zx')=='yes'|| $usersf=='公司'){
 <?php 
 if ($usersf=="公司"){ 
 ?>	
-<div id="left4" style="display:block" class="left_color"> 
+<div id="left4" style="display:block" class="leftcontent"> 
 <div class="lefttitle"><img src="image/ico/ico5.gif" width="16" height="16"> <?php echo $f_array_left[16]?></div>
-<div class="leftcontent">
+<div>
 <ul>			
 <li><a href="licence_add.php" target="_self"> <?php echo $f_array_left[17]?></a></li> 
 <li><a href="licence.php" target="_self" ><?php echo $f_array_left[18]?></a></li>
@@ -110,9 +188,9 @@ if ($usersf=="公司"){
 <?php 
 }
 ?>
-<div id="left5" style="display:block" class="left_color"> 
+<div id="left5" style="display:block" class="leftcontent"> 
 <div class="lefttitle"><img src="image/ico/ico7.gif" width="16" height="15"> <?php echo $f_array_left[19]?></div>
-<div class="leftcontent">
+<div>
 <ul>	
 <li><a href="/3/alipay/" target="_blank"> <?php echo $f_array_left[20]?></a></li>
 <li><a href="/3/tenpay/" target="_blank"> <?php echo $f_array_left[21]?></a></li>
@@ -121,9 +199,9 @@ if ($usersf=="公司"){
 </div>
 </div>
 			
-<div id="left6" style="display:block" class="left_color"> 
+<div id="left6" style="display:block" class="leftcontent"> 
 <div class="lefttitle"><img src="image/ico/ico10.gif" width="16" height="16"> <?php echo $f_array_left[23]?></div>
-<div class="leftcontent">
+<div>
 <ul>
 <li><a href="vip_add.php" target="_self"><?php echo $f_array_left[24]?></a></li> 
 <li><a href="vip_xufei.php" target="_self"><?php echo $f_array_left[25]?></a></li> 
@@ -135,9 +213,9 @@ if ($usersf=="公司"){
 </div>
 </div>
 <?php if ($usersf=="公司"){ ?>
-<div id="left7" style="display:block" class="left_color"> 
+<div id="left7" style="display:block" class="leftcontent"> 
 <div class="lefttitle"><img src="image/ico/ico10.gif" width="16" height="16"> <?php echo $f_array_left[30]?></div>
-<div class="leftcontent">
+<div>
 <ul>
 <li><a href="ztconfig_skin.php" target="_self"> <?php echo $f_array_left[31]?></a></li>
 <li><a href="ztconfig_skin_mobile.php" target="_self"><?php echo $f_array_left[32]?></a></li>
@@ -148,9 +226,9 @@ if ($usersf=="公司"){
 <?php 
 }
 ?>				
-<div id="left8" style="display:block" class="left_color">			
+<div id="left8" style="display:block" class="leftcontent">			
 <div class="lefttitle"><img src="image/ico/ico8.gif"> <?php echo $f_array_left[34]?></div>
-<div class="leftcontent">
+<div>
 <ul>
 <li><a href="msg_manage.php" target="_self" ><?php echo $f_array_left[35]?></a></li>
 <li><a href="../dl/dl.php" target="_blank"><?php echo str_replace("{#channeldl}",channeldl,$f_array_left[36])?></a></li>			
@@ -158,9 +236,9 @@ if ($usersf=="公司"){
 </div>
 </div>		
 
-<div id="left9" style="display:block" class="left_color"> 
+<div id="left9" style="display:block" class="leftcontent"> 
 <div class="lefttitle"><img src="image/ico/ico3.gif"> <?php echo $f_array_left[37]?></div>
-<div class="leftcontent">
+<div>
 <ul>
 <li><a target=blank href=http://wpa.qq.com/msgrd?v=1&uin=<?php echo kfqq?>&Site=<?php echo sitename?>&Menu=yes><img border="0" src=http://wpa.qq.com/pa?p=1:<?php echo kfqq ?>:4><?php echo $f_array_left[38]?></a></li>
 <li><a href="#"><?php echo $f_array_left[39].kftel?></a></li>

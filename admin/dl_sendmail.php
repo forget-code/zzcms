@@ -16,15 +16,16 @@ echo str_pad(" ",256);//IE需要接受到256个字节之后才开始显示。
 <?php
 include("../inc/mail_class.php");
 checkadminisdo("dl");
-
 $id="";
 if(!empty($_POST['id'])){
     for($i=0; $i<count($_POST['id']);$i++){
-    $id=$id.($_POST['id'][$i].',');
-    }
+    $ids=$_POST['id'][$i];
+	$ids=explode("|",$ids);
+	//$id=$ids[0];
+	$id=$id.($ids[0].',');
+	}
 	$id=substr($id,0,strlen($id)-1);//去除最后面的","
-}
-if ($id==""){
+}else{
 echo "<script lanage='javascript'>alert('操作失败！至少要选中一条信息。');window.opener=null;window.open('','_self');window.close()</script>";
 exit;
 }
@@ -54,7 +55,7 @@ while($row=mysql_fetch_array($rs)){
 $smtp=new smtp(smtpserver,25,true,sender,smtppwd,sender);//25:smtp服务器的端口一般是25
 //$smtp->debug = true; //是否开启调试,只在测试程序时使用，正式使用时请将此行注释
 $to = $fbr_email; //收件人
-$subject = "有人在".sitename."上给您留言想要"channeldl.$row["cp"];
+$subject = "有人在".sitename."上给您留言想要".channeldl.$row["cp"];
 $body= "<table width='100%'><tr><td style='font-size:14px;line-height:25px'>".$somane.$sex. "：<br>&nbsp;&nbsp;&nbsp;&nbsp;您好！<br>有人在".sitename."上给您留言，想要".channeldl.$row["cp"]."；以下是部分信息：<hr>";
 $body= $body . "留&nbsp;言&nbsp;人：".$row["dlsname"]."<br>".channeldl."产品：".$row["cp"]."<br>".channeldl."区域：".$row["city"]."<br>留言时间：".$row["sendtime"]."<br><a href='".siteurl."/user/login.php' target='_blank'><b>登陆网站查看详情</b></a>";
 $body= $body . "</td></tr></table>";

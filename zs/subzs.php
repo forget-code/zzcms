@@ -1,5 +1,5 @@
 <?php
-function showcookieszs($column,$imgwidth,$imgheight){
+function showcookieszs($column,$imgwidth,$imgheight,$title_num){
 $str="";
 if (!isset($_COOKIE["zzcmscpid"])){
 $str="暂无记录";
@@ -17,13 +17,13 @@ $str="<table width=100% border=0 cellspacing=0 cellpadding=5><tr>";
 $rs=mysql_query($sql);
 while($row=mysql_fetch_array($rs)){
 $str=$str. "<td align='center'>";
-$str=$str. "<table  border='0' cellspacing='1' cellpadding='5' class='bgcolor2'>";
+$str=$str. "<table  border='0' cellspacing='1' cellpadding='1' class='bgcolor2'>";
 $str=$str. "<tr><td bgcolor='#FFFFFF' align='center' width='$imgwidth' height='$imgheight'>"  ;
 $str=$str. "<a href='".getpageurl("zs",$row["id"])."' target='_blank'>";
-$str=$str. "<img src=".str_replace(".","_small.",$row["img"])." border='0' onload='resizeimg(".$imgwidth.",".$imgheight.",this)'>";
+$str=$str. "<img src=".getsmallimg($row["img"])." border='0' onload='resizeimg(".$imgwidth.",".$imgheight.",this)' alt='".$row["proname"]."'>";
 $str=$str. "</a></td></tr>";
 $str=$str. "<tr>";
-$str=$str. "<td>".cutstr($row["proname"],5)."</td>";
+$str=$str. "<td title='".$row["proname"]."'>".cutstr($row["proname"],$title_num)."</td>";
 $str=$str. "<tr/>";
 $str=$str. "</table>";
 $str=$str. "</td>";
@@ -110,6 +110,7 @@ while ($row=mysql_fetch_array($rs)){
 	$str=$str."</li>";
 $n=$n+1;		
 }
+if ($num<>""){$str=$str. "<li><a href='".getpageurl2("zs",$b,"")."'>更多...</a></li>";}
 }
 return $str;
 }

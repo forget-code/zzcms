@@ -3,7 +3,7 @@ include("../inc/conn.php");
 include("check.php");
 $fpath="text/advmodify.txt";
 $fcontent=file_get_contents($fpath);
-$f_array=explode("\n",$fcontent) ;
+$f_array=explode("|||",$fcontent) ;
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="zh-CN">
@@ -11,7 +11,7 @@ $f_array=explode("\n",$fcontent) ;
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=EmulateIE7" />
 <title></title>
-<link href="style.css" rel="stylesheet" type="text/css">
+<link href="style/<?php echo siteskin_usercenter?>/style.css" rel="stylesheet" type="text/css">
 <script type="text/javascript" src="/3/ckeditor/ckeditor.js"></script>
 <script language = "JavaScript">
 <?php echo $f_array[0];?> 
@@ -29,6 +29,7 @@ include("left.php");
 ?>
 </div>
 <div class="right">
+<div class="content">
 <div class="admintitle"><?php echo $f_array[1]?> </div>
 <?php
 if (isset($_GET["page"])){
@@ -55,20 +56,20 @@ exit;
         <table width="100%" border="0" cellpadding="3" cellspacing="1">
           <tr>
             <td align="right" class="border"><?php echo $f_array[3]?></td>
-            <td class="border"><select name="classname" id="classname">
+            <td class="border"><select name="classname" id="classname" class="biaodan">
                 <option value="<?php echo $f_array[4]?>"><?php echo $f_array[4]?></option>
               </select>
             </td>
           </tr>
           <tr> 
-            <td width="109" align="right" class="border"><?php echo $f_array[5]?> <font color="#FF0000">*</font></td>
+            <td align="right" class="border"><?php echo $f_array[5]?></td>
 			
-            <td width="708" class="border">
-			 <input name="title" type="text" id="title2" size="50" maxlength="255" value="<?php echo $rowzx["title"]?>" ></td>
+            <td class="border">
+			 <input name="title" type="text" id="title2" size="50" maxlength="255" class="biaodan" value="<?php echo $rowzx["title"]?>" ></td>
           </tr>
           <tr>
-            <td align="right" class="border"><?php echo $f_array[6]?><font color="#FF0000">*</font></td>
-            <td class="border"><input name="link" type="text" id="link" size="50" maxlength="255" value="<?php echo $rowzx["link"]?>"></td>
+            <td align="right" class="border"><?php echo $f_array[6]?></td>
+            <td class="border"><input name="link" type="text" id="link" class="biaodan" size="50" maxlength="255" value="<?php echo $rowzx["link"]?>"></td>
           </tr>
           <tr>
             <td align="right" class="border"><?php echo $f_array[7]?>
@@ -87,7 +88,7 @@ document.getElementById("showimg").innerHTML="<img src='"+sd+"' width=120>";
 }
 }
           </script>
-                <table width="120" height="120" border="0" cellpadding="5" cellspacing="1" bgcolor="#999999">
+                <table width="120" height="120" border="0" cellpadding="5" cellspacing="1" bgcolor="#cccccc">
                   <tr>
                     <td align="center" bgcolor="#FFFFFF" id="showimg" onclick='showtxt()'><?php
 				 if ($rowzx["img"]<>""){
@@ -123,8 +124,10 @@ document.getElementById("showimg").innerHTML="<img src='"+sd+"' width=120>";
 </div>
 </div>
 </div>
+</div>
 <?php
-mysql_close($conn)
+mysql_close($conn);
+unset ($f_array);
 ?>
 </body>
 </html>

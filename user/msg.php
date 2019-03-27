@@ -3,14 +3,14 @@ include("../inc/conn.php");
 include("check.php");
 $fpath="text/msg.txt";
 $fcontent=file_get_contents($fpath);
-$f_array=explode("\n",$fcontent) ;
+$f_array=explode("|||",$fcontent) ;
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="zh-CN">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=EmulateIE7" />
-<link href="style.css" rel="stylesheet" type="text/css">
+<link href="style/<?php echo siteskin_usercenter?>/style.css" rel="stylesheet" type="text/css">
 <?php
 $go=0;
 if (isset($_REQUEST['action'])){
@@ -56,6 +56,7 @@ include("left.php");
 ?>
 </div>
 <div class="right">
+<div class="content">
 <?php 
 if ($action=="add") {
 ?>
@@ -70,7 +71,7 @@ if ($action=="add") {
     <tr> 
       <td align="right" class="border">&nbsp;</td>
       <td class="border"> 
-        <input type="submit" name="Submit" value="<?php echo $f_array[2]?>" ></td>
+        <input type="submit" name="Submit" class="buttons" value="<?php echo $f_array[2]?>" ></td>
     </tr>
 </table>
  </form>
@@ -92,7 +93,7 @@ $row=mysql_fetch_array($rs);
     <tr>
       <td align="right" class="border"><input name="id" type="hidden" id="id2" value="<?php echo $row["id"]?>"></td>
       <td class="border">
-<input type="submit" name="Submit2" value="<?php echo $f_array[5]?>"></td>
+<input type="submit" name="Submit2" class="buttons" value="<?php echo $f_array[5]?>"></td>
     </tr>
 </table>
   </form>
@@ -101,7 +102,9 @@ $row=mysql_fetch_array($rs);
 if ($go==1){
 echo "<script>location.href='msg_manage.php'</script>";
 }
+unset ($f_array);
 ?>
+</div>
 </div>
 </div>
 </div>

@@ -177,7 +177,7 @@ $somane=$rown="";
 $phone=$rown="";
 $email=$rown="";
 if (isset($_COOKIE["UserName"])) {
-if (trim($_COOKIE["UserName"])!=$editor){//产品发布人登陆时不显示自己的联系方式在表单
+if (trim($_COOKIE["UserName"])!=$editor){//产品发布人登录时不显示自己的联系方式在表单
 $rsn=mysql_query("select * from zzcms_user where username='".trim($_COOKIE["UserName"])."'");
 $rown=mysql_fetch_array($rsn);
 $companyname=$rown["comane"];

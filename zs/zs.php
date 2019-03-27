@@ -104,8 +104,7 @@ $pagedescription=zslistdescription;
 
 $station=getstation($b,$bigclassname,$s,$smallclassname,"","","zs");
 
-if( isset($_GET["page"]) && $_GET["page"]!="") 
-{
+if( isset($_GET["page"]) && $_GET["page"]!="") {
     $page=$_GET['page'];
 	checkid($page,0);
 }else{
@@ -242,7 +241,6 @@ $rs = mysql_query($sql);
 $zs=strbetween($strout,"{zs}","{/zs}");
 $list_list=strbetween($strout,"{loop_list}","{/loop_list}");
 $list_window=strbetween($strout,"{loop_window}","{/loop_window}");
-
 if(!$totlenum){
 $strout=str_replace("{zs}".$zs."{/zs}","暂无信息",$strout) ;
 }else{
@@ -251,6 +249,7 @@ $i=0;
 $keyword="";
 $province="";
 $list2='';
+
 	while($row= mysql_fetch_array($rs)){
 	if ($ys=="window"){
 	$list2 = $list2. str_replace("{#id}",$row["id"],$list_window) ;
@@ -259,8 +258,8 @@ $list2='';
 	}
 	$list2 =str_replace("{#i}",$i,$list2) ;
 	$list2 =str_replace("{#url}",getpageurl("zs",$row["id"]),$list2) ;
-	$list2 =str_replace("{#proname}",$row["proname"],$list2) ;
-	$list2 =str_replace("{#proname_small}",cutstr($row["proname"],9),$list2) ;
+	$proname_num=strbetween($list2,"{#proname:","}");
+	$list2 =str_replace("{#proname:".$proname_num."}",cutstr($row["proname"],$proname_num),$list2) ;
 	$list2 =str_replace("{#img}",getsmallimg($row["img"]),$list2) ;
 	$list2 =str_replace("{#imgbig}" ,$row["img"],$list2) ;
 	$list2 =str_replace("{#comane}",$row["comane"],$list2) ;

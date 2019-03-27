@@ -10,22 +10,21 @@ $f_array=explode("|||",$fcontent) ;
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=EmulateIE7" />
-<link href="style.css" rel="stylesheet" type="text/css">
+<link href="style/<?php echo siteskin_usercenter?>/style.css" rel="stylesheet" type="text/css">
+<title><?php echo $f_array[2]?></title>
 <?php
 if (check_usergr_power("job")=="no" && $usersf=='个人'){
 echo $f_array[0];
 exit;
 }
 ?>
-<title></title>
 <script language = "JavaScript">
 function CheckForm(){
 <?php echo $f_array[1]?>  
 }
 
 function doClick_E(o){
-	 var id;
-	 var e;
+	 var id,e;
 	 for(var i=1;i<=document.myform.bigclassid.length;i++){
 	   id ="E"+i;
 	   e = document.getElementById("E_con"+i);
@@ -76,15 +75,17 @@ markit();
 showmsg('非法操作！警告：你的操作已被记录！小心封你的用户及IP！');
 }
 ?>
+<div class="content">
 <div class="admintitle"><?php echo $f_array[2]?></div>
 <form action="jobsave.php" method="post" name="myform" id="myform" onSubmit="return CheckForm();">
         <table width="100%" border="0" cellpadding="3" cellspacing="1">
           <tr> 
             <td width="18%" align="right" valign="top" class="border2" ><br>
-              <?php echo $f_array[3]?> <font color="#FF0000">*</font></td>
-            <td width="82%" class="border2" > <table width="100%" border="0" cellpadding="0" cellspacing="1">
+              <?php echo $f_array[3]?></td>
+            <td width="82%" class="border2" > 
+			<table width="100%" border="0" cellpadding="0" cellspacing="1">
                 <tr> 
-                  <td> <fieldset>
+                  <td> <fieldset class="fieldsetstyle">
                     <legend><?php echo $f_array[4]?></legend>
                     <?php
         $sqlB = "select * from zzcms_jobclass where parentid='0' order by xuhao asc";
@@ -114,7 +115,7 @@ echo "<div id='E_con$n' style='display:block;'>";
 }else{
 echo "<div id='E_con$n' style='display:none;'>";
 }
-echo "<fieldset><legend>".$f_array[5]."</legend>";
+echo "<fieldset class='fieldsetstyle'><legend>".$f_array[5]."</legend>";
 $sqlS="select * from zzcms_jobclass where parentid='$rowB[classid]' order by xuhao asc";
 $rsS = mysql_query($sqlS,$conn); 
 $nn=0;
@@ -139,21 +140,21 @@ echo "</div>";
               </table></td>
           </tr>
           <tr>
-            <td align="right" class="border" ><?php echo $f_array[6]?><font color="#FF0000"> *</font></td>
-            <td class="border" ><input name="jobname" type="text" id="jobname" value="<?php echo $row["jobname"]?>" size="60" maxlength="45"></td>
+            <td align="right" class="border" ><?php echo $f_array[6]?></td>
+            <td class="border" ><input name="jobname" type="text" id="jobname" class="biaodan" value="<?php echo $row["jobname"]?>" size="60" maxlength="45"></td>
           </tr>
 		   
           <tr> 
-            <td align="right" class="border" ><?php echo $f_array[7]?><font color="#FF0000">*</font></td>
-            <td class="border" > <textarea name="sm" cols="60" rows="4" id="sm"><?php echo $row["sm"] ?></textarea></td>
+            <td align="right" class="border" ><?php echo $f_array[7]?></td>
+            <td class="border" > <textarea name="sm" cols="60" rows="4" id="sm" class="biaodan" style="height:auto"><?php echo $row["sm"] ?></textarea></td>
           </tr>
           <tr> 
-            <td align="right" class="border"><?php echo $f_array[8]?> <font color="#FF0000">*</font></td>
+            <td align="right" class="border"><?php echo $f_array[8]?></td>
             <td class="border">
 			              
-<select name="province" id="province"></select>
-<select name="city" id="city"></select>
-<select name="xiancheng" id="xiancheng"></select>
+<select name="province" id="province" class="biaodan"></select>
+<select name="city" id="city" class="biaodan"></select>
+<select name="xiancheng" id="xiancheng" class="biaodan"></select>
 <script src="/js/area.js"></script>
 <script type="text/javascript">
 new PCAS('province', 'city', 'xiancheng', '<?php echo $row['province']?>', '<?php echo $row["city"]?>', '<?php echo $row["xiancheng"]?>');
@@ -170,6 +171,10 @@ new PCAS('province', 'city', 'xiancheng', '<?php echo $row['province']?>', '<?ph
           </tr>
         </table>
 	  </form>
+<?php
+unset ($f_array);
+?>	  
+</div>	  
 </div>
 </div>
 </div>

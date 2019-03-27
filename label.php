@@ -109,6 +109,23 @@ if (strpos($str,"{@zxclass.")!==false) {
 	$str=str_replace("{@zxclass.".$mylabel."}",zxclass($mylabel),$str);
 	}
 }
+
+if (strpos($str,"{@wangkanshow.")!==false) {
+	$n=count(explode("{@wangkanshow.",$str));
+	for ($i=1;$i<$n;$i++){ 
+	$mylabel=strbetween($str,"{@wangkanshow.","}");
+	$str=str_replace("{@wangkanshow.".$mylabel."}",wangkanshow($mylabel,$b,0),$str);
+	}
+}
+
+if (strpos($str,"{@wangkanclass.")!==false) {
+	$n=count(explode("{@wangkanclass.",$str));
+	for ($i=1;$i<$n;$i++){ 
+	$mylabel=strbetween($str,"{@wangkanclass.","}");
+	$str=str_replace("{@wangkanclass.".$mylabel."}",wangkanclass($mylabel),$str);
+	}
+}
+
 if (strpos($str,"{@specialshow.")!==false) {
 	$n=count(explode("{@specialshow.",$str));
 	for ($i=1;$i<$n;$i++){ 
@@ -176,6 +193,7 @@ function zhclass($labelname){return labelclass($labelname,'zh');}
 function linkclass($labelname){return labelclass($labelname,'link');}
 function companyclass($labelname){return labelclass($labelname,'company');}
 function zxclass($labelname){return labelclass($labelname,'zx');}
+function wangkanclass($labelname){return labelclass($labelname,'wangkan');}
 function specialclass($labelname){return labelclass($labelname,'special');}
 
 function writecache($channel,$classid,$labelname,$str){//$classid,$labelname 这两个参数在外部函数的参数里，没有在函数内部无法通过global获取到。
@@ -203,14 +221,19 @@ if (filesize($fpath)<10){ showmsg(zzcmsroot."template/".$siteskin."/label/".$cha
 $fcontent=file_get_contents($fpath);
 $f=explode("|||",$fcontent) ;
 $startnumber = $f[1];$numbers = $f[2];$row = $f[3];$start = $f[4];$mids = $f[5];
+
+if($channel=="zx" || $channel=="special"){
+	$mids = str_replace($channel.".php?b={#bigclassid}","/".$channel."/".$channel.".php?b={#bigclassid}",$mids);//后有小类的同样会被转换前面加/
+	}
+
 if ( whtml == "Yes"){
 $mids = str_replace($channel.".php?b={#classid}", "{#classid}",$mids);
 	if($channel=="zs"){
 	$mids = str_replace("class.php?b={#classid}", "{#classid}.htm",$mids);
 	}
 	if($channel=="zx" || $channel=="special"){
-	$mids = str_replace($channel.".php?b={#bigclassid}&s={#smallclassid}","/".$channel."/{#bigclassid}/{#smallclassid}",$mids);
-	$mids = str_replace($channel.".php?b={#bigclassid}","{#bigclassid}",$mids);
+	$mids = str_replace("/".$channel."/".$channel.".php?b={#bigclassid}&s={#smallclassid}","/".$channel."/{#bigclassid}/{#smallclassid}",$mids);
+	$mids = str_replace("/".$channel."/".$channel.".php?b={#bigclassid}","{#bigclassid}",$mids);
 	}
 	if($channel=="special"){
 	$mids = str_replace("class.php?b={#bigclassid}","/special/class/{#bigclassid}",$mids);
@@ -221,7 +244,7 @@ if ($channel=='zs' || $channel=='pp'|| $channel=='dl'){
 $sql ="select classid,classname,classzm from zzcms_zsclass where parentid='A' order by xuhao limit $startnumber,$numbers ";
 }elseif($channel=='job'){
 $sql ="select * from zzcms_jobclass where parentid='0' order by xuhao limit $startnumber,$numbers ";
-}elseif($channel=="zh" || $channel=="link"){
+}elseif($channel=="zh" || $channel=="link"|| $channel=="wangkan"){
 $sql ="select * from zzcms_".$channel."class order by xuhao limit $startnumber,$numbers ";
 }elseif($channel=="company"){
 $sql ="select * from zzcms_userclass where  parentid='0' order by xuhao limit $startnumber,$numbers ";
@@ -252,7 +275,8 @@ if (count(explode("{@".$channel."show.",$mids))==3) {
 while($r=mysql_fetch_array($rs)){	
 
 if ($channel=='zs'){
-$mids3=$mids3.str_replace("{#zssmallclass}",showzssmallclass($r["classzm"],"",10,10),str_replace("{@zsshow." . $mylabel2 . "}", zsshow($mylabel2,$r["classzm"]),str_replace("{@zsshow." . $mylabel1 . "}", zsshow($mylabel1,$r["classzm"]),str_replace("{#classname}",$r["classname"],str_replace("{#classid}",$r["classzm"],$mids)))));
+$zssmallclass_num=strbetween($mids,"{#zssmallclass:","}");
+$mids3=$mids3.str_replace("{#zssmallclass:".$zssmallclass_num."}",showzssmallclass($r["classzm"],"",$zssmallclass_num,$zssmallclass_num),str_replace("{@zsshow." . $mylabel2 . "}", zsshow($mylabel2,$r["classzm"]),str_replace("{@zsshow." . $mylabel1 . "}", zsshow($mylabel1,$r["classzm"]),str_replace("{#classname}",$r["classname"],str_replace("{#classid}",$r["classzm"],$mids)))));
 if ($i==1){
 $mids3=str_replace("{#title_style}","class=current1",$mids3);
 $mids3=str_replace("{#content_style}","style=display:block",$mids3);
@@ -269,6 +293,8 @@ $mids3=$mids3.str_replace("{@jobshow." . $mylabel2 . "}", jobshow($mylabel2,$r["
 $mids3=$mids3.str_replace("{@dlshow." . $mylabel2 . "}", dlshow($mylabel2,$r["classzm"]),str_replace("{@dlshow." . $mylabel1 . "}", dlshow($mylabel1,$r["classzm"]),str_replace("{#classname}",$r["classname"],str_replace("{#classid}",$r["classzm"],$mids))));
 }elseif($channel=="zh"){
 $mids3=$mids3.str_replace("{@zhshow." . $mylabel2 . "}",zhshow($mylabel2,$r["bigclassid"]),str_replace("{@zhshow." . $mylabel1 . "}", zhshow($mylabel1,$r["bigclassid"]),str_replace("{#classname}",$r["bigclassname"],str_replace("{#classid}",$r["bigclassid"],$mids))));
+}elseif($channel=="wangkan"){
+$mids3=$mids3.str_replace("{@wangkanshow." . $mylabel2 . "}",wangkanshow($mylabel2,$r["bigclassid"]),str_replace("{@wangkanshow." . $mylabel1 . "}", wangkanshow($mylabel1,$r["bigclassid"]),str_replace("{#classname}",$r["bigclassname"],str_replace("{#classid}",$r["bigclassid"],$mids))));
 }elseif($channel=="link"){
 $mids3=$mids3.str_replace("{@linkshow." . $mylabel2 . "}", linkshow($mylabel2,$r["bigclassid"]),str_replace("{@linkshow." . $mylabel1 . "}", linkshow($mylabel1,$r["bigclassid"]),str_replace("{#classname}",$r["bigclassname"],str_replace("{#classid}",$r["bigclassid"],$mids))));
 }elseif($channel=="company"){
@@ -300,7 +326,7 @@ $mids3=$mids3.str_replace("{@companyshow." . $mylabel2 . "}", companyshow($mylab
 	$mids3=str_replace("{#bigclassid}",$r["classid"],$mids3);
 	}
 }
-$mids3=str_replace("{#n}", $i,$mids3);
+$mids3=str_replace("{#i}", $i,$mids3);//类别标签中序号用i，内容标签中用n,以区别开，这样在内容标签中可以调用i
 	if ($row <> "" && $row >0){
 		if ($i % $row == 0) {$mids3 = $mids3 . "</tr>";}
 	}
@@ -863,6 +889,73 @@ return $str;
 }//end if (file_exists($fpath)!==false)
 }
 
+function wangkanshow($labelname,$classid){
+global $siteskin;//取外部值，供演示模板用
+if (!$siteskin){$siteskin=siteskin;}
+if ($classid!='empty' && $classid!=''){
+$fpath=zzcmsroot."/cache/".$siteskin."/wangkan/".$classid."-".$labelname.".txt";
+}else{
+$fpath=zzcmsroot."/cache/".$siteskin."/wangkan/".$labelname.".txt";
+}
+if (cache_update_time!=0 && file_exists($fpath)!==false && time()-filemtime($fpath)<3600*24*cache_update_time){
+	return file_get_contents($fpath);
+}else{
+$fpath=zzcmsroot."/template/".$siteskin."/label/wangkanshow/".$labelname.".txt";
+if (file_exists($fpath)==true){
+if (filesize($fpath)<10){ showmsg(zzcmsroot."template/".$siteskin."/label/wangkanshow/".$labelname.".txt 内容为空");}//utf-8有文件头，空文件大小为3字节
+$fcontent=file_get_contents($fpath);
+$f=explode("|||",$fcontent) ;
+$title=$f[0];
+if ($classid <> ""){$bigclassid = $classid;}else{$bigclassid = $f[1];}
+$elite = $f[2];$numbers = $f[3];$orderby =$f[4];$titlenum = $f[5];$row = $f[6];$start =$f[7];$mids = $f[8];
+$mids = str_replace("show.php?id={#id}", "/wangkan/show.php?id={#id}",$mids);
+if (whtml == "Yes") {$mids = str_replace("/wangkan/show.php?id={#id}", "/wangkan/show-{#id}.htm",$mids);}
+$ends = $f[9];
+$sql = "select id,title,img,sendtime,hit,editor,elite from zzcms_wangkan where passed=1 ";
+	if ($bigclassid <> 0) {$sql = $sql . " and bigclassid=" . $bigclassid . "";}	
+	$sql = $sql . " order by elite desc,";
+	if ( $orderby == "hit") {$sql = $sql . "hit desc";
+	}elseif ($orderby == "id") {$sql = $sql . "id desc";
+	}elseif ($orderby = "sendtime") {$sql = $sql . "sendtime desc";}
+	$sql = $sql . " limit 0,$numbers ";
+$rs=mysql_query($sql);
+$r=mysql_num_rows($rs);
+if (!$r){
+$str="暂无信息";
+}else{
+$xuhao =1;$n = 1;$mids2='';
+while($r=mysql_fetch_array($rs)){
+	$mids2 = $mids2 . str_replace("{#n}", $n,str_replace("{#sendtime}", date("Y-m-d",strtotime($r['sendtime'])),str_replace("{#id}", $r["id"],$mids)));
+	if ($n<=3){
+	$mids2=str_replace("{#xuhao}", "<font class=xuhao1>".addzero($xuhao,2)."</font>",$mids2);
+	}else{
+	$mids2=str_replace("{#xuhao}", "<font class=xuhao2>".addzero($xuhao,2)."</font>",$mids2);
+	}
+	if ($r["elite"]>0){
+	$mids2=str_replace("{#title}",cutstr($r["title"],$titlenum)."<img alt='置顶' src='/image/ding.gif' border='0'>",$mids2);
+	}else{
+	$mids2=str_replace("{#title}",cutstr($r["title"],$titlenum),$mids2);
+	}
+	$mids2=str_replace("{#imgbig}",$r["img"],$mids2);
+	$mids2=str_replace("{#img}",getsmallimg($r["img"]),$mids2);
+	$mids2=str_replace("{#hit}",$r["hit"],$mids2);
+	if ( $row <> "" && $row > 0) {
+		if ( $n % $row == 0) {$mids2 = $mids2 . "</tr>";}
+	}
+	$mids2 = $mids2 . "\r\n";
+$n = $n + 1;
+$xuhao++;
+}
+$str = $start.$mids2.$ends;
+}
+if (cache_update_time!=0){
+	writecache("wangkan",$classid,$labelname,$str);
+}
+return $str;
+}//end if file_exists($fpath)==true
+}//end if (file_exists($fpath)!==false)
+}
+
 function zxshow($labelname,$bid,$sid){
 global $siteskin,$b;//取外部值，供演示模板用,这里的$b为了接收zsclass下大类值
 if (!$siteskin){$siteskin=siteskin;}
@@ -885,7 +978,7 @@ $title=$f[0];
 if ($bid <> "") {$bid = $bid;}else{$bid= $f[1];}
 if ($sid <> 0) {$sid = $sid;}else{$sid = $f[2];}
 $pic =$f[3];$elite = $f[4];$numbers = $f[5];$orderby =$f[6];$titlenum = $f[7];$cnum = $f[8];$row = $f[9];$start =$f[10];$mids = $f[11];
-$mids = str_replace("show.php?id={#id}", "/zx/show.php?id={#id}",$mids);//需要从company目录转到zt
+$mids = str_replace("show.php?id={#id}", "/zx/show.php?id={#id}",$mids);
 	if (whtml == "Yes") {
 	$mids = str_replace("/zx/show.php?id={#id}", "/zx/show-{#id}.htm",$mids);
 	$mids = str_replace("/zx/zx.php?b={#bigclassid}&s={#smallclassid}","/zx/{#bigclassid}/{#smallclassid}",$mids);
@@ -1016,7 +1109,7 @@ $bid=$bid;
 $bid = $f[1];$sid = $f[2];
 }
 $pic =$f[3];$elite = $f[4];$numbers = $f[5];$orderby =$f[6];$titlenum = $f[7];$cnum = $f[8];$row = $f[9];$start =$f[10];$mids = $f[11];
-$mids = str_replace("show.php?id={#id}", "/special/show.php?id={#id}",$mids);//需要从company目录转到zt
+$mids = str_replace("show.php?id={#id}", "/special/show.php?id={#id}",$mids);
 	if (whtml == "Yes") {
 	$mids = str_replace("/special/show.php?id={#id}", "/special/show-{#id}.htm",$mids);
 	$mids = str_replace("class.php?b={#bigclassid}","/special/class/{#bigclassid}",$mids);
@@ -1112,7 +1205,7 @@ if (filesize($fpath)<10){ showmsg(zzcmsroot."template/".$siteskin."/label/helpsh
 $fcontent=file_get_contents($fpath);
 $f=explode("|||",$fcontent) ;
 $title=$f[0];$elite = $f[1];$numbers = $f[2];$orderby =$f[3];$titlenum = $f[4];$cnum = $f[5];$row = $f[6];$start =$f[7];$mids = $f[8];
-$mids = str_replace("help.php#{#id}", "/one/help.php#{#id}",$mids);//需要从company目录转到zt
+$mids = str_replace("help.php#{#id}", "/one/help.php#{#id}",$mids);
 if (whtml == "Yes") {$mids = str_replace("/one/help.php#{#id}", "/help.htm#{#id}",$mids);}
 $ends = $f[9];
 $sql = "select id,title,sendtime,img,content,elite from zzcms_help where classid=1";

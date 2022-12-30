@@ -19,7 +19,7 @@ checkadminisdo("sendmail");
 
 @$to=$_GET["tomail"];//收件人
 $subject=$_GET["subject"];//邮件主题
-$groupid=$_GET["groupid"];//用户组
+$groupid=intval($_GET["groupid"]);//用户组
 if (!empty($_GET["mailbody"])){//首次提交信息时获得$_SESSION['mailbody']
 $_SESSION['mailbody']=stripfxg($_GET["mailbody"]);//邮件内容
 }
@@ -47,7 +47,7 @@ if ($to<>""){
 $size=10;//每轮群发个数
 $sleeps=5;//每个间隔时间
 if (!empty($_GET['n'])){
-$n=$_GET['n'];
+$n=intval($_GET['n']);
 }else{
 $n=0;
 }
